@@ -4,4 +4,14 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+  <servlet>
+  	<servlet-name>TextTranslation</servlet-name>
+  	<display-name>TextTranslation</display-name>
+  	<description></description>
+  	<servlet-class>controller.TextTranslation</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>TextTranslation</servlet-name>
+  	<url-pattern>/TextTranslation</url-pattern>
+  </servlet-mapping>
 </web-app>
