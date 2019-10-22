@@ -25,6 +25,7 @@ public class UploadServlet extends HttpServlet {
        System.out.println(new String(b));
    }
 
+   @Override
    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
        doPost(request,response);
    }

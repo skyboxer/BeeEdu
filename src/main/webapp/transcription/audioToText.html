@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
 <meta charset="UTF-8">
 <title>BeeEdu</title>
@@ -45,12 +45,10 @@
 			<div class="col-sm-6">
 				<div class="row">
 
-					<form action="fileUpload" method="post" enctype="multipart/form-data">
-						<div class="form-group">
-							<input type="file" id="exampleInputFile">
-							<p class="help-block">支持文件扩展名mp3，wav</p>
-						</div>
-						<button type="submit" class="btn btn-primary">提交</button>
+					<form action="/fileUpload" method="post" enctype="multipart/form-data">
+							<input type="file"  name="file" id="exampleInputFile">
+							<p class="help-block">支持文件扩展名mp3,wav</p>
+							<input type="submit" id="submit" class="btn btn-primary"></input>
 					</form>
 				</div>
 
