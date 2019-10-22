@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>文字翻译</title>
+<title>文本上传翻译</title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta
@@ -39,25 +39,16 @@
 </head>
 <body class="sidebar-mini layout-boxed sidebar-open">
 	<div class="wrapper" style="margin-top: 10px;">
-		<div class="box" style="height: 800px">
+		<div class="box">
 			<div class="box-body" style="height: 90%;">
 				<div class="row">
 					<div class="col-md-6">
 						<div class="row">
 							<div class="col-md-12">
 								<div class="dropdown">
-									源文字
-									<button class="btn btn-default dropdown-toggle" type="button"
-										id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
-										aria-expanded="true">
-										中文（简体） <span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-										<li><a href="#">中文（简体）</a></li>
-										<li><a href="#">英文</a></li>
-										<li><a href="#">日语</a></li>
-										<li><a href="#">韩文</a></li>
-									</ul>
+									原始语言 <select class="btn btn-default dropdown-toggle"
+										aria-labelledby="dropdownMenu1" id="languageTypeOne">
+									</select>
 								</div>
 							</div>
 						</div>
@@ -65,22 +56,29 @@
 						<div class="row">
 							<div class="col-md-4">
 								<div class="form-group">
-									<input type="file" id="exampleInputFile">
+									<input type='file' accept='text/plain' id="openFile"><br>
 									<p class="help-block">
 										<font style="vertical-align: inherit;"><font
 											style="vertical-align: inherit;">支持：txt.</font></font>
 									</p>
 								</div>
 							</div>
-							<div class="col-md-8">
+							<div class="col-md-2">
+								<button type="button" class="btn btn-block btn-default btn-xs"
+									id="submitTranslation">
+									<font style="vertical-align: inherit;"><font
+										style="vertical-align: inherit;">提交翻译</font></font>
+								</button>
+							</div>
+							<div class="col-md-6">
 								<div class="progress progress-xxs">
 									<div
 										class="progress-bar progress-bar-danger progress-bar-striped"
 										role="progressbar" aria-valuenow="60" aria-valuemin="0"
-										aria-valuemax="100" style="width: 60%">
+										aria-valuemax="100" style="width: 0%" id="uploadSchedule">
 										<span class="sr-only"><font
 											style="vertical-align: inherit;"><font
-												style="vertical-align: inherit;">60％完成（警告）</font></font></span>
+												style="vertical-align: inherit;"></font></font></span>
 									</div>
 								</div>
 							</div>
@@ -88,7 +86,12 @@
 						<br>
 						<div class="row">
 							<div class="col-md-12">
-								<textarea class="form-control" rows="20" name=textarea readonly></textarea>
+								<p class="help-block">
+									<font style="vertical-align: inherit;"><font
+										style="vertical-align: inherit;">上传文件预览</font></font>
+								</p>
+								<textarea class="form-control" rows="20" name=textarea readonly
+									id="output"></textarea>
 							</div>
 						</div>
 					</div>
@@ -96,47 +99,43 @@
 						<div class="row">
 							<div class="col-md-12">
 								<div class="dropdown">
-									源文字
-									<button class="btn btn-default dropdown-toggle" type="button"
-										id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
-										aria-expanded="true">
-										中文（简体） <span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-										<li><a href="#">中文（简体）</a></li>
-										<li><a href="#">英文</a></li>
-										<li><a href="#">日语</a></li>
-										<li><a href="#">韩文</a></li>
-									</ul>
+									<select class="btn btn-default dropdown-toggle"
+										aria-labelledby="dropdownMenu1" id="languageTypeTwo">
+									</select>
 								</div>
 							</div>
 						</div>
 						<br>
 						<div class="row">
 							<div class="col-md-3">
-								<button type="button" class="btn btn-block btn-default btn-xs">
-									<font style="vertical-align: inherit;"><font
-										style="vertical-align: inherit;">翻译</font></font>
-								</button>
+								<font style="vertical-align: inherit;"><font
+									style="vertical-align: inherit;">翻译进度</font></font>
 							</div>
-							<div class="col-md-9">
+							<div class="col-md-6">
 								<div class="progress progress-xxs">
 									<div
 										class="progress-bar progress-bar-danger progress-bar-striped"
 										role="progressbar" aria-valuenow="60" aria-valuemin="0"
-										aria-valuemax="100" style="width: 60%">
+										aria-valuemax="100" style="width:0%" id="translationSchedule">
 										<span class="sr-only"><font
 											style="vertical-align: inherit;"><font
-												style="vertical-align: inherit;">60％完成（警告）</font></font></span>
+												style="vertical-align: inherit;"></font></font></span>
 									</div>
 								</div>
 							</div>
+							<div class="col-md-3"></div>
 						</div>
 						<br>
 						<div class="row">
-							<div class="col-md-9"></div>
-							<div class="col-md-3">
-								<button type="button" class="btn btn-block btn-default btn-xs">
+							<div class="col-md-8"></div>
+							<div class="col-md-2">
+								<button type="button" class="btn btn-block btn-default btn-xs" id="copyFn">
+									<font style="vertical-align: inherit;"><font
+										style="vertical-align: inherit;">一键复制</font></font>
+								</button>
+							</div>
+							<div class="col-md-2">
+								<button type="button" class="btn btn-block btn-default btn-xs" id="saveFn">
 									<font style="vertical-align: inherit;"><font
 										style="vertical-align: inherit;">下载</font></font>
 								</button>
@@ -145,7 +144,11 @@
 						<br>
 						<div class="row" style="margin-top: 10px;">
 							<div class="col-md-12">
-								<textarea class="form-control" rows="20" name=textarea readonly></textarea>
+								<p class="help-block">
+									<font style="vertical-align: inherit;"><font
+										style="vertical-align: inherit;">翻译结果预览</font></font>
+								</p>
+								<textarea class="form-control" rows="20" name=textarea readonly id="textareaTwo"></textarea>
 							</div>
 						</div>
 					</div>
@@ -199,4 +202,86 @@
 		src="../AdminLTE-master/bower_components/fastclick/lib/fastclick.js"></script>
 	<script src="../AdminLTE-master/dist/js/adminlte.min.js"></script>
 </body>
+<script type="text/javascript">
+	$(function() {
+		var timecount = 0;
+		$.getJSON("../datas/machine.json", function(obj) {
+			var options = "";
+			$.each(obj, function(i, d) {
+				options += '<option value="'+i+'">' + d + '</option>';
+			});
+			$("#languageTypeOne").html(options);
+			$("#languageTypeTwo").html(options);
+		});
+
+		$("#languageTypeOne").change(function() {
+			conditionChange();
+		})
+		$("#languageTypeTwo").change(function() {
+			conditionChange();
+		})
+		$('#text').bind('input', function() { //兼容IE9及以上版本和其他浏览器
+			conditionChange();
+		});
+		$("#submitTranslation").click(function() {
+			conditionChange();
+			document.getElementById("translationSchedule").style.width = "100%";
+		})
+		$("#copyFn").click(function(){
+			var val = document.getElementById('textareaTwo');
+			val.select();
+			document.execCommand("Copy");
+			alert("已复制好，可贴粘。");
+
+		})
+		$("#saveFn").click(function(){
+			var text = $("#textareaTwo").html();
+			var win = window.open();
+			win.document.open("text","gb2312");
+			win.document.write(text);
+			win.document.execCommand("SaveAs",true,"newfile.txt");
+			win.close();
+		})
+		var conditionChange = function() {
+			var text = $("#output").val();
+			var from = $("#languageTypeOne option:selected").val();
+			var to = $("#languageTypeTwo option:selected").val();
+			$.post("/BeeEdu/textTranslation", {
+				TEXT : text,
+				FROM : from,
+				TO : to
+			}, function(data) {
+				$("#textareaTwo").html(data);
+			})
+		}
+		$("#openFile").change(function(event){
+			var input = event.target;
+			var reader = new FileReader();
+			startTime();
+			reader.onload = function() {
+				if (reader.result) {
+					//显示文件内容
+					entTime();
+					$("#output").html(reader.result);
+				}
+			};
+			reader.readAsText(input.files[0]);
+		})
+		
+		var time = function() {
+			document.getElementById("uploadSchedule").style.width = timecount
+					+ "%"
+			timecount++
+		}
+
+		var startTime = function() {
+			timecount = 0;
+			myVar = setInterval(time, 1000);
+		}
+		var entTime = function() {
+			document.getElementById("uploadSchedule").style.width = "100%";
+			clearTimeout(myVar);
+		}
+	})
+</script>
 </html>

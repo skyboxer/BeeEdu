@@ -38,33 +38,24 @@
 	href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 <body class="sidebar-mini layout-boxed sidebar-open">
-	<div class="wrapper" style="margin-top: 10px;">
-		<div class="box" style="height: 800px">
+	<div class="wrapper" style="margin-top: 2%">
+		<div class="box">
 			<div class="box-body" style="height: 90%;">
 				<div class="row">
 					<div class="col-md-6">
 						<div class="row">
 							<div class="col-md-12">
 								<div class="dropdown">
-									源文字
-									<button class="btn btn-default dropdown-toggle" type="button"
-										id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
-										aria-expanded="true">
-										中文（简体） <span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-										<li><a href="#">中文（简体）</a></li>
-										<li><a href="#">英文</a></li>
-										<li><a href="#">日语</a></li>
-										<li><a href="#">韩文</a></li>
-									</ul>
+									原始语言 <select class="btn btn-default dropdown-toggle"
+										aria-labelledby="dropdownMenu1" id="languageType0">
+									</select>
 								</div>
 							</div>
 						</div>
 
 						<div class="row" style="margin-top: 10px;">
 							<div class="col-md-12">
-								<textarea class="form-control" rows="30" name=textarea></textarea>
+								<textarea class="form-control" rows="30" name=textarea id="text"></textarea>
 							</div>
 						</div>
 					</div>
@@ -72,25 +63,16 @@
 						<div class="row">
 							<div class="col-md-12">
 								<div class="dropdown">
-									源文字
-									<button class="btn btn-default dropdown-toggle" type="button"
-										id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
-										aria-expanded="true">
-										中文（简体） <span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-										<li><a href="#">中文（简体）</a></li>
-										<li><a href="#">英文</a></li>
-										<li><a href="#">日语</a></li>
-										<li><a href="#">韩文</a></li>
-									</ul>
+									<select class="btn btn-default dropdown-toggle"
+										aria-labelledby="dropdownMenu1" id="languageType1">
+									</select>
 								</div>
 							</div>
 						</div>
 
 						<div class="row" style="margin-top: 10px;">
 							<div class="col-md-12">
-								<textarea class="form-control" rows="30" name=textarea readonly></textarea>
+								<textarea class="form-control" rows="30" name=textarea readonly id="text1"></textarea>
 							</div>
 						</div>
 					</div>
@@ -144,4 +126,37 @@
 		src="../AdminLTE-master/bower_components/fastclick/lib/fastclick.js"></script>
 	<script src="../AdminLTE-master/dist/js/adminlte.min.js"></script>
 </body>
+<script type="text/javascript">
+	$(function() {
+		$.getJSON("../datas/machine.json", function(obj) {
+			var options = "";
+			$.each(obj, function(i, d) {
+				options += '<option value="'+i+'">' + d + '</option>';
+			});
+			$("#languageType0").html(options);
+			$("#languageType1").html(options);
+		});
+		$('#text').bind('input', function() { //兼容IE9及以上版本和其他浏览器
+			textChange();
+		});
+		$("#languageType0").change(function(){
+			textChange();
+		})
+		$("#languageType1").change(function(){
+			textChange();
+		})
+	})
+	function textChange(){
+		var text = $("#text").val();
+		var from = $("#languageType0 option:selected").val();
+		var to = $("#languageType1 option:selected").val();
+		$.post("/BeeEdu/textTranslation", {
+			TEXT : text,
+			FROM : from,
+			TO : to
+		}, function(data) {
+			$("#text1").html(data);
+		})
+	}
+</script>
 </html>
