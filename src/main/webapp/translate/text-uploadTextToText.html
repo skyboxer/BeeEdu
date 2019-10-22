@@ -235,12 +235,14 @@
 
 		})
 		$("#saveFn").click(function(){
-			var text = $("#textareaTwo").html();
-			var win = window.open();
-			win.document.open("text","gb2312");
-			win.document.write(text);
-			win.document.execCommand("SaveAs",true,"newfile.txt");
-			win.close();
+			var content = $("#textareaTwo").html();
+			var data = new Blob([content],{type:"text/plain;charset=UTF-8"});
+			var downloadUrl = window.URL.createObjectURL(data);
+			var anchor = document.createElement("a");
+			anchor.href = downloadUrl;
+			anchor.download = "newfile.txt";
+			anchor.click();
+			window.URL.revokeObjectURL(data); 
 		})
 		var conditionChange = function() {
 			var text = $("#output").val();
@@ -251,7 +253,8 @@
 				FROM : from,
 				TO : to
 			}, function(data) {
-				$("#textareaTwo").html(data);
+				var dataJson = JSON.parse(data)
+				$("#textareaTwo").html(dataJson.dst);
 			})
 		}
 		$("#openFile").change(function(event){
