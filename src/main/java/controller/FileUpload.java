@@ -86,11 +86,11 @@ public class FileUpload extends HttpServlet {
 //            System.out.println(filePath);
                         // 保存文件到硬盘
                         if(storeFile.exists()) {
-                            out.println("alert(\"上传失败，文件已存在！\")");
+                            out.println("上传失败，文件已存在！");
                         }else {
                             item.write(storeFile);
 //                            response.sendRedirect("success.html?fileName="+fileName);
-                            out.println("alert(\"上传成功！\")");
+                            out.println("上传成功！");
                         }
                     }
                 }
