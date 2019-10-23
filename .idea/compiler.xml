@@ -9,8 +9,5 @@
         <module name="BeeEdu" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="BeeEdu" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

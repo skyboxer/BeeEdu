@@ -150,7 +150,7 @@
 		var text = $("#text").val();
 		var from = $("#languageType0 option:selected").val();
 		var to = $("#languageType1 option:selected").val();
-		$.post("/BeeEdu/textTranslation", {
+		$.post("/textTranslation", {
 			TEXT : text,
 			FROM : from,
 			TO : to

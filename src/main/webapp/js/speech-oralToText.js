@@ -349,7 +349,7 @@ class IatTaste {
 var conditionChange = function(text) {
 	var from = $("#languageTypeOne option:selected").val();
 	var to = $("#languageTypeTwo option:selected").val();
-	$.post("/BeeEdu/textTranslation", {
+	$.post("/textTranslation", {
 			TEXT : text,
 			FROM : from,
 			TO : to
