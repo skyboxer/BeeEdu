@@ -29,7 +29,10 @@ public class SpeechToText extends HttpServlet{
 		req.setCharacterEncoding("utf-8");
 		resp.setContentType("text/html;charset=utf-8");
 		PrintWriter out = resp.getWriter();
-		WebIATWS.setFile(WebApiParameters.file+"16k_10.pcm");
+		String uploadFileName = req.getParameter("uploadFileName");
+		String uploadFilePath = req.getServletContext().getRealPath("/upload/");
+		WebIATWS.setFile(uploadFilePath+uploadFileName);
+		
 		// 构建鉴权url
         String authUrl;
 		try {
