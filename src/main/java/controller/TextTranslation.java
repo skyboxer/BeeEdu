@@ -49,8 +49,8 @@ public class TextTranslation extends HttpServlet {
 		try {
 			String resultStr = webOTS.getTranslate(from, to, text);
 			JSONObject jsonObject = JSONObject.parseObject(resultStr);
-			String dst = jsonObject.getJSONObject("data").getJSONObject("result").getJSONObject("trans_result").getString("dst");
-			out.println(dst);
+			JSONObject trans_result = jsonObject.getJSONObject("data").getJSONObject("result").getJSONObject("trans_result");
+			out.println(trans_result);
 	        out.flush();
 	        out.close();
 		} catch (Exception e) {

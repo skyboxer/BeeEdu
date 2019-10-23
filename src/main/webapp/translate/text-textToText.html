@@ -155,7 +155,8 @@
 			FROM : from,
 			TO : to
 		}, function(data) {
-			$("#text1").html(data);
+			var dataJson = JSON.parse(data)
+			$("#text1").html(dataJson.dst);
 		})
 	}
 </script>
