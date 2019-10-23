@@ -17,6 +17,12 @@ public class WebApiParameters {
 	public static final String WebOTS_URL = "https://ntrans.xfyun.cn/v2/ots";
 	// http url 不支持解析 ws/wss schema
 	public static final String hostUrl = "https://tts-api.xfyun.cn/v2/tts";
+	// 语音转写 java端
+	public static final String hostUrlIat = "https://iat-api.xfyun.cn/v2/iat";
+	// 语音转写 小语种
+	public static final String hostUrlIatNiche = "\"https://iat-niche-api.xfyun.cn/v2/iat\";";
+	// 语音文件转写 地址
+	public static final String file = "src/main/resources/iat/"; // 中文
 	
 	
 }
