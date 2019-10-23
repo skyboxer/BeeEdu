@@ -121,19 +121,19 @@ public class IfasrServlet extends BaseServlet{
         //2.处理请求
         // 初始化LFASRClient实例
         LfasrClientImp lc = LfasrClientImp.initLfasrClient();
-        String  queryResult=IfaserGetResult(lc,task_id);
+        Message  queryResult=IfaserGetResult(lc,task_id);
         System.out.println("queryResult = " + queryResult);
-        if(queryResult!=null){
+        if(queryResult.getOk()==0){
             //创建文件
             String realPath = getServletContext().getRealPath("/result");
-            List<Word> words = JSONArray.parseArray(queryResult, Word.class);
+            List<Word> words = JSONArray.parseArray(queryResult.getData(), Word.class);
             //写入文件
             FileWriter writer;
             try {
                 writer = new FileWriter(realPath+"\\"+task_id+".txt",true);
                 //控制变量
                 int count=1;
-                String temp="  ";
+                String temp="   ";
                 writer.write("  ");
                 for (Word word:words) {
 
@@ -153,7 +153,7 @@ public class IfasrServlet extends BaseServlet{
                             if(count%6==0){
                                 count=1;
                                 writer.write("\r\n   ");
-                                temp+="\r\n   ";
+                                temp+="\r\n     ";
                             }
                         }
                     }
@@ -168,7 +168,7 @@ public class IfasrServlet extends BaseServlet{
             } catch (IOException e) {
                 e.printStackTrace();
                 result.put("flag",false);
-                result.put("msg","转写错误");
+                result.put("msg","转写异常");
             }
 
             //3.响应数据
@@ -182,7 +182,7 @@ public class IfasrServlet extends BaseServlet{
             //处理响应乱码
             response.setContentType("text/html;charset=utf-8");
             result.put("flag",false);
-            result.put("msg","转写失败");
+            result.put("msg",queryResult.getFailed());
             response.getWriter().println(JSON.toJSONString(result));
         }
 
@@ -194,28 +194,17 @@ public class IfasrServlet extends BaseServlet{
      * @param task_id
      * @return
      */
-    private String IfaserGetResult(LfasrClientImp lc, String task_id) {
+    private Message IfaserGetResult(LfasrClientImp lc, String task_id) {
         // 获取任务结果
         try {
             Message resultMsg = lc.lfasrGetResult(task_id);
-            // 如果返回状态等于0，则获取任务结果成功
-            if (resultMsg.getOk() == 0) {
-                // 打印转写结果
-                String result =resultMsg.getData();
-//                System.out.println("result = " + result);
-                return result;
-            } else {
-                // 获取任务结果失败
-                System.out.println("ecode=" + resultMsg.getErr_no());
-                System.out.println("failed=" + resultMsg.getFailed());
-                return null;
-            }
+            return resultMsg;
         } catch (LfasrException e) {
             // 获取结果异常处理，解析异常描述信息
             Message resultMsg = JSON.parseObject(e.getMessage(), Message.class);
             System.out.println("ecode=" + resultMsg.getErr_no());
             System.out.println("failed=" + resultMsg.getFailed());
-            return null;
+            return resultMsg;
         }
     }
 
