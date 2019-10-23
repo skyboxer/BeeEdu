@@ -7,28 +7,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7fa1e6ef-9f2b-4c76-971e-5bd7e6fcf85d" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/controller/IfasrServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/controller/SpeechToText.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pojo/Word.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/util/HttpUtil2.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/util/WebIATWS.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/iat/16k_10.pcm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/iat/iat_wav_16k.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/Ifasr-2.0.0.1007.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/netty-all-4.1.15.Final.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/okhttp-3.13.1.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/okio-1.15.0-20180330.135339-9.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/speech-uploadAudioToText.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.classpath" beforeDir="false" afterPath="$PROJECT_DIR$/.classpath" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controller/DownloadServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/config.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/log4j.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/result/1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BeeEdu.iml" beforeDir="false" afterPath="$PROJECT_DIR$/BeeEdu.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/FileUpload.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/FileUpload.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/UploadServlet.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/util/WebApiParameters.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/util/WebApiParameters.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/IfasrServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/IfasrServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/transcription/audioToText.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/transcription/audioToText.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/translate/speech-uploadAudioToText.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/translate/speech-uploadAudioToText.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/translate/text-textToText.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/translate/text-textToText.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -43,7 +29,7 @@
       <file leaf-file-name="speech-uploadAudioToText.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/translate/speech-uploadAudioToText.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
+            <state relative-caret-position="195">
               <caret line="49" column="62" selection-start-line="49" selection-start-column="62" selection-end-line="49" selection-end-column="62" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -54,11 +40,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="speech-uploadAudioToText.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="speech-uploadAudioToText.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/js/speech-uploadAudioToText.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="225">
-              <caret line="15" column="45" lean-forward="true" selection-start-line="15" selection-start-column="45" selection-end-line="15" selection-end-column="45" />
+              <caret line="15" column="45" selection-start-line="15" selection-start-column="45" selection-end-line="15" selection-end-column="45" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BeeEdu.iml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/BeeEdu.iml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="17" column="12" selection-start-line="17" selection-start-column="3" selection-end-line="17" selection-end-column="12" />
             </state>
           </provider>
         </entry>
@@ -97,6 +92,7 @@
         <option value="$PROJECT_DIR$/src/main/java/controller/FileUpload.java" />
         <option value="$PROJECT_DIR$/src/main/webapp/translate/speech-uploadAudioToText.html" />
         <option value="$PROJECT_DIR$/src/main/webapp/js/speech-uploadAudioToText.js" />
+        <option value="$PROJECT_DIR$/BeeEdu.iml" />
       </list>
     </option>
   </component>
@@ -385,12 +381,12 @@
       <option name="presentableId" value="Default" />
       <updated>1571810234031</updated>
       <workItem from="1571810235366" duration="550000" />
-      <workItem from="1571810803994" duration="9978000" />
+      <workItem from="1571810803994" duration="10287000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="10528000" />
+    <option name="totallyTimeSpent" value="10837000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="36" width="1920" height="1044" extended-state="6" />
@@ -565,7 +561,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/translate/speech-uploadAudioToText.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
+        <state relative-caret-position="195">
           <caret line="49" column="62" selection-start-line="49" selection-start-column="62" selection-end-line="49" selection-end-column="62" />
           <folding>
             <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -578,7 +574,14 @@
     <entry file="file://$PROJECT_DIR$/src/main/webapp/js/speech-uploadAudioToText.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
-          <caret line="15" column="45" lean-forward="true" selection-start-line="15" selection-start-column="45" selection-end-line="15" selection-end-column="45" />
+          <caret line="15" column="45" selection-start-line="15" selection-start-column="45" selection-end-line="15" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BeeEdu.iml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="12" selection-start-line="17" selection-start-column="3" selection-end-line="17" selection-end-column="12" />
         </state>
       </provider>
     </entry>
