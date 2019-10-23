@@ -1,5 +1,6 @@
 package controller;
 
+import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -12,7 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 文件上传
@@ -38,10 +41,15 @@ public class FileUpload extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-
+        Map<String,Object> mapData = new HashMap<>();
+        String jsonObject;
         if (!ServletFileUpload.isMultipartContent(request)) {
             // 如果不是则停止
-            out.println("Error: 表单必须包含 enctype=multipart/form-data");
+            //out.println("Error: 表单必须包含 enctype=multipart/form-data");
+            mapData.put("status",1);
+            mapData.put("message","Error: 表单必须包含 enctype=multipart/form-data");
+            jsonObject = JSONObject.toJSONString(mapData);
+            out.print(jsonObject);
             out.flush();
             return;
         }
@@ -86,18 +94,26 @@ public class FileUpload extends HttpServlet {
 //            System.out.println(filePath);
                         // 保存文件到硬盘
                         if(storeFile.exists()) {
-                            out.println("上传失败，文件已存在！");
+                            mapData.put("status",1);
+                            mapData.put("message","上传失败，文件已存在！");
+                            //out.println("上传失败，文件已存在！");
                         }else {
                             item.write(storeFile);
 //                            response.sendRedirect("success.html?fileName="+fileName);
-                            out.println("上传成功！");
+                          //  out.println("上传成功！");
+                            mapData.put("status",0);
+                            mapData.put("message","成功");
                         }
                     }
                 }
             }
         } catch (Exception ex) {
-            response.getWriter().println("文件上传失败!");
+            mapData.put("status",1);
+            mapData.put("message","上传失败");
+            //response.getWriter().println("文件上传失败!");
         }
+        jsonObject = JSONObject.toJSONString(mapData);
+        out.print(jsonObject);
     }
 
 
