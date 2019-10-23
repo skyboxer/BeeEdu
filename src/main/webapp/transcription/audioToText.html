@@ -86,7 +86,7 @@
 
 
 						 <div class="col-sm-12 text-right">
-							 <a class="btn btn-primary" href="#" role="button">文件下载</a>
+							 <a class="btn btn-primary"id="download"  href="#" role="button">文件下载</a>
 						 </div>
 
 
@@ -123,7 +123,7 @@
 				<h6>转录结果预览</h6>
 			</div>
 
-			<textarea class="form-control" rows="20"></textarea>
+			<textarea class="form-control" id="text" rows="20"></textarea>
 		</div>
 		<!--文本预览end-->
 
@@ -139,9 +139,12 @@
 </body>
 
 <script>
+	<!--定时任务-->
+	function hello(){
+		alert("100")
+	}
 	<!--文件上传-->
 	$("#submit").click(function () {
-
 		var data = new FormData($("#form")[0]);
 		$.ajax({
 			url:"/fileUpload",//后台的接口地址
@@ -163,8 +166,39 @@
 	$("#transcription").click(function () {
 		//获取上传文件名
 		var fileName=document.getElementById("exampleInputFile").files[0].name;
+		if(fileName){
+			//文件转写
+			$.get("/ifasrServlet?methodName=speechTask&fileName="+fileName,
+					function (data) {
+						if(data.flag){
+							alert(data.TaskId)
+							//执行定时任务
+							let ref = setInterval(function () {
+
+								$.get("/ifasrServlet?methodName=resultsQuery&taskid="+data.TaskId,
+										function (data) {
+											if(data.flag){
+												$("#download").href="downloadServlet?filename="+data.fileName;
+
+												$("#text").text(data.result)
+											}else {
+												alert(data.msg);
+											}
+
+										},"json");
+
+                            },3000);
+							//执行定时任务end
+						}else {
+							alert("转写错误");
+						}
+					},"json");
+			//文件转写end
+		}
 
 	});
+
+
 
 
 

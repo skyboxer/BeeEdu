@@ -53,14 +53,19 @@ public class IfasrServlet extends BaseServlet{
             // 初始化LFASRClient实例
             LfasrClientImp lc = LfasrClientImp.initLfasrClient();
             //上传文件
-
             task_id = lfasrUpload(lc,local_file, params);
-            result.put("TaskId",task_id);
+            //打印过程
+            System.out.println("task_id = " + task_id);
+            if(task_id==null){
+                result.put("flag",false);
+            }else {
+                result.put("flag",true);
+                result.put("TaskId",task_id);
+            }
+
             //3.响应数据
             //处理响应乱码
             response.setContentType("text/html;charset=utf-8");
-
-
             response.getWriter().println(JSON.toJSONString(result));
         }
 
@@ -117,8 +122,7 @@ public class IfasrServlet extends BaseServlet{
         // 初始化LFASRClient实例
         LfasrClientImp lc = LfasrClientImp.initLfasrClient();
         String  queryResult=IfaserGetResult(lc,task_id);
-
-
+        System.out.println("queryResult = " + queryResult);
         if(queryResult!=null){
             //创建文件
             String realPath = getServletContext().getRealPath("/result");
@@ -129,17 +133,19 @@ public class IfasrServlet extends BaseServlet{
                 writer = new FileWriter(realPath+"\\"+task_id+".txt",true);
                 //控制变量
                 int count=1;
-                writer.write("   ");
+                String temp="  ";
+                writer.write("  ");
                 for (Word word:words) {
+
                     //过滤语气词
                     String onebest = word.getOnebest();//.replaceAll("啊|嘛|嗯|哦|吧", "");
-
                     //内容不为空写入
                     if(onebest!=null && onebest!=""){
                         //检测结尾符号
                         String tailed = onebest.substring(onebest.length()-1, onebest.length());
                         //写入文件
                         writer.write(onebest);
+                        temp+=onebest;
                         //有结尾标点才结束
                         if(onebest.length()> 10 && (tailed.equals("！")||tailed.equals("。")||tailed.equals("？"))){
                             count++;
@@ -147,23 +153,22 @@ public class IfasrServlet extends BaseServlet{
                             if(count%6==0){
                                 count=1;
                                 writer.write("\r\n   ");
+                                temp+="\r\n   ";
                             }
                         }
-
-
-
                     }
-
-
                 }
                 writer.flush();
                 writer.close();
 
                 result.put("flag",true);
+                result.put("msg","转写成功");
+                result.put("result",temp);
                 result.put("fileName",task_id+".txt");
             } catch (IOException e) {
                 e.printStackTrace();
                 result.put("flag",false);
+                result.put("msg","转写错误");
             }
 
             //3.响应数据
@@ -177,6 +182,7 @@ public class IfasrServlet extends BaseServlet{
             //处理响应乱码
             response.setContentType("text/html;charset=utf-8");
             result.put("flag",false);
+            result.put("msg","转写失败");
             response.getWriter().println(JSON.toJSONString(result));
         }
 
