@@ -33,6 +33,7 @@
 	<!-- AdminLTE App -->
 	<script src="../AdminLTE-master/dist/js/adminlte.js"></script>
 
+
 </head>
 <body class=" skin-black-light ">
 <!--总体start-->
@@ -44,14 +45,12 @@
 		    <!--左边start-->
 			<div class="col-sm-6">
 				<div class="row">
-
-					<form action="/fileUpload" method="post" enctype="multipart/form-data">
+					<form  id="form" method="post" enctype="multipart/form-data">
 							<input type="file"  name="file" id="exampleInputFile">
 							<p class="help-block">支持文件扩展名mp3,wav</p>
-							<input type="submit" id="submit" class="btn btn-primary"></input>
+							<input type="button" id="submit" class="btn btn-primary" value="上传">
 					</form>
 				</div>
-
 			</div>
 			<!--左边end-->
 
@@ -70,7 +69,6 @@
 								<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 									<li value="cn">中文（简体）</li>
 									<li value="en">英文</li>
-
 								</ul>
 							</div>
 							<HR  width="0%" color=#987cb9 SIZE=2>
@@ -140,4 +138,30 @@
 <!--总体end-->
 </body>
 
+<script>
+	<!--文件上传-->
+	$("#submit").click(function () {
+		debugger;
+		var data = new FormData($("#form")[0]);
+		alert(data);
+		$.ajax({
+			url:"/fileUpload",//后台的接口地址
+			type:"post",//post请求方式
+			data:data,//参数
+			cache: false,
+			processData: false,
+			contentType: false,
+			success:function (data) {
+				alert("操作成功");
+			},error:function () {
+				alert("操作失败~");
+			}
+
+		})
+	});
+
+
+
+
+</script>
 </html>
