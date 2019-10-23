@@ -111,7 +111,7 @@
 <!--					Your browser does not support the-->
 <!--				</audio>-->
 				<h5 class="page-header"></h5>
-				<embed  height="50" width="100%" id="audio"  src="http://localhost:8080/upload/demo.mp3">
+					<video id="audio" height="50" width="100%" id="audio"src="https://www.enablue.com/upload/lfasr.wav" width="100%" controls></video>
 			</div>
 		</div>
 		<!--录音播放end-->
@@ -154,7 +154,7 @@
 				contentType: false,
 				success:function (data) {
 					alert(data)
-					document.getElementById("audio").src="http://localhost:8080/upload/"+fileName;
+					document.getElementById("audio").src="https://www.enablue.com/upload/"+fileName;
 				},error:function () {
 					alert("操作失败~");
 				}
