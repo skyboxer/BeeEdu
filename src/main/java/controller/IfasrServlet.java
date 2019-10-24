@@ -2,6 +2,7 @@ package controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+
 import com.iflytek.msp.cpdb.lfasr.client.LfasrClientImp;
 import com.iflytek.msp.cpdb.lfasr.exception.LfasrException;
 import com.iflytek.msp.cpdb.lfasr.model.LfasrType;
@@ -45,7 +46,7 @@ public class IfasrServlet extends BaseServlet{
             String task_id = null;
             HashMap<String, Object> result = new HashMap<>();
             //设置文件路径
-            String local_file = request.getServletContext().getRealPath("/upload")+"\\"+fileName;
+            String local_file = request.getServletContext().getRealPath("/upload/")+fileName;
             System.out.println("local_file = " + local_file);
             //设置参数
             HashMap<String, String> params = new HashMap<String, String>();
@@ -121,7 +122,7 @@ public class IfasrServlet extends BaseServlet{
         //2.处理请求
         // 初始化LFASRClient实例
         LfasrClientImp lc = LfasrClientImp.initLfasrClient();
-        Message  queryResult=IfaserGetResult(lc,task_id);
+        Message queryResult=IfaserGetResult(lc,task_id);
         System.out.println("queryResult = " + queryResult);
         if(queryResult.getOk()==0){
             //创建文件
