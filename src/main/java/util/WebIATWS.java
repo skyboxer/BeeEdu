@@ -2,7 +2,6 @@ package util;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import controller.SpeechToText;
 import okhttp3.*;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;

@@ -52,7 +52,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="dropdown">
-                                <select class="btn btn-default dropdown-toggle"
+                                目标语言 <select class="btn btn-default dropdown-toggle"
                                         aria-labelledby="dropdownMenu1" id="languageTypeTwo">
                                 </select>
                             </div>
@@ -61,12 +61,12 @@
                     </div>
 
                 </div>
-                <div class="box-body" style="height: 70%;">
-                    <div class="direct-chat-msg right">
-                        <div class="direct-chat-info clearfix">
+                <div class="box-body pre-scrollable" style="height: 800px;" id="msgModelPath">
+                    <div hidden>
+                        <div class="direct-chat-info clearfix" hidden="true">
                             <span class="direct-chat-timestamp pull-left">1月23日下午2:05</span>
                         </div>
-                        <div class="direct-chat-text">
+                        <div class="direct-chat-text" hidden="true">
                            <div id="result_output"></div><br>
                             <HR WIDTH=100% align=left style="margin-top: 10px;">
                             <div id="result_output1"></div>
@@ -96,7 +96,8 @@
         <div class="col-md-3"></div>
 
     </div>
-
+    <audio id="myaudio" src="" autoplay="autoplay" controls="controls" loop="loop"
+           preload="preload" muted="muted" hidden="true"></audio>
 </div>
 <script src="../js/hmac-sha256.js"></script>
 <script src="../js/enc-base64-min.js"></script>
