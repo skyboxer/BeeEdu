@@ -46,7 +46,7 @@ public class IfasrServlet extends BaseServlet{
             String task_id = null;
             HashMap<String, Object> result = new HashMap<>();
             //设置文件路径
-            String local_file = request.getServletContext().getRealPath("/upload")+"\\"+fileName;
+            String local_file = request.getServletContext().getRealPath("/upload/")+fileName;
             System.out.println("local_file = " + local_file);
             //设置参数
             HashMap<String, String> params = new HashMap<String, String>();

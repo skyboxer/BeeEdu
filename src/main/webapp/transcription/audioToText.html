@@ -228,15 +228,18 @@
 													window.clearInterval(ref);
 												}else {
 													count+=10;
-													if(count%90!=0){
-														document.getElementById("schedule").style="width: "+count+"%"
+													if(count%9===0){
+														alert("转写中请稍候");
+													}else {
+														document.getElementById("schedule").style="width: "+count+"%";
+														alert("转写中请稍候");
 													}
 
-													alert(data.msg);
+
 												}
 											},"json");
 
-								},3000);
+								},10000);
 								//执行定时任务end
 							}else {
 								alert("转写错误");
