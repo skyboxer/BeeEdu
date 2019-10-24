@@ -149,7 +149,7 @@
 			</div>
 			<div class="row">
 				<div class="col-md-10" id="audio">
-					<video  height="50" width="100%" src="http://localhost:8080/upload/demo.mp3"  controls>
+					<video  height="50" width="100%" src="#"  controls>
 					</video>
 				</div>
 				<div class="col-md-2">
@@ -195,7 +195,7 @@
 					contentType: false,
 					success:function (data) {
 						alert(data)
-						$("#audio").html("<video height='50' width='100%' src='http://localhost:8080/upload/"+fileName+"' controls></video>");
+						$("#audio").html("<video height='50' width='100%' src='https://wwww.enablue.com/upload/"+fileName+"' controls></video>");
 					},error:function () {
 						alert("操作失败~");
 					}
@@ -244,11 +244,8 @@
 						},"json");
 				//文件转写end
 			}
-
 		});
-
 	}
-
 
 </script>
 </html>

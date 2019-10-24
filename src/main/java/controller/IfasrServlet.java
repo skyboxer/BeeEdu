@@ -2,6 +2,7 @@ package controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+
 import com.iflytek.msp.cpdb.lfasr.client.LfasrClientImp;
 import com.iflytek.msp.cpdb.lfasr.exception.LfasrException;
 import com.iflytek.msp.cpdb.lfasr.model.LfasrType;
@@ -121,7 +122,7 @@ public class IfasrServlet extends BaseServlet{
         //2.处理请求
         // 初始化LFASRClient实例
         LfasrClientImp lc = LfasrClientImp.initLfasrClient();
-        Message  queryResult=IfaserGetResult(lc,task_id);
+        Message queryResult=IfaserGetResult(lc,task_id);
         System.out.println("queryResult = " + queryResult);
         if(queryResult.getOk()==0){
             //创建文件
