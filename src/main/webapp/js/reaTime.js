@@ -1,5 +1,5 @@
 /**
- * 语音识别
+ * 翻译
  * 
  * @chinaxjk
  */
@@ -266,11 +266,8 @@ class IatTaste {
 	    this.counterDownTime = 0
 	    clearTimeout(this.counterDownTimeout)
 	    buffer = []
-	    //$("#play").hide()
-	    //$("#pause").hide()
    	    $("#microphone").show()
    	    $("#squarered").hide()
-   	    //$("#square").hide()
    	    document.getElementById("audioTime").style.width = "0%";
 	  }
 
@@ -291,20 +288,10 @@ class IatTaste {
 	        self.resultText = ''
 	        self.start()
 	      } else {
-	    	  $("#squarered").hide()
-		        /*$("#play").show()
-		        $("#square").show()*/
-	        // self.reset()
+	        self.reset()
 	        self.stop()
 	      }
 	    })
-	    /*$("#play").click(function(){
-	    	$("#play").hide()
-	    	$("#pause").show()
-	    })
-	    $("#square").click(function(){
-	    	self.reset()
-	    })*/
 	  }
 	  setResult (data) {
 	    var str = ''
@@ -356,6 +343,7 @@ var conditionChange = function(text) {
 	},
 	function(data) {
 		var dataJson = JSON.parse(data)
-		$("#result_output").html(dataJson.dst);
+		$("#result_output").text(dataJson.src);
+		$("#result_output1").text(dataJson.dst);
 		})
 }

@@ -2,14 +2,12 @@ package util;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import controller.SpeechToText;
 import okhttp3.*;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -116,9 +114,11 @@ public class WebIATWS extends WebSocketListener {
 						webSocket.send(frame2.toString());
 						System.out.println("sendlast");
 						break end;
+
 					}
 					Thread.sleep(intervel); // 模拟音频采样延时
 				}
+
 				System.out.println("all data is send");
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
@@ -130,7 +130,6 @@ public class WebIATWS extends WebSocketListener {
 		}).start();
 	}
 
-	@Override
 	public void onMessage(WebSocket webSocket, String text) {
 		super.onMessage(webSocket, text);
 		// System.out.println(text);
@@ -164,6 +163,7 @@ public class WebIATWS extends WebSocketListener {
 					System.out.println("本次识别sid ==》" + resp.getSid());
 					decoder.discard();
 					webSocket.close(1000, "");
+
 				} else {
 					// todo 根据返回的数据处理
 				}

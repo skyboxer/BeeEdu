@@ -23,12 +23,13 @@ import util.WebIATWS;
 @WebServlet("/speechToText")
 public class SpeechToText extends HttpServlet{
 	private static final long serialVersionUID = 1L;
+	public static  PrintWriter out;
 	@SuppressWarnings("unused")
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("utf-8");
 		resp.setContentType("text/html;charset=utf-8");
-		PrintWriter out = resp.getWriter();
+		out = resp.getWriter();
 		String uploadFileName = req.getParameter("uploadFileName");
 		String uploadFilePath = req.getServletContext().getRealPath("/upload/");
 		WebIATWS.setFile(uploadFilePath+uploadFileName);
@@ -53,4 +54,5 @@ public class SpeechToText extends HttpServlet{
 		// TODO Auto-generated method stub
 		super.doPost(req, resp);
 	}
+
 }

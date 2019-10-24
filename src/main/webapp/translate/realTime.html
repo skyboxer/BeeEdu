@@ -1,102 +1,126 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>实时翻译</title>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta
-	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
-	name="viewport">
-<link rel="stylesheet"
-	href="../AdminLTE-master/bower_components/bootstrap/dist/css/bootstrap.min.css">
-<!-- Font Awesome -->
-<link rel="stylesheet"
-	href="../AdminLTE-master/bower_components/font-awesome/css/font-awesome.min.css">
-<!-- Ionicons -->
-<link rel="stylesheet"
-	href="../AdminLTE-master/bower_components/Ionicons/css/ionicons.min.css">
-<link rel="stylesheet"
-	href="../AdminLTE-master/dist/css/AdminLTE.min.css">
-<!-- AdminLTE Skins -->
-<link rel="stylesheet"
-	href="../AdminLTE-master/dist/css/skins/skin-blue.min.css">
-<!-- Google Font -->
-<link rel="stylesheet"
-	href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <meta charset="UTF-8">
+    <title>实时翻译</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta
+            content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+            name="viewport">
+    <link rel="stylesheet"
+          href="../AdminLTE-master/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="../AdminLTE-master/bower_components/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet"
+          href="../AdminLTE-master/bower_components/Ionicons/css/ionicons.min.css">
+    <link rel="stylesheet"
+          href="../AdminLTE-master/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins -->
+    <link rel="stylesheet"
+          href="../AdminLTE-master/dist/css/skins/skin-blue.min.css">
+    <!-- Google Font -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 <body class="sidebar-mini layout-boxed sidebar-open">
-	<div class="wrapper" style="margin-top: 10px;">
-		<div class="row">
-			<div class="col-md-3"></div>
-			<div class="col-md-6" style="height: 800px;">
-				<div class="box" style="height: 100%">
-					<div class="box-header with-border">
-						<div class="box-title">
-							<font style="vertical-align: inherit;"><font
-								style="vertical-align: inherit;">实时翻译</font></font>
-						</div>
-					</div>
-					<div class="box-body" style="height: 70%;">
-						<table class="table">
-							<tr></tr>
-						</table>
-						<div class="direct-chat-msg right">
-							<div class="direct-chat-info clearfix">
-								<span class="direct-chat-timestamp pull-left"><font
-									style="vertical-align: inherit;"><font
-										style="vertical-align: inherit;">1月23日下午2:05</font></font></span>
-							</div>
-							<div class="direct-chat-text">
-								<table class="table">
-									<tr>
+<div class="wrapper" style="margin-top: 10px;">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="box" style="height: 100%">
+                <div class="box-header with-border">
+                    <div class="box-title">
+                        实时翻译
+                    </div>
+                    <div class="progress progress-xxs">
+                        <div
+                                class="progress-bar progress-bar-danger progress-bar-striped"
+                                role="progressbar" aria-valuenow="0" aria-valuemin="0"
+                                aria-valuemax="100" style="width: 0%" id="audioTime">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="dropdown">
+                                原始语言 <select class="btn btn-default dropdown-toggle"
+                                             aria-labelledby="dropdownMenu1" id="languageTypeOne">
+                            </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="dropdown">
+                                <select class="btn btn-default dropdown-toggle"
+                                        aria-labelledby="dropdownMenu1" id="languageTypeTwo">
+                                </select>
+                            </div>
+                        </div>
 
-									</tr>
-								</table>
-								<font style="vertical-align: inherit;"><font
-									style="vertical-align: inherit;"> 你最好相信它！ </font></font><br>
-								<HR WIDTH=100% align=left style="margin-top: 10px;">
-								<font style="vertical-align: inherit;"><font
-									style="vertical-align: inherit;"> You'd better believe
-										it! </font></font>
-							</div>
-							<!-- /.direct-chat-text -->
-						</div>
-					</div>
-					<div class="box-footer text-center">
-						<div class="row">
-							<a class="btn btn-app bg-red"
-								style="-moz-border-radius: 40%; -webkit-border-radius: 40%; border-radius: 40%;">
-								<i class="fa  fa-microphone"></i>
-							</a>
-							<a class="btn btn-app bg-red"
-								style="-moz-border-radius: 40%; -webkit-border-radius: 40%; border-radius: 40%;">
-								<i class="fa  fa-stop"></i>
-							</a>
-						</div>
-						<div class="row">
-							<div class="col-md-3"></div>
-							<div class="col-md-6">
-								<a class="btn btn-block btn-tumblr bg-yellow "
-									href="../index.html"> 返回主菜单 </a>
-							</div>
-							<div class="col-md-3"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-3"></div>
+                    </div>
 
-		</div>
+                </div>
+                <div class="box-body" style="height: 70%;">
+                    <div class="direct-chat-msg right">
+                        <div class="direct-chat-info clearfix">
+                            <span class="direct-chat-timestamp pull-left">1月23日下午2:05</span>
+                        </div>
+                        <div class="direct-chat-text">
+                           <div id="result_output"></div><br>
+                            <HR WIDTH=100% align=left style="margin-top: 10px;">
+                            <div id="result_output1"></div>
+                        </div>
+                        <!-- /.direct-chat-text -->
+                    </div>
+                </div>
+                <div class="box-footer text-center">
+                    <div class="row">
+                        <a class="btn btn-app bg-red" id="microphone"> <i
+                                class="fa fa-microphone"></i>
+                        </a> <a class="btn btn-app bg-red" id="squarered"> <i
+                            class="fa fa-square"></i>
+                    </a>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-6">
+                            <a class="btn btn-block btn-tumblr bg-yellow "
+                               href="../index.html"> 返回主菜单 </a>
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
 
-	</div>
-	<!-- jQuery 3 -->
-	<script
-		src="../AdminLTE-master/bower_components/jquery/dist/jquery.min.js"></script>
-	<!-- Bootstrap 3.3.7 -->
-	<script
-		src="../AdminLTE-master/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-	<!-- AdminLTE App -->
-	<script src="../AdminLTE-master/dist/js/adminlte.min.js"></script>
+    </div>
+
+</div>
+<script src="../js/hmac-sha256.js"></script>
+<script src="../js/enc-base64-min.js"></script>
+<!-- jQuery 3 -->
+<script
+        src="../AdminLTE-master/bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script
+        src="../AdminLTE-master/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../AdminLTE-master/dist/js/adminlte.min.js"></script>
+<script src="../js/transformpcm.worker.js"></script>
+<script src="../js/reaTime.js"></script>
+<script>
+    $(function() {
+        $.getJSON("../datas/machine.json", function(obj) {
+            var options = "";
+            $.each(obj, function(i, d) {
+                options += '<option value="'+i+'">' + d + '</option>';
+            });
+            $("#languageTypeOne").html(options);
+            $("#languageTypeTwo").html(options);
+        });
+    })
+</script>
 </body>
 </html>
