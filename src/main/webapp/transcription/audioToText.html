@@ -217,7 +217,7 @@
 								alert(data.TaskId)
 								//执行定时任务
 								let ref = setInterval(function () {
-									count=0;
+									let count=0;
 									$.get("/ifasrServlet?methodName=resultsQuery&taskid="+data.TaskId,
 											function (data) {
 												if(data.flag){
