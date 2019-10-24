@@ -46,8 +46,13 @@
 						<br>
 						<div class="row">
 							<div class="col-md-4">
+								<form  id="form" method="post" enctype="multipart/form-data">
+									<input type="file"  name="file" id="exampleInputFile">
+									<p class="help-block">支持文件扩展名pcm、wav、speex、speex-wb、amr、amr-wb、amr-wb-fx、ico、ict、opus、opus-wb、opus-ogg</p>
+									<input type="button" id="submit" class="btn btn-primary" value="上传">
+								</form>
 
-									<form role="form" id="form" enctype="multipart/form-data">
+									<!--<form  id="form" enctype="multipart/form-data">
 										<div class="box-body">
 										<div class="form-group">
 										<input type="file" id="exampleInputFile">
@@ -61,7 +66,7 @@
 										<div class="box-footer">
 										<button type="button" class="btn btn-primary" id="onSubmit">Submit</button>
 										</div>
-									</form>
+									</form>-->
 
 
 							</div>

@@ -9,21 +9,21 @@ $(function() {
 
     $("#translateAudio").hide()
 
-    $("#onSubmit").click(function () {
+    $("#submit").click(function () {
         startTime()
-        var fileName = $('#exampleInputFile').val()
+        //var fileName = $('#exampleInputFile').files[0].name
         var formData = new FormData($("#form")[0])
-        formData.append("fileName",fileName);
+       // formData.append("fileName",fileName);
         $.ajax({
             url:'/fileUpload',
-            dataType:'json',
-            type:'POST',
-            async: false,
+            type:'post',
+            cache: false,
             data: formData,
             processData : false, // 使数据不做
+            contentType: false,
             success: function(data){
-                console.log(data);
-                if (data.status == '0') {
+                var JsonData = JSON.parse(data)
+                if (JsonData.status == '0') {
                     $("#translateAudio").show()
                     clearInterval(thisTime);
                     document.getElementById("uploadSpeech").style.width="100%"
@@ -47,5 +47,12 @@ $(function() {
             },1000);
         // 停止时间加 clearInterval(startTime);
     }
+   $("#translateAudio").click(function() {
+       var fileName=document.getElementById("exampleInputFile").files[0].name;
+        $.post("/speechToText",{"uploadFileName":fileName},function (data) {
+            var jsonData = JSON.parse(data)
+
+        })
+    })
 
 })

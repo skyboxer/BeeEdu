@@ -106,6 +106,9 @@ public class FileUpload extends HttpServlet {
                         }
                     }
                 }
+            }else{
+                mapData.put("status",1);
+                mapData.put("message","上传失败，文件为空！");
             }
         } catch (Exception ex) {
             mapData.put("status",1);
