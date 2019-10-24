@@ -1,28 +1,41 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/html">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>BeeEdu</title>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta
-	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
-	name="viewport">
-<link rel="stylesheet"
-	href="../AdminLTE-master/bower_components/bootstrap/dist/css/bootstrap.min.css">
-<!-- Font Awesome -->
-<link rel="stylesheet"
-	href="../AdminLTE-master/bower_components/font-awesome/css/font-awesome.min.css">
-<!-- Ionicons -->
-<link rel="stylesheet"
-	href="../AdminLTE-master/bower_components/Ionicons/css/ionicons.min.css">
-<link rel="stylesheet" href="../AdminLTE-master/dist/css/AdminLTE.min.css">
-<!-- AdminLTE Skins -->
-<link rel="stylesheet"
-	href="../AdminLTE-master/dist/css/skins/skin-blue.css">
-<!-- Google Font -->
-<link rel="stylesheet"
-	href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+	<meta charset="UTF-8">
+	<title>长音频上传翻译</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta
+			content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+			name="viewport">
+	<link rel="stylesheet"
+		  href="../AdminLTE-master/bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<!-- Font Awesome -->
+	<link rel="stylesheet"
+		  href="../AdminLTE-master/bower_components/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet"
+		  href="../AdminLTE-master/bower_components/Ionicons/css/ionicons.min.css">
+	<link rel="stylesheet"
+		  href="../AdminLTE-master/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+	<link rel="stylesheet" href="../AdminLTE-master/plugins/iCheck/all.css">
+	<link rel="stylesheet"
+		  href="../AdminLTE-master/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+	<link rel="stylesheet"
+		  href="../AdminLTE-master/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">
+	<link rel="stylesheet"
+		  href="../AdminLTE-master/plugins/timepicker/bootstrap-timepicker.min.css">
+	<link rel="stylesheet"
+		  href="../AdminLTE-master/bower_components/select2/dist/css/select2.css">
+	<link rel="stylesheet"
+		  href="../AdminLTE-master/dist/css/AdminLTE.min.css">
+	<!-- AdminLTE Skins -->
+	<link rel="stylesheet"
+		  href="../AdminLTE-master/dist/css/skins/skin-blue.min.css">
+	<link rel="stylesheet"
+		  href="../AdminLTE-master/dist/css/skins/_all-skins.min.css">
+	<!-- Google Font -->
+	<link rel="stylesheet"
+		  href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
 	<!-- jQuery 3 -->
 	<script
@@ -31,135 +44,165 @@
 	<script
 			src="../AdminLTE-master/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 	<!-- AdminLTE App -->
-	<script src="../AdminLTE-master/dist/js/adminlte.js"></script>
+	<script
+			src="../AdminLTE-master/bower_components/select2/dist/js/select2.full.min.js"></script>
 
+	<script src="../AdminLTE-master/plugins/input-mask/jquery.inputmask.js"></script>
+	<script
+			src="../AdminLTE-master/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+	<script
+			src="../AdminLTE-master/plugins/input-mask/jquery.inputmask.extensions.js"></script>
 
+	<script
+			src="../AdminLTE-master/bower_components/moment/min/moment.min.js"></script>
+	<script
+			src="../AdminLTE-master/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+	<script
+			src="../AdminLTE-master/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+	<script
+			src="../AdminLTE-master/bower_components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
+
+	<script
+			src="../AdminLTE-master/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+	<script
+			src="../AdminLTE-master/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="../AdminLTE-master/plugins/iCheck/icheck.min.js"></script>
+	<script
+			src="../AdminLTE-master/bower_components/fastclick/lib/fastclick.js"></script>
+	<script src="../AdminLTE-master/dist/js/adminlte.min.js"></script>
 </head>
-<body class=" skin-black-light ">
-<!--总体start-->
-<div class="container">
-
-	<!--顶层控件start-->
-	<div class="container-fluid">
-		<div class="row">
-		    <!--左边start-->
-			<div class="col-sm-6">
-				<div class="row">
-					<form  id="form" method="post" enctype="multipart/form-data">
-							<input type="file"  name="file" id="exampleInputFile">
-							<p class="help-block">支持文件扩展名mp3,wav</p>
-							<input type="button" id="submit" class="btn btn-primary" value="上传">
-					</form>
+<body class="sidebar-mini layout-boxed sidebar-open">
+<div class="wrapper" style="margin-top: 10px;">
+	<div class="box" style="height: 800px">
+		<div class="box-body" style="height: 90%;">
+			<div class="row">
+				<div class="col-md-6">
+					<br>
+					<div class="row">
+						<div class="col-md-12">
+							<form  id="form" method="post" enctype="multipart/form-data">
+								<input type="file"  name="file" id="exampleInputFile">
+								<p class="help-block">支持文件扩展名mp3,wav</p>
+								<input type="button" class="btn btn-default btn-sm" id="submit"  value="上传">
+							</form>
+						</div>
+<!--						<div class="col-md-8">-->
+<!--							<div class="progress progress-xxs">-->
+<!--								<div-->
+<!--										class="progress-bar progress-bar-danger progress-bar-striped"-->
+<!--										role="progressbar" aria-valuenow="60" aria-valuemin="0"-->
+<!--										aria-valuemax="100" style="width: 60%">-->
+<!--										<span class="sr-only"><font-->
+<!--												style="vertical-align: inherit;"><font-->
+<!--												style="vertical-align: inherit;">60％完成（警告）</font></font></span>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
+					</div>
+					<br>
 				</div>
-			</div>
-			<!--左边end-->
-
-			<!--右边start-->
-			<div class="col-sm-6 ">
-
-
-						<div class="col-md-12 text-left">
+				<div class="col-md-6">
+					<div class="row">
+						<div class="col-md-12">
 							<div class="dropdown">
-								源文字
+								目标语言
 								<button class="btn btn-default dropdown-toggle" type="button"
 										id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
 										aria-expanded="true">
 									中文（简体） <span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-									<li value="cn">中文（简体）</li>
-									<li value="en">英文</li>
+									<li><a href="#">中文（简体）</a></li>
+									<li><a href="#">英文</a></li>
+									<li><a href="#">日语</a></li>
+									<li><a href="#">韩文</a></li>
 								</ul>
 							</div>
-							<HR  width="0%" color=#987cb9 SIZE=2>
 						</div>
-
-
-						<div class="col-sm-2 ">
-							<button class="btn btn-primary" id="transcription" type="submit"  >转录</button>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-md-3">
+							<button type="button" id="transcription" class="btn btn-block btn-default btn-xs">
+								<font style="vertical-align: inherit;"><font
+										style="vertical-align: inherit;">翻译</font></font>
+							</button>
 						</div>
-						<div class="progress col-sm-10">
-							<div   class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-								<span class="sr-only">40% Complete (success)</span>
+						<div class="col-md-9">
+							<div class="progress progress-xxs">
+								<div
+										id="schedule"
+										class="progress-bar progress-bar-danger progress-bar-striped"
+										role="progressbar" aria-valuenow="60" aria-valuemin="0"
+										aria-valuemax="100" style="width: 10%">
+										<span class="sr-only"><font
+												style="vertical-align: inherit;"><font
+												style="vertical-align: inherit;">10％完成（警告）</font></font></span>
+								</div>
 							</div>
 						</div>
+					</div>
+					<br>
 
-
-						 <div class="col-sm-12 text-right">
-							 <a class="btn btn-primary"id="download"  href="#" role="button">文件下载</a>
-						 </div>
-
-
-
-
+				</div>
 			</div>
-			<!--右边end-->
+			<div class="row">
+				<div class="col-md-10" id="audio">
+					<video  height="50" width="100%" src="http://localhost:8080/upload/demo.mp3"  controls>
+					</video>
+				</div>
+				<div class="col-md-2">
+						<a class="btn btn-block btn-default btn-xs"id="download"  href="#" role="button">文件下载</a>
+				</div>
+			</div>
+			<br>
+			<div class="row" style="margin-top: 10px;">
+				<div class="col-md-12">
+					<font style="vertical-align: inherit;"><font
+							style="vertical-align: inherit;">结果预览</font></font>
+					<textarea class="form-control" id="text" rows="20"></textarea>
+				</div>
+			</div>
 		</div>
-
+		<div class="box-footer text-center">
+			<div class="row">
+				<div class="col-md-3"></div>
+				<div class="col-md-6">
+					<a class="btn btn-block btn-tumblr bg-yellow "
+					   href="./speech.html"> 返回 </a>
+				</div>
+				<div class="col-md-3"></div>
+			</div>
+		</div>
 	</div>
-	<!--顶层控件end-->
-
-
-	<!--中间主题控件start-->
-	<div class="container-fluid">
-		<!--录音播放start-->
-		<div class="row">
-			<div class="col-sm-12 ">
-<!--				<audio  width="100%" height="70" controls>-->
-<!--					<source src="/html5/foo.ogg" type="video/ogg" />-->
-<!--					<source src="/html5/foo.mp4" type="video/mp4" />-->
-<!--					Your browser does not support the-->
-<!--				</audio>-->
-				<h5 class="page-header"></h5>
-					<video id="audio" height="50" width="100%" id="audio"src="https://www.enablue.com/upload/lfasr.wav" width="100%" controls></video>
-			</div>
-		</div>
-		<!--录音播放end-->
-
-		<!--文本预览start-->
-		<div class="row">
-			<!--right-->
-			<div class="col-sm-12">
-				<h6>转录结果预览</h6>
-			</div>
-
-			<textarea class="form-control" id="text" rows="20"></textarea>
-		</div>
-		<!--文本预览end-->
-
-
-
-	</div>
-	<!--中间主题控件end-->
-
-
 
 </div>
-<!--总体end-->
 </body>
-
 <script>
 	window.onload = function () {
 		<!--文件上传-->
 		$("#submit").click(function () {
 			var data = new FormData($("#form")[0]);
 			var fileName=document.getElementById("exampleInputFile").files[0].name;
+			if(fileName){
+				$.ajax({
+					url:"/fileUpload",//后台的接口地址
+					type:"post",//post请求方式
+					data:data,//参数
+					cache: false,
+					processData: false,
+					contentType: false,
+					success:function (data) {
+						alert(data)
+						$("#audio").html("<video height='50' width='100%' src='http://localhost:8080/upload/"+fileName+"' controls></video>");
+					},error:function () {
+						alert("操作失败~");
+					}
 
-			$.ajax({
-				url:"/fileUpload",//后台的接口地址
-				type:"post",//post请求方式
-				data:data,//参数
-				cache: false,
-				processData: false,
-				contentType: false,
-				success:function (data) {
-					alert(data)
-					document.getElementById("audio").src="https://www.enablue.com/upload/"+fileName;
-				},error:function () {
-					alert("操作失败~");
-				}
+				});
+			}
 
-			})
 		});
 
 		<!--录音文件转写-->
@@ -174,14 +217,21 @@
 								alert(data.TaskId)
 								//执行定时任务
 								let ref = setInterval(function () {
-
+									count=0;
 									$.get("/ifasrServlet?methodName=resultsQuery&taskid="+data.TaskId,
 											function (data) {
 												if(data.flag){
 													document.getElementById("download").href="/downloadServlet?filename="+data.fileName;
 													$("#text").text(data.result)
+													count=100;
+													document.getElementById("schedule").style="width: "+count+"%"
 													window.clearInterval(ref);
 												}else {
+													count+=10;
+													if(count%90!=0){
+														document.getElementById("schedule").style="width: "+count+"%"
+													}
+
 													alert(data.msg);
 												}
 											},"json");
@@ -198,10 +248,6 @@
 		});
 
 	}
-
-
-
-
 
 
 </script>
