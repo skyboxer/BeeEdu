@@ -274,6 +274,7 @@ class IatTaste {
 	  init () {
 	    let self = this
 	    $('#microphone').click(function () {
+            $("#result_output").text('')
 	      if (navigator.getUserMedia && AudioContext && recorderWorker) {
 	        $("#microphone").hide()
 	        $("#squarered").show()
@@ -283,14 +284,33 @@ class IatTaste {
 	      }
 	    })
 	    $('#squarered').click(function () {
+
 	      if ($(this).text() === self.text.start) {
 	        $('#result_output').text('')
 	        self.resultText = ''
 	        self.start()
 	      } else {
 	        self.reset()
-	        self.stop()
+              setTimeout(function () {
+                  self.stop()
+                  var textNum = '<div class="direct-chat-msg right">\n' +
+                      '                        <div class="direct-chat-info clearfix">\n' +
+                      '                            <span class="direct-chat-timestamp pull-left">'+(new Date().toLocaleString())+'</span>\n' +
+                      '                        </div>\n' +
+                      '                        <div class="direct-chat-text">\n' +
+                      '                           <div>'+$("#result_output").text()+'</div><br>\n' +
+                      '                            <HR WIDTH=100% align=left style="margin-top: 10px;">\n' +
+                      '                            <div>'+$("#result_output1").text()+'</div> ' +
+                      '                        </div>\n' +
+                      '                        <!-- /.direct-chat-text -->\n' +
+                      '                    </div>'
+                  $("#msgModelPath").append(textNum)
+                  var scrollHeight = $('#msgModelPath').prop("scrollHeight");
+                  $('#msgModelPath').scrollTop(scrollHeight,800);
+              },1000)
+              playVoice();
 	      }
+
 	    })
 	  }
 	  setResult (data) {
@@ -306,7 +326,6 @@ class IatTaste {
 	      this.resultText = $('#result_output').text()
 	    }
 	    resultStr = this.resultText + str
-	    //$('#result_output').text(resultStr)
 	    conditionChange(resultStr)
 	    console.log(resultStr)
 	  }
@@ -346,4 +365,14 @@ var conditionChange = function(text) {
 		$("#result_output").text(dataJson.src);
 		$("#result_output1").text(dataJson.dst);
 		})
+}
+function  playVoice() {
+    var text = $("#result_output1").text()
+    $.post("/acquiringTextVoice", {
+           Text:text
+        },
+        function(data) {
+            document.getElementById("myaudio").attr("src","localhost:8080/"+data);
+            document.getElementById("myaudio").play();
+        })
 }
