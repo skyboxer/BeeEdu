@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
@@ -46,7 +47,7 @@ public class IfasrServlet extends BaseServlet{
             String task_id = null;
             HashMap<String, Object> result = new HashMap<>();
             //设置文件路径
-            String local_file = request.getServletContext().getRealPath("/upload/")+fileName;
+            String local_file = request.getServletContext().getRealPath("/upload")+File.separator+fileName;
             System.out.println("local_file = " + local_file);
             //设置参数
             HashMap<String, String> params = new HashMap<String, String>();
@@ -131,7 +132,7 @@ public class IfasrServlet extends BaseServlet{
             //写入文件
             FileWriter writer;
             try {
-                writer = new FileWriter(realPath+"\\"+task_id+".txt",true);
+                writer = new FileWriter(realPath+ File.separator+task_id+".txt",true);
                 //控制变量
                 int count=1;
                 String temp="   ";

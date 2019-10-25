@@ -107,17 +107,10 @@
 						<div class="col-md-12">
 							<div class="dropdown">
 								目标语言
-								<button class="btn btn-default dropdown-toggle" type="button"
-										id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
-										aria-expanded="true">
-									中文（简体） <span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-									<li><a href="#">中文（简体）</a></li>
-									<li><a href="#">英文</a></li>
-									<li><a href="#">日语</a></li>
-									<li><a href="#">韩文</a></li>
-								</ul>
+								<select class="btn btn-default dropdown-toggle">
+									<option value="zh_cn">中文</option>
+									<option value="en_us">英文</option>
+								</select>
 							</div>
 						</div>
 					</div>
@@ -126,7 +119,7 @@
 						<div class="col-md-3">
 							<button type="button" id="transcription" class="btn btn-block btn-default btn-xs">
 								<font style="vertical-align: inherit;"><font
-										style="vertical-align: inherit;">翻译</font></font>
+										style="vertical-align: inherit;">转录</font></font>
 							</button>
 						</div>
 						<div class="col-md-9">
@@ -135,7 +128,7 @@
 										id="schedule"
 										class="progress-bar progress-bar-danger progress-bar-striped"
 										role="progressbar" aria-valuenow="60" aria-valuemin="0"
-										aria-valuemax="100" style="width: 10%">
+										aria-valuemax="100" style="width: 0%">
 										<span class="sr-only"><font
 												style="vertical-align: inherit;"><font
 												style="vertical-align: inherit;">10％完成（警告）</font></font></span>
@@ -149,8 +142,6 @@
 			</div>
 			<div class="row">
 				<div class="col-md-10" id="audio">
-					<video  height="50" width="100%" src="#"  controls>
-					</video>
 				</div>
 				<div class="col-md-2">
 						<a class="btn btn-block btn-default btn-xs"id="download"  href="#" role="button">文件下载</a>
@@ -170,7 +161,7 @@
 				<div class="col-md-3"></div>
 				<div class="col-md-6">
 					<a class="btn btn-block btn-tumblr bg-yellow "
-					   href="./speech.html"> 返回 </a>
+					   href="../index.html"> 返回 </a>
 				</div>
 				<div class="col-md-3"></div>
 			</div>
@@ -195,7 +186,7 @@
 					contentType: false,
 					success:function (data) {
 						alert(data)
-						$("#audio").html("<video height='50' width='100%' src='https://wwww.enablue.com/upload/"+fileName+"' controls></video>");
+						$("#audio").html("<video height='50' width='100%' src='https://enablue.com/upload/"+fileName+"' controls></video>");
 					},error:function () {
 						alert("操作失败~");
 					}
@@ -210,32 +201,30 @@
 			//获取上传文件名
 			var fileName=document.getElementById("exampleInputFile").files[0].name;
 			if(fileName){
+				alert("转写中请等候");
 				//文件转写
 				$.get("/ifasrServlet?methodName=speechTask&fileName="+fileName,
 						function (data) {
 							if(data.flag){
 								alert(data.TaskId)
+								var count=1;
 								//执行定时任务
 								let ref = setInterval(function () {
-									let count=0;
+
 									$.get("/ifasrServlet?methodName=resultsQuery&taskid="+data.TaskId,
 											function (data) {
 												if(data.flag){
 													document.getElementById("download").href="/downloadServlet?filename="+data.fileName;
 													$("#text").text(data.result)
-													count=100;
-													document.getElementById("schedule").style="width: "+count+"%"
+													document.getElementById("schedule").style="width: 100%"
 													window.clearInterval(ref);
 												}else {
-													count+=10;
-													if(count%9===0){
-														alert("转写中请稍候");
-													}else {
-														document.getElementById("schedule").style="width: "+count+"%";
-														alert("转写中请稍候");
+
+													if(count%9!==0){
+														document.getElementById("schedule").style="width: "+(count%10*10)+"%"
+														count++;
 													}
-
-
+													 alert("转写中请稍候");
 												}
 											},"json");
 

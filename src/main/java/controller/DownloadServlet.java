@@ -38,8 +38,10 @@ public class DownloadServlet extends HttpServlet {
 
         //1、读取文件到inputstream中：
         String realPath = getServletContext().getRealPath("/result");
-        System.out.println("realPath = " + realPath);
-        InputStream inputStream = new FileInputStream(new File(realPath+File.separator+filename));
+        File file = new File(realPath+File.separator+filename);
+        System.out.println("file = " + file);
+        InputStream inputStream = new FileInputStream(file);
+
 
         //2、获取输出流： 写出到浏览器
         ServletOutputStream outputStream = response.getOutputStream();
