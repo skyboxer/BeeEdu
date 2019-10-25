@@ -80,6 +80,8 @@ public class FileUpload extends HttpServlet {
         }
 
         try {
+            //TODO 去除上传文件不重复
+
             // 解析请求的内容提取文件数据
             List<FileItem> formItems = upload.parseRequest(request);
             if (formItems != null && formItems.size() > 0) {

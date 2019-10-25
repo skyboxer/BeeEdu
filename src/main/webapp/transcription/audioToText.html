@@ -78,13 +78,13 @@
 		<div class="box-body" style="height: 90%;">
 			<div class="row">
 				<div class="col-md-6">
-					<br>
 					<div class="row">
 						<div class="col-md-12">
 							<form  id="form" method="post" enctype="multipart/form-data">
 								<input type="file"  name="file" id="exampleInputFile">
+								<span id="prompt"></span>
 								<p class="help-block">支持文件扩展名mp3,wav</p>
-								<input type="button" class="btn btn-default btn-sm" id="submit"  value="上传">
+								<input type="button" class="btn btn-default btn-md" id="submit"  value="上传 ">
 							</form>
 						</div>
 <!--						<div class="col-md-8">-->
@@ -106,7 +106,7 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="dropdown">
-								目标语言
+								音频语言
 								<select class="btn btn-default dropdown-toggle">
 									<option value="zh_cn">中文</option>
 									<option value="en_us">英文</option>
@@ -115,23 +115,19 @@
 						</div>
 					</div>
 					<br>
-					<div class="row">
-						<div class="col-md-3">
-							<button type="button" id="transcription" class="btn btn-block btn-default btn-xs">
-								<font style="vertical-align: inherit;"><font
-										style="vertical-align: inherit;">转录</font></font>
-							</button>
+					<div class="row" style="text-align: center">
+						<div class="col-md-1">
+							<button type="button" class="btn btn-default btn-md" id="transcription" >转录</button>
 						</div>
-						<div class="col-md-9">
-							<div class="progress progress-xxs">
+
+						<div class="col-md-10" >
+							<div class="progress " style="margin-left: 10px; margin-top: 5px"  >
 								<div
 										id="schedule"
 										class="progress-bar progress-bar-danger progress-bar-striped"
 										role="progressbar" aria-valuenow="60" aria-valuemin="0"
 										aria-valuemax="100" style="width: 0%">
-										<span class="sr-only"><font
-												style="vertical-align: inherit;"><font
-												style="vertical-align: inherit;">10％完成（警告）</font></font></span>
+
 								</div>
 							</div>
 						</div>
@@ -144,7 +140,7 @@
 				<div class="col-md-10" id="audio">
 				</div>
 				<div class="col-md-2">
-						<a class="btn btn-block btn-default btn-xs"id="download"  href="#" role="button">文件下载</a>
+						<a class="btn btn-block btn-default btn-md"id="download"  href="#" role="button">文件下载</a>
 				</div>
 			</div>
 			<br>
@@ -185,10 +181,12 @@
 					processData: false,
 					contentType: false,
 					success:function (data) {
-						alert(data)
+						$("#prompt").attr("class","bg-green");
+						$("#prompt").text("上传成功")
 						$("#audio").html("<video height='50' width='100%' src='https://enablue.com/upload/"+fileName+"' controls></video>");
 					},error:function () {
-						alert("操作失败~");
+						$("#prompt").attr("class","bg-red");
+						$("#prompt").text("上传失败")
 					}
 
 				});
@@ -237,7 +235,10 @@
 							}
 						},"json");
 				//文件转写end
+			}else {
+				alert("没有获取到文件")
 			}
+
 		});
 	}
 
