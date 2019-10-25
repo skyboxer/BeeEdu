@@ -33,6 +33,13 @@ public class SpeechToText extends HttpServlet{
 		String uploadFileName = req.getParameter("uploadFileName");
 		String uploadFilePath = req.getServletContext().getRealPath("/upload/");
 		WebIATWS.setFile(uploadFilePath+uploadFileName);
+		if(uploadFileName ==null && uploadFileName.length()==0){
+			return;
+		}
+		String[]  strs=uploadFileName.split("\\.");
+		String fileName = strs[0].toString();
+		String filePathName = uploadFilePath+fileName+".txt";
+		WebIATWS.setFileName(filePathName);
 		
 		// 构建鉴权url
         String authUrl;
@@ -42,6 +49,7 @@ public class SpeechToText extends HttpServlet{
 	        String url = authUrl.toString().replace("http://", "ws://").replace("https://", "wss://");
 	        Request request = new Request.Builder().url(url).build();
 	        WebSocket webSocket = client.newWebSocket(request, new WebIATWS());
+	        out.print(fileName+".txt");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

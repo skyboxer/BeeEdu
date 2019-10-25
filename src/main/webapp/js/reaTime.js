@@ -380,6 +380,5 @@ function  play() {
     myAudio.src = audioSrc
     myAudio.play();
     myAudio.preload = true;
-
-    $("#myaudio").hide()
+    $("#play").hide()
 }
