@@ -14,7 +14,7 @@ navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia 
 recorderWorker.onmessage = function (e) {
   buffer.push(...e.data.buffer)
 }
-
+var audioSrc = ""
 class IatRecorder {
 	constructor (config) {
 	    this.config = config
@@ -308,7 +308,16 @@ class IatTaste {
                   var scrollHeight = $('#msgModelPath').prop("scrollHeight");
                   $('#msgModelPath').scrollTop(scrollHeight,800);
               },1000)
-              playVoice();
+              setTimeout(function () {
+                  var text = $("#result_output1").text()
+                  $.post("/acquiringTextVoice", {
+                          Text:text
+                      },
+                      function(data) {
+                         audioSrc="../"+data
+						  $("#play").show()
+                      })
+              },1000)
 	      }
 
 	    })
@@ -366,13 +375,11 @@ var conditionChange = function(text) {
 		$("#result_output1").text(dataJson.dst);
 		})
 }
-function  playVoice() {
-    var text = $("#result_output1").text()
-    $.post("/acquiringTextVoice", {
-           Text:text
-        },
-        function(data) {
-            document.getElementById("myaudio").attr("src","localhost:8080/"+data);
-            document.getElementById("myaudio").play();
-        })
+function  play() {
+    var myAudio = document.getElementById('myaudio');
+    myAudio.src = audioSrc
+    myAudio.play();
+    myAudio.preload = true;
+
+    $("#myaudio").hide()
 }

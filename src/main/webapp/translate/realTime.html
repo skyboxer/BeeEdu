@@ -81,6 +81,9 @@
                         </a> <a class="btn btn-app bg-red" id="squarered"> <i
                             class="fa fa-square"></i>
                     </a>
+                        <a class="btn btn-app bg-red" id="play" onclick="play()"> <i
+                                class="fa fa-play"></i>
+                        </a>
                     </div>
                     <div class="row">
                         <div class="col-md-3"></div>
@@ -96,8 +99,7 @@
         <div class="col-md-3"></div>
 
     </div>
-    <audio id="myaudio" src="" autoplay="autoplay" controls="controls" loop="loop"
-           preload="preload" muted="muted" hidden="true"></audio>
+    <audio id="myaudio"  hidden="true"></audio>
 </div>
 <script src="../js/hmac-sha256.js"></script>
 <script src="../js/enc-base64-min.js"></script>
@@ -121,6 +123,7 @@
             $("#languageTypeOne").html(options);
             $("#languageTypeTwo").html(options);
         });
+        $("#play").hide()
     })
 </script>
 </body>

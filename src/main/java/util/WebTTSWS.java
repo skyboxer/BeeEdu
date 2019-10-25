@@ -178,7 +178,7 @@ public class WebTTSWS {
 				System.out.println("connection failed");
 			}
 		});
-		return "resources/"+ date +".wav";
+		return "upload/"+ date +".wav";
 	}
 
 	public static String getAuthUrl(String hostUrl, String apiKey, String apiSecret) throws Exception {
