@@ -135,8 +135,8 @@ public class IfasrServlet extends BaseServlet{
                 writer = new FileWriter(realPath+ File.separator+task_id+".txt",true);
                 //控制变量
                 int count=1;
-                String temp="   ";
-                writer.write("  ");
+                String temp="    ";
+                writer.write("   ");
                 for (Word word:words) {
 
                     //过滤语气词
