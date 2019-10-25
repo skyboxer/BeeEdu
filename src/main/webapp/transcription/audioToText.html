@@ -166,28 +166,40 @@
 </div>
 </body>
 <script>
+
+
 	window.onload = function () {
 		//切换上传文件
 		$("#exampleInputFile").click(function () {
 			$("#text").text("");
+			$("#prompt").text("")
 		})
-
+		var fileName="";
 		//文件上传
 		$("#submit").click(function () {
 			var data = new FormData($("#form")[0]);
-			var fileName=document.getElementById("exampleInputFile").files[0].name;
-			if(fileName){
+			var files=document.getElementById("exampleInputFile").files[0].name;
+			if(files){
 				$.ajax({
 					url:"/fileUpload",//后台的接口地址
 					type:"post",//post请求方式
 					data:data,//参数
+					async: false,
 					cache: false,
 					processData: false,
 					contentType: false,
 					success:function (data) {
-						$("#prompt").attr("class","bg-green");
-						$("#prompt").text("上传成功")
-						$("#audio").html("<video height='50' width='100%' src='https://enablue.com/upload/"+fileName+"' controls></video>");
+						 data=JSON.parse(data);
+						fileName=data.fileName;
+						if(data.status==0){
+							$("#prompt").attr("class","bg-green");
+							$("#prompt").text("上传成功")
+							$("#audio").html("<video height='50' width='100%' src='https://enablue.com/upload/"+fileName+"' controls></video>");
+						}else {
+							$("#prompt").attr("class","bg-red");
+							$("#prompt").text("上传失败")
+						}
+
 					},error:function () {
 						$("#prompt").attr("class","bg-red");
 						$("#prompt").text("上传失败")
@@ -197,18 +209,16 @@
 			}
 
 		});
-
 		<!--录音文件转写-->
 		$("#transcription").click(function () {
 			//获取上传文件名
-			var fileName=document.getElementById("exampleInputFile").files[0].name;
-			if(fileName){
-				alert("转写中请等候");
+			if(fileName&&fileName!==("null")){
+				alert("准备转写中");
 				//文件转写
 				$.get("/ifasrServlet?methodName=speechTask&fileName="+fileName,
-						function (data) {
-							if(data.flag){
-								alert(data.TaskId)
+							function (data) {
+								if(data.flag){
+								alert("正在转写")
 								var count=1;
 								//执行定时任务
 								let ref = setInterval(function () {
