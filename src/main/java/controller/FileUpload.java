@@ -88,7 +88,8 @@ public class FileUpload extends HttpServlet {
                     // 处理不在表单中的字段
                     if (!item.isFormField()) {
                         String fileName = new File(item.getName()).getName();
-                        String filePath = uploadPath + File.separator + fileName;
+                        long timeStamp = System.currentTimeMillis();
+                        String filePath = uploadPath + File.separator + timeStamp+fileName;
                         File storeFile = new File(filePath);
                         // 在控制台输出文件的上传路径
 //            System.out.println(filePath);
@@ -103,6 +104,7 @@ public class FileUpload extends HttpServlet {
                           //  out.println("上传成功！");
                             mapData.put("status",0);
                             mapData.put("message","成功");
+                            mapData.put("fileName",timeStamp+fileName);
                         }
                     }
                 }
