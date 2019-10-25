@@ -266,17 +266,16 @@ class IatTaste {
 	    this.counterDownTime = 0
 	    clearTimeout(this.counterDownTimeout)
 	    buffer = []
-	    //$("#play").hide()
-	    //$("#pause").hide()
    	    $("#microphone").show()
    	    $("#squarered").hide()
-   	    //$("#square").hide()
-   	    document.getElementById("audioTime").style.width = "0%";
 	  }
 
 	  init () {
 	    let self = this
 	    $('#microphone').click(function () {
+            $('#result_output').text('')
+            self.resultText = ''
+            document.getElementById("audioTime").style.width = "0%";
 	      if (navigator.getUserMedia && AudioContext && recorderWorker) {
 	        $("#microphone").hide()
 	        $("#squarered").show()
@@ -287,24 +286,13 @@ class IatTaste {
 	    })
 	    $('#squarered').click(function () {
 	      if ($(this).text() === self.text.start) {
-	        $('#result_output').text('')
 	        self.resultText = ''
 	        self.start()
 	      } else {
 	    	  $("#squarered").hide()
-		        /*$("#play").show()
-		        $("#square").show()*/
-	        // self.reset()
 	        self.stop()
 	      }
 	    })
-	    /*$("#play").click(function(){
-	    	$("#play").hide()
-	    	$("#pause").show()
-	    })
-	    $("#square").click(function(){
-	    	self.reset()
-	    })*/
 	  }
 	  setResult (data) {
 	    var str = ''
