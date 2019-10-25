@@ -28,6 +28,7 @@ import java.util.*;
 
 public class WebIATWS extends WebSocketListener {
 	private static String file; // 中文
+	private static String fileName;
 	public static final int StatusFirstFrame = 0;
 	public static final int StatusContinueFrame = 1;
 	public static final int StatusLastFrame = 2;
@@ -129,7 +130,7 @@ public class WebIATWS extends WebSocketListener {
 		}).start();
 	}
 
-	public void onMessage(WebSocket webSocket, String text) {
+	public void onMessage(WebSocket webSocket, String text){
 		super.onMessage(webSocket, text);
 		// System.out.println(text);
 		ResponseData resp = json.fromJson(text, ResponseData.class);
@@ -159,6 +160,12 @@ public class WebIATWS extends WebSocketListener {
 					System.out.println(sdf.format(dateEnd) + "结束");
 					System.out.println("耗时:" + (dateEnd.getTime() - dateBegin.getTime()) + "ms");
 					System.out.println("最终识别结果 ==》" + decoder.toString());
+					try {
+						ForFile.createFile(WebIATWS.getFileName(),decoder.toString());
+					}catch (IOException e){
+						e.printStackTrace();
+					}
+
 					System.out.println("本次识别sid ==》" + resp.getSid());
 					decoder.discard();
 					webSocket.close(1000, "");
@@ -368,4 +375,11 @@ public class WebIATWS extends WebSocketListener {
 		WebIATWS.file = file;
 	}
 
+	public static String getFileName() {
+		return fileName;
+	}
+
+	public static void setFileName(String fileName) {
+		WebIATWS.fileName = fileName;
+	}
 }
