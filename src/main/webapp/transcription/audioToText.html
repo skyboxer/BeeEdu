@@ -173,6 +173,7 @@
 		$("#exampleInputFile").click(function () {
 			$("#text").text("");
 			$("#prompt").text("")
+			document.getElementById("schedule").style="width: 0%"
 		})
 		var fileName="";
 		//文件上传
@@ -232,7 +233,7 @@
 													window.clearInterval(ref);
 												}else {
 
-													if(count%95!==0){
+													if(count<90){
 														document.getElementById("schedule").style="width: "+count+"%"
 														count+=5;
 													}else {
