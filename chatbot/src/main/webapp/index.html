@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+
+    <style type="text/css">
+        p{
+            display:inline-block;
+            border-radius:5px;
+            background:#dcdcdc;
+            font-size:12px;
+            padding:5px 5px;
+            margin:5px 0;
+            margin-left:5px;
+            max-width:140px;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<link rel="stylesheet" href="css/bootstrap.css">
+<script src="js/jquery-3.3.1.js"></script>
+<script src="js/bootstrap.js"></script>
+<body>
+
+    <div class="container">
+
+         <div  class="row">
+            <div class="col-sm-3">
+                <span style="font-style:italic;font-size:20px;color:#5C83F7">打车客服</span>
+                <button style="margin-left:1cm;font-size:10px">用户版</button>
+                <span style="margin-left:0.5cm;">|</span>
+            </div>
+
+            <div class="col-sm-8 col-sm-offset-1">
+                <div style="margin-top: 10px">专门为您解决各类打车、订单、支付等问题，快速响应</div>
+            </div>
+        </div>
+        <!--一道靓丽的分割线-->
+        <div class="row" style="background-color: #fefefe;height: 1px;border-top: 2px solid #ddd;text-align: center;margin-top: 15px"></div>
+
+         <div class="row">
+            <div class="col-xs-9" >
+                <div class="row" style=" background-color: #f4f4f4">
+                    <!--对话框-->
+
+                    <div id="father" class="embed-responsive embed-responsive-16by9" style=" height: 600px;overflow-y:scroll;">
+                            <br>
+                            <br>
+                            <p>Hi~很高兴为您服务！您是遇到什么问题了呢？</p><br>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <!--TODO 图标-->
+                    <div></div>
+                    <!--输入框-->
+                    <div>
+                        <textarea id="txt" placeholder="多行输入" style="resize:none;border: none;height: 34px;width: 95%"></textarea>
+                        <input style="margin-top: -25px " id="submit" class="btn btn-primary btn-xs" type="submit" value="发送" >
+                    </div>
+                </div>
+            </div>
+             <div class="col-xs-3">
+                 <img src="images/img1.png">
+             </div>
+         </div>
+
+    </div>
+
+</body>
+</html>
+<script>
+    var submit = document.getElementById("submit");
+    var txt = document.getElementById("txt");
+    var father = document.getElementById("father")
+    var p = document.getElementsByTagName("p");
+    //消息按钮发送
+    submit.onclick=function(){
+        if(txt.value==""){
+            alert("请勿发送空内容");
+        }
+        else{
+            var son = document.createElement("p");
+            var br = document.createElement("br");
+            var br1 = document.createElement("br");
+            son.style.backgroundColor="yellowgreen";
+            son.style.clear="both";
+            son.style.float="right";
+            son.style.marginRight="5px";
+            son.innerText=txt.value;
+            father.appendChild(son);
+            son.scrollIntoView();
+            father.appendChild(br);
+            father.appendChild(br1);
+            $.get("/unitService?methodName=utterance",{query:txt.value},
+                function (data) {
+                    var son2 = document.createElement("p");
+                    var br2 = document.createElement("br");
+                    var br3 = document.createElement("br");
+                    son2.innerText=data.say;
+                    father.appendChild(son2);
+                    father.appendChild(br2);
+                    father.appendChild(br3);
+            },"json")
+            txt.value="";
+
+        }
+
+    }
+    //回车发送
+    document.onkeydown=function(evt){
+        var e = evt || event;
+        e.keyCode=e.which=e.charCode;
+        if(e.keyCode==13 || e.keyCode==10){
+            if(txt.value==""){
+                alert("请勿发送空内容");
+            }
+            else{
+                var son = document.createElement("p");
+                var br = document.createElement("br");
+                var br1 = document.createElement("br");
+                son.style.backgroundColor="yellowgreen";
+                son.style.clear="both";
+                son.style.float="right";
+                son.style.marginRight="5px";
+                son.innerText=txt.value;
+                father.appendChild(son);
+                son.scrollIntoView();
+                father.appendChild(br);
+                father.appendChild(br1);
+
+                $.get("/unitService?methodName=utterance",{query:txt.value},
+                    function (data) {
+                        var son2 = document.createElement("p");
+                        var br2 = document.createElement("br");
+                        var br3 = document.createElement("br");
+                        son2.innerText=data.say;
+                        father.appendChild(son2);
+                        father.appendChild(br2);
+                        father.appendChild(br3);
+                    },"json")
+                txt.value="";
+            }
+        }
+    }
+</script>
+
+
+
+
