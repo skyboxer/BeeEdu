@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.myapplication.company.UnitService;
 import com.example.myapplication.util.Config;
 import com.example.myapplication.util.EncryptUtil;
 
@@ -162,7 +163,8 @@ public class WebStocket {
                 // 转写结果
                 System.out.println("转写结果如下");
                 System.out.println(getCurrentTimeStr() + "\tresult: " + getContent(msgObj.getString("data")));
-
+                UnitService unitService = new UnitService();
+                unitService.utterance(getContent(msgObj.getString("data")));
             } else if (action.equals("error")) {
                 // 连接发生错误
                 System.out.println("Error: " + msg);
