@@ -1,6 +1,7 @@
 package com.example.myapplication.http;
 
 
+import android.app.ProgressDialog;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
@@ -8,6 +9,8 @@ import androidx.annotation.RequiresApi;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.myapplication.MainActivity;
+import com.example.myapplication.R;
 import com.example.myapplication.company.UnitService;
 import com.example.myapplication.util.Config;
 import com.example.myapplication.util.EncryptUtil;
@@ -27,6 +30,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.CountDownLatch;
 
+import static android.app.ProgressDialog.STYLE_SPINNER;
+
 /**
  * 实时转写调用demo
  * 此demo只是一个简单的调用示例，不适合用到实际生产环境中
@@ -42,6 +47,92 @@ public class WebStocket {
     private static final int CHUNCKED_SIZE = 1280;
 
     public static final SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd HH:mm:ss.SSS");
+
+    /**
+     * 建立连接
+     * @param
+     */
+    public MyWebSocketClient startConnect(){
+        CountDownLatch handshakeSuccess = null;
+        CountDownLatch connectClose = null;
+        URI url = null;
+        DraftWithOrigin draft = null;
+        try {
+            while (true) {
+                url = new URI(config.getBaseUrl() + getHandShakeParams(config.getAPPID(), config.getAPIKey()));
+                draft = new DraftWithOrigin(config.getOrigin());
+                handshakeSuccess = new CountDownLatch(1);
+                connectClose = new CountDownLatch(1);
+                MyWebSocketClient client = new MyWebSocketClient(url, draft, handshakeSuccess, connectClose);
+
+                client.connect();
+
+                while (!client.getReadyState().equals(WebSocket.READYSTATE.OPEN)) {//while (!client.getReadyState().equals(READYSTATE.OPEN)) {
+                    System.out.println("连接状态" + client.getReadyState());
+                    System.out.println(getCurrentTimeStr() + "\t连接中");
+                    Thread.sleep(1000);
+                }
+
+                // 等待握手成功
+                handshakeSuccess.await();
+                return client;
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 关闭连接
+     */
+    public void stopConnent(){
+        CountDownLatch connectClose = new CountDownLatch(1);
+        // 等待连接关闭
+        try {
+            connectClose.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public Boolean  uploadRecorder(String AUDIO_PATH,MyWebSocketClient client){
+        Boolean clientStatus = false;
+        System.out.println(sdf.format(new Date()) + " 开始发送音频数据");
+        // 发送音频
+        byte[] bytes = new byte[CHUNCKED_SIZE];
+        try (RandomAccessFile raf = new RandomAccessFile(AUDIO_PATH, "r")) {
+            int len = -1;
+            long lastTs = 0;
+            while ((len = raf.read(bytes)) != -1) {
+                if (len < CHUNCKED_SIZE) {
+                    send(client, bytes = Arrays.copyOfRange(bytes, 0, len));
+                    break;
+                }
+
+                long curTs = System.currentTimeMillis();
+                if (lastTs == 0) {
+                    lastTs = System.currentTimeMillis();
+                } else {
+                    long s = curTs - lastTs;
+                    if (s < 40) {
+                        System.out.println("error time interval: " + s + " ms");
+                    }
+                }
+                send(client, bytes);
+                // 每隔40毫秒发送一次数据
+                Thread.sleep(40);
+            }
+            // 发送结束标识
+            send(client,"{\"end\": true}".getBytes());
+            System.out.println(getCurrentTimeStr() + "\t发送结束标识完成");
+            clientStatus = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return clientStatus;
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public  void WebStocketConnect(String AUDIO_PATH) {

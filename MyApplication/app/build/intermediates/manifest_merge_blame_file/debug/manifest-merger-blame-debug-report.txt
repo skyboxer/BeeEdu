@@ -1,0 +1,67 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.myapplication"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="15"
+8-->/home/chinaxjk/git/BeeEdu/MyApplication/app/src/main/AndroidManifest.xml
+9        android:targetSdkVersion="29" />
+9-->/home/chinaxjk/git/BeeEdu/MyApplication/app/src/main/AndroidManifest.xml
+10
+11    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+11-->/home/chinaxjk/git/BeeEdu/MyApplication/app/src/main/AndroidManifest.xml:21:5-95
+11-->/home/chinaxjk/git/BeeEdu/MyApplication/app/src/main/AndroidManifest.xml:21:22-76
+12    <uses-permission android:name="android.permission.INTERNET" />
+12-->/home/chinaxjk/git/BeeEdu/MyApplication/app/src/main/AndroidManifest.xml:22:5-83
+12-->/home/chinaxjk/git/BeeEdu/MyApplication/app/src/main/AndroidManifest.xml:22:22-64
+13    <!-- 音频录制权限 -->
+14    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+14-->/home/chinaxjk/git/BeeEdu/MyApplication/app/src/main/AndroidManifest.xml:24:5-71
+14-->/home/chinaxjk/git/BeeEdu/MyApplication/app/src/main/AndroidManifest.xml:24:22-68
+15    <!-- 读取和写入存储权限 -->
+16    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+16-->/home/chinaxjk/git/BeeEdu/MyApplication/app/src/main/AndroidManifest.xml:26:5-81
+16-->/home/chinaxjk/git/BeeEdu/MyApplication/app/src/main/AndroidManifest.xml:26:22-78
+17    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+17-->/home/chinaxjk/git/BeeEdu/MyApplication/app/src/main/AndroidManifest.xml:27:5-80
+17-->/home/chinaxjk/git/BeeEdu/MyApplication/app/src/main/AndroidManifest.xml:27:22-77
+18
+19    <application
+19-->/home/chinaxjk/git/BeeEdu/MyApplication/app/src/main/AndroidManifest.xml:5:5-20:19
+20        android:name="com.example.myapplication.MyApplication"
+20-->/home/chinaxjk/git/BeeEdu/MyApplication/app/src/main/AndroidManifest.xml:6:9-38
+21        android:allowBackup="true"
+21-->/home/chinaxjk/git/BeeEdu/MyApplication/app/src/main/AndroidManifest.xml:7:9-35
+22        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+22-->[androidx.core:core:1.1.0] /home/chinaxjk/.gradle/caches/transforms-2/files-2.1/f71f8da7ba118f56b7a69563a8255a28/core-1.1.0/AndroidManifest.xml:24:18-86
+23        android:debuggable="true"
+24        android:icon="@mipmap/ic_launcher"
+24-->/home/chinaxjk/git/BeeEdu/MyApplication/app/src/main/AndroidManifest.xml:8:9-43
+25        android:label="@string/app_name"
+25-->/home/chinaxjk/git/BeeEdu/MyApplication/app/src/main/AndroidManifest.xml:9:9-41
+26        android:roundIcon="@mipmap/ic_launcher_round"
+26-->/home/chinaxjk/git/BeeEdu/MyApplication/app/src/main/AndroidManifest.xml:10:9-54
+27        android:supportsRtl="true"
+27-->/home/chinaxjk/git/BeeEdu/MyApplication/app/src/main/AndroidManifest.xml:11:9-35
+28        android:testOnly="true"
+29        android:theme="@style/AppTheme" >
+29-->/home/chinaxjk/git/BeeEdu/MyApplication/app/src/main/AndroidManifest.xml:12:9-40
+30        <activity android:name="com.example.myapplication.MainActivity" >
+30-->/home/chinaxjk/git/BeeEdu/MyApplication/app/src/main/AndroidManifest.xml:13:9-19:20
+30-->/home/chinaxjk/git/BeeEdu/MyApplication/app/src/main/AndroidManifest.xml:13:19-47
+31            <intent-filter>
+31-->/home/chinaxjk/git/BeeEdu/MyApplication/app/src/main/AndroidManifest.xml:14:13-18:29
+32                <action android:name="android.intent.action.MAIN" />
+32-->/home/chinaxjk/git/BeeEdu/MyApplication/app/src/main/AndroidManifest.xml:15:17-69
+32-->/home/chinaxjk/git/BeeEdu/MyApplication/app/src/main/AndroidManifest.xml:15:25-66
+33
+34                <category android:name="android.intent.category.LAUNCHER" />
+34-->/home/chinaxjk/git/BeeEdu/MyApplication/app/src/main/AndroidManifest.xml:17:17-77
+34-->/home/chinaxjk/git/BeeEdu/MyApplication/app/src/main/AndroidManifest.xml:17:27-74
+35            </intent-filter>
+36        </activity>
+37    </application>
+38
+39</manifest>

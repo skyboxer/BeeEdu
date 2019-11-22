@@ -1,0 +1,4 @@
+#Fri Nov 22 10:35:53 CST 2019
+base.0=/home/chinaxjk/git/BeeEdu/MyApplication/app/build/intermediates/dex/debug/mergeDexDebug/out/classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
