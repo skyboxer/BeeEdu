@@ -8,7 +8,6 @@ import com.iflytek.sample.company.util.AuthService;
 import com.iflytek.sample.company.util.GsonUtils;
 import com.iflytek.sample.company.util.HttpUtil;
 import com.iflytek.sample.speech.SpeechHelper;
-import com.iflytek.sample.voicedemo.MainActivity;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ import java.util.HashMap;
 /*
  * unit对话服务
  */
-public  class UnitService extends Application {
+public  class UnitService {
     /**
      * 重要提示代码中所需工具类
      * FileUtil,Base64Util,HttpUtil,GsonUtils请从
@@ -48,10 +47,10 @@ public  class UnitService extends Application {
             //判断是否存在对话
             if (session_id!=null){
                 // 请求参数
-                 params = "{\"bot_session\": \"{\\\"session_id\\\":\\\""+session_id+"\\\"}\",\"log_id\":\"7758521\",\"request\":{\"bernard_level\":1,\"client_session\":\"{\\\"client_results\\\":\\\"\\\", \\\"candidate_options\\\":[]}\",\"query\":\""+query+"\",\"query_info\":{\"asr_candidates\":[],\"source\":\"KEYBOARD\",\"type\":\"TEXT\"},\"updates\":\"\",\"user_id\":\"88888\"},\"bot_id\":\"87609\",\"version\":\"2.0\"}";
+                 params = "{\"bot_session\": \"{\\\"session_id\\\":\\\""+session_id+"\\\"}\",\"log_id\":\"7758521\",\"request\":{\"bernard_level\":1,\"client_session\":\"{\\\"client_results\\\":\\\"\\\", \\\"candidate_options\\\":[]}\",\"query\":\""+query+"\",\"query_info\":{\"asr_candidates\":[],\"source\":\"KEYBOARD\",\"type\":\"TEXT\"},\"updates\":\"\",\"user_id\":\"88888\"},\"bot_id\":\"87281\",\"version\":\"2.0\"}";
             }else {
                 // 请求参数
-                 params = "{\"bot_session\": \"{\\\"session_id\\\":\\\"\\\"}\",\"log_id\":\"7758521\",\"request\":{\"bernard_level\":1,\"client_session\":\"{\\\"client_results\\\":\\\"\\\", \\\"candidate_options\\\":[]}\",\"query\":\""+query+"\",\"query_info\":{\"asr_candidates\":[],\"source\":\"KEYBOARD\",\"type\":\"TEXT\"},\"updates\":\"\",\"user_id\":\"88888\"},\"bot_id\":\"87609\",\"version\":\"2.0\"}";
+                 params = "{\"bot_session\": \"{\\\"session_id\\\":\\\"\\\"}\",\"log_id\":\"7758521\",\"request\":{\"bernard_level\":1,\"client_session\":\"{\\\"client_results\\\":\\\"\\\", \\\"candidate_options\\\":[]}\",\"query\":\""+query+"\",\"query_info\":{\"asr_candidates\":[],\"source\":\"KEYBOARD\",\"type\":\"TEXT\"},\"updates\":\"\",\"user_id\":\"88888\"},\"bot_id\":\"87281\",\"version\":\"2.0\"}";
             }
             System.out.println("params = " + params);
             //token鉴权
@@ -83,16 +82,17 @@ public  class UnitService extends Application {
 
                 //拿到回复或者动作
             ArrayList action_list = (ArrayList) response.get("action_list");
-            String say= queryFare(action_list,journeyList);
-            System.out.println("say = " + say);
-            SpeechHelper.getInstance().speak(this,say);
+            final String say= queryFare(action_list,journeyList);
+           // System.out.println("say = " + say);
             HashMap<String, Object>  map = new HashMap();
             map.put("say",say);
             //res.getWriter().println(GsonUtils.toJson(map));
             System.out.println(GsonUtils.toJson(map));
-
+            SpeechHelper.getInstance().speak(say);
+            //return say;
         } catch (Exception e) {
             e.printStackTrace();
+           // return null;
         }
 
     }

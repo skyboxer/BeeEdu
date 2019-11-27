@@ -3,6 +3,7 @@ package com.iflytek.sample.voicedemo;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,6 +23,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +43,7 @@ import com.iflytek.cloud.util.ContactManager;
 import com.iflytek.cloud.util.ContactManager.ContactListener;
 import com.iflytek.sample.R;
 import com.iflytek.sample.company.UnitService;
+import com.iflytek.sample.speech.SpeechHelper;
 import com.iflytek.sample.speech.setting.IatSettings;
 import com.iflytek.sample.speech.util.FucUtil;
 import com.iflytek.sample.speech.util.JsonParser;
@@ -73,6 +76,8 @@ public class IatDemo extends Activity implements OnClickListener {
 	private boolean cyclic = false;//音频流识别是否循环调用
 
 	private StringBuffer buffer = new StringBuffer();
+
+	static Button startButton;
 
 	Handler han = new Handler(){
 
@@ -108,6 +113,8 @@ public class IatDemo extends Activity implements OnClickListener {
 		mToast = Toast.makeText(this, "", Toast.LENGTH_SHORT);
 		mResultText = ((EditText) findViewById(R.id.iat_text));
 		showContacts = (EditText) findViewById(R.id.iat_contacts);
+		findViewById(R.id.iat_recognize).setOnClickListener(IatDemo.this);
+		startButton = (Button) findViewById(R.id.iat_recognize);
 	}
 
 
@@ -334,7 +341,7 @@ public class IatDemo extends Activity implements OnClickListener {
 		}
 	};
 
-	private void printResult(RecognizerResult results) {
+	private String printResult(RecognizerResult results) {
 		String text = JsonParser.parseIatResult(results.getResultString());
 
 		String sn = null;
@@ -348,7 +355,7 @@ public class IatDemo extends Activity implements OnClickListener {
 
 		mIatResults.put(sn, text);
 
-		StringBuffer resultBuffer = new StringBuffer();
+		final StringBuffer resultBuffer = new StringBuffer();
 		for (String key : mIatResults.keySet()) {
 			resultBuffer.append(mIatResults.get(key));
 		}
@@ -356,8 +363,7 @@ public class IatDemo extends Activity implements OnClickListener {
 		mResultText.setText(resultBuffer.toString());
 		mResultText.setSelection(mResultText.length());
 		System.out.println(resultBuffer.toString());
-		UnitService unitService = new UnitService();
-		unitService.utterance(resultBuffer.toString());
+		return resultBuffer.toString();
 	}
 
 	/**
@@ -365,9 +371,38 @@ public class IatDemo extends Activity implements OnClickListener {
 	 */
 	private RecognizerDialogListener mRecognizerDialogListener = new RecognizerDialogListener() {
 		public void onResult(RecognizerResult results, boolean isLast) {
-
-		    printResult(results);
-			
+		    final String resultBuffer = printResult(results);
+		    if(isLast){
+				List<Thread> threadList = new ArrayList<Thread>();
+				//让机器人处理结果
+				Thread unitThread = new Thread(new Runnable() {
+					@Override
+					public void run() {
+						UnitService unitService = new UnitService();
+						unitService.utterance(resultBuffer);
+					}
+				});
+				threadList.add(unitThread);
+				unitThread.start();
+				for (Thread thread:threadList) {
+					try {
+						thread.join();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+				SpeechHelper speechHelper =  new SpeechHelper();
+				System.out.println("音频播放情况"+speechHelper.isSpeaking());
+				//主线程模仿点击事件
+				if(!speechHelper.isSpeaking()){
+					try {
+						Thread.sleep(3000);
+						IatDemo.startButton.performClick();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
 		}
 
 		/**

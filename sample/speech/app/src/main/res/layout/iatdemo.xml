@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="讯飞听写示例"
+            android:text="客服机器人"
             android:textSize="30sp" />
 
         <ImageButton
@@ -48,9 +48,57 @@
         android:hint="@string/text_show_contacts"
         android:gravity="top|left"
         android:paddingBottom="10dp"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:visibility="invisible"/>
 
 
+
+
+
+
+
+    <Button
+        android:id="@+id/iat_recognize_stream"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="音频流识别"
+        android:textSize="20sp"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="上传联系人、词表，可以使云端识别联系人和词表更加准确，这里上传的内容对语义理解同样有效。"
+        android:textSize="@dimen/txt_size"
+        android:visibility="invisible"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:visibility="invisible">
+
+        <Button
+            android:id="@+id/iat_upload_contacts"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="上传联系人"
+            android:textSize="17sp" />
+
+        <Button
+            android:id="@+id/iat_upload_userwords"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="上传词表"
+            android:textSize="17sp" />
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -83,8 +131,6 @@
             android:text="取消"
             android:textSize="20sp" />
     </LinearLayout>
-
-
     <TextView
         android:id="@+id/languageText"
         android:layout_width="wrap_content"
@@ -96,45 +142,4 @@
         android:clickable="true"
         android:focusable="true"
         />
-
-    <Button
-        android:id="@+id/iat_recognize_stream"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="音频流识别"
-        android:textSize="20sp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="上传联系人、词表，可以使云端识别联系人和词表更加准确，这里上传的内容对语义理解同样有效。"
-        android:textSize="@dimen/txt_size" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:layout_marginTop="10dp"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/iat_upload_contacts"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="上传联系人"
-            android:textSize="17sp" />
-
-        <Button
-            android:id="@+id/iat_upload_userwords"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="上传词表"
-            android:textSize="17sp" />
-    </LinearLayout>
-
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.iflytek.sample.speech;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import com.iflytek.cloud.SynthesizerListener;
 import com.iflytek.sample.R;
 import com.iflytek.sample.speech.util.LogUtil;
 import com.iflytek.sample.speech.util.StringUtil;
+import com.iflytek.sample.voicedemo.MainActivity;
 
 /**
  * Title:语音合成帮助类
@@ -22,7 +24,7 @@ import com.iflytek.sample.speech.util.StringUtil;
  * Created by pei
  * Date: 2018/4/8
  */
-public class SpeechHelper extends Application {
+public class SpeechHelper {
 
     private String[] mCloudVoicersEntries={"小燕—女青、中英、普通话","小宇—男青、中英、普通话","凯瑟琳—女青、英",
             "亨利—男青、英","玛丽—女青、英","小研—女青、中英、普通话",
@@ -48,13 +50,13 @@ public class SpeechHelper extends Application {
     // 缓冲进度
     private int mPercentForBuffering = 0;
     // 播放进度
-    private int mPercentForPlaying = 0;
+    private static int mPercentForPlaying = 0;
     // 引擎类型
     private String mEngineType = SpeechConstant.TYPE_CLOUD;
 
     private boolean mSpeaking;//是否正在朗读
 
-    private SpeechHelper() {}
+    public SpeechHelper() {}
 
     private static class Holder {
         private static SpeechHelper instance = new SpeechHelper();
@@ -80,13 +82,13 @@ public class SpeechHelper extends Application {
         }
     }
 
-    public void speak(Context context,String message){
+    public void speak(String message){
+        System.out.println("开始播报=============================");
         //开始播报
         if(StringUtil.isNotEmpty(message)){
             if(mTts==null){
                 // 初始化合成对象
-                mTts = SpeechSynthesizer.createSynthesizer(context, mTtsInitListener);
-
+                mTts = SpeechSynthesizer.createSynthesizer(MainActivity.getContext(), mTtsInitListener);
             }
             if(mTts!=null){
                 mSpeaking=true;

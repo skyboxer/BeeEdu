@@ -1,14 +1,8 @@
 package com.iflytek.sample.voicedemo;
 
-import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
 import com.iflytek.sample.R;
-import com.iflytek.sample.company.UnitService;
-import com.iflytek.sample.speech.SpeechHelper;
-import com.iflytek.sample.speech.setting.UrlSettings;
 
-import com.iflytek.sample.voicedemo.faceonline.OnlineFaceDemo;
-import com.iflytek.sample.voicedemo.vocalverify.VocalVerifyDemo;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -20,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.text.StaticLayout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,7 +39,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	private Toast mToast;
 	private final int URL_REQUEST_CODE = 0X001;
 	private TextView edit_text;
-	public final Context context = this;
+	private static Context context;
 
 	@SuppressLint("ShowToast")
 	public void onCreate(Bundle savedInstanceState) {
@@ -63,34 +58,20 @@ public class MainActivity extends Activity implements OnClickListener {
 		SimpleAdapter listitemAdapter = new SimpleAdapter();
 		((ListView) findViewById(R.id.listview_main)).setAdapter(listitemAdapter);
 		SpeechUtility.createUtility(this.getApplicationContext(), "appid="+getString(R.string.app_id));
-		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-
-				.detectDiskReads()
-
-				.detectDiskWrites()
-
-				.detectNetwork()   // or .detectAll() for all detectable problems
-
-				.penaltyLog()
-
-				.build());
-
-		StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-
-				.detectLeakedSqlLiteObjects()
-
-				.penaltyLog()
-
-				.penaltyDeath()
-
-				.build());
-
+		context = this;
+		Intent intent = new Intent(MainActivity.this, IatDemo.class);
+		startActivity(intent);
+	}
+	/**
+	 * 获取全局上下文*/
+	public static Context getContext() {
+		return context;
 	}
 
 	@Override
 	public void onClick(View view) {
-		UnitService unitService = new UnitService();
-		unitService.utterance("我要去上海");
+		/*UnitService unitService = new UnitService();
+		unitService.utterance("你是谁？");*/
 		int tag = Integer.parseInt(view.getTag().toString());
 		Intent intent = null;
 		switch (tag) {
@@ -141,9 +122,9 @@ public class MainActivity extends Activity implements OnClickListener {
 	}
 
 	// Menu 列表
-	String items[] = { "立刻体验语音听写", "立刻体验语法识别", "立刻体验语义理解", "立刻体验语音合成",
-			"立刻体验语音评测", "立刻体验语音唤醒", "立刻体验声纹密码","立刻体验人脸识别"/*,"重置域名"*/ };
-
+	/*String items[] = { "立刻体验语音听写", "立刻体验语法识别", "立刻体验语义理解", "立刻体验语音合成",
+			"立刻体验语音评测", "立刻体验语音唤醒", "立刻体验声纹密码","立刻体验人脸识别"*//*,"重置域名"*//* };*/
+	String items[] = { "客服机器人"/*,"重置域名"*/ };
 	private class SimpleAdapter extends BaseAdapter {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if (null == convertView) {

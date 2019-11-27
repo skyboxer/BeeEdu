@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * 获取token类
  */
-public class AuthService {
+public class AuthService{
 
     /**
      * 获取权限token
