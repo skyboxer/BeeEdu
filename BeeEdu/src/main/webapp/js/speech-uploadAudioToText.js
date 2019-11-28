@@ -12,9 +12,9 @@ $(function() {
     $("#translateAudio").hide()
     var fileNameText;
     $("#submit").click(function () {
-        startTime()
         $("#translateAudio").hide()
         var formData = new FormData($("#form")[0])
+        document.getElementById("uploadSpeech").style.width="50%"
         $.ajax({
             url:'/fileUpload',
             type:'post',
@@ -27,32 +27,24 @@ $(function() {
                 if(jsonData.status="0"){
                     document.getElementById("uploadSpeech").style.width="100%"
                     var fileName = (jsonData.fileName).toString();
-
+                    document.getElementById("getSpeechToTextFile").style.width="0%"
                     $.post("/speechToText",{"uploadFileName":fileName},function (data) {
                         fileNameText =data;
+                        document.getElementById("getSpeechToTextFile").style.width="100%"
+                        document.getElementById("uploadSpeech").style.width="0%"
                     })
                 }else{
                     alert(jsonData.message)
                 }
 
-                clearInterval(thisTime);
-
             },
             error:function(response){
+                document.getElementById("getSpeechToTextFile").style.width="0%"
+                document.getElementById("uploadSpeech").style.width="0%"
                 console.log(response);
-                clearInterval(thisTime);
             }
         });
     })
-    var thisTime=null;
-    var startTime = function () {
-        var timeNum = 0;
-        thisTime = setInterval(function(){
-            document.getElementById("uploadSpeech").style.width=timeNum+"%"
-            timeNum ++
-            },1000);
-        // 停止时间加 clearInterval(startTime);
-    }
 
     $("#copyText").click(function () {
         var url = "../upload/"+fileNameText;
