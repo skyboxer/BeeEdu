@@ -39,7 +39,8 @@
 
     <form  id="loginForm" action="" method="post">
       <div class="form-group has-feedback">
-        <input  id="account"  name="account" type="text" class="form-control" placeholder="账号">
+        <input  id="account"  name="account" onkeyup="value=value.replace(/[\u4e00-\u9fa5]/ig,'')" type="text" class="form-control" placeholder="账号">
+        <span id="prompt"></span>
       </div>
       <div class="form-group has-feedback">
         <input id="password"  name="password" type="password" class="form-control" placeholder="密码">
@@ -69,25 +70,18 @@
 <script>
 
   $(function () {
-
-    var checkAccount="false";
-    var checkPassword="false";
     //userController?methodName=login
-
     $("#account").change(function () {
-       if (this.value){
-         checkAccount="true";
-       }
+      $("#prompt").text("")
     })
 
     $("#password").change(function () {
-      if (this.value){
-        checkPassword="true";
-      }
+      $("#prompt").text("")
     })
 
     $("#loginForm").submit(function () {
-      if (checkAccount=="true" && checkPassword=="true"){
+
+      if ($("#account").val() && $("#password").val()){
         //表单序列化
         var formDate = $(this).serialize();
         //异步提交表单数据
@@ -98,13 +92,16 @@
                     location.href="/index.html";
                   }else{
                     //登录失败
-                    alert(result.errorMsg);
+                    $("#prompt").attr("class","bg-red");
+                    $("#prompt").text(result.errorMsg);
+
                   }
                 },
                 "json");
       }
       else {
-        alert("账号密码不能为空")
+        $("#prompt").attr("class","bg-red");
+        $("#prompt").text("账号或者密码不能为空")
       }
       //阻止同步提交
       return false;
