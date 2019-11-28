@@ -46,19 +46,20 @@ public class CharchaterFilter implements Filter {
         //过滤带.html后缀的
         if (path.indexOf(".html") > -1 || path.indexOf("/") > -1){
             System.out.println("user = " + user);
-
             // 判断如果没有取到员工信息,就跳转到登陆页面
             if (user == null) {
                 // 跳转到登陆页面
                 response.sendRedirect("/login.html");
-
-            } else {
-                System.out.println("放行 path = " + path);
-                response.setContentType("text/html;charset=utf-8");
-                // 已经登陆,继续此次请求
-                filterChain.doFilter(request, response);
+                return;
             }
+
+            System.out.println("放行 path = " + path);
+            response.setContentType("text/html;charset=utf-8");
+            // 已经登陆,继续此次请求
+            filterChain.doFilter(request, response);
+            return;
         }
+
         System.out.println(" path = " + path);
         filterChain.doFilter(request, response);
 
