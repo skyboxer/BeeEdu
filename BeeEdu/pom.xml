@@ -41,7 +41,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>BeeEdu</finalName>
+		<finalName>ROOT</finalName>
 		<plugins>
 			<!--JDK编译插件-->
 			<plugin>
