@@ -78,13 +78,13 @@
 		<div class="box-body" style="height: 90%;">
 			<div class="row">
 				<div class="col-md-6">
+					<br>
 					<div class="row">
 						<div class="col-md-12">
 							<form  id="form" method="post" enctype="multipart/form-data">
-								<input type="file" name="file" id="exampleInputFile">
-								<span id="prompt"></span>
+								<input type="file"  name="file" id="exampleInputFile">
 								<p class="help-block">支持文件扩展名mp3,wav</p>
-								<input type="button" class="btn btn-default btn-md" id="submit"  value="上传 ">
+								<input type="button" class="btn btn-default btn-sm" id="submit"  value="上传">
 							</form>
 						</div>
 <!--						<div class="col-md-8">-->
@@ -106,27 +106,39 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="dropdown">
-								音频语言
-								<select class="btn btn-default dropdown-toggle">
-									<option value="zh_cn">中文</option>
-									<option value="en_us">英文</option>
-								</select>
+								目标语言
+								<button class="btn btn-default dropdown-toggle" type="button"
+										id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+										aria-expanded="true">
+									中文（简体） <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+									<li><a href="#">中文（简体）</a></li>
+									<li><a href="#">英文</a></li>
+									<li><a href="#">日语</a></li>
+									<li><a href="#">韩文</a></li>
+								</ul>
 							</div>
 						</div>
 					</div>
 					<br>
-					<div class="row" style="text-align: center">
-						<div class="col-md-1">
-							<button type="button" class="btn btn-default btn-md" id="transcription" >转录</button>
+					<div class="row">
+						<div class="col-md-3">
+							<button type="button" id="transcription" class="btn btn-block btn-default btn-xs">
+								<font style="vertical-align: inherit;"><font
+										style="vertical-align: inherit;">翻译</font></font>
+							</button>
 						</div>
-
-						<div class="col-md-10" >
-							<div class="progress " style="margin-left: 10px; margin-top: 5px"  >
+						<div class="col-md-9">
+							<div class="progress progress-xxs">
 								<div
 										id="schedule"
 										class="progress-bar progress-bar-danger progress-bar-striped"
 										role="progressbar" aria-valuenow="60" aria-valuemin="0"
-										aria-valuemax="100" style="width: 0%">
+										aria-valuemax="100" style="width: 10%">
+										<span class="sr-only"><font
+												style="vertical-align: inherit;"><font
+												style="vertical-align: inherit;">10％完成（警告）</font></font></span>
 								</div>
 							</div>
 						</div>
@@ -137,9 +149,11 @@
 			</div>
 			<div class="row">
 				<div class="col-md-10" id="audio">
+					<video  height="50" width="100%" src="#"  controls>
+					</video>
 				</div>
 				<div class="col-md-2">
-						<a class="btn btn-block btn-default btn-md"id="download"  href="#" role="button">文件下载</a>
+						<a class="btn btn-block btn-default btn-xs"id="download"  href="#" role="button">文件下载</a>
 				</div>
 			</div>
 			<br>
@@ -147,7 +161,7 @@
 				<div class="col-md-12">
 					<font style="vertical-align: inherit;"><font
 							style="vertical-align: inherit;">结果预览</font></font>
-					<textarea class="form-control" readonly="readonly" id="text" rows="20"></textarea>
+					<textarea class="form-control" id="text" rows="20"></textarea>
 				</div>
 			</div>
 		</div>
@@ -156,7 +170,7 @@
 				<div class="col-md-3"></div>
 				<div class="col-md-6">
 					<a class="btn btn-block btn-tumblr bg-yellow "
-					   href="../index.html"> 返回 </a>
+					   href="./speech.html"> 返回 </a>
 				</div>
 				<div class="col-md-3"></div>
 			</div>
@@ -166,94 +180,70 @@
 </div>
 </body>
 <script>
-
-
 	window.onload = function () {
-		//切换上传文件
-		$("#exampleInputFile").click(function () {
-			$("#text").text("");
-			$("#prompt").text("")
-			document.getElementById("schedule").style="width: 0%"
-		})
-		var fileName="";
-		//文件上传
+		<!--文件上传-->
 		$("#submit").click(function () {
 			var data = new FormData($("#form")[0]);
-			var files=document.getElementById("exampleInputFile").files[0].name;
-			if(files){
+			var fileName=document.getElementById("exampleInputFile").files[0].name;
+			if(fileName){
 				$.ajax({
 					url:"/fileUpload",//后台的接口地址
 					type:"post",//post请求方式
 					data:data,//参数
-					async: false,
 					cache: false,
 					processData: false,
 					contentType: false,
 					success:function (data) {
-						 data=JSON.parse(data);
-						fileName=data.fileName;
-						if(data.status==0){
-							$("#prompt").attr("class","bg-green");
-							$("#prompt").text("上传成功")
-							$("#audio").html("<video height='50' width='100%' src='https://enablue.com/upload/"+fileName+"' controls></video>");
-						}else {
-							$("#prompt").attr("class","bg-red");
-							$("#prompt").text("上传失败")
-						}
-
+						alert(data)
+						$("#audio").html("<video height='50' width='100%' src='https://wwww.enablue.com/upload/"+fileName+"' controls></video>");
 					},error:function () {
-						$("#prompt").attr("class","bg-red");
-						$("#prompt").text("上传失败")
+						alert("操作失败~");
 					}
 
 				});
 			}
 
 		});
+
 		<!--录音文件转写-->
 		$("#transcription").click(function () {
 			//获取上传文件名
-			if(fileName&&fileName!==("null")){
-				alert("准备转写中");
+			var fileName=document.getElementById("exampleInputFile").files[0].name;
+			if(fileName){
 				//文件转写
 				$.get("/ifasrServlet?methodName=speechTask&fileName="+fileName,
-							function (data) {
-								if(data.flag){
-								alert("正在转写")
-								var count=1;
+						function (data) {
+							if(data.flag){
+								alert(data.TaskId)
 								//执行定时任务
 								let ref = setInterval(function () {
-
+									count=0;
 									$.get("/ifasrServlet?methodName=resultsQuery&taskid="+data.TaskId,
 											function (data) {
 												if(data.flag){
 													document.getElementById("download").href="/downloadServlet?filename="+data.fileName;
 													$("#text").text(data.result)
-													document.getElementById("schedule").style="width: 100%"
+													count=100;
+													document.getElementById("schedule").style="width: "+count+"%"
 													window.clearInterval(ref);
 												}else {
-
-													if(count<90){
+													count+=10;
+													if(count%90!=0){
 														document.getElementById("schedule").style="width: "+count+"%"
-														count+=5;
-													}else {
-														alert("转写中请稍候");
 													}
 
+													alert(data.msg);
 												}
 											},"json");
 
-								},10000);
+								},3000);
 								//执行定时任务end
 							}else {
 								alert("转写错误");
 							}
 						},"json");
 				//文件转写end
-			}else {
-				alert("没有获取到文件")
 			}
-
 		});
 	}
 
