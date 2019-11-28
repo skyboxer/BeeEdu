@@ -40,10 +40,15 @@ public class CharchaterFilter implements Filter {
             request.setCharacterEncoding("utf-8");
         }
 
+        //静态资源无需过滤
+        if(path.indexOf(".css" ) > -1 || path.indexOf(".js") > -1 || path.indexOf(".ttf") > -1
+                || path.indexOf(".woff") > -1 || path.indexOf(".woff2") > -1 ){
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         // 登陆页面无需过滤
-        if(path.indexOf("/login.html") > -1 || path.indexOf("/userController") > -1 || path.indexOf(".css" ) > -1 || path.indexOf(".js") > -1 || path.indexOf(".ttf") > -1
-                || path.indexOf(".woff") > -1 || path.indexOf(".woff2") > -1 )  {
+        if(path.indexOf("/login.html") > -1 || path.indexOf("/userController") > -1)  {
             System.out.println("path = " + path);
             response.setContentType("text/html;charset=utf-8");
             filterChain.doFilter(request, response);

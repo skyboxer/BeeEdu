@@ -194,7 +194,8 @@
 					processData: false,
 					contentType: false,
 					success:function (data) {
-						alert(data)
+						let result=JSON.parse(data)
+						alert(result.message)
 						$("#audio").html("<video height='50' width='100%' src='https://wwww.enablue.com/upload/"+fileName+"' controls></video>");
 					},error:function () {
 						alert("操作失败~");
