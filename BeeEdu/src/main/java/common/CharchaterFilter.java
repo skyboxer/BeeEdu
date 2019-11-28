@@ -30,8 +30,6 @@ public class CharchaterFilter implements Filter {
 
         // 获得用户请求的URI
         String path = request.getRequestURI();
-
-
         //获取请求方法
         String method = request.getMethod();
         //解决post请求中文数据乱码问题
@@ -40,35 +38,29 @@ public class CharchaterFilter implements Filter {
         }
         // 登陆页面无需过滤
         if(path.indexOf("/login.html") > -1 || path.indexOf("/userController") > -1)  {
-            System.out.println("path = " + path);
+
             response.setContentType("text/html;charset=utf-8");
             filterChain.doFilter(request, response);
             return;
         }
         //过滤带.html后缀的
-        if (path.indexOf(".html") > -1){
+        if (path.indexOf(".html") > -1 || path.indexOf("/") > -1){
             System.out.println("user = " + user);
 
             // 判断如果没有取到员工信息,就跳转到登陆页面
             if (user == null) {
                 // 跳转到登陆页面
-                System.out.println("path = " + path);
                 response.sendRedirect("/login.html");
-                return;
+
             } else {
+                System.out.println("放行 path = " + path);
                 response.setContentType("text/html;charset=utf-8");
                 // 已经登陆,继续此次请求
                 filterChain.doFilter(request, response);
-                return;
             }
         }
-
+        System.out.println(" path = " + path);
         filterChain.doFilter(request, response);
-
-
-
-
-
 
     }
     @Override
