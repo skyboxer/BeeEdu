@@ -38,7 +38,6 @@ public class CharchaterFilter implements Filter {
         }
         // 登陆页面无需过滤
         if(path.indexOf("/login.html") > -1 || path.indexOf("/userController") > -1)  {
-
             response.setContentType("text/html;charset=utf-8");
             filterChain.doFilter(request, response);
             return;
