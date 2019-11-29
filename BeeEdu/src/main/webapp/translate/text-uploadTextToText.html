@@ -250,17 +250,29 @@
 			})
 		}
 		$("#openFile").change(function(event){
-			var input = event.target;
-			var reader = new FileReader();
-			startTime();
-			reader.onload = function() {
-				if (reader.result) {
-					//显示文件内容
-					entTime();
-					$("#output").html(reader.result);
-				}
-			};
-			reader.readAsText(input.files[0]);
+			document.getElementById("uploadSchedule").style.width="0%";
+			document.getElementById("translationSchedule").style.width = "0%";
+			var filesList = document.querySelector('#openFile').files;
+			if(filesList.length==0){
+				//如果取消上传，则改文件的长度为0
+				document.getElementById("uploadSchedule").style.width="0%";
+				return;
+			}else{
+				//如果有文件上传，这在这里面进行
+				var input = event.target;
+				var reader = new FileReader();
+				startTime();
+
+				reader.onload = function() {
+					if (reader.result) {
+						//显示文件内容
+						entTime();
+						$("#output").html(reader.result);
+					}
+				};
+				reader.readAsText(input.files[0]);
+			}
+
 		})
 		
 		var time = function() {
