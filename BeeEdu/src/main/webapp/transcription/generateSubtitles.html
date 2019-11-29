@@ -127,7 +127,7 @@
 										id="schedule"
 										class="progress-bar progress-bar-danger progress-bar-striped"
 										role="progressbar" aria-valuenow="60" aria-valuemin="0"
-										aria-valuemax="100" style="width: 3%">
+										aria-valuemax="100" style="width: 0%">
 								</div>
 							</div>
 						</div>
@@ -229,6 +229,7 @@
 			$("#submit").prop('disabled',true)
 			$("#transcription").prop('disabled',true)
 			$("#exampleInputFile").prop('disabled',true)
+            document.getElementById("schedule").style="width: "+3+"%"
 			document.getElementById("download").href="#";
 			$("#prompt2").text("准备生成中..");
 			//获取上传文件名
