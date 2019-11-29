@@ -1,6 +1,18 @@
 <login-config>
     <user>
          <account>wangcheng</account>
-         <password>wc15250138779</password>
+         <password>wangcheng</password>
+    </user>
+    <user>
+          <account>zhangwenkang</account>
+          <password>zhangwenkang</password>
+    </user>
+    <user>
+          <account>fulan1</account>
+          <password>fulan123</password>
+    </user>
+    <user>
+           <account>fulan2</account>
+           <password>fulan123</password>
     </user>
 </login-config>
