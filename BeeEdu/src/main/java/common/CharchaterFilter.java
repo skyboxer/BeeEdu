@@ -43,7 +43,7 @@ public class CharchaterFilter implements Filter {
             return;
         }
         //过滤带.html后缀的
-        if (path.indexOf(".html") > -1 || path.indexOf("/") > -1){
+        if (path.indexOf(".html") > -1 || path.equals("/")){
             System.out.println("user = " + user);
             // 判断如果没有取到员工信息,就跳转到登陆页面
             if (user == null) {
