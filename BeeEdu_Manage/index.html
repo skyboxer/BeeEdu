@@ -44,20 +44,20 @@
       <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
       <ul class="layui-nav layui-nav-tree"  lay-filter="test">
         <li class="layui-nav-item layui-nav-itemed">
-          <a class="" href="javascript:;">账户管理</a>
-          <dl class="layui-nav-child">
-            <dd><a href="javascript:;">账户管理</a></dd>
-            <dd><a href="javascript:;">用户管理</a></dd>
-            <dd><a href="javascript:;">绑定管理</a></dd>
-          </dl>
+          <a class="urlclick" href="javascript:;" name="user/account.html">账户管理</a>
+          <!-- <dl class="layui-nav-child">
+            <dd><a href="javascript:;" name="user/account.html">账户管理</a></dd>
+            <dd><a href="javascript:;" name="user/user.html">用户管理</a></dd>
+            <dd><a href="javascript:;" name="user/account_bind_user.html">绑定管理</a></dd>
+          </dl> -->
         </li>
-        <li class="layui-nav-item"><a href="">服务管理</a></li>
-        <li class="layui-nav-item"><a href="">应用管理</a></li>
+        <li class="layui-nav-item"><a class="urlclick" href="javascript:;" name="operator/operator.html">服务管理</a></li>
+        <li class="layui-nav-item"><a class="urlclick" href="javascript:;" name="application/application.html">应用管理</a></li>
         <li class="layui-nav-item">
           <a class="" href="javascript:;">日志查询</a>
           <dl class="layui-nav-child">
-          <dd><a href="javascript:;">应用操作记录</a></dd>
-          <dd><a href="javascript:;">绑定记录</a></dd>
+          <dd><a href="javascript:;"class="urlclick" name="sys/sys_applicationDetail_operator.html">应用操作记录</a></dd>
+          <!-- <dd><a href="javascript:;">绑定记录</a></dd> -->
           </dl>
         </li>
       </ul>
@@ -66,21 +66,27 @@
 
   <div class="layui-body">
     <!-- 内容主体区域 -->
-    <div style="padding: 15px;">内容主体区域</div>
+    <div style="padding: 15px;width: 100%; height:100%;" id="rightContent">
+      
+    </div>
   </div>
 
   <div class="layui-footer">
     <!-- 底部固定区域 -->
-    © layui.com - 底部固定区域
+    © enablue - 赋蓝科技
   </div>
 </div>
 <script src="layui/layui.js"></script>
 <script>
 //JavaScript代码区域
-layui.use('element', function(){
+layui.use(['element','jquery','layer'],function(){
   var element = layui.element;
-
-});
+  var $ = layui.$;
+  $('.urlclick').on('click', function (e) {
+    var h = $(window).height();
+    $('#rightContent').html('<iframe  scrolling="auto" frameborder="0" src="' + e.target.name + '" style="width:100%;height:"'+h+'"px;"></iframe>');
+ })
+ });
 </script>
 </body>
 </html>
