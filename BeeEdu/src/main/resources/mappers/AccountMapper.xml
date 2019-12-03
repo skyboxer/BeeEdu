@@ -3,11 +3,17 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace(命名空间)：映射文件的唯一标识 -->
-<mapper namespace="UserMapper">
+<mapper namespace="mapper.AccountMapper">
 
     <!-- 查询的statement，id：在同一个命名空间下的唯一标识，resultType：sql语句的结果集封装类型 -->
-    <select id="queryUserById" resultType="User">
-		select * from user where id=#{id}
+    <select id="queryAccount" resultType="Account">
+		SELECT
+            name,
+            password
+        FROM
+            account
+        WHERE
+	        NAME LIKE #{name} and PASSWORD LIKE #{password} and bindStatus = 0 and deleteStatus = 0 and usableStatus = 0
 	</select>
 
 </mapper>

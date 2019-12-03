@@ -1,5 +1,6 @@
 package common;
 
+import pojo.Account;
 import pojo.User;
 
 import javax.servlet.*;
@@ -26,7 +27,7 @@ public class CharchaterFilter implements Filter {
         //拿到session
         HttpSession session = request.getSession();
         //拿到用户登录信息
-        User user = (User) session.getAttribute("user");
+       Account account =  (Account) session.getAttribute("account");
 
         // 获得用户请求的URI
         String path = request.getRequestURI();
@@ -37,16 +38,16 @@ public class CharchaterFilter implements Filter {
             request.setCharacterEncoding("utf-8");
         }
         // 登陆页面无需过滤
-        if(path.indexOf("/login.html") > -1 || path.indexOf("/userController") > -1)  {
+        if(path.indexOf("/login.html") > -1 || path.indexOf("/userController") > -1 || path.indexOf("/accountServlet") > -1)  {
             response.setContentType("text/html;charset=utf-8");
             filterChain.doFilter(request, response);
             return;
         }
         //过滤带.html后缀的
         if (path.indexOf(".html") > -1 || path.equals("/")){
-            System.out.println("user = " + user);
+            System.out.println("account = " + account);
             // 判断如果没有取到员工信息,就跳转到登陆页面
-            if (user == null) {
+            if (account == null) {
                 // 跳转到登陆页面
                 response.sendRedirect("/login.html");
                 return;

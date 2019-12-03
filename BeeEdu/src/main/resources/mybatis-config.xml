@@ -35,6 +35,6 @@
 	</environments>
 	<!-- 映射文件 -->
 	<mappers>
-		<mapper resource="UserMapper.xml" />
+		<mapper resource="mappers/AccountMapper.xml"/>
 	</mappers>
 </configuration>
