@@ -39,7 +39,7 @@
 
     <form  id="loginForm" action="" method="post">
       <div class="form-group has-feedback">
-        <input  id="account"  name="account" onkeyup="value=value.replace(/[\u4e00-\u9fa5]/ig,'')" type="text" class="form-control" placeholder="账号">
+        <input  id="name"  name="name" onkeyup="value=value.replace(/[\u4e00-\u9fa5]/ig,'')" type="text" class="form-control" placeholder="账号">
         <span id="prompt"></span>
       </div>
       <div class="form-group has-feedback">
@@ -71,7 +71,7 @@
 
   $(function () {
     //userController?methodName=login
-    $("#account").focus(function () {
+    $("#name").focus(function () {
       $("#prompt").text("")
     })
 
@@ -81,11 +81,11 @@
 
     $("#loginForm").submit(function () {
 
-      if ($("#account").val() && $("#password").val()){
+      if ($("#name").val() && $("#password").val()){
         //表单序列化
         var formDate = $(this).serialize();
         //异步提交表单数据
-        $.post("userController?methodName=login",
+        $.post("accountServlet?methodName=login",
                 formDate,function (result) {
                   //登录成功
                   if(result.flag){
