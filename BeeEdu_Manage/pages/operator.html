@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>服务商管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../layui/css/layui.css" media="all">
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<body>
+
+<table class="layui-hide" id="test" lay-filter="operatorList"></table>
+
+<!--这里是左侧操作-->
+<script type="text/html" id="toolbar">
+    <div class="layui-row">
+        <div class="layui-col-md1">
+            <a class="layui-btn layui-btn-xs" lay-event="add"><i class="layui-icon"></i></a>
+        </div>
+        <div class="layui-col-md3">
+            <input type="text" name="tel" placeholder="按手机号" class="layui-input" lay-event="searchTel" id="searchTel">
+        </div>
+        <div class="layui-col-md8"></div>
+    </div>
+</script>
+<!--这里是右侧表格数据操作-->
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="addapp">添加app</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script type="text/html" id="checkLock">
+    <input type="checkbox" name="lock" value="{{d.id}}" title="锁定" lay-filter="lockAccount" {{d.id== 10001
+           ? 'checked' : ''}}>
+</script>
+
+<script src="../layui/layui.js" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+
+<script>
+    layui.use(['table', 'layer', 'jquery'], function () {
+        var table = layui.table,
+            layer = layui.layer,
+            $ = layui.jquery, form = layui.form;
+        //主动渲染
+        table.render({
+            elem: '#test'
+            , url: '../test_json/demo1.json'
+            , toolbar: '#toolbar' //开启头部工具栏，并为其绑定左侧模板
+            , title: '用户数据表'
+            , cols: [[
+                {type: 'checkbox', fixed: 'left'}
+                , {field: 'id', title: 'ID', width: 80, fixed: 'left', unresize: true, sort: true}
+                , {field: 'username', title: '服务商', width: 120, edit: 'text'}
+                , {
+                    field: 'email', title: '邮箱', width: 150, edit: 'text', templet: function (res) {
+                        return '<em>' + res.email + '</em>'
+                    }
+                }
+                , {field: 'sex', title: '电话', width: 80, edit: 'text', sort: true}
+                , {field: 'city', title: '密码', width: 100}
+                , {field: 'lock', title: '是否锁定', width: 110, templet: '#checkLock', unresize: true}
+                , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 200}
+            ]]
+            , page: true
+        });
+
+        //头工具栏事件
+        table.on('toolbar(operatorList)', function (obj) {
+            if (obj.event == 'add') {
+                layer.open({
+                    type: 2,
+                    shade: [0.8, '#393D49'],
+                    area: ['500px', '350px'],
+                    content: 'operator_add_from.html' //这里content是一个普通的String
+                });
+            }
+        });
+
+        $("#searchTel").on('keyup', function (e) {
+            if (event.keyCode == 13) {
+                alert("名字查询");
+            }
+
+        });
+        var addLayerOpenIndex = null;
+        //监听行工具事件
+        table.on('tool(operatorList)', function (obj) {
+            var data = obj.data;
+            switch (obj.event) {
+                case 'del':
+                    layer.confirm('真的删除行么', function (index) {
+                        obj.del();
+                        layer.close(index);
+                    });
+                    break;
+                case 'edit':
+                    layer.open({
+                        type: 2,
+                        shade: [0.8, '#393D49'],
+                        area: ['500px', '350px'],
+                        content: 'operator_edit_from.html', //这里content是一个普通的String
+                        success: function (layero, index) {
+                            var form = layer.getChildFrame('.layui-form', index);
+                            form.find("#name").val(data.username);
+                            form.find("#tel").val(data.sex);
+                            form.find("#email").val(data.email);
+                            form.find("#password").val(data.city);
+
+                        }
+                    });
+                    break;
+                case 'addapp':
+                    layer.open({
+                        type: 1,
+                        title:"添加app",
+                        content: $('#appForm'),
+                        success:function (layero,index) {
+                            addLayerOpenIndex=index;
+                        }
+                    })
+                    break;
+                default:
+                    break;
+            }
+        });
+        form.on('checkbox(lockAccount)', function (obj) {
+            layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
+        })
+        form.on('submit(addAppForm)', function(data){
+            layer.msg(JSON.stringify(data.field));
+            layer.close(addLayerOpenIndex); //再执行关闭
+            return false;
+        });
+    });
+</script>
+<form class="layui-form layui-form-pane" action="" id="appForm" hidden>
+    <br>
+    <div class="layui-form-item">
+        <label class="layui-form-label">应用名字</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" required  lay-verify="required" placeholder="必填" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">应用appid</label>
+        <div class="layui-input-block">
+            <input type="text" name="appid" required  lay-verify="required" placeholder="必填" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="addAppForm">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+</body>
+</html>

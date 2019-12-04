@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>账户管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../layui/css/layui.css" media="all">
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<body>
+
+<table class="layui-hide" id="test" lay-filter="operatorList"></table>
+
+<!--这里是左侧操作-->
+<script type="text/html" id="toolbar">
+    <div class="layui-row">
+        <div class="layui-col-md1">
+            <a class="layui-btn layui-btn-xs" lay-event="add"><i class="layui-icon"></i></a>
+        </div>
+        <div class="layui-col-md3">
+            <input type="text" name="name" placeholder="按名字搜索" class="layui-input" lay-event="searchName"
+                   id="searchName">
+        </div>
+        <div class="layui-col-md8"></div>
+    </div>
+</script>
+<script type="text/html">
+
+</script>
+<!--这里是右侧表格数据操作-->
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">修改密码</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script type="text/html" id="checkLock">
+    <input type="checkbox" name="lock" value="{{d.id}}" title="锁定" lay-filter="lockAccount" {{d.id== 10001
+           ? 'checked' : ''}}>
+</script>
+
+<script src="../layui/layui.js" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+
+<script>
+    layui.use(['table', 'layer', 'jquery'], function () {
+        var table = layui.table,
+            layer = layui.layer,
+            $ = layui.jquery, form = layui.form;
+        //主动渲染
+        table.render({
+            elem: '#test'
+            , url: '../test_json/demo1.json'
+            , toolbar: '#toolbar' //开启头部工具栏，并为其绑定左侧模板
+            , title: '用户数据表'
+            , cols: [[
+                {type: 'checkbox', fixed: 'left'}
+                , {field: 'id', title: 'ID', width: 80, fixed: 'left', unresize: true, sort: true}
+                , {field: 'username', title: '账户名', width: 100, edit: 'text'}
+                , {field: 'ip', title: '密码', width: 100}
+                , {field: 'joinTime', title: '创建时间', width: 120, edit: 'text', sort: true}
+                , {field: 'joinTime', title: '修改时间', width: 120, edit: 'text', sort: true}
+                , {field: 'lock', title: '是否锁定', width: 110, templet: '#checkLock', unresize: true}
+                , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150}
+            ]]
+            , page: true
+        });
+
+        //头工具栏事件
+        table.on('toolbar(operatorList)', function (obj) {
+            if (obj.event == 'add') {
+                layer.open({
+                    type: 2,
+                    shade: [0.8, '#393D49'],
+                    area: ['500px', '350px'],
+                    content: 'account_add_from.html' //这里content是一个普通的String
+                });
+            }
+        });
+        $("#searchName").on('keyup', function (e) {
+            if (event.keyCode == 13) {
+                alert("名字查询");
+            }
+
+        });
+        //监听行工具事件
+        table.on('tool(operatorList)', function (obj) {
+            var data = obj.data;
+            switch (obj.event) {
+                case 'del':
+                    layer.confirm('真的删除行么', function (index) {
+                        obj.del();
+                        layer.close(index);
+                    });
+                    break;
+                case 'edit':
+                    layer.prompt({
+                        formType: 2
+                        , value: data.ip
+                    }, function (value, index) {
+                        obj.update({
+                            ip: value
+                        });
+                        layer.close(index);
+                    });
+                    break;
+                default:
+                    break;
+            }
+        });
+        form.on('checkbox(lockAccount)', function (obj) {
+            layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
+        })
+    });
+</script>
+
+</body>
+</html>
