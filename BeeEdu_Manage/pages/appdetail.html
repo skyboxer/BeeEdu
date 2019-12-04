@@ -20,8 +20,14 @@
       <a class="layui-btn layui-btn-xs" lay-event="add"><i class="layui-icon"></i></a>
     </div>
     <div class="layui-col-md3">
-      <input type="text" name="name" placeholder="按名字搜索" class="layui-input" lay-event="searchName"
-             id="searchName">
+      <select name="city" lay-verify="" lay-search lay-filter="searchAppName">
+        <option value="0">应用0</option>
+        <option value="1">应用1</option>
+        <option value="2">应用2</option>
+        <option value="00">应用00</option>
+        <option value="11">应用11</option>
+        <option value="22">应用23</option>
+      </select>
     </div>
     <div class="layui-col-md8"></div>
   </div>
@@ -78,11 +84,11 @@
         });
       }
     });
-    $("#searchName").on('keyup', function (e) {
-      if (event.keyCode == 13) {
-        alert("名字查询");
-      }
-
+    form.on('select(searchAppName)', function(data){
+      console.log(data.elem); //得到select原始DOM对象
+      console.log(data.value); //得到被选中的值
+      console.log(data.othis); //得到美化后的DOM对象
+      layer.msg("这里查询当前应用下的服务信息")
     });
     //监听行工具事件
     table.on('tool(operatorList)', function (obj) {
