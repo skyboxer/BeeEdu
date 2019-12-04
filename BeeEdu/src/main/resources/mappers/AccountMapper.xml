@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace(命名空间)：映射文件的唯一标识 -->
-<mapper namespace="mapper.AccountMapper">
+<mapper namespace="com.enablue.mapper.AccountMapper">
 
     <!-- 查询的statement，id：在同一个命名空间下的唯一标识，resultType：sql语句的结果集封装类型 -->
     <select id="queryAccount" resultType="Account">

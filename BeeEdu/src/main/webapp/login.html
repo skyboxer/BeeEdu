@@ -85,7 +85,7 @@
         //表单序列化
         var formDate = $(this).serialize();
         //异步提交表单数据
-        $.post("accountServlet?methodName=login",
+        $.post("register",
                 formDate,function (result) {
                   //登录成功
                   if(result.flag){
