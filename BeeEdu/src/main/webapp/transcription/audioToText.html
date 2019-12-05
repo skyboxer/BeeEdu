@@ -238,45 +238,42 @@
 			if(fileName&&fileName!==("null")){
 				$("#prompt2").text("准备转写中...");
 				//文件转写
-				$.get("/ifasrServlet?methodName=speechTask&fileName="+fileName,
+				$.get("speechTask?fileName="+fileName,
 						function (data) {
 							if(data.flag){
 							$("#prompt2").text("正在转写....")
 							var count=3;
 							//执行定时任务
-							let ref = setInterval(function () {
+								let ref = setInterval(function () {
 
-								$.get("/ifasrServlet?methodName=resultsQuery&taskid="+data.TaskId,
-										function (data) {
-											if(data.flag){
-
-												$("#text").text(data.result)
-
-												//按钮属性重置
-												document.getElementById("download").href="/downloadServlet?filename="+data.fileName;
-												document.getElementById("schedule").style="width: 100%"
-												$("#submit").prop('disabled',false)
-												$("#transcription").prop('disabled',false)
-												$("#exampleInputFile").prop('disabled',false);
-												$("#prompt2").text("转写成功")
-												window.clearInterval(ref);
-
-											}else {
-
-												if(count<90){
-													count+=5;
-													document.getElementById("schedule").style="width: "+count+"%"
-
+									$.get("resultsQuery?taskid="+data.TaskId,
+											function (data) {
+												if(data.flag){
+													$("#text").text(data.result)
+													//按钮属性重置
+													document.getElementById("download").href="/downloadServlet?filename="+data.fileName;
+													document.getElementById("schedule").style="width: 100%"
+													$("#submit").prop('disabled',false)
+													$("#transcription").prop('disabled',false)
+													$("#exampleInputFile").prop('disabled',false);
+													$("#prompt2").text("转写成功")
+													window.clearInterval(ref);
 												}else {
-													let temp="."
-													$("#prompt2").text("转写中请稍候"+temp);
+
+													if(count<90){
+														count+=5;
+														document.getElementById("schedule").style="width: "+count+"%"
+
+													}else {
+														let temp="."
+														$("#prompt2").text("转写中请稍候"+temp);
+													}
+
 												}
+											},"json"
+									);
 
-											}
-										},"json"
-								);
-
-							},10000);
+								},10000);
 							//执行定时任务end
 							}else {
 								//按钮属性重置
