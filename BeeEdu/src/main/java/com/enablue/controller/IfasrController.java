@@ -24,11 +24,16 @@ public class IfasrController {
         result=ifasrService.speechTask(fileName);
         return result;
     }
-    @RequestMapping("resultsQuery")
+    @RequestMapping("/resultsQuery")
     public HashMap<String,Object> resultsQuery(@Param("taskid")String taskid ){
         HashMap<String, Object> result = new HashMap<>();
         result=ifasrService.resultsQuery(taskid);
         return result;
     }
-
+    @RequestMapping("/captionResultsQuery")
+    public HashMap<String,Object> captionResultsQuery(@Param("taskid") String taskid){
+        HashMap<String, Object> result = new HashMap<>();
+        result=ifasrService.captionResultsQuery(taskid);
+        return result;
+    }
 }

@@ -236,7 +236,7 @@
 			if(fileName&&fileName!==("null")){
 				$("#prompt2").text("准备生成中....");
 				//文件转写
-				$.get("/ifasrServlet?methodName=speechTask&fileName="+fileName,
+				$.get("speechTask?fileName="+fileName,
 						function (data) {
 							if(data.flag){
 								$("#prompt2").text("正在生成....")
@@ -244,7 +244,7 @@
 								//执行定时任务
 								let ref = setInterval(function () {
 
-									$.get("/ifasrServlet?methodName=captionResultsQuery&taskid="+data.TaskId,
+									$.get("captionResultsQuery?taskid="+data.TaskId,
 											function (data) {
 												if(data.flag){
 													document.getElementById("download").href="/downloadServlet?filename="+data.fileName;
