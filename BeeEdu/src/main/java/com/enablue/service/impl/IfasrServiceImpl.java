@@ -12,8 +12,13 @@ import com.iflytek.msp.cpdb.lfasr.model.Message;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -41,14 +46,35 @@ public class IfasrServiceImpl implements IfasrService {
             String taskId;
             try {
 
-                    //获取服务器中的路径
-                WebApplicationContext webApplicationContext = ContextLoader
-                        .getCurrentWebApplicationContext();
-                ServletContext servletContext = webApplicationContext
-                        .getServletContext();
+                // 获得request对象,response对象
+                ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+                HttpServletRequest request = attributes.getRequest();
+                HttpServletResponse response = attributes.getResponse();
+//                    //获取服务器中的路径
+//                WebApplicationContext webApplicationContext = ContextLoader
+//                        .getCurrentWebApplicationContext();
+//                ServletContext servletContext = webApplicationContext
+//                        .getServletContext();
 
                 //设置文件路径
-                String localFile = servletContext.getRealPath("/upload")+File.separator + fileName;
+                String localFile =request.getServletContext().getRealPath("/upload")+File.separator + fileName;
+                //判断文件是否存在
+                File file = new File(localFile);
+                if(!file.exists()){
+                    result.put("flag", false);
+                    return result;
+                }
+                //遍历请求中的cookie，如有存在cookie就直接返回结果
+                Cookie[] cookies = request.getCookies();
+                for (Cookie cookie:cookies) {
+                    if (fileName.equals( cookie.getName() )){
+                        result.put("flag", true);
+                        result.put("TaskId", cookie.getValue());
+                        System.out.println("cookie_taskId= " + cookie.getValue());
+                        return result;
+                    }
+                }
+
                 System.out.println("localFile = " + localFile);
                 //设置参数
                 HashMap<String, String> params = new HashMap<>();
@@ -64,6 +90,7 @@ public class IfasrServiceImpl implements IfasrService {
                 } else {
                     result.put("flag", true);
                     result.put("TaskId", taskId);
+                    response.addCookie(new Cookie(fileName,taskId));
                 }
 
             } catch (Exception e) {
