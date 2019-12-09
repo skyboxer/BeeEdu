@@ -56,7 +56,7 @@
 						<div class="row">
 							<div class="col-md-4">
 								<div class="form-group">
-									<input type='file' accept='text/plain' id="openFile"><br>
+									<input type='file' accept='text/plain,charset=utf-8' id="openFile"><br>
 									<p class="help-block">
 										支持：txt(UTF-8)
 									</p>
@@ -205,19 +205,13 @@
 			$("#languageTypeOne").html(options);
 			$("#languageTypeTwo").html(options);
 		});
+		$('#text').bind('input', function() { //兼容IE9及以上版本和其他浏览器
+			conditionChange();
+			contextStatus = true;
+		});
 
-		/*$("#languageTypeOne").change(function() {
-			conditionChange();
-		})
-		$("#languageTypeTwo").change(function() {
-			conditionChange();
-		})*/
-		/*$('#text').bind('input', function() { //兼容IE9及以上版本和其他浏览器
-			conditionChange();
-		});*/
 		$("#submitTranslation").click(function() {
 			conditionChange();
-			document.getElementById("translationSchedule").style.width = "100%";
 		})
 		$("#copyFn").click(function(){
 			var val = document.getElementById('textareaTwo');
@@ -226,6 +220,7 @@
 			alert("已复制好，可贴粘。");
 
 		})
+
 		$("#saveFn").click(function(){
 			var content = $("#textareaTwo").html();
 			var data = new Blob([content],{type:"text/plain;charset=UTF-8"});
@@ -236,19 +231,41 @@
 			anchor.click();
 			window.URL.revokeObjectURL(data); 
 		})
+
+		/*翻译*/
+		var contextStatus = true;
 		var conditionChange = function() {
 			var text = $("#output").val();
 			var from = $("#languageTypeOne option:selected").val();
 			var to = $("#languageTypeTwo option:selected").val();
-			$.post("/textTranslation", {
-				TEXT : text,
-				FROM : from,
-				TO : to
-			}, function(data) {
-				var dataJson = JSON.parse(data)
-				$("#textareaTwo").html(dataJson.dst);
-			})
+			if(from == to){
+				alert("请选择目标语言")
+			}
+			var fromSign = ".";
+			if(from == "cn" || from == "cht"){
+				fromSign = "。";
+			}
+			if (from != to && contextStatus) {
+					translationSchedule(50);
+						$.post({
+							url:"/textTranslation",
+							data:{
+								TEXT: text,
+								FROM: from,
+								TO: to,
+								fromSign:fromSign
+							},
+							success:function (data) {
+								translationSchedule(100);
+								var dataJson = JSON.parse(data);
+								$("#textareaTwo").html(dataJson.dst);
+							}
+						});
+				contextStatus = false;
+				}
 		}
+		/*打开上传文件*/
+		var filePath = "";
 		$("#openFile").change(function(event){
 			document.getElementById("uploadSchedule").style.width="0%";
 			document.getElementById("translationSchedule").style.width = "0%";
@@ -262,19 +279,42 @@
 				var input = event.target;
 				var reader = new FileReader();
 				startTime();
+				var path = getObjectUrl(input.files[0]);
+				if(filePath != path){
+					filePath = path;
+					$.ajax({
+						url:path,
+						contentType:"application/json; charset=utf-8",
+						dataType:"text",
+						success:function (data,type) {
+							entTime();
+							$("#output").html(data);
+						},
+						error:function () {
+							entTime();
+							alert("读取文件出错");
+						}
+					})
+				}
 
-				reader.onload = function() {
-					if (reader.result) {
-						//显示文件内容
-						entTime();
-						$("#output").html(reader.result);
-					}
-				};
-				reader.readAsText(input.files[0]);
 			}
 
 		})
-		
+		function getObjectUrl(file){
+			var url = null;
+			if (window.createObjectURL != undefined) {
+				// basic
+				url = window.createObjectURL(file);
+			} else if (window.webkitURL != undefined) {
+				// webkit or chrome
+				url = window.webkitURL.createObjectURL(file);
+			} else if (window.URL != undefined) {
+				// mozilla(firefox)
+				url = window.URL.createObjectURL(file);
+			}
+			return url;
+		}
+		/*进度条*/
 		var time = function() {
 			document.getElementById("uploadSchedule").style.width = timecount
 					+ "%"
@@ -288,6 +328,9 @@
 		var entTime = function() {
 			document.getElementById("uploadSchedule").style.width = "100%";
 			clearTimeout(myVar);
+		}
+		function translationSchedule(num){
+			document.getElementById("translationSchedule").style.width = num+"%";
 		}
 	})
 </script>

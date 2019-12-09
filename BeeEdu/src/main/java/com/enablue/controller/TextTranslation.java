@@ -34,7 +34,9 @@ public class TextTranslation extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		String from = request.getParameter("FROM");
 		String to = request.getParameter("TO");
-		String text= request.getParameter("TEXT");
+		//String text= request.getParameter("TEXT");
+		String text = new String(request.getParameter("TEXT"));
+		String fromSign = request.getParameter("fromSign");
 		if(from == null || from.length()==0) {
 			return;
 		}
@@ -44,11 +46,27 @@ public class TextTranslation extends HttpServlet {
 		if(text == null || text.length()==0) {
 			return;
 		}
+
 		WebOTS webOTS = new WebOTS();
 		try {
-			System.out.println("字符长度"+text.length());
-			String resultStr = webOTS.getTranslate(from, to, text);
-			JSONObject jsonObject = JSONObject.parseObject(resultStr);
+			boolean sign = true;
+			StringBuffer endText = new StringBuffer(request.getParameter("TEXT"));
+			StringBuffer startText = new StringBuffer("");
+			StringBuffer resultIndexContext = new StringBuffer();
+			while (sign){
+				if(endText.length()<=2000){
+					sign = false;
+					startText = endText;
+				}else{
+					startText = new StringBuffer(endText.substring(0,2000));
+					int index = startText.lastIndexOf(fromSign);
+					startText = new StringBuffer(endText.substring(0,index+1));
+					endText = new StringBuffer(endText.substring(index+1));
+				}
+				String resultStr = webOTS.getTranslate(from, to, startText.toString());
+				resultIndexContext.append(resultStr);
+			}
+			JSONObject jsonObject = JSONObject.parseObject(resultIndexContext.toString());
 			JSONObject trans_result = jsonObject.getJSONObject("data").getJSONObject("result").getJSONObject("trans_result");
 			out.println(trans_result);
 	        out.flush();

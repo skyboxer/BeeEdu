@@ -66,6 +66,10 @@ $(function() {
             FROM : from,
             TO : to
         }, function(data) {
+            if(data==""){
+                alert("翻译有问题！")
+                return;
+            }
             var dataJson = JSON.parse(data)
             $("#out_data").text(dataJson.dst);
         })

@@ -1,8 +1,10 @@
 package com.enablue.service;
 
 import com.enablue.pojo.AppDetail;
+import com.google.gson.JsonObject;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author chinaxjk
@@ -10,10 +12,24 @@ import java.util.List;
  */
 public interface AppDetailService {
 
+    /**
+     * 查询App详情
+     * @param map
+     * @return
+     */
+    JsonObject getAppDetailList(Map map);
 
-    List<AppDetail> getAppDetailList();
+    /**
+     * 添加app 详情
+     * @param appDetail
+     * @return
+     */
+    JsonObject addAppDetail(AppDetail appDetail);
 
-    int addAppDetail(AppDetail appDetail);
-
-    int updateAppDetail(AppDetail appDetail);
+    /**
+     * 修改/删除app详情
+     * @param appDetail
+     * @return
+     */
+    JsonObject updateAppDetail(AppDetail appDetail);
 }

@@ -48,12 +48,13 @@ public class WebOTS {
 	        int code = resultData.getCode();
 	        if (resultData.getCode() != 0) {
 	    		System.out.println("请前往https://www.xfyun.cn/document/error-code?code=" + code + "查询解决办法");
+	    		return "请前往https://www.xfyun.cn/document/error-code?code=" + code +"查询解决办法";
 	        }
 	        return resultStr;
 		} else {
 			System.out.println("调用失败！请根据错误信息检查代码，接口文档：https://www.xfyun.cn/doc/nlp/niutrans/API.html");
-		}     
-		return null;
+			return "调用失败！请根据错误信息检查代码，接口文档：https://www.xfyun.cn/doc/nlp/niutrans/API.html";
+		}
 	}
 	/**
 	 * 组装http请求头

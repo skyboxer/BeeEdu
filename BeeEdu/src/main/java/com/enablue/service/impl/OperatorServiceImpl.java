@@ -9,6 +9,8 @@ import com.google.gson.JsonObject;
 import java.util.List;
 import java.util.Map;
 
+import static com.enablue.service.impl.AppServiceImpl.getJsonObject;
+
 /**
  * @author chinaxjk
  * 服务商实现类
@@ -35,18 +37,13 @@ public class OperatorServiceImpl implements OperatorService {
     public JsonObject addOperator(Operator operator) {
         JsonObject returnJson = new JsonObject();
         int status = operatorMapper.insertOperator(operator);
-        if (status > 0) {
-            returnJson.addProperty("status", 0);
-            returnJson.addProperty("message", "添加成功");
-            return returnJson;
-        }
-        returnJson.addProperty("status", -1);
-        returnJson.addProperty("message", "添加失败");
-        return returnJson;
+        return getJsonObject(returnJson, status);
     }
 
     @Override
-    public int updateOperator(Operator operator) {
-        return 0;
+    public JsonObject updateOperator(Operator operator) {
+        JsonObject returnJson = new JsonObject();
+        int status = operatorMapper.updateOperator(operator);
+        return getJsonObject(returnJson, status);
     }
 }

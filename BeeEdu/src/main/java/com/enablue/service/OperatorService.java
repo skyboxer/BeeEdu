@@ -30,5 +30,5 @@ public interface OperatorService {
      * @param operator
      * @return
      */
-    int updateOperator(Operator operator);
+    JsonObject updateOperator(Operator operator);
 }

@@ -20,4 +20,8 @@
         INSERT  INTO operator  SET (`type`,email,tel,`password`) value (#{type},#{email},#{tel},#{password})
     </insert>
 
+    <update id="updateOperator">
+        UPDATE operator SET (`type` = #{type },`email`= #{email},tel = #{tel}, `password`=#{password},deletedStatus=#{deletedStatus}, usableStatus=#{usableStatus} where id = #{id})
+    </update>
+
 </mapper>

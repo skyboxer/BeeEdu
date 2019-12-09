@@ -1,9 +1,7 @@
 package com.enablue.controller;
 
-import com.enablue.pojo.Operator;
-import com.enablue.service.OperatorService;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
+import com.enablue.pojo.AppDetail;
+import com.enablue.service.AppDetailService;
 import com.google.gson.JsonObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,29 +17,29 @@ import java.util.Map;
  * 服务商
  */
 @Controller
-@RequestMapping("operator")
+@RequestMapping("appDetail")
 @ResponseBody
-public class OperatorController {
-    private OperatorService operatorService;
+public class AppDetailController {
+    private AppDetailService appDetailService;
     @RequestMapping("getList")
     public JsonObject getOperatorList(int pageIndex,int pageSize,String tel){
         Map<String,Object> paramMap = new HashMap<>();
         paramMap.put("pageIndex",pageIndex);
         paramMap.put("pageSize",pageSize);
         paramMap.put("tel",tel);
-        return operatorService.getOperatorList(paramMap);
+        return appDetailService.getAppDetailList(paramMap);
     }
 
     @RequestMapping("add")
-    public JsonObject addOperator(@RequestBody Operator operator){
+    public JsonObject addOperator(@RequestBody AppDetail appDetail){
 
-        return operatorService.addOperator(operator);
+        return appDetailService.addAppDetail(appDetail);
     }
 
     @RequestMapping("update")
-    public JsonObject updateOperator(@RequestBody Operator operator){
+    public JsonObject updateOperator(@RequestBody AppDetail appDetail){
 
-        return operatorService.updateOperator(operator);
+        return appDetailService.updateAppDetail(appDetail);
     }
 
 }
