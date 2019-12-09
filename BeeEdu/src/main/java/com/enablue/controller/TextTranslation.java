@@ -46,6 +46,7 @@ public class TextTranslation extends HttpServlet {
 		}
 		WebOTS webOTS = new WebOTS();
 		try {
+			System.out.println("字符长度"+text.length());
 			String resultStr = webOTS.getTranslate(from, to, text);
 			JSONObject jsonObject = JSONObject.parseObject(resultStr);
 			JSONObject trans_result = jsonObject.getJSONObject("data").getJSONObject("result").getJSONObject("trans_result");

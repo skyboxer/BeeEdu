@@ -13,6 +13,7 @@ import com.enablue.util.WebTTSWS;
 
 /**
  * 语音合成接口
+ * @author chinaxjk
  */
 @WebServlet("/acquiringTextVoice")
 public class AcquiringTextVoice extends HttpServlet {

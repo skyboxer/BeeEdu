@@ -44,18 +44,25 @@
 				<div class="row">
 					<div class="col-md-6">
 						<div class="row">
-							<div class="col-md-12">
+							<div class="col-md-5">
 								<div class="dropdown">
 									原始语言 <select class="btn btn-default dropdown-toggle"
 										aria-labelledby="dropdownMenu1" id="languageType0">
 									</select>
 								</div>
 							</div>
+							<div class="col-md-5">
+								<p id="textNum">0/1000</p>
+							</div>
+							<div class="col-md-2">
+								<button type="button" class="btn btn-block btn-default btn-xs"
+										id="submitTranslation">提交翻译</button>
+							</div>
 						</div>
 
 						<div class="row" style="margin-top: 10px;">
 							<div class="col-md-12">
-								<textarea class="form-control" rows="30" name=textarea id="text"></textarea>
+								<textarea  rows="25" placeholder="最大1000字"draggable="true" style="width: 100%;resize: none;" name="textarea" id="text" maxlength="1000"></textarea>
 							</div>
 						</div>
 					</div>
@@ -72,7 +79,7 @@
 
 						<div class="row" style="margin-top: 10px;">
 							<div class="col-md-12">
-								<textarea class="form-control" rows="30" name=textarea readonly id="text1"></textarea>
+								<textarea style="width: 100%;resize: none;" draggable="false" rows="25" placeholder="翻译结果" name="textarea" readonly id="text1"></textarea>
 							</div>
 						</div>
 					</div>
@@ -136,28 +143,35 @@
 			$("#languageType0").html(options);
 			$("#languageType1").html(options);
 		});
-		$('#text').bind('input', function() { //兼容IE9及以上版本和其他浏览器
+		$('#submitTranslation').click(function () {
 			textChange();
 		});
-		$("#languageType0").change(function(){
-			textChange();
-		})
-		$("#languageType1").change(function(){
-			textChange();
+		$("#text").bind('input',function () {
+			var text = $("#text").val();
+			$("#textNum").html(text.length+"/1000")
+			contextStatus = true;
 		})
 	})
+	var contextStatus = true;
 	function textChange(){
 		var text = $("#text").val();
 		var from = $("#languageType0 option:selected").val();
 		var to = $("#languageType1 option:selected").val();
-		$.post("/textTranslation", {
-			TEXT : text,
-			FROM : from,
-			TO : to
-		}, function(data) {
-			var dataJson = JSON.parse(data)
-			$("#text1").html(dataJson.dst);
-		})
+		if(from == to){
+			alert("请选择目标语言")
+		}
+		if(from != to && contextStatus){
+			$.post("/textTranslation", {
+				TEXT : text,
+				FROM : from,
+				TO : to
+			}, function(data) {
+				var dataJson = JSON.parse(data)
+				$("#text1").html(dataJson.dst);
+				contextStatus = false;
+			})
+		}
+
 	}
 </script>
 </html>
