@@ -13,25 +13,65 @@
     <img class="content-logo" src="img/001.png" alt="logo">
     <h1 class="content-title">登录</h1>
     <div class="content-form">
-        <form method="post" action="/test/login.jsp" >
+        <form id="loginForm" method="post" >
             <div id="change_margin_1">
-                <input class="user" type="text" name="username" placeholder="请输入用户名" onblur="oBlur_1()" onfocus="oFocus_1()">
+                <input class="user" id="name" type="text" onkeyup="value=value.replace(/[\u4e00-\u9fa5]/ig,'')" name="name" placeholder="请输入用户名" onblur="oBlur_1()" onfocus="oFocus_1()">
             </div>
             <!-- input的value为空时弹出提醒 -->
-            <p id="remind_1"></p>
+            <h7 id="prompt"></h7>
             <div id="change_margin_2">
-                <input class="password" type="password" name="password" placeholder="请输入密码" onblur="oBlur_2()" onfocus="oFocus_2()">
+                <input class="password" id="password" type="password" name="password" placeholder="请输入密码" onblur="oBlur_2()" onfocus="oFocus_2()">
             </div>
-            <!-- input的value为空时弹出提醒 -->
-            <p id="remind_2"></p>
             <div id="change_margin_3">
                 <input class="content-form-signup" type="submit" value="登录">
             </div>
         </form>
     </div>
-    <div class="content-login-description">没有账户？</div>
-    <div><a class="content-login-link" href="sign_up.html">注册</a></div>
 </div>
+<!-- jQuery 3 -->
+<script src="../AdminLTE-master/bower_components/jquery/dist/jquery.min.js"></script>
 <script src="js/common_form_test.js"></script>
+
+<script>
+    $(function () {
+        //userController?methodName=login
+        $("#name").focus(function () {
+            $("#prompt").text("")
+        })
+
+        $("#password").focus(function () {
+            $("#prompt").text("")
+        })
+
+        $("#loginForm").submit(function () {
+
+            if ($("#name").val() && $("#password").val()){
+                //表单序列化
+                var formDate = $(this).serialize();
+                //异步提交表单数据
+                $.post("/Manager/managerLogin",
+                    formDate,function (result) {
+                        //登录成功
+                        if(result.flag){
+                            location.href="/Manager/index.html";
+                        }else{
+                            //登录失败
+                            $("#prompt").attr("style","color:red");
+                            $("#prompt").text(result.errorMsg);
+
+                        }
+                    },
+                    "json");
+            }
+            else {
+                $("#prompt").attr("style","color:red");
+                $("#prompt").text("账号或者密码不能为空")
+            }
+            //阻止同步提交
+            return false;
+        })
+
+    })
+</script>
 </body>
 </html>

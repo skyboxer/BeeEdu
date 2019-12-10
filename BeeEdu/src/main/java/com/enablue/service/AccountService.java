@@ -12,4 +12,6 @@ import java.util.HashMap;
 
 public interface AccountService {
      HashMap<String, Object> login(Account account);
+
+    HashMap<String, Object> managerLogin(Account manager);
 }

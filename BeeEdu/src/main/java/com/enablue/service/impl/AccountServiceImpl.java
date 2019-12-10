@@ -33,27 +33,49 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public HashMap<String, Object> login(Account account) {
         HashMap<String, Object> result = new HashMap<>();
-        if (account==null){
+        if (account==null || account.getName() == null  || account.getPassword() ==null){
             result.put("flag", false);
             result.put("errorMsg", "账号密码不能为空");
             return result;
         }
-        //处理请求
-        if (account.getName() == null  || account.getPassword() ==null) {
+        //查询数据
+        Account temp = accountMapper.queryAccount(account.getName(), account.getPassword());
+
+        if (temp == null){
+            result.put("flag", false);
+            result.put("errorMsg", "账号或密码错误");
+            return result;
+        }
+
+        result.put("flag", true);
+
+        return result;
+    }
+
+    /***
+     * 管理员登录
+     * @param manager
+     * @return
+     */
+    @Override
+    public HashMap<String, Object> managerLogin(Account manager) {
+        HashMap<String, Object> result = new HashMap<>();
+        if (manager==null || manager.getName() == null  || manager.getPassword() ==null){
             result.put("flag", false);
             result.put("errorMsg", "账号密码不能为空");
-        }else {
-            Account temp = accountMapper.queryAccount(account.getName(), account.getPassword());
-            if (temp == null){
-                result.put("flag", false);
-                result.put("errorMsg", "账号或密码错误");
-            }else {
-                result.put("flag", true);
-                result.put("account",account);
-            }
-
-
+            return result;
         }
+        //查询数据
+        Account temp = accountMapper.queryManagerAccount(manager.getName(), manager.getPassword());
+
+        if (temp == null){
+            result.put("flag", false);
+            result.put("errorMsg", "账号或密码错误");
+            return result;
+        }
+
+       result.put("flag", true);
+
         return result;
     }
 }

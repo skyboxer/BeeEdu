@@ -38,4 +38,11 @@ public class AccountController{
         return result;
     }
 
+    @RequestMapping("/Manager/managerLogin")
+    public HashMap<String,Object> managerLogin(Account manager){
+        HashMap<String, Object> result = accountService.managerLogin(manager);
+        //设置session
+        ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession().setAttribute("manager",manager);
+        return result;
+    }
 }

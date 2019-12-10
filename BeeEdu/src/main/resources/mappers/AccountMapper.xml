@@ -13,7 +13,17 @@
         FROM
             account
         WHERE
-	        NAME LIKE #{name} and PASSWORD LIKE #{password} and bindStatus = 0 and deleteStatus = 0 and usableStatus = 0
+	        NAME LIKE #{name} and PASSWORD LIKE #{password} and bindStatus = 0 and deleteStatus = 0 and usableStatus = 0 and Administrator = 0
 	</select>
+    <!--查询管理员账号-->
+    <select id="queryManagerAccount" resultType="Account">
+		SELECT
+            name,
+            password
+        FROM
+            account
+        WHERE
+	        NAME LIKE #{name} and PASSWORD LIKE #{password} and bindStatus = 0 and deleteStatus = 0 and usableStatus = 0 and Administrator = 1
+    </select>
 
 </mapper>

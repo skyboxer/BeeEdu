@@ -27,6 +27,7 @@ public class CharchaterFilter implements Filter {
         HttpSession session = request.getSession();
         //拿到用户登录信息
        Account account =  (Account) session.getAttribute("account");
+       Account manager =  (Account) session.getAttribute("manager");
 
         // 获得用户请求的URI
         String path = request.getRequestURI();
@@ -36,17 +37,28 @@ public class CharchaterFilter implements Filter {
         if(method.equalsIgnoreCase("post")){
             request.setCharacterEncoding("utf-8");
         }
+
         // 登陆页面无需过滤
-        if(path.indexOf("/login.html") > -1 || path.indexOf("/userController") > -1 || path.indexOf("/register") > -1)  {
+        if(path.indexOf("/login.html") > -1 || path.indexOf("/managerLogin") > -1 || path.indexOf("/register") > -1)  {
             response.setContentType("text/html;charset=utf-8");
             System.out.println("path = " + path);
             filterChain.doFilter(request, response);
             return;
         }
+
         //过滤带.html后缀的
         if (path.indexOf(".html") > -1 || path.equals("/")){
+            //判断是否为管理员登录
+            if (path.indexOf("/Manager") > -1 && manager==null){
+                    // 跳转到登陆页面
+                    System.out.println("path = " + path);
+                    response.sendRedirect("/Manager/login.html");
+                    return;
+
+            }
+
             // 判断如果没有取到员工信息,就跳转到登陆页面
-            if (account == null) {
+            if (account == null && manager==null) {
                 // 跳转到登陆页面
                 System.out.println("path = " + path);
                 response.sendRedirect("/login.html");
