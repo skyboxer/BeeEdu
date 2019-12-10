@@ -1,9 +1,8 @@
 package com.enablue.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.enablue.pojo.App;
-import com.google.gson.JsonObject;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,20 +16,20 @@ public interface AppService {
      * @param map
      * @return
      */
-    JsonObject getAppList(Map map);
+    JSONObject getAppList(Map map);
 
     /**
      * 添加app
      * @param app
      * @return
      */
-    JsonObject addApp(App app);
+    JSONObject addApp(App app);
 
     /**
      * 修改/删除 app
      * @param app
      * @return
      */
-    JsonObject updateApp(App app);
+    JSONObject updateApp(App app);
 
 }

@@ -19,6 +19,13 @@ public interface OperatorMapper {
     List<Operator> queryOperatorList(Map<String, Object> queryTerm);
 
     /**
+     * 查询总行数
+     * @param map
+     * @return
+     */
+    int querOperatorCount(Map<String,Object> map);
+
+    /**
      * 添加运营商账号
      * @param operator
      * @return

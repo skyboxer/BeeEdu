@@ -10,17 +10,25 @@
 		select * from operator
 		 <where>
              <if test="tel != null and tel != ''">
-                 and tel like CONCAT('%',#{tel},'%')
+                 and tel like #{tel}+"%"
              </if>
          </where>
         limit #{pageIndex},#{pageSize}
 	</select>
+    <select id="querOperatorCount" resultType="java.lang.Integer" parameterType="map">
+        select count(id) from operator
+        <where>
+            <if test="tel != null and tel != ''">
+                and tel like #{tel}+"%"
+            </if>
+        </where>
+    </select>
 
-    <insert id="insertOperator" >
-        INSERT  INTO operator  SET (`type`,email,tel,`password`) value (#{type},#{email},#{tel},#{password})
+    <insert id="insertOperator" parameterType="Operator">
+        INSERT  INTO operator (`type`,email,tel,`password`) value (#{type},#{email},#{tel},#{password})
     </insert>
 
-    <update id="updateOperator">
+    <update id="updateOperator" parameterType="Operator">
         UPDATE operator SET (`type` = #{type },`email`= #{email},tel = #{tel}, `password`=#{password},deletedStatus=#{deletedStatus}, usableStatus=#{usableStatus} where id = #{id})
     </update>
 

@@ -1,7 +1,7 @@
 package com.enablue.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.enablue.pojo.Operator;
-import com.google.gson.JsonObject;
 
 import java.util.Map;
 
@@ -16,19 +16,19 @@ public interface OperatorService {
      * @return
      * @param queryTerm
      */
-    JsonObject getOperatorList(Map<String, Object> queryTerm);
+    JSONObject getOperatorList(Map<String, Object> queryTerm);
 
     /**
      * 添加运营商账号
      * @param operator
      * @return
      */
-    JsonObject addOperator(Operator operator);
+    JSONObject addOperator(Operator operator);
 
     /**
      * 修改
      * @param operator
      * @return
      */
-    JsonObject updateOperator(Operator operator);
+    JSONObject updateOperator(Operator operator);
 }

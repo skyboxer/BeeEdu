@@ -59,16 +59,17 @@
         //监听提交
         form.on('submit(formDemo)', function(data){
             layer.msg(JSON.stringify(data.field));
+            var data = {"type":data.field.type,"tel":data.field.tel,"email":data.field.email,"password":data.field.password};
             $.ajax({
-                url:"http://192.168.43.255:8080/operator/add",
+                url:"/operator/add",
                 type:"post",
                 async:"true",
-                data:{"type":data.field.type,"tel":data.field.tel,"email":data.field.email,"password":data.field.password},
-                dataType:"json",
-                contentType:"application/json",
+                data:JSON.stringify(data),
+                dataType:'json',
+                contentType:'application/json;charset=utf-8',
                 success:function (data) {
                 layer.msg(data.message);
-               // parent.layer.close(index); //再执行关闭
+                parent.layer.close(index); //再执行关闭
                 },
                 error:function (XMLHttpRequest,textStatus,errorThrown) {
                     layer.msg("请求失败！");
