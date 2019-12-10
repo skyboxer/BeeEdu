@@ -11,8 +11,8 @@ public class Operator {
     private String email;
     private String tel;
     private String password;
-    private boolean deletedStatus;
-    private boolean usableStatus;
+    private int deletedStatus;
+    private int usableStatus;
 
     public int getId() {
         return id;
@@ -34,13 +34,6 @@ public class Operator {
         return password;
     }
 
-    public boolean isDeletedStatus() {
-        return deletedStatus;
-    }
-
-    public boolean isUsableStatus() {
-        return usableStatus;
-    }
 
     public void setId(int id) {
         this.id = id;
@@ -62,12 +55,19 @@ public class Operator {
         this.password = password;
     }
 
-    public void setDeletedStatus(boolean deletedStatus) {
+    public int getDeletedStatus() {
+        return deletedStatus;
+    }
+
+    public void setDeletedStatus(int deletedStatus) {
         this.deletedStatus = deletedStatus;
     }
 
-    public void setUsableStatus(boolean usableStatus) {
-        this.usableStatus = usableStatus;
+    public int getUsableStatus() {
+        return usableStatus;
     }
 
+    public void setUsableStatus(int usableStatus) {
+        this.usableStatus = usableStatus;
+    }
 }

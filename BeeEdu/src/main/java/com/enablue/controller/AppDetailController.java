@@ -1,8 +1,10 @@
 package com.enablue.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.enablue.pojo.AppDetail;
 import com.enablue.service.AppDetailService;
 import com.google.gson.JsonObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +22,10 @@ import java.util.Map;
 @RequestMapping("appDetail")
 @ResponseBody
 public class AppDetailController {
+    @Autowired
     private AppDetailService appDetailService;
     @RequestMapping("getList")
-    public JsonObject getOperatorList(int pageIndex,int pageSize,String tel){
+    public JSONObject getOperatorList(int pageIndex, int pageSize, String tel){
         Map<String,Object> paramMap = new HashMap<>();
         paramMap.put("pageIndex",pageIndex);
         paramMap.put("pageSize",pageSize);
@@ -31,13 +34,13 @@ public class AppDetailController {
     }
 
     @RequestMapping("add")
-    public JsonObject addOperator(@RequestBody AppDetail appDetail){
+    public JSONObject addOperator(@RequestBody AppDetail appDetail){
 
         return appDetailService.addAppDetail(appDetail);
     }
 
     @RequestMapping("update")
-    public JsonObject updateOperator(@RequestBody AppDetail appDetail){
+    public JSONObject updateOperator(@RequestBody AppDetail appDetail){
 
         return appDetailService.updateAppDetail(appDetail);
     }

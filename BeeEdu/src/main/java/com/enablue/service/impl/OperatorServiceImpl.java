@@ -1,10 +1,11 @@
 package com.enablue.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.enablue.mapper.OperatorMapper;
 import com.enablue.pojo.Operator;
 import com.enablue.service.OperatorService;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
@@ -15,34 +16,38 @@ import static com.enablue.service.impl.AppServiceImpl.getJsonObject;
  * @author chinaxjk
  * 服务商实现类
  */
+@Service
 public class OperatorServiceImpl implements OperatorService {
+    @Autowired
     private OperatorMapper operatorMapper;
 
     @Override
-    public JsonObject getOperatorList(Map<String, Object> queryTerm) {
-        JsonObject returnJson = new JsonObject();
+    public JSONObject getOperatorList(Map<String, Object> queryTerm) {
+        JSONObject returnJson = new JSONObject();
         List<Operator> operatorsList = operatorMapper.queryOperatorList(queryTerm);
-        if (operatorsList.size() > 0) {
-            returnJson.addProperty("status", 0);
-            returnJson.add("data", (JsonElement) operatorsList);
+        int operatorsCount =  operatorMapper.querOperatorCount(queryTerm);
+        if (operatorsList.size() < 0) {
+            returnJson.put("code", -1);
+            returnJson.put("data", null);
+            returnJson.put("msg", "查询失败");
             return returnJson;
         }
-        returnJson.addProperty("status", -1);
-        returnJson.add("data", null);
-        returnJson.addProperty("message", "查询失败");
+        returnJson.put("code", 0);
+        returnJson.put("data",  operatorsList);
+        returnJson.put("count",operatorsCount);
         return returnJson;
     }
 
     @Override
-    public JsonObject addOperator(Operator operator) {
-        JsonObject returnJson = new JsonObject();
+    public JSONObject addOperator(Operator operator) {
+        JSONObject returnJson = new JSONObject();
         int status = operatorMapper.insertOperator(operator);
         return getJsonObject(returnJson, status);
     }
 
     @Override
-    public JsonObject updateOperator(Operator operator) {
-        JsonObject returnJson = new JsonObject();
+    public JSONObject updateOperator(Operator operator) {
+        JSONObject returnJson = new JSONObject();
         int status = operatorMapper.updateOperator(operator);
         return getJsonObject(returnJson, status);
     }
