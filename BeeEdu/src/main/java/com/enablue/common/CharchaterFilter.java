@@ -45,34 +45,46 @@ public class CharchaterFilter implements Filter {
             filterChain.doFilter(request, response);
             return;
         }
+        //管理员请求
+        if(path.indexOf("/Manager") > -1){
+            //静态资源放行
+            if (path.indexOf("/layui") > -1 || path.indexOf("/css") > -1 || path.indexOf("/js") > -1 || path.indexOf("/img") > -1 ){
+                System.out.println("放行 path = " + path);
+                response.setContentType("text/html;charset=utf-8");
+                // 已经登陆,继续此次请求
+                filterChain.doFilter(request, response);
+                return;
+            }
+            if(manager ==  null){
+                 // 跳转到登陆页面
+                 System.out.println("path = " + path);
+                 response.sendRedirect("/Manager/login.html");
+                 return;
+            }else {
+                 System.out.println("放行 path = " + path);
+                 response.setContentType("text/html;charset=utf-8");
+                 // 已经登陆,继续此次请求
+                 filterChain.doFilter(request, response);
+                 return;
+            }
+        }
 
         //过滤带.html后缀的
         if (path.indexOf(".html") > -1 || path.equals("/")){
-            //判断是否为管理员登录
-            if (path.indexOf("/Manager") > -1 && manager==null){
-                    // 跳转到登陆页面
-                    System.out.println("path = " + path);
-                    response.sendRedirect("/Manager/login.html");
-                    return;
-
-            }
-
             // 判断如果没有取到员工信息,就跳转到登陆页面
-            if (account == null && manager==null) {
+            if (account == null) {
                 // 跳转到登陆页面
                 System.out.println("path = " + path);
                 response.sendRedirect("/login.html");
                 return;
             }
-
             System.out.println("放行 path = " + path);
             response.setContentType("text/html;charset=utf-8");
             // 已经登陆,继续此次请求
             filterChain.doFilter(request, response);
             return;
         }
-
-        System.out.println(" path = " + path);
+        System.out.println("放行path = " + path);
         filterChain.doFilter(request, response);
 
     }
