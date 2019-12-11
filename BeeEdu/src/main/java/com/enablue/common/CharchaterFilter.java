@@ -37,36 +37,34 @@ public class CharchaterFilter implements Filter {
         if(method.equalsIgnoreCase("post")){
             request.setCharacterEncoding("utf-8");
         }
-
+        System.out.println("path = " + path);
         // 登陆页面无需过滤
         if(path.indexOf("/login.html") > -1 || path.indexOf("/managerLogin") > -1 || path.indexOf("/register") > -1)  {
             response.setContentType("text/html;charset=utf-8");
-            System.out.println("path = " + path);
+            System.out.println("loginpath = " + path);
             filterChain.doFilter(request, response);
             return;
         }
         //管理员请求
         if(path.indexOf("/Manager") > -1){
+            System.out.println("manager = " + manager);
             //静态资源放行
             if (path.indexOf("/layui") > -1 || path.indexOf("/css") > -1 || path.indexOf("/js") > -1 || path.indexOf("/img") > -1 ){
                 System.out.println("放行 path = " + path);
                 response.setContentType("text/html;charset=utf-8");
                 // 已经登陆,继续此次请求
                 filterChain.doFilter(request, response);
-                return;
-            }
-            if(manager ==  null){
+            }else if(manager ==  null){
                  // 跳转到登陆页面
-                 System.out.println("path = " + path);
+                 System.out.println("拦截path = " + path);
                  response.sendRedirect("/Manager/login.html");
-                 return;
             }else {
                  System.out.println("放行 path = " + path);
                  response.setContentType("text/html;charset=utf-8");
                  // 已经登陆,继续此次请求
                  filterChain.doFilter(request, response);
-                 return;
             }
+            return;
         }
 
         //过滤带.html后缀的

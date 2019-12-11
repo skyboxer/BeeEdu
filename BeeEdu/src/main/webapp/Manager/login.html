@@ -13,14 +13,14 @@
     <img class="content-logo" src="img/001.png" alt="logo">
     <h1 class="content-title">登录</h1>
     <div class="content-form">
-        <form id="loginForm" method="post" >
+        <form id="loginForm" action="" method="post" >
             <div id="change_margin_1">
-                <input class="user" id="name" type="text" onkeyup="value=value.replace(/[\u4e00-\u9fa5]/ig,'')" name="name" placeholder="请输入用户名" onblur="oBlur_1()" onfocus="oFocus_1()">
+                <input class="user" id="name" type="text" onkeyup="value=value.replace(/[\u4e00-\u9fa5]/ig,'')" name="name" placeholder="请输入用户名" >
             </div>
             <!-- input的value为空时弹出提醒 -->
             <h7 id="prompt"></h7>
             <div id="change_margin_2">
-                <input class="password" id="password" type="password" name="password" placeholder="请输入密码" onblur="oBlur_2()" onfocus="oFocus_2()">
+                <input class="password" id="password" type="password" name="password" placeholder="请输入密码">
             </div>
             <div id="change_margin_3">
                 <input class="content-form-signup" type="submit" value="登录">
@@ -29,7 +29,7 @@
     </div>
 </div>
 <!-- jQuery 3 -->
-<script src="layui/lay/modules/jquery.js"></script>
+<script src="../AdminLTE-master/bower_components/jquery/dist/jquery.min.js"></script>
 <script src="js/common_form_test.js"></script>
 
 <script>
