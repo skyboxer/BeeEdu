@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
@@ -26,22 +27,22 @@ import java.util.Map;
 public class AppController {
     @Autowired
     private AppService appService;
-    @RequestMapping("getList")
-    public JSONObject getOperatorList(int pageIndex, int pageSize, String tel){
+    @RequestMapping(value = "getList",method = RequestMethod.POST)
+    public JSONObject getOperatorList(){
         Map<String,Object> paramMap = new HashMap<>();
-        paramMap.put("pageIndex",pageIndex);
+        /*paramMap.put("pageIndex",pageIndex);
         paramMap.put("pageSize",pageSize);
-        paramMap.put("tel",tel);
+        paramMap.put("tel",tel);*/
         return appService.getAppList(paramMap);
     }
 
-    @RequestMapping("add")
+    @RequestMapping(value = "add",method = RequestMethod.POST,produces = "application/json")
     public JSONObject addOperator(@RequestBody App app){
 
         return appService.addApp(app);
     }
 
-    @RequestMapping("update")
+    @RequestMapping(value = "update",method = RequestMethod.POST,produces = "application/json")
     public JSONObject updateOperator(@RequestBody App app){
 
         return appService.updateApp(app);

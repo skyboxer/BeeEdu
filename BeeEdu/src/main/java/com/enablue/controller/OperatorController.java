@@ -42,7 +42,7 @@ public class OperatorController {
         return operatorService.addOperator(operator);
     }
 
-    @RequestMapping("update")
+    @RequestMapping(value = "update",method = RequestMethod.POST,produces = "application/json")
     public JSONObject updateOperator(@RequestBody Operator operator){
 
         return operatorService.updateOperator(operator);

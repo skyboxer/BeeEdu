@@ -8,24 +8,23 @@
     <!-- 查询的statement，id：在同一个命名空间下的唯一标识，resultType：sql语句的结果集封装类型 -->
     <select id="queryAppList" resultType="App" parameterType="map">
         select * from application
-        <where>
+        <!--<where>
             <if test="name != null and name != ''">
                 and name like CONCAT('%',#{name},'%')
             </if>
-        </where>
-        limit #{pageIndex},#{pageSize}
+        </where>-->
     </select>
 
-    <insert id="insertApp">
+    <insert id="insertApp" parameterType="App">
         INSERT  INTO application
-        SET (appid,`name`,operator_id)
-        value (#{appid},#{name},#{operatorId})
+         (appid,`name`,operator_id)
+        value (#{appId},#{name},#{operatorId})
     </insert>
 
-    <update id="updateApp">
+    <update id="updateApp" parameterType="App">
         UPDATE application
         SET (appid,`name`,operator_id,deleteStatus,usableStatus)
-        value (#{appid},#{name},#{operatorId},#{deleteStatus},#{usableStatus})
+        value (#{appId},#{name},#{operatorId},#{deleteStatus},#{usableStatus})
         where  id = #(id)
     </update>
 

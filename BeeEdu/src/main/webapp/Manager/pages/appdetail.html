@@ -20,13 +20,7 @@
       <a class="layui-btn layui-btn-xs" lay-event="add"><i class="layui-icon"></i></a>
     </div>
     <div class="layui-col-md3">
-      <select name="city" lay-verify="" lay-search lay-filter="searchAppName">
-        <option value="0">应用0</option>
-        <option value="1">应用1</option>
-        <option value="2">应用2</option>
-        <option value="00">应用00</option>
-        <option value="11">应用11</option>
-        <option value="22">应用23</option>
+      <select name="city" id="searchAppName"  lay-verify="" lay-search lay-filter="searchAppName">
       </select>
     </div>
     <div class="layui-col-md8"></div>
@@ -50,37 +44,106 @@
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 
 <script>
-  layui.use(['table', 'layer', 'jquery'], function () {
+  layui.use(['table', 'layer', 'jquery','laydate'], function () {
     var table = layui.table,
             layer = layui.layer,
-            $ = layui.jquery, form = layui.form;
+            $ = layui.jquery, form = layui.form,
+            laydate = layui.laydate;
     //主动渲染
     table.render({
       elem: '#test'
-      , url: '../test_json/demo1.json'
+      , url: '/appDetail/getList'
       , toolbar: '#toolbar' //开启头部工具栏，并为其绑定左侧模板
       , title: '用户数据表'
       , cols: [[
         {type: 'checkbox', fixed: 'left'}
         , {field: 'id', title: 'ID', width: 80, fixed: 'left', unresize: true, sort: true}
-        , {field: 'username', title: '账户名', width: 100, edit: 'text'}
-        , {field: 'ip', title: '密码', width: 100}
-        , {field: 'joinTime', title: '创建时间', width: 120, edit: 'text', sort: true}
-        , {field: 'joinTime', title: '修改时间', width: 120, edit: 'text', sort: true}
+        , {field: 'appId', title: 'APPID', width: 100, edit: 'text'}
+        , {field: 'applicationTypeId', title: '服务类型', width: 100,templet:function (res) {
+            switch (res.applicationTypeId) {
+              case 0:
+                return '<em>语音转写</em>'
+                break;
+              case 1:
+                return '<em>语音合成</em>'
+                break;
+              case 2:
+                return '<em>机器翻译</em>'
+                break;
+              case 3:
+                return '<em>语音听写</em>'
+                break;
+            }
+          }}
+        , {field: 'serviceUnit', title: '计算单位', width: 100,templet:function (res) {
+            switch (res.serviceUnit) {
+              case 0:
+                return '<em>时长</em>'
+                break;
+              case 1:
+                return '<em>字符</em>'
+                break;
+              case 2:
+                return '<em>装机量</em>'
+                break;
+            }
+          }}
+        , {field: 'serviceTotal', title: '服务总量', width: 100}
+        , {field: 'startDate', title: '开始时间', width: 120, edit: 'text', sort: true}
+        , {field: 'expireDate', title: '到期时间', width: 120, edit: 'text', sort: true}
         , {field: 'lock', title: '是否锁定', width: 110, templet: '#checkLock', unresize: true}
         , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150}
       ]]
       , page: true
     });
 
+   // form.on('select(searchAppName)', function(data){
+      $.ajax({
+        url:"/app/getList",
+        data:"",
+        async:true,
+        type:"post",
+        contextType:"application/json;charset=utf8",
+        dataType:"json",
+        success:function (data) {
+          var options = "";
+          for (var i=0;i<data.data.length;i++){
+            options += "<option value='"+data.data[i].id+","+data.data[i].appId+","+data.data[i].name+"'>"+data.data[i].name+"</option>";
+          }
+          $("#searchAppName").html(options);
+        }
+      })
+   // })
+    var toolbarAddLayerIndex = null;
     //头工具栏事件
     table.on('toolbar(operatorList)', function (obj) {
       if (obj.event == 'add') {
+        document.getElementById("addAppDetailForm").reset();
         layer.open({
-          type: 2,
+          type: 1,
           shade: [0.8, '#393D49'],
-          area: ['500px', '350px'],
-          content: 'account_add_from.html' //这里content是一个普通的String
+          area: ['800px', '500px'],
+          content: $('#addAppDetailLayer'), //这里content是一个普通的String
+          success: function (layero, index) {
+            toolbarAddLayerIndex = index;
+            var appValue = $("#searchAppName").val().split(",");
+            $('#addAppDetailLayer #applicationName').val(appValue[2]);
+            $('#addAppDetailLayer #applicationId').val(appValue[0]);
+            $('#addAppDetailLayer #appId').val(appValue[1]);
+            /*$('#addAppDetailLayer #applicationId').hide();
+            $('#addAppDetailLayer #appId').hide();*/
+            $('#addAppDetailLayer #formType').val("toolbarAdd");
+            laydate.render({
+              elem: '#startDate' //指定元素
+              ,zIndex: 99999999,
+              trigger: 'click'
+            });
+            laydate.render({
+              elem: '#expireDate' //指定元素
+              ,zIndex: 99999999,
+              trigger: 'click'
+            });
+          }
         });
       }
     });
@@ -88,6 +151,7 @@
       console.log(data.elem); //得到select原始DOM对象
       console.log(data.value); //得到被选中的值
       console.log(data.othis); //得到美化后的DOM对象
+
       layer.msg("这里查询当前应用下的服务信息")
     });
     //监听行工具事件
@@ -101,14 +165,43 @@
           });
           break;
         case 'edit':
-          layer.prompt({
-            formType: 2
-            , value: data.ip
-          }, function (value, index) {
-            obj.update({
-              ip: value
-            });
-            layer.close(index);
+          document.getElementById("addAppDetailForm").reset();
+          layer.open({
+            type: 1,
+            shade: [0.8, '#393D49'],
+            area: ['800px', '500px'],
+            content: $('#addAppDetailLayer'), //这里content是一个普通的String
+            success: function (layero, index) {
+              $('#addAppDetailLayer #formType').val("toolEdit");
+              toolbarAddLayerIndex = index;
+              var appValue = $("#searchAppName").val().split(",");
+              $('#addAppDetailLayer #applicationName').val(appValue[2]);
+              $('#addAppDetailLayer #applicationId').val(appValue[0]);
+              $('#addAppDetailLayer #appId').val(appValue[1]);
+              $('#addAppDetailLayer #id').val(data.id);
+              $('#addAppDetailLayer #applicationTypeId').val(data.applicationTypeId);
+              $('#addAppDetailLayer #serviceTotal').val(data.serviceTotal);
+              $('#addAppDetailLayer #serviceUnit').val(data.serviceUnit);
+              $('#addAppDetailLayer #startDate').val(data.startDate);
+              $('#addAppDetailLayer #expireDate').val(data.expireDate);
+              var remarkList = data.config10.split(",");
+              $('#addAppDetailLayer #config1').val(data.config1);
+              $('#addAppDetailLayer #config2').val(data.config2);
+              $('#addAppDetailLayer #config3').val(data.config3);
+              $('#addAppDetailLayer #configRemark1').val(remarkList[0]);
+              $('#addAppDetailLayer #configRemark2').val(remarkList[1]);
+              $('#addAppDetailLayer #configRemark3').val(remarkList[2]);
+              laydate.render({
+                elem: '#startDate' //指定元素
+                ,zIndex: 99999999,
+                trigger: 'click'
+              });
+              laydate.render({
+                elem: '#expireDate' //指定元素
+                ,zIndex: 99999999,
+                trigger: 'click'
+              });
+            }
           });
           break;
         default:
@@ -118,8 +211,172 @@
     form.on('checkbox(lockAccount)', function (obj) {
       layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
     })
+    //监听提交
+    form.on('submit(formDemo)', function(data){
+      var dataObj = {
+        "id":data.field.id,
+        "appId":data.field.appId,
+        "applicationId":data.field.applicationId,
+        "applicationTypeId":data.field.applicationTypeId,
+        "serviceUnit":data.field.serviceUnit,
+        "serviceTotal":data.field.serviceTotal,
+        "startDate":data.field.startDate,
+        "expireDate":data.field.expireDate,
+        "config1":data.field.config1,
+        "config2":data.field.config2,
+        "config3":data.field.config3,
+        "config10":data.field.config1+","+data.field.config2+","+data.field.config3
+      }
+      layer.msg(JSON.stringify(dataObj));
+      var requestUrl = null;
+      switch (data.field.formType) {
+        case "toolbarAdd":
+          requestUrl = "/appDetail/add"
+          break;
+        case "toolEdit":
+          requestUrl = "/appDetail/update"
+          break;
+        default:
+          break;
+      }
+      $.ajax({
+        url:requestUrl,
+        data:JSON.stringify(dataObj),
+        async:"true",
+        type:"post",
+        dataType:'json',
+        contentType:'application/json;charset=utf-8',
+        success:function (data) {
+          layer.msg(data.msg)
+          layer.close(toolbarAddLayerIndex);
+          document.getElementById("addAppDetailForm").reset();
+          form.render();
+        },
+        error:function (XMLHttpRequest,textStatus,errorThrown) {
+          layer.msg("请求失败！");
+          layer.close(toolbarAddLayerIndex); //再执行关闭
+          document.getElementById("addAppDetailForm").reset();
+          form.render();
+        }
+      })
+      return false;
+    });
   });
+
+
 </script>
 
 </body>
+<!--添加弹出框-->
+<div class="layui-card" id="addAppDetailLayer" hidden>
+  <!--<div class="layui-card-header"></div>-->
+  <div class="layui-card-body">
+    <form class="layui-form" action="" id="addAppDetailForm">
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">应用名</label>
+          <div class="layui-input-block">
+            <input type="text" name="applicationName" id="applicationName" class="layui-input">
+            <input type="text" name="applicationId" id="applicationId" class="layui-input layui-hide">
+            <input type="text" name="appId" id="appId" class="layui-input layui-hide">
+            <input type="text" name="formType" id="formType" class="layui-input layui-hide">
+            <input type="text" name="id" id="id" class="layui-input layui-hide">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">服务类型</label>
+          <div class="layui-input-block">
+            <select name="applicationTypeId" id="applicationTypeId" lay-verify="required">
+              <option value="0">语音转写</option>
+              <option value="1">语音合成</option>
+              <option value="2">机器翻译</option>
+              <option value="3">语音听写</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">服务总量</label>
+          <div class="layui-input-block">
+            <input type="number" name="serviceTotal" id="serviceTotal" required  lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">服务-(计算)单位</label>
+          <div class="layui-input-block">
+            <select name="serviceUnit" id="serviceUnit" lay-verify="required">
+              <option value="0">时长</option>
+              <option value="1">字符</option>
+              <option value="2">装机量</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">开始时间</label>
+          <div class="layui-input-block">
+            <input type="text" class="layui-input" id="startDate"  name="startDate">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">结束时间</label>
+          <div class="layui-input-block">
+            <input type="text" class="layui-input" id="expireDate" name="expireDate">
+          </div>
+        </div>
+      </div>
+
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">配置1</label>
+          <div class="layui-input-block">
+            <input type="text" class="layui-input" name="config1" id="config1">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">备注</label>
+          <div class="layui-input-block">
+            <input type="text" class="layui-input" name="configRemark1" id="configRemark1">
+          </div>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">配置2</label>
+          <div class="layui-input-block">
+            <input type="text"class="layui-input"  name="config2" id="config2">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">备注</label>
+          <div class="layui-input-block">
+            <input type="text"class="layui-input"  name="configRemark2" id="configRemark2">
+          </div>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">配置3</label>
+          <div class="layui-input-block">
+            <input type="text" class="layui-input" name="config3" id="config3">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">备注</label>
+          <div class="layui-input-block">
+            <input type="text" class="layui-input" name="configRemark3" id="configRemark3">
+          </div>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-input-block">
+          <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+          <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 </html>

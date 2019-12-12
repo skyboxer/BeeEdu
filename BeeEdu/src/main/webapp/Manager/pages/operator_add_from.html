@@ -59,12 +59,12 @@
         //监听提交
         form.on('submit(formDemo)', function(data){
             layer.msg(JSON.stringify(data.field));
-            var data = {"type":data.field.type,"tel":data.field.tel,"email":data.field.email,"password":data.field.password};
+            var data1 = {"type":data.field.type,"tel":data.field.tel,"email":data.field.email,"password":data.field.password};
             $.ajax({
                 url:"/operator/add",
                 type:"post",
                 async:"true",
-                data:JSON.stringify(data),
+                data:JSON.stringify(data1),
                 dataType:'json',
                 contentType:'application/json;charset=utf-8',
                 success:function (data) {

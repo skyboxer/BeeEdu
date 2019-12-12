@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
@@ -24,22 +25,22 @@ import java.util.Map;
 public class AppDetailController {
     @Autowired
     private AppDetailService appDetailService;
-    @RequestMapping("getList")
-    public JSONObject getOperatorList(int pageIndex, int pageSize, String tel){
+    @RequestMapping(value = "getList",method = RequestMethod.GET)
+    public JSONObject getOperatorList(int page, int limit){
         Map<String,Object> paramMap = new HashMap<>();
-        paramMap.put("pageIndex",pageIndex);
-        paramMap.put("pageSize",pageSize);
-        paramMap.put("tel",tel);
+        paramMap.put("pageIndex",page-1);
+        paramMap.put("pageSize",limit);
+        paramMap.put("applicationId","");
         return appDetailService.getAppDetailList(paramMap);
     }
 
-    @RequestMapping("add")
+    @RequestMapping(value = "add",method = RequestMethod.POST,produces = "application/json")
     public JSONObject addOperator(@RequestBody AppDetail appDetail){
 
         return appDetailService.addAppDetail(appDetail);
     }
 
-    @RequestMapping("update")
+    @RequestMapping(value = "update",method = RequestMethod.POST,produces = "application/json")
     public JSONObject updateOperator(@RequestBody AppDetail appDetail){
 
         return appDetailService.updateAppDetail(appDetail);

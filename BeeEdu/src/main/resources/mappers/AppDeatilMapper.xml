@@ -20,19 +20,87 @@
         limit #{pageIndex},#{pageSize}
     </select>
 
-    <insert id="insertAppDetail">
+    <select id="queryAppDetailCount" resultType="java.lang.Integer" parameterType="map">
+        select count(id) from application_detail
+        <where>
+            <if test="applicationTypeId != null and applicationTypeId != ''">
+                and application_type_id = #{applicationTypeId}
+            </if>
+            <if test="applicationId != null and applicationId != ''">
+                and application_id = #{applicationId}
+            </if>
+
+        </where>
+    </select>
+    <insert id="insertAppDetail" parameterType="AppDetail">
         INSERT  INTO application_detail
-        SET (application_id,appid,application_type_id,serviceTotal,serviceUnit,startDate,expireDate,config1,config2,config3,config4,config5,config6,config7,config8,config9,config10
+        (application_id,appid,application_type_id,serviceTotal,serviceUnit,startDate,expireDate,config1,config2,config3,config4,config5,config6,config7,config8,config9,config10
         )
-        value (#{application_id},#{appid},#{application_type_id},#{serviceTotal},#{serviceUnit},#{startDate},#{expireDate},#{config1},#{config2},#{config3},#{config4},#{config5},#{config6},#{config7},#{config8},#{config9},#{config10})
+        value (#{applicationId},#{appId},#{applicationTypeId},#{serviceTotal},#{serviceUnit},#{startDate},#{expireDate},#{config1},#{config2},#{config3},#{config4},#{config5},#{config6},#{config7},#{config8},#{config9},#{config10})
     </insert>
 
-    <update id="updateAppDetail">
+    <update id="updateAppDetail" parameterType="AppDetail">
         UPDATE application_detail
-        SET (application_id,appid,application_type_id,serviceTotal,serviceUnit,startDate,expireDate,config1,config2,config3,config4,config5,config6,config7,config8,config9,config10
-        )
-        value (#{application_id},#{appid},#{application_type_id},#{serviceTotal},#{serviceUnit},#{startDate},#{expireDate},#{config1},#{config2},#{config3},#{config4},#{config5},#{config6},#{config7},#{config8},#{config9},#{config10})
-        where id = #{id})
+        <set> 
+            <if test="applicationId!=null">
+                application_id =  #{applicationId},
+            </if> 
+            <if test="appId!=null">
+                appid=  #{appId},         
+            </if>
+            <if test="applicationTypeId!=null">
+                application_type_id=  #{applicationTypeId},         
+            </if>
+            <if test="serviceTotal!=null">
+                serviceTotal=  #{serviceTotal},         
+            </if>
+            <if test="serviceUnit!=null">
+                serviceUnit =  #{serviceUnit},         
+            </if>
+            <if test="startDate!=null">
+                startDate=  #{startDate},         
+            </if> 
+            <if test="expireDate!=null">
+                expireDate=  #{expireDate},         
+            </if> 
+            <if test="deleteStatus!=null">
+                deleteStatus = #{deleteStatus},
+            </if>
+            <if test="usableStatus!=null">
+                usableStatus = #{usableStatus},
+            </if>
+            <if test="config1!=null">
+                config1 =  #{config1},         
+            </if> 
+            <if test="config2!=null">
+                config2 =  #{config2},         
+            </if> 
+            <if test="config3!=null">
+                config3 =  #{config3},         
+            </if> 
+            <if test="config4!=null">
+                config4 =  #{config4},         
+            </if> 
+            <if test="config5!=null">
+                config5 =  #{config5},         
+            </if> 
+            <if test="config6!=null">
+                config6 =  #{config6},         
+            </if> 
+            <if test="config7!=null">
+                config7 =  #{config7},         
+            </if> 
+            <if test="config8!=null">
+                config8 =  #{config8},         
+            </if> 
+            <if test="config9!=null">
+                config9 =  #{config9},         
+            </if> 
+            <if test="config10!=null">
+                config10 =  #{config10},         
+            </if> 
+        </set>
+        where id = #{id}
     </update>
 
 </mapper>
