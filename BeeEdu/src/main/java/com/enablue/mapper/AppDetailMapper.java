@@ -18,6 +18,8 @@ public interface AppDetailMapper {
      */
     List<AppDetail> queryAppDetailList(Map map);
 
+    int queryAppDetailCount(Map map);
+
     /**
      * 添加应用详情
      * @param appDetail

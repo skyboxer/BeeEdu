@@ -7,11 +7,11 @@ package com.enablue.pojo;
  */
 public class App {
     private int id;
-    private int appid;
+    private String appId;
     private String name;
     private int operatorId;
-    private boolean deleteStatus;
-    private boolean usableStatus;
+    private int deleteStatus;
+    private int usableStatus;
 
     public int getId() {
         return id;
@@ -21,13 +21,7 @@ public class App {
         this.id = id;
     }
 
-    public int getAppid() {
-        return appid;
-    }
 
-    public void setAppid(int appid) {
-        this.appid = appid;
-    }
 
     public String getName() {
         return name;
@@ -45,19 +39,27 @@ public class App {
         this.operatorId = operatorId;
     }
 
-    public boolean isDeleteStatus() {
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
+    }
+
+    public int getDeleteStatus() {
         return deleteStatus;
     }
 
-    public void setDeleteStatus(boolean deleteStatus) {
+    public void setDeleteStatus(int deleteStatus) {
         this.deleteStatus = deleteStatus;
     }
 
-    public boolean isUsableStatus() {
+    public int getUsableStatus() {
         return usableStatus;
     }
 
-    public void setUsableStatus(boolean usableStatus) {
+    public void setUsableStatus(int usableStatus) {
         this.usableStatus = usableStatus;
     }
 }

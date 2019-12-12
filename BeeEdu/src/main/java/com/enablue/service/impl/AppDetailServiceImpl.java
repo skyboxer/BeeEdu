@@ -20,6 +20,7 @@ public class AppDetailServiceImpl implements AppDetailService {
     public JSONObject getAppDetailList(Map map) {
         JSONObject returnJson = new JSONObject();
         List<AppDetail> appDetailsList = appDetailMapper.queryAppDetailList(map);
+        int appDetailCount = appDetailMapper.queryAppDetailCount(map);
         if (appDetailsList.size() < 0) {
             returnJson.put("code", -1);
             returnJson.put("data", null);
@@ -27,7 +28,8 @@ public class AppDetailServiceImpl implements AppDetailService {
             return returnJson;
         }
         returnJson.put("code", 0);
-        returnJson.put("data", (JsonElement) appDetailsList);
+        returnJson.put("count",appDetailCount);
+        returnJson.put("data", appDetailsList);
         return returnJson;
 
     }
@@ -42,7 +44,7 @@ public class AppDetailServiceImpl implements AppDetailService {
     @Override
     public JSONObject updateAppDetail(AppDetail appDetail) {
         JSONObject returnJson = new JSONObject();
-        int status = appDetailMapper.insertAppDetail(appDetail);
+        int status = appDetailMapper.updateAppDetail(appDetail);
         return getJsonObject(returnJson, status);
     }
 

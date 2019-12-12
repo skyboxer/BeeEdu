@@ -56,12 +56,12 @@
                 , {field: 'id', title: 'ID', width: 80, fixed: 'left', unresize: true, sort: true}
                 , {field: 'type', title: '服务商', width: 120, edit: 'text'}
                 , {
-                    field: 'email', title: '邮箱', width: 150, edit: 'text', templet: function (res) {
+                    field: 'email', title: '邮箱', width: 200, edit: 'text', templet: function (res) {
                         return '<em>' + res.email + '</em>'
                     }
                 }
-                , {field: 'tel', title: '电话', width: 80, edit: 'text', sort: true}
-                , {field: 'password', title: '密码', width: 100}
+                , {field: 'tel', title: '电话', width: 200, edit: 'text', sort: true}
+                , {field: 'password', title: '密码', width: 200}
                 , {field: 'usableStatus', title: '是否锁定', width: 110, templet: '#checkLock', unresize: true}
                 , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 200}
             ]]
@@ -87,6 +87,7 @@
 
         });
         var addLayerOpenIndex = null;
+        var addLayerObjData = null;
         //监听行工具事件
         table.on('tool(operatorList)', function (obj) {
             var data = obj.data;
@@ -120,6 +121,7 @@
                         content: $('#appForm'),
                         success:function (layero,index) {
                             addLayerOpenIndex=index;
+                            addLayerObjData = data;
                         }
                     })
                     break;
@@ -132,8 +134,24 @@
             //$.post("/operator/update",)
         })
         form.on('submit(addAppForm)', function(data){
-            layer.msg(JSON.stringify(data.field));
-            layer.close(addLayerOpenIndex); //再执行关闭
+            //layer.msg(JSON.stringify(data.field));
+            var dataObj = {"appId":data.field.appId,"name":data.field.name,"operatorId":addLayerObjData.id};
+            $.ajax({
+                url:"/app/add",
+                type:"post",
+                async:"true",
+                data:JSON.stringify(dataObj),
+                dataType:'json',
+                contentType:'application/json;charset=utf-8',
+                success:function (data) {
+                    layer.msg(data.msg)
+                    layer.close(addLayerOpenIndex); //再执行关闭
+                },
+                error:function (XMLHttpRequest,textStatus,errorThrown) {
+                    layer.msg("请求失败！");
+                    parent.close(addLayerOpenIndex); //再执行关闭
+                }
+            })
             return false;
         });
     });
@@ -149,7 +167,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">应用appid</label>
         <div class="layui-input-block">
-            <input type="text" name="appid" required  lay-verify="required" placeholder="必填" autocomplete="off" class="layui-input">
+            <input type="text" name="appId" required  lay-verify="required" placeholder="必填" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
