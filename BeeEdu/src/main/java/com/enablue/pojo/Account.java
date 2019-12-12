@@ -6,8 +6,17 @@ package com.enablue.pojo;
  * 2019.12.3 13：06
  */
 public class Account {
+    private Long id;
     private String name;
     private String password;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

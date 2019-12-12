@@ -1,6 +1,7 @@
 package com.enablue.service.impl;
 
 import com.enablue.mapper.AccountMapper;
+import com.google.gson.JsonElement;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * 用户服务实现类
@@ -25,7 +27,7 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     AccountMapper accountMapper;
     /**
-     * 登录
+     * 用户登录
      * @param
      * @param
      * @return
@@ -76,6 +78,85 @@ public class AccountServiceImpl implements AccountService {
 
        result.put("flag", true);
 
+        return result;
+    }
+
+    /**
+     * 查询所有用户
+     * @return
+     */
+    @Override
+    public HashMap<String, Object> queryAllAccount(Long page, Long limit) {
+        HashMap<String, Object> result = new HashMap<>();
+        page=(page-1)*limit;
+        //查询总记录数
+        List<Account> accountList =accountMapper.queryAllAccount();
+        List<Account> accountPageList =accountMapper.queryPageAccount(page,limit);
+        int count = accountList.size();
+        if (accountPageList.size()<1){
+            result.put("code", -1);
+            result.put("data", null);
+            result.put("msg", "查询失败");
+            return result;
+        }
+        result.put("code", 0);
+        result.put("data", accountList);
+        result.put("count",count);
+        return result;
+    }
+
+    /**
+     *  添加用户
+     * @param account
+     * @return
+     */
+    @Override
+    public HashMap<String, Object> addAccount(Account account) {
+       HashMap<String, Object> result = new HashMap<>();
+       int count = accountMapper.addAccount(account.getName(),account.getPassword());
+       if(count  < 1){
+           result.put("message","添加失败");
+           return  result;
+       }
+        result.put("message","添加成功");
+        return result;
+    }
+
+    /**
+     * 用户删除
+     * @param id
+     * @return
+     */
+    @Override
+    public HashMap<String, Object> deleteAccount(Long id) {
+        HashMap<String, Object> result = new HashMap<>();
+        int count =accountMapper.deleteAccount(id);
+        if(count < 1){
+            result.put("message","删除失败");
+            result.put("code",-1);
+            return result;
+        }
+        result.put("message","删除成功");
+        result.put("code",0);
+        return result;
+    }
+
+    /***
+     * 用户修改
+     * @param account
+     * @return
+     */
+    @Override
+    public HashMap<String, Object> updataAccount(Account account) {
+        HashMap<String, Object> result = new HashMap<>();
+        int count =accountMapper.updataAccount(account);
+        if(count < 1){
+            result.put("message","修改失败");
+            result.put("code",-1);
+            return result;
+        }
+        result.put("message","修改成功");
+        result.put("code",0);
         return result;
     }
 }
