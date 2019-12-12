@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace(命名空间)：映射文件的唯一标识 -->
+<mapper namespace="com.enablue.mapper.OperationLogMapper">
+    <!--添加操作日志-->
+    <insert id="addOperationLog">
+        INSERT INTO bee_edu.sys_bind_operation (
+        account_id,
+        user_id,
+        operationDetail,
+        operationDate,
+        operationAccount
+        )
+        VALUES
+        (
+            #{accountId},
+            #{userId},
+            #{operationDetail},
+            #{operationDate},
+            #{operationAccount}
+        )
+    </insert>
+    <!--查询所有操作日志-->
+    <select id="queryAllOperationLog" resultType="OperationLog">
+           SELECT
+            id,
+            account_id,
+            user_id,
+            operationDetail,
+            operationDate,
+            operationAccount
+            FROM
+            sys_bind_operation
+    </select>
+
+</mapper>
