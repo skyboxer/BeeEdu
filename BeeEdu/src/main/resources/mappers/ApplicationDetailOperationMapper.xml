@@ -58,6 +58,7 @@
                 application_type_id = #{applicationTypeId}
             </if>
         </where>
+        order by endServiceTotal desc
     </select>
 
 </mapper>
