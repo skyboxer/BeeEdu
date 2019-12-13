@@ -17,15 +17,15 @@
             )
         VALUES
             (
-                #{application_detail_id},
-                #{appid},
-                #{application_type_id},
-                #{operationDate},
-                #{startServiceTotal},
-                #{endServiceTotal},
-                #{account_id},
+                #{ApplicationDetailOperation.applicationDetailId},
+                #{ApplicationDetailOperation.appid},
+                #{ApplicationDetailOperation.applicationTypeId},
+                #{ApplicationDetailOperation.operationDate},
+                #{ApplicationDetailOperation.startServiceTotal},
+                #{ApplicationDetailOperation.endServiceTotal},
+                #{ApplicationDetailOperation.accountId}
             );
-    </insert>
+         </insert>
     <!--查询所有操作日志-->
     <select id="queryAllApplicationDetailOperation" resultType="ApplicationDetailOperation">
             SELECT

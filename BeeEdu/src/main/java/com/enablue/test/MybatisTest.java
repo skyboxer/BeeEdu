@@ -1,6 +1,8 @@
 package com.enablue.test;
 
 import com.enablue.mapper.AccountMapper;
+import com.enablue.mapper.ApplicationDetailOperationMapper;
+import com.enablue.pojo.ApplicationDetailOperation;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -22,13 +24,14 @@ public class MybatisTest {
         InputStream inputStream = Resources.getResourceAsStream(resource);
         // 构建sqlSessionFactory
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-
+        
         // 获取sqlSession
         SqlSession sqlSession = sqlSessionFactory.openSession();
+        ApplicationDetailOperation applicationDetailOperation = new ApplicationDetailOperation();
         // 初始化userDao
-        AccountMapper mapper = sqlSession.getMapper(AccountMapper.class);
-        Account account = mapper.queryAccount("wangcheng", "wangcheng");
-        System.out.println("account = " + account);
+        ApplicationDetailOperationMapper mapper = sqlSession.getMapper(ApplicationDetailOperationMapper.class);
+        int i = mapper.addApplicationDetailOperation(applicationDetailOperation);
+        System.out.println("i = " + i);
 
     }
 }

@@ -95,7 +95,6 @@ public class AccountController{
      */
     @RequestMapping("/Manager/updataAccount")
     public HashMap<String,Object> updataAccount(Account account) {
-        System.out.println("account = " + account);
         if ( account==null && account.getId() != null){
             return null;
         }
