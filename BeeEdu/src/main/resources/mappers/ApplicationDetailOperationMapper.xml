@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace(命名空间)：映射文件的唯一标识 -->
+<mapper namespace="com.enablue.mapper.ApplicationDetailOperationMapper">
+    <!--添加操作日志-->
+    <insert id="addApplicationDetailOperation">
+        INSERT INTO sys_applicationDetail_operation(
+            application_detail_id,
+            appid,
+            application_type_id,
+            operationDate,
+            startServiceTotal,
+            endServiceTotal,
+            account_id
+            )
+        VALUES
+            (
+                #{application_detail_id},
+                #{appid},
+                #{application_type_id},
+                #{operationDate},
+                #{startServiceTotal},
+                #{endServiceTotal},
+                #{account_id},
+            );
+    </insert>
+    <!--查询所有操作日志-->
+    <select id="queryAllApplicationDetailOperation" resultType="ApplicationDetailOperation">
+            SELECT
+            id,
+            application_detail_id,
+            appid,
+            application_type_id,
+            operationDate,
+            startServiceTotal,
+            endServiceTotal,
+            account_id
+            FROM
+            sys_applicationDetail_operation
+    </select>
+
+</mapper>
