@@ -67,15 +67,25 @@
             ]]
             , page: true
         });
-
+        var operatorLayerOpenIndex = null;
         //头工具栏事件
         table.on('toolbar(operatorList)', function (obj) {
             if (obj.event == 'add') {
                 layer.open({
-                    type: 2,
+                    type: 1,
                     shade: [0.8, '#393D49'],
                     area: ['500px', '350px'],
-                    content: 'operator_add_from.html' //这里content是一个普通的String
+                    content: $("operatorForm"), //这里content是一个普通的String
+                    success:function(layero,index){
+                       operatorLayerOpenIndex=index;
+                        form.val("operatorFormFilter", { //formTest 即 class="layui-form" 所在元素属性 lay-filter="" 对应的值
+                            "formType":"operatorAdd"
+                        });
+                    },
+                    cancel: function(index, layero){
+                            layer.close(index)
+                        return false;
+                    }
                 });
             }
         });
@@ -84,33 +94,40 @@
             if (event.keyCode == 13) {
                 alert("名字查询");
             }
-
         });
-        var addLayerOpenIndex = null;
-        var addLayerObjData = null;
+        var addAppLayerOpenIndex = null;
+        var addAppLayerObjData = null;
         //监听行工具事件
         table.on('tool(operatorList)', function (obj) {
             var data = obj.data;
             switch (obj.event) {
                 case 'del':
                     layer.confirm('真的删除行么', function (index) {
-                        obj.del();
+                        var dataObj = {"id":data.id,"deleteStatus":1}
+                        operatorForm("/operator/update",dataObj)
                         layer.close(index);
                     });
                     break;
                 case 'edit':
                     layer.open({
-                        type: 2,
+                        type: 1,
                         shade: [0.8, '#393D49'],
                         area: ['500px', '350px'],
-                        content: 'operator_edit_from.html', //这里content是一个普通的String
-                        success: function (layero, index) {
-                            var form = layer.getChildFrame('.layui-form', index);
-                            form.find("#name").val(data.username);
-                            form.find("#tel").val(data.sex);
-                            form.find("#email").val(data.email);
-                            form.find("#password").val(data.city);
-
+                        content: $("#operatorForm"), //这里content是一个普通的String
+                        success:function(layero,index){
+                            operatorLayerOpenIndex=index;
+                            form.val("operatorFormFilter", { //formTest 即 class="layui-form" 所在元素属性 lay-filter="" 对应的值
+                                "formType":"operatorUpdate",
+                                "type":data.type,
+                                "tel":data.tel,
+                                "password":data.password,
+                                "id":data.id,
+                                "email":data.email
+                            });
+                        },
+                        cancel: function(index, layero){
+                            layer.close(index)
+                            return false;
                         }
                     });
                     break;
@@ -120,8 +137,8 @@
                         title:"添加app",
                         content: $('#appForm'),
                         success:function (layero,index) {
-                            addLayerOpenIndex=index;
-                            addLayerObjData = data;
+                            addAppLayerOpenIndex=index;
+                            addAppLayerObjData = data;
                         }
                     })
                     break;
@@ -130,12 +147,17 @@
             }
         });
         form.on('checkbox(lockAccount)', function (obj) {
-            layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
-            //$.post("/operator/update",)
+            /*layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);*/
+            var dataObj = {"id":obj.value}
+            dataObj["usableStatus"] = 0;
+            if(obj.elem.checked) {
+                dataObj["usableStatus"] = 1;
+            }
+            operatorForm("/appDetail/update",dataObj);
         })
         form.on('submit(addAppForm)', function(data){
             //layer.msg(JSON.stringify(data.field));
-            var dataObj = {"appId":data.field.appId,"name":data.field.name,"operatorId":addLayerObjData.id};
+            var dataObj = {"appId":data.field.appId,"name":data.field.name,"operatorId":addAppLayerObjData.id};
             $.ajax({
                 url:"/app/add",
                 type:"post",
@@ -145,15 +167,53 @@
                 contentType:'application/json;charset=utf-8',
                 success:function (data) {
                     layer.msg(data.msg)
-                    layer.close(addLayerOpenIndex); //再执行关闭
+                    layer.close(addAppLayerOpenIndex); //再执行关闭
                 },
                 error:function (XMLHttpRequest,textStatus,errorThrown) {
                     layer.msg("请求失败！");
-                    parent.close(addLayerOpenIndex); //再执行关闭
+                    parent.close(addAppLayerOpenIndex); //再执行关闭
                 }
             })
             return false;
         });
+        form.on('submit(operatorForm)', function(data){
+            var dataObj = {"type":data.field.type,"tel":data.field.tel,"email":data.field.email,"password":data.field.password};
+            var requestUrl = null;
+            switch (data.field.formType) {
+                case "operatorAdd":
+                    requestUrl = "/operator/add";
+                    break;
+                case "operatorUpdate":
+                    dataObj["id"]=data.field.id;
+                    requestUrl="/operator/update"
+                    break;
+            }
+
+            operatorForm(requestUrl,dataObj);
+            return false;
+        });
+        function operatorForm(requestUrl,dataObj) {
+            $.ajax({
+                url:requestUrl,
+                type:"post",
+                async:"true",
+                data:JSON.stringify(dataObj),
+                dataType:'json',
+                contentType:'application/json;charset=utf-8',
+                success:function (data) {
+                    layer.msg(data.msg);
+                    if(operatorLayerOpenIndex!=null){
+                        parent.layer.close(operatorLayerOpenIndex); //再执行关闭
+                    }
+                },
+                error:function (XMLHttpRequest,textStatus,errorThrown) {
+                    layer.msg("请求失败！");
+                    if(operatorLayerOpenIndex!=null){
+                        parent.layer.close(operatorLayerOpenIndex); //再执行关闭
+                    }
+                }
+            })
+        }
     });
 </script>
 <form class="layui-form layui-form-pane" action="" id="appForm" hidden>
@@ -178,4 +238,43 @@
     </div>
 </form>
 </body>
+<div class="layui-card" hidden id="operatorForm">
+    <!--<div class="layui-card-header"></div>-->
+    <div class="layui-card-body">
+        <form class="layui-form" action="" lay-filter="operatorFormFilter">
+            <div class="layui-form-item">
+                <label class="layui-form-label">运营商类型</label>
+                <div class="layui-input-block">
+                    <input type="text" name="type" required  lay-verify="required" placeholder="请输入运营商类型" autocomplete="off" class="layui-input">
+                    <input type="text" name="formType" id="formType" class="layui-input layui-hide">
+                    <input type="text" name="id" id="id" class="layui-input layui-hide">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">手机号</label>
+                <div class="layui-input-block">
+                    <input type="text" name="tel" required  lay-verify="required|phone" placeholder="请输入手机号" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">邮箱</label>
+                <div class="layui-input-block">
+                    <input type="text" name="email" required  lay-verify="required|email" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">密码</label>
+                <div class="layui-input-inline">
+                    <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="operatorForm">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 </html>

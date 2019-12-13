@@ -15,8 +15,9 @@
             <if test="applicationId != null and applicationId != ''">
                 and application_id = #{applicationId}
             </if>
-
+            and application_detail.deleteStatus = 0
         </where>
+        order by application_id
         limit #{pageIndex},#{pageSize}
     </select>
 
@@ -29,76 +30,76 @@
             <if test="applicationId != null and applicationId != ''">
                 and application_id = #{applicationId}
             </if>
-
+            and deleteStatus = 0
         </where>
     </select>
     <insert id="insertAppDetail" parameterType="AppDetail">
         INSERT  INTO application_detail
-        (application_id,appid,application_type_id,serviceTotal,serviceUnit,startDate,expireDate,config1,config2,config3,config4,config5,config6,config7,config8,config9,config10
+        (application_id,appId,application_type_id,serviceTotal,serviceUnit,startDate,expireDate,config1,config2,config3,config4,config5,config6,config7,config8,config9,config10
         )
         value (#{applicationId},#{appId},#{applicationTypeId},#{serviceTotal},#{serviceUnit},#{startDate},#{expireDate},#{config1},#{config2},#{config3},#{config4},#{config5},#{config6},#{config7},#{config8},#{config9},#{config10})
     </insert>
 
     <update id="updateAppDetail" parameterType="AppDetail">
-        UPDATE application_detail
-        <set> 
-            <if test="applicationId!=null">
-                application_id =  #{applicationId},
-            </if> 
-            <if test="appId!=null">
-                appid=  #{appId},         
+        update application_detail
+        <set>
+            <if test="applicationId!=null and applicationId!=&quot;&quot;">
+                application_id=#{applicationId},
             </if>
-            <if test="applicationTypeId!=null">
-                application_type_id=  #{applicationTypeId},         
+            <if test="appId!=null and appId !=&quot;&quot;">
+                appId=#{appId},
             </if>
-            <if test="serviceTotal!=null">
-                serviceTotal=  #{serviceTotal},         
+            <if test="applicationTypeId!=null and applicationTypeId !=&quot;&quot;">
+                application_type_id=#{applicationTypeId},
             </if>
-            <if test="serviceUnit!=null">
-                serviceUnit =  #{serviceUnit},         
+            <if test="serviceTotal!=null and serviceTotal!=&quot;&quot;">
+                serviceTotal=#{serviceTotal},
+            </if>
+            <if test="serviceUnit!=null and serviceUnit!=&quot;&quot;">
+                serviceUnit=#{serviceUnit},
             </if>
             <if test="startDate!=null">
-                startDate=  #{startDate},         
-            </if> 
+                startDate=#{startDate},
+            </if>
             <if test="expireDate!=null">
-                expireDate=  #{expireDate},         
-            </if> 
+                expireDate=#{expireDate},
+            </if>
             <if test="deleteStatus!=null">
-                deleteStatus = #{deleteStatus},
+                deleteStatus=#{deleteStatus},
             </if>
             <if test="usableStatus!=null">
-                usableStatus = #{usableStatus},
+                usableStatus=#{usableStatus},
             </if>
             <if test="config1!=null">
-                config1 =  #{config1},         
-            </if> 
+                config1=#{config1},
+            </if>
             <if test="config2!=null">
-                config2 =  #{config2},         
-            </if> 
+                config2=#{config2},
+            </if>
             <if test="config3!=null">
-                config3 =  #{config3},         
-            </if> 
+                config3=#{config3},
+            </if>
             <if test="config4!=null">
-                config4 =  #{config4},         
-            </if> 
+                config4=#{config4},
+            </if>
             <if test="config5!=null">
-                config5 =  #{config5},         
-            </if> 
+                config5=#{config5},
+            </if>
             <if test="config6!=null">
-                config6 =  #{config6},         
-            </if> 
+                config6=#{config6},
+            </if>
             <if test="config7!=null">
-                config7 =  #{config7},         
-            </if> 
+                config7=#{config7},
+            </if>
             <if test="config8!=null">
-                config8 =  #{config8},         
-            </if> 
+                config8=#{config8},
+            </if>
             <if test="config9!=null">
-                config9 =  #{config9},         
-            </if> 
+                config9=#{config9},
+            </if>
             <if test="config10!=null">
-                config10 =  #{config10},         
-            </if> 
+                config10=#{config10},
+            </if>
         </set>
         where id = #{id}
     </update>

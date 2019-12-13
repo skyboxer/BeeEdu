@@ -62,4 +62,25 @@ public class App {
     public void setUsableStatus(int usableStatus) {
         this.usableStatus = usableStatus;
     }
+
+    @Override
+    public String toString() {
+        return "App{" +
+                "id=" + id +
+                ", appId='" + appId + '\'' +
+                ", name='" + name + '\'' +
+                ", operatorId=" + operatorId +
+                ", deleteStatus=" + deleteStatus +
+                ", usableStatus=" + usableStatus +
+                '}';
+    }
+
+    public App(int id, String appId, String name, int operatorId, int deleteStatus, int usableStatus) {
+        this.id = id;
+        this.appId = appId;
+        this.name = name;
+        this.operatorId = operatorId;
+        this.deleteStatus = deleteStatus;
+        this.usableStatus = usableStatus;
+    }
 }

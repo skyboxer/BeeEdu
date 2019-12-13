@@ -1,6 +1,7 @@
 package com.enablue.pojo;
 
 import java.util.Date;
+import java.util.List;
 
 public class AppDetail {
     private int id;
@@ -23,6 +24,15 @@ public class AppDetail {
     private String config8;
     private String config9;
     private String config10;
+    private List<App> app;
+
+    public List<App> getApp() {
+        return app;
+    }
+
+    public void setApp(App app) {
+        this.app = (List<App>) app;
+    }
 
     public int getId() {
         return id;
@@ -182,5 +192,54 @@ public class AppDetail {
 
     public void setConfig10(String config10) {
         this.config10 = config10;
+    }
+
+    public AppDetail(int id, int applicationId, String appId, int applicationTypeId, String serviceTotal, int serviceUnit, Date startDate, Date expireDate, int deleteStatus, int usableStatus, String config1, String config2, String config3, String config4, String config5, String config6, String config7, String config8, String config9, String config10) {
+        this.id = id;
+        this.applicationId = applicationId;
+        this.appId = appId;
+        this.applicationTypeId = applicationTypeId;
+        this.serviceTotal = serviceTotal;
+        this.serviceUnit = serviceUnit;
+        this.startDate = startDate;
+        this.expireDate = expireDate;
+        this.deleteStatus = deleteStatus;
+        this.usableStatus = usableStatus;
+        this.config1 = config1;
+        this.config2 = config2;
+        this.config3 = config3;
+        this.config4 = config4;
+        this.config5 = config5;
+        this.config6 = config6;
+        this.config7 = config7;
+        this.config8 = config8;
+        this.config9 = config9;
+        this.config10 = config10;
+    }
+
+    @Override
+    public String toString() {
+        return "AppDetail{" +
+                "id=" + id +
+                ", applicationId=" + applicationId +
+                ", appId='" + appId + '\'' +
+                ", applicationTypeId=" + applicationTypeId +
+                ", serviceTotal='" + serviceTotal + '\'' +
+                ", serviceUnit=" + serviceUnit +
+                ", startDate=" + startDate +
+                ", expireDate=" + expireDate +
+                ", deleteStatus=" + deleteStatus +
+                ", usableStatus=" + usableStatus +
+                ", config1='" + config1 + '\'' +
+                ", config2='" + config2 + '\'' +
+                ", config3='" + config3 + '\'' +
+                ", config4='" + config4 + '\'' +
+                ", config5='" + config5 + '\'' +
+                ", config6='" + config6 + '\'' +
+                ", config7='" + config7 + '\'' +
+                ", config8='" + config8 + '\'' +
+                ", config9='" + config9 + '\'' +
+                ", config10='" + config10 + '\'' +
+                '}';
     }
 }
