@@ -25,4 +25,11 @@ public interface ApplicationDetailOperationMapper {
      * @return
      */
     List<ApplicationDetailOperation> queryAllApplicationDetailOperation();
+
+    /**
+     * 条件查询(applicationTypeId)
+     * @param applicationDetailOperation
+     * @return 时长最多
+     */
+    List<ApplicationDetailOperation> queryApplicationDetailOperation(ApplicationDetailOperation applicationDetailOperation);
 }

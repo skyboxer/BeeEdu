@@ -13,9 +13,10 @@ public class ApplicationDetailOperation {
     private  Long   appid;
     private  Long   applicationTypeId;
     private  Date   operationDate;
-    private  String startServiceTotal;
-    private  String endServiceTotal;
+    private  Long startServiceTotal;
+    private  Long endServiceTotal;
     private  Long   accountId;
+
 
     public Long getId() {
         return id;
@@ -57,19 +58,19 @@ public class ApplicationDetailOperation {
         this.operationDate = operationDate;
     }
 
-    public String getStartServiceTotal() {
+    public Long getStartServiceTotal() {
         return startServiceTotal;
     }
 
-    public void setStartServiceTotal(String startServiceTotal) {
+    public void setStartServiceTotal(Long startServiceTotal) {
         this.startServiceTotal = startServiceTotal;
     }
 
-    public String getEndServiceTotal() {
+    public Long getEndServiceTotal() {
         return endServiceTotal;
     }
 
-    public void setEndServiceTotal(String endServiceTotal) {
+    public void setEndServiceTotal(Long endServiceTotal) {
         this.endServiceTotal = endServiceTotal;
     }
 
@@ -79,5 +80,17 @@ public class ApplicationDetailOperation {
 
     public void setAccountId(Long account_id) {
         this.accountId = account_id;
+    }
+
+    public ApplicationDetailOperation(Long applicationDetailId, Long appid, Long applicationTypeId, Long startServiceTotal, Long endServiceTotal, Long accountId) {
+        this.applicationDetailId = applicationDetailId;
+        this.appid = appid;
+        this.applicationTypeId = applicationTypeId;
+        this.startServiceTotal = startServiceTotal;
+        this.endServiceTotal = endServiceTotal;
+        this.accountId = accountId;
+    }
+
+    public ApplicationDetailOperation() {
     }
 }
