@@ -52,6 +52,7 @@ public class AccountServiceImpl implements AccountService {
                 return result;
             }
             result.put("flag", true);
+            result.put("account",temp);
             return result;
         } catch (Exception e) {
             e.printStackTrace();
@@ -83,6 +84,7 @@ public class AccountServiceImpl implements AccountService {
                 return result;
             }
             result.put("flag", true);
+            result.put("manager",temp);
             return result;
         }catch (Exception e){
             e.printStackTrace();

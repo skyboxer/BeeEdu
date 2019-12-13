@@ -41,7 +41,7 @@ public class AccountController{
         HashMap<String, Object> result = accountService.login(account);
         if((Boolean) result.get("flag")){
             //设置session
-            ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession().setAttribute("account",account);
+            ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession().setAttribute("account",result.get("account"));
         }
         return result;
     }
@@ -55,7 +55,7 @@ public class AccountController{
     public HashMap<String,Object> managerLogin(Account manager){
         HashMap<String, Object> result = accountService.managerLogin(manager);
         //设置session
-        ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession().setAttribute("manager",manager);
+        ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession().setAttribute("manager",result.get("manager"));
         return result;
     }
 
