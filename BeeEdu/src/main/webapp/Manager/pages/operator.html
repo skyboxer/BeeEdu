@@ -75,7 +75,7 @@
                     type: 1,
                     shade: [0.8, '#393D49'],
                     area: ['500px', '350px'],
-                    content: $("operatorForm"), //这里content是一个普通的String
+                    content: $("#operatorForm"), //这里content是一个普通的String
                     success:function(layero,index){
                        operatorLayerOpenIndex=index;
                         form.val("operatorFormFilter", { //formTest 即 class="layui-form" 所在元素属性 lay-filter="" 对应的值
@@ -127,6 +127,8 @@
                         },
                         cancel: function(index, layero){
                             layer.close(index)
+                            document.getElementById("operatorFormFilter").reset();
+                            form.render();
                             return false;
                         }
                     });
@@ -203,14 +205,20 @@
                 success:function (data) {
                     layer.msg(data.msg);
                     if(operatorLayerOpenIndex!=null){
-                        parent.layer.close(operatorLayerOpenIndex); //再执行关闭
+                        layer.close(operatorLayerOpenIndex); //再执行关闭
                     }
+                    operatorLayerOpenIndex = null;
+                    document.getElementById("operatorFormFilter").reset();
+                    form.render();
                 },
                 error:function (XMLHttpRequest,textStatus,errorThrown) {
                     layer.msg("请求失败！");
                     if(operatorLayerOpenIndex!=null){
-                        parent.layer.close(operatorLayerOpenIndex); //再执行关闭
+                       layer.close(operatorLayerOpenIndex); //再执行关闭
                     }
+                    operatorLayerOpenIndex = null;
+                    document.getElementById("operatorFormFilter").reset();
+                    form.render();
                 }
             })
         }
@@ -241,7 +249,7 @@
 <div class="layui-card" hidden id="operatorForm">
     <!--<div class="layui-card-header"></div>-->
     <div class="layui-card-body">
-        <form class="layui-form" action="" lay-filter="operatorFormFilter">
+        <form class="layui-form" action="" id="operatorFormFilter" lay-filter="operatorFormFilter">
             <div class="layui-form-item">
                 <label class="layui-form-label">运营商类型</label>
                 <div class="layui-input-block">
