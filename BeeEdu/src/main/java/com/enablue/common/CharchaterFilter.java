@@ -51,7 +51,7 @@ public class CharchaterFilter implements Filter {
             //静态资源放行
             if (path.indexOf("/layui") > -1 || path.indexOf("/css") > -1 || path.indexOf("/js") > -1 || path.indexOf("/img") > -1 ){
                 System.out.println("放行 path = " + path);
-                response.setContentType("text/html;charset=utf-8");
+                //response.setContentType("text/html;charset=utf-8");
                 // 已经登陆,继续此次请求
                 filterChain.doFilter(request, response);
             }else if(manager ==  null){
@@ -60,7 +60,7 @@ public class CharchaterFilter implements Filter {
                  response.sendRedirect("/Manager/login.html");
             }else {
                  System.out.println("放行 path = " + path);
-                 response.setContentType("text/html;charset=utf-8");
+                 //response.setContentType("text/html;charset=utf-8");
                  // 已经登陆,继续此次请求
                  filterChain.doFilter(request, response);
             }

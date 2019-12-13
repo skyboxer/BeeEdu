@@ -9,6 +9,7 @@
 	<settings>
 		<!-- 开启驼峰匹配：经典的数据库列名（多个单词下划线连接）映射到经典的java属性名（多个单词驼峰连接） -->
 		<setting name="mapUnderscoreToCamelCase" value="true"/>
+		<setting name="logImpl" value="STDOUT_LOGGING" />
 	</settings>
 
 <!--	<typeAliases>-->

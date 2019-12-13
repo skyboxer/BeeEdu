@@ -31,12 +31,12 @@
 </script>
 <!--这里是右侧表格数据操作-->
 <script type="text/html" id="barDemo">
-  <a class="layui-btn layui-btn-xs" lay-event="edit">修改密码</a>
+  <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
   <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
 <script type="text/html" id="checkLock">
-  <input type="checkbox" name="lock" value="{{d.id}}" title="锁定" lay-filter="lockAccount" {{d.id== 10001
+  <input type="checkbox" name="lock" value="{{d.id}}" title="锁定" lay-filter="lockAccount" {{d.usableStatus== 1
          ? 'checked' : ''}}>
 </script>
 
@@ -96,8 +96,6 @@
       ]]
       , page: true
     });
-
-   // form.on('select(searchAppName)', function(data){
       $.ajax({
         url:"/app/getList",
         data:"",
@@ -113,7 +111,6 @@
           $("#searchAppName").html(options);
         }
       })
-   // })
     var toolbarAddLayerIndex = null;
     //头工具栏事件
     table.on('toolbar(operatorList)', function (obj) {
@@ -151,8 +148,6 @@
       console.log(data.elem); //得到select原始DOM对象
       console.log(data.value); //得到被选中的值
       console.log(data.othis); //得到美化后的DOM对象
-
-      layer.msg("这里查询当前应用下的服务信息")
     });
     //监听行工具事件
     table.on('tool(operatorList)', function (obj) {
@@ -160,8 +155,8 @@
       switch (obj.event) {
         case 'del':
           layer.confirm('真的删除行么', function (index) {
-            obj.del();
-            layer.close(index);
+            var dataObj = {"id":data.id,"deleteStatus":1}
+            updateFaction("/appDetail/update",dataObj);
           });
           break;
         case 'edit':
@@ -174,10 +169,10 @@
             success: function (layero, index) {
               $('#addAppDetailLayer #formType').val("toolEdit");
               toolbarAddLayerIndex = index;
-              var appValue = $("#searchAppName").val().split(",");
-              $('#addAppDetailLayer #applicationName').val(appValue[2]);
-              $('#addAppDetailLayer #applicationId').val(appValue[0]);
-              $('#addAppDetailLayer #appId').val(appValue[1]);
+              $('#addAppDetailLayer #applicationName').addClass("layui-hide");
+              $('#addAppDetailLayer #appId').removeClass("layui-hide");
+              $('#addAppDetailLayer #applicationId').val(data.applicationId);
+              $('#addAppDetailLayer #appId').val(data.appId);
               $('#addAppDetailLayer #id').val(data.id);
               $('#addAppDetailLayer #applicationTypeId').val(data.applicationTypeId);
               $('#addAppDetailLayer #serviceTotal').val(data.serviceTotal);
@@ -201,6 +196,12 @@
                 ,zIndex: 99999999,
                 trigger: 'click'
               });
+            },
+            cancel: function(index, layero){
+              layer.close(index);
+              $('#addAppDetailLayer #applicationName').removeClass("layui-hide");
+              $('#addAppDetailLayer #appId').addClass("layui-hide");
+              return false;
             }
           });
           break;
@@ -209,12 +210,16 @@
       }
     });
     form.on('checkbox(lockAccount)', function (obj) {
-      layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
+      var dataObj = {"id":obj.value}
+      dataObj["usableStatus"] = 0;
+      if(obj.elem.checked) {
+        dataObj["usableStatus"] = 1;
+      }
+      updateFaction("/appDetail/update",dataObj);
     })
     //监听提交
     form.on('submit(formDemo)', function(data){
       var dataObj = {
-        "id":data.field.id,
         "appId":data.field.appId,
         "applicationId":data.field.applicationId,
         "applicationTypeId":data.field.applicationTypeId,
@@ -227,24 +232,28 @@
         "config3":data.field.config3,
         "config10":data.field.config1+","+data.field.config2+","+data.field.config3
       }
-      layer.msg(JSON.stringify(dataObj));
       var requestUrl = null;
       switch (data.field.formType) {
         case "toolbarAdd":
           requestUrl = "/appDetail/add"
           break;
         case "toolEdit":
+          dataObj["id"] = data.field.id
           requestUrl = "/appDetail/update"
           break;
         default:
           break;
       }
+      updateFaction(requestUrl,dataObj);
+      return false;
+    });
+    function updateFaction(url,json) {
       $.ajax({
-        url:requestUrl,
-        data:JSON.stringify(dataObj),
-        async:"true",
+        url:url,
+        data:JSON.stringify(json),
+        async:true,
         type:"post",
-        dataType:'json',
+        dataType:"json",
         contentType:'application/json;charset=utf-8',
         success:function (data) {
           layer.msg(data.msg)
@@ -259,8 +268,7 @@
           form.render();
         }
       })
-      return false;
-    });
+    }
   });
 
 

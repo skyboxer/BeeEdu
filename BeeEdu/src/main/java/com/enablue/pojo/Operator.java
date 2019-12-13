@@ -11,7 +11,7 @@ public class Operator {
     private String email;
     private String tel;
     private String password;
-    private int deletedStatus;
+    private int deleteStatus;
     private int usableStatus;
 
     public int getId() {
@@ -55,12 +55,12 @@ public class Operator {
         this.password = password;
     }
 
-    public int getDeletedStatus() {
-        return deletedStatus;
+    public int getDeleteStatus() {
+        return deleteStatus;
     }
 
-    public void setDeletedStatus(int deletedStatus) {
-        this.deletedStatus = deletedStatus;
+    public void setDeleteStatus(int deleteStatus) {
+        this.deleteStatus = deleteStatus;
     }
 
     public int getUsableStatus() {
@@ -68,6 +68,16 @@ public class Operator {
     }
 
     public void setUsableStatus(int usableStatus) {
+        this.usableStatus = usableStatus;
+    }
+
+    public Operator(int id, String type, String email, String tel, String password, int deleteStatus, int usableStatus) {
+        this.id = id;
+        this.type = type;
+        this.email = email;
+        this.tel = tel;
+        this.password = password;
+        this.deleteStatus = deleteStatus;
         this.usableStatus = usableStatus;
     }
 }

@@ -7,20 +7,22 @@
 
     <!-- 查询的statement，id：在同一个命名空间下的唯一标识，resultType：sql语句的结果集封装类型 -->
     <select id="queryOperatorList" resultType="Operator" parameterType="map">
-		select * from operator
-		 <where>
-             <if test="tel != null and tel != ''">
-                 and tel like #{tel}+"%"
-             </if>
-         </where>
+        select * from operator
+        <where>
+            <if test="tel != null and tel != ''">
+                and tel like #{tel}+"%"
+            </if>
+            and deleteStatus = 0
+        </where>
         limit #{pageIndex},#{pageSize}
-	</select>
+    </select>
     <select id="querOperatorCount" resultType="java.lang.Integer" parameterType="map">
         select count(id) from operator
         <where>
             <if test="tel != null and tel != ''">
                 and tel like #{tel}+"%"
             </if>
+            and deleteStatus = 0
         </where>
     </select>
 
@@ -29,7 +31,25 @@
     </insert>
 
     <update id="updateOperator" parameterType="Operator">
-        UPDATE operator SET (`type` = #{type },`email`= #{email},tel = #{tel}, `password`=#{password},deletedStatus=#{deletedStatus}, usableStatus=#{usableStatus} where id = #{id})
+        UPDATE operator
+        <set>
+            <if test="type!=null and type!=&quot;&quot;">
+                `type`=#{type},
+            </if>
+            <if test="email!=null and email!=&quot;&quot;">
+                `email`= #{email},
+            </if>
+            <if test="password!=null and password!=&quot;&quot;">
+                `password`=#{password},
+            </if>
+            <if test="deleteStatus!=null and deleteStatus!=&quot;&quot;">
+                deleteStatus=#{deleteStatus},
+            </if>
+            <if test="usableStatus!=null and usableStatus!=&quot;&quot;">
+                usableStatus=#{usableStatus},
+            </if>
+        </set>
+        where id = #{id}
     </update>
 
 </mapper>
