@@ -50,7 +50,7 @@ public class AppDetailServiceImpl implements AppDetailService {
                 String startServiceTotal, String endServiceTotal, Long accountId)*/
         //添加操作日志
         aDO=new ApplicationDetailOperation(Long.valueOf(applicationDetailId),
-                Long.valueOf(appDetail.getAppId()),Long.valueOf(appDetail.getApplicationTypeId()),
+                String.valueOf(appDetail.getAppId()),Long.valueOf(appDetail.getApplicationTypeId()),
                 Long.valueOf(appDetail.getServiceTotal()),Long.valueOf(appDetail.getServiceTotal()),Long.valueOf(10));
         aDOM.addApplicationDetailOperation(aDO);
         return getJsonObject(returnJson, applicationDetailId);

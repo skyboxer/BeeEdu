@@ -66,7 +66,7 @@ public class AccountController{
     @RequestMapping("/Manager/queryAllAccount")
     public HashMap<String,Object> queryAccount(@Param("page") Long page ,@Param("limit") Long limit ) {
         if (page==null || page<1){
-            page=0L;
+            page=1L;
         }
         if (limit==null){
             limit=10L;
