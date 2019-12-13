@@ -1,15 +1,19 @@
 package com.enablue.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.enablue.common.SessionCommon;
 import com.enablue.mapper.AppDetailMapper;
 import com.enablue.mapper.ApplicationDetailOperationMapper;
+import com.enablue.pojo.Account;
 import com.enablue.pojo.AppDetail;
 import com.enablue.pojo.ApplicationDetailOperation;
 import com.enablue.service.AppDetailService;
-import com.google.gson.JsonElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.List;
 import java.util.Map;
@@ -22,6 +26,13 @@ public class AppDetailServiceImpl implements AppDetailService {
     @Autowired
     private ApplicationDetailOperationMapper aDOM;
     private ApplicationDetailOperation aDO;
+    @Autowired
+    private SessionCommon sessionCommon;
+
+    //注入事务模版
+    @Autowired
+    private TransactionTemplate transactionTemplate;
+
     @Override
     public JSONObject getAppDetailList(Map map) {
         JSONObject returnJson = new JSONObject();
@@ -44,16 +55,23 @@ public class AppDetailServiceImpl implements AppDetailService {
     @Transactional
     public JSONObject addAppDetail(AppDetail appDetail) {
         JSONObject returnJson = new JSONObject();
-        //添加返回是id
-        int applicationDetailId = appDetailMapper.insertAppDetail(appDetail);
+        final int[] applicationDetailId = {-1};
+        transactionTemplate.execute(new TransactionCallbackWithoutResult(){
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+                //添加返回是id
+                applicationDetailId[0] = appDetailMapper.insertAppDetail(appDetail);
         /*ApplicationDetailOperation(Long applicationDetailId, Long appid, Long applicationTypeId,
                 String startServiceTotal, String endServiceTotal, Long accountId)*/
-        //添加操作日志
-        aDO=new ApplicationDetailOperation(Long.valueOf(applicationDetailId),
-                Long.valueOf(appDetail.getAppId()),Long.valueOf(appDetail.getApplicationTypeId()),
-                Long.valueOf(appDetail.getServiceTotal()),Long.valueOf(appDetail.getServiceTotal()),Long.valueOf(10));
-        aDOM.addApplicationDetailOperation(aDO);
-        return getJsonObject(returnJson, applicationDetailId);
+                Account account = (Account) sessionCommon.getSession().getAttribute("manager");
+                //添加操作日志
+                aDO=new ApplicationDetailOperation(Long.valueOf(applicationDetailId[0]),
+                        appDetail.getAppId(),Long.valueOf(appDetail.getApplicationTypeId()),
+                        Long.valueOf(appDetail.getServiceTotal()),Long.valueOf(appDetail.getServiceTotal()),Long.valueOf(account.getId()));
+                aDOM.addApplicationDetailOperation(aDO);
+            }
+        });
+        return getJsonObject(returnJson, applicationDetailId[0]);
     }
 
     @Override
