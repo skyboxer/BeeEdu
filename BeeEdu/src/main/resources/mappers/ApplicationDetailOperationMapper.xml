@@ -10,7 +10,7 @@
             application_detail_id,
             appid,
             application_type_id,
-            operationDate,
+            /*operationDate,*/
             startServiceTotal,
             endServiceTotal,
             account_id
@@ -20,7 +20,7 @@
                 #{ApplicationDetailOperation.applicationDetailId},
                 #{ApplicationDetailOperation.appid},
                 #{ApplicationDetailOperation.applicationTypeId},
-                #{ApplicationDetailOperation.operationDate},
+                /*#{ApplicationDetailOperation.operationDate},*/
                 #{ApplicationDetailOperation.startServiceTotal},
                 #{ApplicationDetailOperation.endServiceTotal},
                 #{ApplicationDetailOperation.accountId}
@@ -39,6 +39,25 @@
             account_id
             FROM
             sys_applicationDetail_operation
+    </select>
+
+    <select id="queryApplicationDetailOperation" parameterType="ApplicationDetailOperation" resultType="ApplicationDetailOperation">
+        SELECT
+        id,
+        application_detail_id,
+        appid,
+        application_type_id,
+        operationDate,
+        startServiceTotal,
+        endServiceTotal,
+        account_id
+        FROM
+        sys_applicationDetail_operation
+        <where>
+            <if test="applicationTypeId!=null and applicationTypeId!=&quot;&quot;">
+                application_type_id = #{applicationTypeId}
+            </if>
+        </where>
     </select>
 
 </mapper>

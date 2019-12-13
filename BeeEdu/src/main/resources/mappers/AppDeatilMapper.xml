@@ -33,7 +33,7 @@
             and deleteStatus = 0
         </where>
     </select>
-    <insert id="insertAppDetail" parameterType="AppDetail">
+    <insert id="insertAppDetail" parameterType="AppDetail" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         INSERT  INTO application_detail
         (application_id,appId,application_type_id,serviceTotal,serviceUnit,startDate,expireDate,config1,config2,config3,config4,config5,config6,config7,config8,config9,config10
         )

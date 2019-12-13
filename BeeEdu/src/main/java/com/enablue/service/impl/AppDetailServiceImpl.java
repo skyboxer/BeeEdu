@@ -2,11 +2,14 @@ package com.enablue.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.enablue.mapper.AppDetailMapper;
+import com.enablue.mapper.ApplicationDetailOperationMapper;
 import com.enablue.pojo.AppDetail;
+import com.enablue.pojo.ApplicationDetailOperation;
 import com.enablue.service.AppDetailService;
 import com.google.gson.JsonElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -16,6 +19,9 @@ import static com.enablue.service.impl.AppServiceImpl.getJsonObject;
 public class AppDetailServiceImpl implements AppDetailService {
     @Autowired
     private AppDetailMapper appDetailMapper;
+    @Autowired
+    private ApplicationDetailOperationMapper aDOM;
+    private ApplicationDetailOperation aDO;
     @Override
     public JSONObject getAppDetailList(Map map) {
         JSONObject returnJson = new JSONObject();
@@ -35,10 +41,19 @@ public class AppDetailServiceImpl implements AppDetailService {
     }
 
     @Override
+    @Transactional
     public JSONObject addAppDetail(AppDetail appDetail) {
         JSONObject returnJson = new JSONObject();
-        int status = appDetailMapper.insertAppDetail(appDetail);
-        return getJsonObject(returnJson, status);
+        //添加返回是id
+        int applicationDetailId = appDetailMapper.insertAppDetail(appDetail);
+        /*ApplicationDetailOperation(Long applicationDetailId, Long appid, Long applicationTypeId,
+                String startServiceTotal, String endServiceTotal, Long accountId)*/
+        //添加操作日志
+        aDO=new ApplicationDetailOperation(Long.valueOf(applicationDetailId),
+                Long.valueOf(appDetail.getAppId()),Long.valueOf(appDetail.getApplicationTypeId()),
+                appDetail.getServiceTotal(),appDetail.getServiceTotal(),Long.valueOf(10));
+        aDOM.addApplicationDetailOperation(aDO);
+        return getJsonObject(returnJson, applicationDetailId);
     }
 
     @Override

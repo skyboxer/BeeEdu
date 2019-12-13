@@ -8,7 +8,7 @@ public class AppDetail {
     private int applicationId;
     private String appId;
     private int applicationTypeId;
-    private String serviceTotal;
+    private int serviceTotal;
     private int serviceUnit;
     private Date startDate;
     private Date expireDate;
@@ -66,11 +66,11 @@ public class AppDetail {
         this.applicationTypeId = applicationTypeId;
     }
 
-    public String getServiceTotal() {
+    public int getServiceTotal() {
         return serviceTotal;
     }
 
-    public void setServiceTotal(String serviceTotal) {
+    public void setServiceTotal(int serviceTotal) {
         this.serviceTotal = serviceTotal;
     }
 
@@ -194,7 +194,7 @@ public class AppDetail {
         this.config10 = config10;
     }
 
-    public AppDetail(int id, int applicationId, String appId, int applicationTypeId, String serviceTotal, int serviceUnit, Date startDate, Date expireDate, int deleteStatus, int usableStatus, String config1, String config2, String config3, String config4, String config5, String config6, String config7, String config8, String config9, String config10) {
+    public AppDetail(int id, int applicationId, String appId, int applicationTypeId, int serviceTotal, int serviceUnit, Date startDate, Date expireDate, int deleteStatus, int usableStatus, String config1, String config2, String config3, String config4, String config5, String config6, String config7, String config8, String config9, String config10) {
         this.id = id;
         this.applicationId = applicationId;
         this.appId = appId;
