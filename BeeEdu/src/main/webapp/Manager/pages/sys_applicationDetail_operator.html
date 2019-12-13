@@ -34,7 +34,7 @@ layui.use('table', function(){
   
   table.render({
     elem: '#test'
-    ,url:''
+    ,url:'/Manager/queryAllApplicationDetailOperation'
     ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
     ,defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
       title: '提示'
@@ -51,7 +51,7 @@ layui.use('table', function(){
       // }}
       ,{field:'appid', title:'appid', width:80, edit: 'text', sort: true}
       ,{field:'applicationTypeId', title:'应用类型ID', width:100}
-      ,{field:'operationDate', title:'操作日期',width:100}
+      ,{field:'operationDate', title:'操作日期',width:200}
       ,{field:'startServiceTotal', title:'操作前服务时长', width:180}
       ,{field:'endServiceTotal', title:'操作后服务时长', width:180}
       ,{field:'accountId', title:'操作用户ID', width:100}
