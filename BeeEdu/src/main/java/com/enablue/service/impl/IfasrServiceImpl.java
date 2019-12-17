@@ -9,6 +9,9 @@ import com.iflytek.msp.cpdb.lfasr.client.LfasrClientImp;
 import com.iflytek.msp.cpdb.lfasr.exception.LfasrException;
 import com.iflytek.msp.cpdb.lfasr.model.LfasrType;
 import com.iflytek.msp.cpdb.lfasr.model.Message;
+import it.sauronsoftware.jave.Encoder;
+import it.sauronsoftware.jave.EncoderException;
+import it.sauronsoftware.jave.MultimediaInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
@@ -64,6 +67,7 @@ public class IfasrServiceImpl implements IfasrService {
                     result.put("flag", false);
                     return result;
                 }
+
                 //遍历请求中的cookie，如有存在cookie就直接返回结果
                 Cookie[] cookies = request.getCookies();
                 for (Cookie cookie:cookies) {
@@ -104,6 +108,17 @@ public class IfasrServiceImpl implements IfasrService {
         return result;
     }
 
+    /**
+     * 获取录音文件时长 单位为秒
+     * @param file
+     * @return
+     */
+    public Long  getRecordingLength(File file) throws EncoderException {
+        Encoder encoder = new Encoder();
+        MultimediaInfo info = encoder.getInfo(file);
+        Long ls= info.getDuration()/1000;
+        return ls;
+    }
     /**
      * 文本查询转写结果
      * @param taskId 查询id
