@@ -60,10 +60,11 @@
     </select>
     <!--分页查询应用详情操作日志-->
     <select id="queryPageApplicationDetailOperation" resultType="ApplicationDetailOperation">
-        SELECT
+    SELECT
         id,
         application_detail_id,
-        application_detail_id,
+        appid,
+        application_type_id,
         operationDate,
         startServiceTotal,
         endServiceTotal,

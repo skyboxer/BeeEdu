@@ -1,18 +1,20 @@
 package com.enablue.service.impl;
 
-import com.enablue.mapper.ApplicationDetailMapper;
-import com.enablue.pojo.ApplicationDetail;
+import com.enablue.mapper.AppDetailMapper;
+import com.enablue.pojo.AppDetail;
 import com.enablue.service.PullApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * 拉取应用接口实现类
  */
+@Service
 public class PullApplicationServiceImpl implements PullApplicationService {
     @Autowired
-    private ApplicationDetailMapper applicationDetailMapper;
+    private AppDetailMapper appDetailMapper;
     /**
      * 拉取应用
      * @param applicationTypeId
@@ -20,9 +22,9 @@ public class PullApplicationServiceImpl implements PullApplicationService {
      * @return
      */
     @Override
-    public List<ApplicationDetail> getApplication(Long applicationTypeId, Long serviceTotal) {
+    public List<AppDetail> getApplication(Integer applicationTypeId, Long serviceTotal) {
         try{
-            return applicationDetailMapper.queryAppdetailByType(applicationTypeId, serviceTotal);
+            return appDetailMapper.queryAppDetailByType(applicationTypeId, serviceTotal);
         }catch (Exception e){
             e.printStackTrace();
             return null;

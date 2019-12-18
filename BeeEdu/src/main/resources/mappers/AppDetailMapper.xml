@@ -3,10 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace(命名空间)：映射文件的唯一标识 -->
-<mapper namespace="com.enablue.mapper.ApplicationDetailMapper">
+<mapper namespace="com.enablue.mapper.AppDetailMapper">
 
     <!-- 查询的statement，id：在同一个命名空间下的唯一标识，resultType：sql语句的结果集封装类型 -->
-    <select id="queryAppDetailList" resultType="ApplicationDetail" parameterType="map">
+    <select id="queryAppDetailList" resultType="AppDetail" parameterType="map">
         select * from application_detail
         <where>
             <if test="applicationTypeId != null and applicationTypeId != ''">
@@ -34,26 +34,47 @@
         </where>
     </select>
     <!--根据应用该类型查找 王成-->
-    <select id="queryAppdetailByType" resultType="ApplicationDetail">
-        SELECT id,application_id,appId,application_type_id,
-			 serviceTotal,serviceUnit,startDate,expireDate,
-			 config1,config2,config3,config4,
-			 config5,config6,config7,config8,
-			 config9,config10
-        FROM application_detail
-        WHERE deleteStatus = 0 AND usableStatus = 0 AND serviceTotal > 10000 AND application_type_id=0
+    <select id="queryAppDetailByType" resultType="AppDetail">
+        SELECT
+            id,
+            application_id,
+            appId,
+            application_type_id,
+            serviceTotal,
+            serviceUnit,
+            startDate,
+            expireDate,
+            deleteStatus,
+            usableStatus,
+            config1,
+            config2,
+            config3,
+            config4,
+            config5,
+            config6,
+            config7,
+            config8,
+            config9,
+            config10
+        FROM
+            application_detail
+        WHERE
+            deleteStatus = 0
+        AND usableStatus = 0
+        AND serviceTotal>#{serviceTotal}
+        AND application_type_id=#{applicationTypeId}
         ORDER BY serviceTotal DESC
     </select>
 
 
-    <insert id="insertAppDetail" parameterType="ApplicationDetail" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    <insert id="insertAppDetail" parameterType="AppDetail" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         INSERT  INTO application_detail
         (application_id,appId,application_type_id,serviceTotal,serviceUnit,startDate,expireDate,config1,config2,config3,config4,config5,config6,config7,config8,config9,config10
         )
         value (#{applicationId},#{appId},#{applicationTypeId},#{serviceTotal},#{serviceUnit},#{startDate},#{expireDate},#{config1},#{config2},#{config3},#{config4},#{config5},#{config6},#{config7},#{config8},#{config9},#{config10})
     </insert>
 
-    <update id="updateAppDetail" parameterType="ApplicationDetail">
+    <update id="updateAppDetail" parameterType="AppDetail">
         update application_detail
         <set>
             <if test="applicationId!=null and applicationId!=&quot;&quot;">

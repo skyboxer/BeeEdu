@@ -1,6 +1,6 @@
 package com.enablue.service;
 
-import com.enablue.pojo.ApplicationDetail;
+import com.enablue.pojo.AppDetail;
 
 import java.util.List;
 
@@ -9,5 +9,5 @@ import java.util.List;
  * wangcheng
  */
 public interface PullApplicationService {
-    List<ApplicationDetail> getApplication(Long applicationTypeId,Long serviceTotal);
+    List<AppDetail> getApplication(Integer applicationTypeId,Long serviceTotal);
 }

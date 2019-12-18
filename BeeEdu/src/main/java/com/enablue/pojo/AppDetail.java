@@ -8,17 +8,17 @@ import java.util.List;
  * 修改： 王成
  * 2019-12-17 13:34
  */
-public class ApplicationDetail {
-    private int id;
-    private int applicationId;
+public class AppDetail {
+    private Integer id;
+    private Integer applicationId;
     private String appId;
-    private int applicationTypeId;
-    private int serviceTotal;
-    private int serviceUnit;
+    private Integer applicationTypeId;
+    private Integer serviceTotal;
+    private Integer serviceUnit;
     private Date startDate;
     private Date expireDate;
-    private int deleteStatus;
-    private int usableStatus;
+    private Integer deleteStatus;
+    private Integer usableStatus;
     private String config1;
     private String config2;
     private String config3;
@@ -39,19 +39,19 @@ public class ApplicationDetail {
         this.app = (List<App>) app;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getApplicationId() {
+    public Integer getApplicationId() {
         return applicationId;
     }
 
-    public void setApplicationId(int applicationId) {
+    public void setApplicationId(Integer applicationId) {
         this.applicationId = applicationId;
     }
 
@@ -63,27 +63,27 @@ public class ApplicationDetail {
         this.appId = appId;
     }
 
-    public int getApplicationTypeId() {
+    public Integer getApplicationTypeId() {
         return applicationTypeId;
     }
 
-    public void setApplicationTypeId(int applicationTypeId) {
+    public void setApplicationTypeId(Integer applicationTypeId) {
         this.applicationTypeId = applicationTypeId;
     }
 
-    public int getServiceTotal() {
+    public Integer getServiceTotal() {
         return serviceTotal;
     }
 
-    public void setServiceTotal(int serviceTotal) {
+    public void setServiceTotal(Integer serviceTotal) {
         this.serviceTotal = serviceTotal;
     }
 
-    public int getServiceUnit() {
+    public Integer getServiceUnit() {
         return serviceUnit;
     }
 
-    public void setServiceUnit(int serviceUnit) {
+    public void setServiceUnit(Integer serviceUnit) {
         this.serviceUnit = serviceUnit;
     }
 
@@ -103,19 +103,19 @@ public class ApplicationDetail {
         this.expireDate = expireDate;
     }
 
-    public int getDeleteStatus() {
+    public Integer getDeleteStatus() {
         return deleteStatus;
     }
 
-    public void setDeleteStatus(int deleteStatus) {
+    public void setDeleteStatus(Integer deleteStatus) {
         this.deleteStatus = deleteStatus;
     }
 
-    public int getUsableStatus() {
+    public Integer getUsableStatus() {
         return usableStatus;
     }
 
-    public void setUsableStatus(int usableStatus) {
+    public void setUsableStatus(Integer usableStatus) {
         this.usableStatus = usableStatus;
     }
 
@@ -199,7 +199,7 @@ public class ApplicationDetail {
         this.config10 = config10;
     }
 
-    public ApplicationDetail(int id, int applicationId, String appId, int applicationTypeId, int serviceTotal, int serviceUnit, Date startDate, Date expireDate, int deleteStatus, int usableStatus, String config1, String config2, String config3, String config4, String config5, String config6, String config7, String config8, String config9, String config10) {
+    public AppDetail(Integer id, Integer applicationId, String appId, Integer applicationTypeId, Integer serviceTotal, Integer serviceUnit, Date startDate, Date expireDate, Integer deleteStatus, Integer usableStatus, String config1, String config2, String config3, String config4, String config5, String config6, String config7, String config8, String config9, String config10) {
         this.id = id;
         this.applicationId = applicationId;
         this.appId = appId;

@@ -2,8 +2,11 @@ package com.enablue.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.enablue.mapper.AppDetailMapper;
+import com.enablue.pojo.AppDetail;
 import com.enablue.pojo.Word;
 import com.enablue.service.IfasrService;
+import com.enablue.service.PullApplicationService;
 import com.enablue.util.TimpStampUtil;
 import com.iflytek.msp.cpdb.lfasr.client.LfasrClientImp;
 import com.iflytek.msp.cpdb.lfasr.exception.LfasrException;
@@ -12,6 +15,7 @@ import com.iflytek.msp.cpdb.lfasr.model.Message;
 import it.sauronsoftware.jave.Encoder;
 import it.sauronsoftware.jave.EncoderException;
 import it.sauronsoftware.jave.MultimediaInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
@@ -35,6 +39,8 @@ import java.util.List;
  */
 @Service
 public class IfasrServiceImpl implements IfasrService {
+    @Autowired
+    private PullApplicationService pullApplicationService;
     /**
      * 创建语音转写任务
      * @param fileName 文件名
@@ -67,7 +73,10 @@ public class IfasrServiceImpl implements IfasrService {
                     result.put("flag", false);
                     return result;
                 }
+                Long recordingLength = getRecordingLength(file);
 
+                List<AppDetail> appDetails = pullApplicationService.getApplication(0, recordingLength);
+                System.out.println("appDetails = " + appDetails);
                 //遍历请求中的cookie，如有存在cookie就直接返回结果
                 Cookie[] cookies = request.getCookies();
                 for (Cookie cookie:cookies) {
