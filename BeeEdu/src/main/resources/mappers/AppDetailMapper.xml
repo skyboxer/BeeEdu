@@ -35,35 +35,16 @@
     </select>
     <!--根据应用该类型查找 王成-->
     <select id="queryAppDetailByType" resultType="AppDetail">
-        SELECT
-            id,
-            application_id,
-            appId,
-            application_type_id,
-            serviceTotal,
-            serviceUnit,
-            startDate,
-            expireDate,
-            deleteStatus,
-            usableStatus,
-            config1,
-            config2,
-            config3,
-            config4,
-            config5,
-            config6,
-            config7,
-            config8,
-            config9,
-            config10
+         SELECT
+            detail.*, operation.endServiceTotal
         FROM
-            application_detail
+            sys_applicationDetail_operation operation
+        JOIN application_detail detail ON operation.application_detail_id = detail.id
         WHERE
-            deleteStatus = 0
-        AND usableStatus = 0
-        AND serviceTotal>#{serviceTotal}
-        AND application_type_id=#{applicationTypeId}
-        ORDER BY serviceTotal DESC
+            operation.endServiceTotal>#{serviceTotal}
+        AND operation.application_type_id =#{applicationTypeId}
+        ORDER BY
+            operation.endServiceTotal DESC
     </select>
 
 

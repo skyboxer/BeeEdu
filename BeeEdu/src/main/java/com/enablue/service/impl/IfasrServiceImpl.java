@@ -26,11 +26,10 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * 科大讯飞服务实现类
@@ -67,16 +66,21 @@ public class IfasrServiceImpl implements IfasrService {
 
                 //设置文件路径
                 String localFile =request.getServletContext().getRealPath("/upload")+File.separator + fileName;
+                //配置文件路劲
+                String config = request.getServletContext().getRealPath("config.properties");
                 //判断文件是否存在
                 File file = new File(localFile);
                 if(!file.exists()){
                     result.put("flag", false);
                     return result;
                 }
+                //获取录音文件时长
                 Long recordingLength = getRecordingLength(file);
-
+                //获取应用
                 List<AppDetail> appDetails = pullApplicationService.getApplication(0, recordingLength);
-                System.out.println("appDetails = " + appDetails);
+                if (appDetails == null){
+                    throw new Exception("请检查应用剩余服务时长");
+                }
                 //遍历请求中的cookie，如有存在cookie就直接返回结果
                 Cookie[] cookies = request.getCookies();
                 for (Cookie cookie:cookies) {
@@ -93,7 +97,7 @@ public class IfasrServiceImpl implements IfasrService {
                 HashMap<String, String> params = new HashMap<>();
                 params.put("has_participle", "false");
                 // 初始化LFASRClient实例
-                LfasrClientImp lc = LfasrClientImp.initLfasrClient();
+                LfasrClientImp lc = LfasrClientImp.initLfasrClient("","");
                 //上传文件
                 taskId = lfasrUpload(lc, localFile, params);
                 //打印过程
@@ -105,14 +109,11 @@ public class IfasrServiceImpl implements IfasrService {
                     result.put("TaskId", taskId);
                     response.addCookie(new Cookie(fileName,taskId));
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
                 result.put("flag", false);
                 return result;
             }
-
-
         }
         return result;
     }
@@ -122,12 +123,13 @@ public class IfasrServiceImpl implements IfasrService {
      * @param file
      * @return
      */
-    public Long  getRecordingLength(File file) throws EncoderException {
+    public Long getRecordingLength(File file) throws EncoderException {
         Encoder encoder = new Encoder();
         MultimediaInfo info = encoder.getInfo(file);
         Long ls= info.getDuration()/1000;
         return ls;
     }
+
     /**
      * 文本查询转写结果
      * @param taskId 查询id
