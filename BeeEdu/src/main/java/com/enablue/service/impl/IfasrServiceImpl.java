@@ -78,6 +78,7 @@ public class IfasrServiceImpl implements IfasrService {
                 Long recordingLength = getRecordingLength(file);
                 //获取应用
                 List<AppDetail> appDetails = pullApplicationService.getApplication(0, recordingLength);
+                System.out.println("appDetails = " + appDetails);
                 if (appDetails == null){
                     throw new Exception("请检查应用剩余服务时长");
                 }
@@ -97,7 +98,7 @@ public class IfasrServiceImpl implements IfasrService {
                 HashMap<String, String> params = new HashMap<>();
                 params.put("has_participle", "false");
                 // 初始化LFASRClient实例
-                LfasrClientImp lc = LfasrClientImp.initLfasrClient("","");
+                LfasrClientImp lc = LfasrClientImp.initLfasrClient("5da68c15","7a56dc3b573590a616682096eead7921");
                 //上传文件
                 taskId = lfasrUpload(lc, localFile, params);
                 //打印过程

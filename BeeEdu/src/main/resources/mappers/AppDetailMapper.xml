@@ -45,6 +45,7 @@
         AND operation.application_type_id =#{applicationTypeId}
         ORDER BY
             operation.endServiceTotal DESC
+        LIMIT 0,1
     </select>
 
 

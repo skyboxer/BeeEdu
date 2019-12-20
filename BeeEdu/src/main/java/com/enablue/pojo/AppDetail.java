@@ -29,10 +29,19 @@ public class AppDetail {
     private String config8;
     private String config9;
     private String config10;
+    private Integer endServiceTotal;
     private List<App> app;
 
     public List<App> getApp() {
         return app;
+    }
+
+    public Integer getEndServiceTotal() {
+        return endServiceTotal;
+    }
+
+    public void setEndServiceTotal(Integer endServiceTotal) {
+        this.endServiceTotal = endServiceTotal;
     }
 
     public void setApp(App app) {
@@ -229,7 +238,7 @@ public class AppDetail {
                 ", applicationId=" + applicationId +
                 ", appId='" + appId + '\'' +
                 ", applicationTypeId=" + applicationTypeId +
-                ", serviceTotal='" + serviceTotal + '\'' +
+                ", serviceTotal=" + serviceTotal +
                 ", serviceUnit=" + serviceUnit +
                 ", startDate=" + startDate +
                 ", expireDate=" + expireDate +
@@ -245,6 +254,8 @@ public class AppDetail {
                 ", config8='" + config8 + '\'' +
                 ", config9='" + config9 + '\'' +
                 ", config10='" + config10 + '\'' +
+                ", endServiceTotal=" + endServiceTotal +
+                ", app=" + app +
                 '}';
     }
 }
