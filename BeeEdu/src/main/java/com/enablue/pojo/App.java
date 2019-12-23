@@ -6,37 +6,28 @@ package com.enablue.pojo;
  * 1912040552
  */
 public class App {
-    private int id;
+    private Long id;
     private String appId;
     private String name;
-    private int operatorId;
-    private int deleteStatus;
-    private int usableStatus;
+    private Integer operatorId;
+    private Integer deleteStatus;
+    private Integer usableStatus;
 
-    public int getId() {
+    public App(Long id, String appId, String name, Integer operatorId, Integer deleteStatus, Integer usableStatus) {
+        this.id = id;
+        this.appId = appId;
+        this.name = name;
+        this.operatorId = operatorId;
+        this.deleteStatus = deleteStatus;
+        this.usableStatus = usableStatus;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getOperatorId() {
-        return operatorId;
-    }
-
-    public void setOperatorId(int operatorId) {
-        this.operatorId = operatorId;
     }
 
     public String getAppId() {
@@ -47,40 +38,35 @@ public class App {
         this.appId = appId;
     }
 
-    public int getDeleteStatus() {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getOperatorId() {
+        return operatorId;
+    }
+
+    public void setOperatorId(Integer operatorId) {
+        this.operatorId = operatorId;
+    }
+
+    public Integer getDeleteStatus() {
         return deleteStatus;
     }
 
-    public void setDeleteStatus(int deleteStatus) {
+    public void setDeleteStatus(Integer deleteStatus) {
         this.deleteStatus = deleteStatus;
     }
 
-    public int getUsableStatus() {
+    public Integer getUsableStatus() {
         return usableStatus;
     }
 
-    public void setUsableStatus(int usableStatus) {
-        this.usableStatus = usableStatus;
-    }
-
-    @Override
-    public String toString() {
-        return "App{" +
-                "id=" + id +
-                ", appId='" + appId + '\'' +
-                ", name='" + name + '\'' +
-                ", operatorId=" + operatorId +
-                ", deleteStatus=" + deleteStatus +
-                ", usableStatus=" + usableStatus +
-                '}';
-    }
-
-    public App(int id, String appId, String name, int operatorId, int deleteStatus, int usableStatus) {
-        this.id = id;
-        this.appId = appId;
-        this.name = name;
-        this.operatorId = operatorId;
-        this.deleteStatus = deleteStatus;
+    public void setUsableStatus(Integer usableStatus) {
         this.usableStatus = usableStatus;
     }
 }

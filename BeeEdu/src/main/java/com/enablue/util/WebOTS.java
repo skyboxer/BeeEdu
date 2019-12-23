@@ -30,14 +30,14 @@ import com.google.gson.JsonObject;
  */
 
 public class WebOTS {	
-	public String getTranslate(String FROM,String TO,String TEXT) throws Exception{
-		if (WebApiParameters.APPID.equals("") || WebApiParameters.API_KEY.equals("") || WebApiParameters.API_SECRET.equals("")) {
+	public String getTranslate(String FROM,String TO,String TEXT,String APPID,String API_SECRET,String API_KEY) throws Exception{
+		if (APPID.equals("") || API_KEY.equals("") || API_SECRET.equals("")) {
 			System.out.println("Appid 或APIKey 或APISecret 为空！请打开demo代码，填写相关信息。");
 			return null;
 		}
-		String body = buildHttpBody(FROM,TO,TEXT);
+		String body = buildHttpBody(FROM,TO,TEXT,APPID);
 		//System.out.println("【ITR WebAPI body】\n" + body);
-		Map<String, String> header = buildHttpHeader(body);
+		Map<String, String> header = buildHttpHeader(body,APPID,API_KEY,API_SECRET);
 		Map<String, Object> resultMap = HttpUtil.doPost2(WebApiParameters.WebOTS_URL, header, body);
 		if (resultMap != null) {
 			String resultStr = resultMap.get("body").toString();
@@ -59,7 +59,7 @@ public class WebOTS {
 	/**
 	 * 组装http请求头
 	 */	
-   public static Map<String, String> buildHttpHeader(String body) throws Exception {
+   public static Map<String, String> buildHttpHeader(String body,String APPID,String API_KEY,String API_SECRET) throws Exception {
 		Map<String, String> header = new HashMap<String, String>();	
         URL url = new URL(WebApiParameters.WebOTS_URL);
         
@@ -80,11 +80,11 @@ public class WebOTS {
                 append("POST ").append(url.getPath()).append(" HTTP/1.1").append("\n").//
                 append("digest: ").append(digestBase64);
 		//System.out.println("【OTS WebAPI builder】\n" + builder);
-        String sha = hmacsign(builder.toString(), WebApiParameters.API_SECRET);
+        String sha = hmacsign(builder.toString(), API_SECRET);
 		//System.out.println("【OTS WebAPI sha】\n" + sha);
 		
 		//组装authorization
-        String authorization = String.format("api_key=\"%s\", algorithm=\"%s\", headers=\"%s\", signature=\"%s\"", WebApiParameters.API_KEY, "hmac-sha256", "host date request-line digest", sha);
+        String authorization = String.format("api_key=\"%s\", algorithm=\"%s\", headers=\"%s\", signature=\"%s\"", API_KEY, "hmac-sha256", "host date request-line digest", sha);
         //System.out.println("【OTS WebAPI authorization】\n" + authorization);
 		
         header.put("Authorization", authorization);
@@ -101,13 +101,13 @@ public class WebOTS {
 	/**
 	 * 组装http请求体
 	 */	
-   public static String buildHttpBody(String FROM,String TO,String TEXT) throws Exception {		
+   public static String buildHttpBody(String FROM,String TO,String TEXT,String APPID) throws Exception {
        JsonObject body = new JsonObject();
        JsonObject business = new JsonObject();
        JsonObject common = new JsonObject();
        JsonObject data = new JsonObject();
        //填充common
-       common.addProperty("app_id", WebApiParameters.APPID);
+       common.addProperty("app_id",APPID);
        //填充business
        business.addProperty("from", FROM);
        business.addProperty("to", TO);
