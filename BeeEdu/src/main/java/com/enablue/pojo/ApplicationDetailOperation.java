@@ -8,29 +8,29 @@ import java.util.Date;
  * 2019.12.12 15:05
  */
 public class ApplicationDetailOperation {
-    private  Long   id;
-    private  Long   applicationDetailId;
+    private  Integer   id;
+    private  Integer   applicationDetailId;
     private  String appid;
-    private  Long   applicationTypeId;
+    private  Integer   applicationTypeId;
     private  Date   operationDate;
-    private  Long   startServiceTotal;
-    private  Long   endServiceTotal;
-    private  Long   accountId;
+    private  Integer   startServiceTotal;
+    private  Integer   endServiceTotal;
+    private  Integer   accountId;
 
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public Long getApplicationDetailId() {
+    public Integer getApplicationDetailId() {
         return applicationDetailId;
     }
 
-    public void setApplicationDetailId(Long applicationDetailId) {
+    public void setApplicationDetailId(Integer applicationDetailId) {
         this.applicationDetailId = applicationDetailId;
     }
 
@@ -42,11 +42,11 @@ public class ApplicationDetailOperation {
         this.appid = appid;
     }
 
-    public Long getApplicationTypeId() {
+    public Integer getApplicationTypeId() {
         return applicationTypeId;
     }
 
-    public void setApplicationTypeId(Long applicationTypeId) {
+    public void setApplicationTypeId(Integer applicationTypeId) {
         this.applicationTypeId = applicationTypeId;
     }
 
@@ -58,31 +58,31 @@ public class ApplicationDetailOperation {
         this.operationDate = operationDate;
     }
 
-    public Long getStartServiceTotal() {
+    public Integer getStartServiceTotal() {
         return startServiceTotal;
     }
 
-    public void setStartServiceTotal(Long startServiceTotal) {
+    public void setStartServiceTotal(Integer startServiceTotal) {
         this.startServiceTotal = startServiceTotal;
     }
 
-    public Long getEndServiceTotal() {
+    public Integer getEndServiceTotal() {
         return endServiceTotal;
     }
 
-    public void setEndServiceTotal(Long endServiceTotal) {
+    public void setEndServiceTotal(Integer endServiceTotal) {
         this.endServiceTotal = endServiceTotal;
     }
 
-    public Long getAccountId() {
+    public Integer getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(Long account_id) {
+    public void setAccountId(Integer account_id) {
         this.accountId = account_id;
     }
 
-    public ApplicationDetailOperation(Long applicationDetailId, String appid, Long applicationTypeId, Long startServiceTotal, Long endServiceTotal, Long accountId) {
+    public ApplicationDetailOperation(Integer applicationDetailId, String appid, Integer applicationTypeId, Integer startServiceTotal, Integer endServiceTotal, Integer accountId) {
         this.applicationDetailId = applicationDetailId;
         this.appid = appid;
         this.applicationTypeId = applicationTypeId;

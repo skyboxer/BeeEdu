@@ -6,15 +6,15 @@ package com.enablue.pojo;
  * 2019.12.3 13：06
  */
 public class Account {
-    private Long id;
+    private Integer id;
     private String name;
     private String password;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
