@@ -10,7 +10,6 @@
             application_detail_id,
             appid,
             application_type_id,
-            /*operationDate,*/
             startServiceTotal,
             endServiceTotal,
             account_id
@@ -20,7 +19,6 @@
                 #{ApplicationDetailOperation.applicationDetailId},
                 #{ApplicationDetailOperation.appid},
                 #{ApplicationDetailOperation.applicationTypeId},
-                /*#{ApplicationDetailOperation.operationDate},*/
                 #{ApplicationDetailOperation.startServiceTotal},
                 #{ApplicationDetailOperation.endServiceTotal},
                 #{ApplicationDetailOperation.accountId}
@@ -58,6 +56,22 @@
                 application_type_id = #{applicationTypeId}
             </if>
         </where>
+        order by endServiceTotal desc
+    </select>
+    <!--分页查询应用详情操作日志-->
+    <select id="queryPageApplicationDetailOperation" resultType="ApplicationDetailOperation">
+    SELECT
+        id,
+        application_detail_id,
+        appid,
+        application_type_id,
+        operationDate,
+        startServiceTotal,
+        endServiceTotal,
+        account_id
+    FROM
+        sys_applicationDetail_operation
+        LIMIT #{page},#{limit}
     </select>
 
 </mapper>

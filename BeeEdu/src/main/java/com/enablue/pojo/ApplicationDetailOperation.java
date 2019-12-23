@@ -10,11 +10,11 @@ import java.util.Date;
 public class ApplicationDetailOperation {
     private  Long   id;
     private  Long   applicationDetailId;
-    private  Long   appid;
+    private  String appid;
     private  Long   applicationTypeId;
     private  Date   operationDate;
-    private  Long startServiceTotal;
-    private  Long endServiceTotal;
+    private  Long   startServiceTotal;
+    private  Long   endServiceTotal;
     private  Long   accountId;
 
 
@@ -34,11 +34,11 @@ public class ApplicationDetailOperation {
         this.applicationDetailId = applicationDetailId;
     }
 
-    public Long getAppid() {
+    public String getAppid() {
         return appid;
     }
 
-    public void setAppid(Long appid) {
+    public void setAppid(String appid) {
         this.appid = appid;
     }
 
@@ -82,7 +82,7 @@ public class ApplicationDetailOperation {
         this.accountId = account_id;
     }
 
-    public ApplicationDetailOperation(Long applicationDetailId, Long appid, Long applicationTypeId, Long startServiceTotal, Long endServiceTotal, Long accountId) {
+    public ApplicationDetailOperation(Long applicationDetailId, String appid, Long applicationTypeId, Long startServiceTotal, Long endServiceTotal, Long accountId) {
         this.applicationDetailId = applicationDetailId;
         this.appid = appid;
         this.applicationTypeId = applicationTypeId;

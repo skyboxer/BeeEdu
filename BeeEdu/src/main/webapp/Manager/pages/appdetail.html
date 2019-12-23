@@ -78,19 +78,19 @@
         , {field: 'serviceUnit', title: '计算单位', width: 100,templet:function (res) {
             switch (res.serviceUnit) {
               case 0:
-                return '<em>时长</em>'
+                return '<em>时长(秒)</em>'
                 break;
               case 1:
                 return '<em>字符</em>'
                 break;
               case 2:
-                return '<em>装机量</em>'
+                return '<em>服务量</em>'
                 break;
             }
           }}
         , {field: 'serviceTotal', title: '服务总量', width: 100}
-        , {field: 'startDate', title: '开始时间', width: 120, edit: 'text', sort: true}
-        , {field: 'expireDate', title: '到期时间', width: 120, edit: 'text', sort: true}
+        , {field: 'startDate', title: '开始时间', width: 200, edit: 'text', sort: true}
+        , {field: 'expireDate', title: '到期时间', width: 200, edit: 'text', sort: true}
         , {field: 'lock', title: '是否锁定', width: 110, templet: '#checkLock', unresize: true}
         , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150}
       ]]
@@ -314,9 +314,9 @@
           <label class="layui-form-label">服务-(计算)单位</label>
           <div class="layui-input-block">
             <select name="serviceUnit" id="serviceUnit" lay-verify="required">
-              <option value="0">时长</option>
+              <option value="0">时长(秒)</option>
               <option value="1">字符</option>
-              <option value="2">装机量</option>
+              <option value="2">服务量</option>
             </select>
           </div>
         </div>

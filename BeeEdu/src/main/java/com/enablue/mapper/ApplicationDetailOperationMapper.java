@@ -32,4 +32,6 @@ public interface ApplicationDetailOperationMapper {
      * @return 时长最多
      */
     List<ApplicationDetailOperation> queryApplicationDetailOperation(ApplicationDetailOperation applicationDetailOperation);
+
+    List<ApplicationDetailOperation> queryPageApplicationDetailOperation(@Param("page") Long page, @Param("limit") Long limit);
 }

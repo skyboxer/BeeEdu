@@ -34,7 +34,7 @@ layui.use('table', function(){
   
   table.render({
     elem: '#test'
-    ,url:'../test_json/demo1.json'
+    ,url:'/Manager/queryAllApplicationDetailOperation'
     ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
     ,defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
       title: '提示'
@@ -45,18 +45,16 @@ layui.use('table', function(){
     ,cols: [[
       {type: 'checkbox', fixed: 'left'}
       ,{field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true}
-      ,{field:'username', title:'用户名', width:120, edit: 'text'}
-      ,{field:'email', title:'邮箱', width:150, edit: 'text', templet: function(res){
-        return '<em>'+ res.email +'</em>'
-      }}
-      ,{field:'sex', title:'性别', width:80, edit: 'text', sort: true}
-      ,{field:'city', title:'城市', width:100}
-      ,{field:'sign', title:'签名'}
-      ,{field:'experience', title:'积分', width:80, sort: true}
-      ,{field:'ip', title:'IP', width:120}
-      ,{field:'logins', title:'登入次数', width:100, sort: true}
-      ,{field:'joinTime', title:'加入时间', width:120}
-      ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+      ,{field:'applicationDetailId', title:'应用详情ID', width:120, edit: 'text'}
+      // ,{field:'email', title:'邮箱', width:150, edit: 'text', templet: function(res){
+      //   return '<em>'+ res.email +'</em>'
+      // }}
+      ,{field:'appid', title:'appid', width:80, edit: 'text', sort: true}
+      ,{field:'applicationTypeId', title:'应用类型ID', width:100}
+      ,{field:'operationDate', title:'操作日期',width:200}
+      ,{field:'startServiceTotal', title:'操作前服务时长', width:180}
+      ,{field:'endServiceTotal', title:'操作后服务时长', width:180}
+      ,{field:'accountId', title:'操作用户ID', width:100}
     ]]
     ,page: true
   });

@@ -1,19 +1,27 @@
 package com.enablue.pojo;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Date;
 import java.util.List;
 
+/***
+ * 应用详情实体类
+ * 修改： 王成
+ * 2019-12-17 13:34
+ */
+@Component
 public class AppDetail {
-    private int id;
-    private int applicationId;
+    private Integer id;
+    private Integer applicationId;
     private String appId;
-    private int applicationTypeId;
-    private int serviceTotal;
-    private int serviceUnit;
+    private Integer applicationTypeId;
+    private Integer serviceTotal;
+    private Integer serviceUnit;
     private Date startDate;
     private Date expireDate;
-    private int deleteStatus;
-    private int usableStatus;
+    private Integer deleteStatus;
+    private Integer usableStatus;
     private String config1;
     private String config2;
     private String config3;
@@ -24,29 +32,38 @@ public class AppDetail {
     private String config8;
     private String config9;
     private String config10;
+    private Integer endServiceTotal;
     private List<App> app;
 
     public List<App> getApp() {
         return app;
     }
 
+    public Integer getEndServiceTotal() {
+        return endServiceTotal;
+    }
+
+    public void setEndServiceTotal(Integer endServiceTotal) {
+        this.endServiceTotal = endServiceTotal;
+    }
+
     public void setApp(App app) {
         this.app = (List<App>) app;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getApplicationId() {
+    public Integer getApplicationId() {
         return applicationId;
     }
 
-    public void setApplicationId(int applicationId) {
+    public void setApplicationId(Integer applicationId) {
         this.applicationId = applicationId;
     }
 
@@ -58,27 +75,27 @@ public class AppDetail {
         this.appId = appId;
     }
 
-    public int getApplicationTypeId() {
+    public Integer getApplicationTypeId() {
         return applicationTypeId;
     }
 
-    public void setApplicationTypeId(int applicationTypeId) {
+    public void setApplicationTypeId(Integer applicationTypeId) {
         this.applicationTypeId = applicationTypeId;
     }
 
-    public int getServiceTotal() {
+    public Integer getServiceTotal() {
         return serviceTotal;
     }
 
-    public void setServiceTotal(int serviceTotal) {
+    public void setServiceTotal(Integer serviceTotal) {
         this.serviceTotal = serviceTotal;
     }
 
-    public int getServiceUnit() {
+    public Integer getServiceUnit() {
         return serviceUnit;
     }
 
-    public void setServiceUnit(int serviceUnit) {
+    public void setServiceUnit(Integer serviceUnit) {
         this.serviceUnit = serviceUnit;
     }
 
@@ -98,19 +115,19 @@ public class AppDetail {
         this.expireDate = expireDate;
     }
 
-    public int getDeleteStatus() {
+    public Integer getDeleteStatus() {
         return deleteStatus;
     }
 
-    public void setDeleteStatus(int deleteStatus) {
+    public void setDeleteStatus(Integer deleteStatus) {
         this.deleteStatus = deleteStatus;
     }
 
-    public int getUsableStatus() {
+    public Integer getUsableStatus() {
         return usableStatus;
     }
 
-    public void setUsableStatus(int usableStatus) {
+    public void setUsableStatus(Integer usableStatus) {
         this.usableStatus = usableStatus;
     }
 
@@ -194,7 +211,7 @@ public class AppDetail {
         this.config10 = config10;
     }
 
-    public AppDetail(int id, int applicationId, String appId, int applicationTypeId, int serviceTotal, int serviceUnit, Date startDate, Date expireDate, int deleteStatus, int usableStatus, String config1, String config2, String config3, String config4, String config5, String config6, String config7, String config8, String config9, String config10) {
+    public AppDetail(Integer id, Integer applicationId, String appId, Integer applicationTypeId, Integer serviceTotal, Integer serviceUnit, Date startDate, Date expireDate, Integer deleteStatus, Integer usableStatus, String config1, String config2, String config3, String config4, String config5, String config6, String config7, String config8, String config9, String config10) {
         this.id = id;
         this.applicationId = applicationId;
         this.appId = appId;
@@ -224,7 +241,7 @@ public class AppDetail {
                 ", applicationId=" + applicationId +
                 ", appId='" + appId + '\'' +
                 ", applicationTypeId=" + applicationTypeId +
-                ", serviceTotal='" + serviceTotal + '\'' +
+                ", serviceTotal=" + serviceTotal +
                 ", serviceUnit=" + serviceUnit +
                 ", startDate=" + startDate +
                 ", expireDate=" + expireDate +
@@ -240,6 +257,8 @@ public class AppDetail {
                 ", config8='" + config8 + '\'' +
                 ", config9='" + config9 + '\'' +
                 ", config10='" + config10 + '\'' +
+                ", endServiceTotal=" + endServiceTotal +
+                ", app=" + app +
                 '}';
     }
 }

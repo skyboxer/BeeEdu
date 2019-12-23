@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace(命名空间)：映射文件的唯一标识 -->
+<mapper namespace="com.enablue.mapper.AppDetailMapper">
+
+    <!-- 查询的statement，id：在同一个命名空间下的唯一标识，resultType：sql语句的结果集封装类型 -->
+    <select id="queryAppDetailList" resultType="AppDetail" parameterType="map">
+        select * from application_detail
+        <where>
+            <if test="applicationTypeId != null and applicationTypeId != ''">
+                and application_type_id = #{applicationTypeId}
+            </if>
+            <if test="applicationId != null and applicationId != ''">
+                and application_id = #{applicationId}
+            </if>
+            and application_detail.deleteStatus = 0
+        </where>
+        order by application_id
+        limit #{pageIndex},#{pageSize}
+    </select>
+
+    <select id="queryAppDetailCount" resultType="java.lang.Integer" parameterType="map">
+        select count(id) from application_detail
+        <where>
+            <if test="applicationTypeId != null and applicationTypeId != ''">
+                and application_type_id = #{applicationTypeId}
+            </if>
+            <if test="applicationId != null and applicationId != ''">
+                and application_id = #{applicationId}
+            </if>
+            and deleteStatus = 0
+        </where>
+    </select>
+    <!--根据应用该类型查找 王成-->
+    <select id="queryAppDetailByType" resultType="AppDetail">
+        SELECT
+            detail.*, operation.endServiceTotal
+        FROM
+            sys_applicationDetail_operation operation
+        JOIN application_detail detail ON operation.application_detail_id = detail.id
+        WHERE
+            operation.endServiceTotal>#{serviceTotal}
+        AND operation.application_type_id =#{applicationTypeId}
+        ORDER BY
+            operation.endServiceTotal DESC
+        LIMIT 0,1
+    </select>
+
+
+    <insert id="insertAppDetail" parameterType="AppDetail" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT  INTO application_detail
+        (application_id,appId,application_type_id,serviceTotal,serviceUnit,startDate,expireDate,config1,config2,config3,config4,config5,config6,config7,config8,config9,config10
+        )
+        value (#{applicationId},#{appId},#{applicationTypeId},#{serviceTotal},#{serviceUnit},#{startDate},#{expireDate},#{config1},#{config2},#{config3},#{config4},#{config5},#{config6},#{config7},#{config8},#{config9},#{config10})
+    </insert>
+
+    <update id="updateAppDetail" parameterType="AppDetail">
+        update application_detail
+        <set>
+            <if test="applicationId!=null and applicationId!=&quot;&quot;">
+                application_id=#{applicationId},
+            </if>
+            <if test="appId!=null and appId !=&quot;&quot;">
+                appId=#{appId},
+            </if>
+            <if test="applicationTypeId!=null and applicationTypeId !=&quot;&quot;">
+                application_type_id=#{applicationTypeId},
+            </if>
+            <if test="serviceTotal!=null and serviceTotal!=&quot;&quot;">
+                serviceTotal=#{serviceTotal},
+            </if>
+            <if test="serviceUnit!=null and serviceUnit!=&quot;&quot;">
+                serviceUnit=#{serviceUnit},
+            </if>
+            <if test="startDate!=null">
+                startDate=#{startDate},
+            </if>
+            <if test="expireDate!=null">
+                expireDate=#{expireDate},
+            </if>
+            <if test="deleteStatus!=null">
+                deleteStatus=#{deleteStatus},
+            </if>
+            <if test="usableStatus!=null">
+                usableStatus=#{usableStatus},
+            </if>
+            <if test="config1!=null">
+                config1=#{config1},
+            </if>
+            <if test="config2!=null">
+                config2=#{config2},
+            </if>
+            <if test="config3!=null">
+                config3=#{config3},
+            </if>
+            <if test="config4!=null">
+                config4=#{config4},
+            </if>
+            <if test="config5!=null">
+                config5=#{config5},
+            </if>
+            <if test="config6!=null">
+                config6=#{config6},
+            </if>
+            <if test="config7!=null">
+                config7=#{config7},
+            </if>
+            <if test="config8!=null">
+                config8=#{config8},
+            </if>
+            <if test="config9!=null">
+                config9=#{config9},
+            </if>
+            <if test="config10!=null">
+                config10=#{config10},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

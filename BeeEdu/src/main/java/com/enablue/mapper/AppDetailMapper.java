@@ -1,6 +1,7 @@
 package com.enablue.mapper;
 
 import com.enablue.pojo.AppDetail;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -33,4 +34,11 @@ public interface AppDetailMapper {
      * @return
      */
     int updateAppDetail(AppDetail appDetail);
+
+    /***
+     * 根据应用类型查找
+     * @param applicationTypeId
+     * @param serviceTotal
+     */
+      List<AppDetail> queryAppDetailByType(@Param("applicationTypeId") Integer applicationTypeId,  @Param("serviceTotal") Long serviceTotal);
 }

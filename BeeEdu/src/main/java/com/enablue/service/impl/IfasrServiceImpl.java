@@ -2,13 +2,20 @@ package com.enablue.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.enablue.mapper.AppDetailMapper;
+import com.enablue.pojo.AppDetail;
 import com.enablue.pojo.Word;
 import com.enablue.service.IfasrService;
+import com.enablue.service.PullApplicationService;
 import com.enablue.util.TimpStampUtil;
 import com.iflytek.msp.cpdb.lfasr.client.LfasrClientImp;
 import com.iflytek.msp.cpdb.lfasr.exception.LfasrException;
 import com.iflytek.msp.cpdb.lfasr.model.LfasrType;
 import com.iflytek.msp.cpdb.lfasr.model.Message;
+import it.sauronsoftware.jave.Encoder;
+import it.sauronsoftware.jave.EncoderException;
+import it.sauronsoftware.jave.MultimediaInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
@@ -19,11 +26,10 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * 科大讯飞服务实现类
@@ -32,6 +38,8 @@ import java.util.List;
  */
 @Service
 public class IfasrServiceImpl implements IfasrService {
+    @Autowired
+    private PullApplicationService pullApplicationService;
     /**
      * 创建语音转写任务
      * @param fileName 文件名
@@ -58,11 +66,21 @@ public class IfasrServiceImpl implements IfasrService {
 
                 //设置文件路径
                 String localFile =request.getServletContext().getRealPath("/upload")+File.separator + fileName;
+                //配置文件路劲
+                String config = request.getServletContext().getRealPath("config.properties");
                 //判断文件是否存在
                 File file = new File(localFile);
                 if(!file.exists()){
                     result.put("flag", false);
                     return result;
+                }
+                //获取录音文件时长
+                Long recordingLength = getRecordingLength(file);
+                //获取应用
+                List<AppDetail> appDetails = pullApplicationService.getApplication(0, recordingLength);
+                System.out.println("appDetails = " + appDetails);
+                if (appDetails == null){
+                    throw new Exception("请检查应用剩余服务时长");
                 }
                 //遍历请求中的cookie，如有存在cookie就直接返回结果
                 Cookie[] cookies = request.getCookies();
@@ -80,7 +98,7 @@ public class IfasrServiceImpl implements IfasrService {
                 HashMap<String, String> params = new HashMap<>();
                 params.put("has_participle", "false");
                 // 初始化LFASRClient实例
-                LfasrClientImp lc = LfasrClientImp.initLfasrClient();
+                LfasrClientImp lc = LfasrClientImp.initLfasrClient("5da68c15","7a56dc3b573590a616682096eead7921");
                 //上传文件
                 taskId = lfasrUpload(lc, localFile, params);
                 //打印过程
@@ -92,16 +110,25 @@ public class IfasrServiceImpl implements IfasrService {
                     result.put("TaskId", taskId);
                     response.addCookie(new Cookie(fileName,taskId));
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
                 result.put("flag", false);
                 return result;
             }
-
-
         }
         return result;
+    }
+
+    /**
+     * 获取录音文件时长 单位为秒
+     * @param file
+     * @return
+     */
+    public Long getRecordingLength(File file) throws EncoderException {
+        Encoder encoder = new Encoder();
+        MultimediaInfo info = encoder.getInfo(file);
+        Long ls= info.getDuration()/1000;
+        return ls;
     }
 
     /**

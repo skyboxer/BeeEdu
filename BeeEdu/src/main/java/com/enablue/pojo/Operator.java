@@ -6,72 +6,71 @@ package com.enablue.pojo;
  * 1912140551
  */
 public class Operator {
-    private int id;
+    private Long id;
     private String type;
     private String email;
     private String tel;
     private String password;
-    private int deleteStatus;
-    private int usableStatus;
+    private Integer deleteStatus;
+    private Integer usableStatus;
 
-    public int getId() {
+    public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getType() {
         return type;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public String getTel() {
-        return tel;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
+    public String getTel() {
+        return tel;
+    }
+
     public void setTel(String tel) {
         this.tel = tel;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public int getDeleteStatus() {
+    public Integer getDeleteStatus() {
         return deleteStatus;
     }
 
-    public void setDeleteStatus(int deleteStatus) {
+    public void setDeleteStatus(Integer deleteStatus) {
         this.deleteStatus = deleteStatus;
     }
 
-    public int getUsableStatus() {
+    public Integer getUsableStatus() {
         return usableStatus;
     }
 
-    public void setUsableStatus(int usableStatus) {
+    public void setUsableStatus(Integer usableStatus) {
         this.usableStatus = usableStatus;
     }
 
-    public Operator(int id, String type, String email, String tel, String password, int deleteStatus, int usableStatus) {
+    public Operator(Long id, String type, String email, String tel, String password, Integer deleteStatus, Integer usableStatus) {
         this.id = id;
         this.type = type;
         this.email = email;
