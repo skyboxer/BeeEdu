@@ -35,7 +35,7 @@
     </select>
     <!--根据应用该类型查找 王成-->
     <select id="queryAppDetailByType" resultType="AppDetail">
-        SELECT
+         SELECT
             detail.*, operation.endServiceTotal
         FROM
             sys_applicationDetail_operation operation

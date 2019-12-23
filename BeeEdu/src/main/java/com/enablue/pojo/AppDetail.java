@@ -10,7 +10,6 @@ import java.util.List;
  * 修改： 王成
  * 2019-12-17 13:34
  */
-@Component
 public class AppDetail {
     private Integer id;
     private Integer applicationId;
