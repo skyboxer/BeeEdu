@@ -9,10 +9,18 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+/**
+ * @author chinaxjk
+ * session
+ */
 @Component
 public class SessionCommon {
     private HttpSession session;
 
+    /**
+     * 获取Session
+     * @return
+     */
     public HttpSession getSession() {
         ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         //获取到Request对象

@@ -63,7 +63,7 @@ public class TextTranslation extends HttpServlet {
 					startText = new StringBuffer(endText.substring(0,index+1));
 					endText = new StringBuffer(endText.substring(index+1));
 				}
-				String resultStr = webOTS.getTranslate(from, to, startText.toString());
+				String resultStr = ""/*webOTS.getTranslate(from, to, startText.toString())*/;
 				resultIndexContext.append(resultStr);
 			}
 			JSONObject jsonObject = JSONObject.parseObject(resultIndexContext.toString());
