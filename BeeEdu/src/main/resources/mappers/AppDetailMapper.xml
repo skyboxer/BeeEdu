@@ -35,17 +35,21 @@
     </select>
     <!--根据应用该类型查找 王成-->
     <select id="queryAppDetailByType" resultType="AppDetail">
-         SELECT
-            detail.*, operation.endServiceTotal
+
+		SELECT
+            detail.*, operation.endServiceTotal, MAX(operation.operationDate)operationDate
         FROM
             sys_applicationDetail_operation operation
         JOIN application_detail detail ON operation.application_detail_id = detail.id
         WHERE
-            operation.endServiceTotal>#{serviceTotal}
-        AND operation.application_type_id =#{applicationTypeId}
+            operation.endServiceTotal>  1000
+        AND operation.application_type_id = 0
+				GROUP BY detail.id
         ORDER BY
-            operation.endServiceTotal DESC
-        LIMIT 0,1
+             operationDate DESC
+		LIMIT 0,1
+
+
     </select>
 
 
