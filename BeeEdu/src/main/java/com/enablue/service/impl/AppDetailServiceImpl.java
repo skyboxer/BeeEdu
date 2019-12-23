@@ -6,15 +6,17 @@ import com.enablue.mapper.ApplicationDetailOperationMapper;
 import com.enablue.pojo.AppDetail;
 import com.enablue.pojo.ApplicationDetailOperation;
 import com.enablue.service.AppDetailService;
-import com.google.gson.JsonElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
-
 import static com.enablue.service.impl.AppServiceImpl.getJsonObject;
+
+/**
+ * @author chinaxjk
+ */
 @Service
 public class AppDetailServiceImpl implements AppDetailService {
     @Autowired
@@ -46,8 +48,6 @@ public class AppDetailServiceImpl implements AppDetailService {
         JSONObject returnJson = new JSONObject();
         //添加返回是id
         int applicationDetailId = appDetailMapper.insertAppDetail(appDetail);
-        /*ApplicationDetailOperation(Long applicationDetailId, Long appid, Long applicationTypeId,
-                String startServiceTotal, String endServiceTotal, Long accountId)*/
         //添加操作日志
         aDO=new ApplicationDetailOperation(Long.valueOf(applicationDetailId),
                 String.valueOf(appDetail.getAppId()),Long.valueOf(appDetail.getApplicationTypeId()),
