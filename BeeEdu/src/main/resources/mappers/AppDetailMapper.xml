@@ -35,32 +35,33 @@
     </select>
     <!--根据应用该类型查找 王成-->
     <select id="queryAppDetailByType" resultType="AppDetail">
-        SELECT id,
-                 application_id,
-                 appId,application_type_id,
-                 serviceTotal,
-                 residual_service,
-                 serviceUnit,
-                 startDate,
-                 expireDate,
-                 config1,
-                 config2,
-                 config3,
-                 config4,
-                 config5,
-                 config6,
-                 config7,
-                 config8,
-                 config9,
-                 config10
+        SELECT
+            id,
+            application_id,
+            appId,
+            application_type_id,
+            serviceTotal,
+            residual_service,
+            serviceUnit,
+            startDate,
+            expireDate,
+            deleteStatus,
+            usableStatus,
+            config1,
+            config2,
+            config3,
+            config4,
+            config5,
+            config6,
+            config7,
+            config8,
+            config9,
+            config10
         FROM application_detail
         WHERE application_type_id=#{applicationTypeId}
-        AND
-            residual_service>#{serviceTotal}
-        AND
-            deleteStatus !=1
-        AND
-            usableStatus !=1
+        AND residual_service>#{serviceTotal}
+        AND deleteStatus!=1
+        AND usableStatus!=1
     </select>
 
 

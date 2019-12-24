@@ -22,7 +22,7 @@ public class PullApplicationServiceImpl implements PullApplicationService {
      * @return
      */
     @Override
-    public List<AppDetail> getApplication(Integer applicationTypeId, Long serviceTotal) {
+    public List<AppDetail> getApplication(Integer applicationTypeId, Integer serviceTotal) {
         try{
             return appDetailMapper.queryAppDetailByType(applicationTypeId, serviceTotal);
         }catch (Exception e){

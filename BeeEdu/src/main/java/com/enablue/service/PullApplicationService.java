@@ -9,5 +9,5 @@ import java.util.List;
  * wangcheng
  */
 public interface PullApplicationService {
-    List<AppDetail> getApplication(Integer applicationTypeId,Long serviceTotal);
+    List<AppDetail> getApplication(Integer applicationTypeId,Integer serviceTotal);
 }
