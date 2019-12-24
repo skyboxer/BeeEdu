@@ -1,6 +1,5 @@
 package com.enablue.controller;
 
-import com.alibaba.druid.sql.visitor.functions.Char;
 import com.alibaba.fastjson.JSONObject;
 import com.enablue.common.SessionCommon;
 import com.enablue.mapper.AppDetailMapper;
@@ -38,20 +37,18 @@ public class MachineTranslationController {
     /**
      * 文本翻译
      *
-     * @param map(from,to,text)
+     * @param from,to,text
      * @return json
      */
+    @Transactional(propagation = Propagation.REQUIRED)
     @RequestMapping(value = "textToTranslation", method = RequestMethod.POST, produces = "application/json")
-    public JSONObject textToTranslation(@RequestBody Map<String, String> map) {
+    public JSONObject textToTranslation(String from,String to,String text) {
         JSONObject jsonObject = new JSONObject();
-        String from = map.get("FROM");
-        String to = map.get("TO");
-        String text = map.get("TEXT");
         // 统计调用量并记录
         List<AppDetail> appConfig = appDetailMapper.queryAppDetailByType(2, (long) text.length());
         int nowEndServiceTotal = appConfig.get(0).getEndServiceTotal() - text.length();
         //获取用户ID
-        Account account = (Account) sessionCommon.getSession().getAttribute("manager");
+        Account account = (Account) sessionCommon.getSession().getAttribute("account");
         applicationDetailOperation = new ApplicationDetailOperation(appConfig.get(0).getId(), appConfig.get(0).getAppId(),
                 2, appConfig.get(0).getEndServiceTotal(), nowEndServiceTotal, account.getId());
         applicationDetailOperationMapper.addApplicationDetailOperation(applicationDetailOperation);
@@ -124,7 +121,7 @@ public class MachineTranslationController {
                     // 统计调用量并记录
                     int nowEndServiceTotal = appConfig.get(0).getEndServiceTotal() - count.length();
                     //获取用户ID
-                    Account account = (Account) sessionCommon.getSession().getAttribute("manager");
+                    Account account = (Account) sessionCommon.getSession().getAttribute("account");
                     applicationDetailOperation = new ApplicationDetailOperation(appConfig.get(0).getId(), appConfig.get(0).getAppId(),
                             2, appConfig.get(0).getEndServiceTotal(), nowEndServiceTotal, account.getId());
                     applicationDetailOperationMapper.addApplicationDetailOperation(applicationDetailOperation);
@@ -140,7 +137,7 @@ public class MachineTranslationController {
                 // 统计调用量并记录
                 int nowEndServiceTotal = appConfig.get(0).getEndServiceTotal() - count.length();
                 //获取用户ID
-                Account account = (Account) sessionCommon.getSession().getAttribute("manager");
+                Account account = (Account) sessionCommon.getSession().getAttribute("account");
                 applicationDetailOperation = new ApplicationDetailOperation(appConfig.get(0).getId(), appConfig.get(0).getAppId(),
                         2, appConfig.get(0).getEndServiceTotal(), nowEndServiceTotal, account.getId());
                 applicationDetailOperationMapper.addApplicationDetailOperation(applicationDetailOperation);

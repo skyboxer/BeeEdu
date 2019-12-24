@@ -161,10 +161,10 @@
 			alert("请选择目标语言")
 		}
 		if(from != to && contextStatus){
-			$.post("/textTranslation", {
-				TEXT : text,
-				FROM : from,
-				TO : to
+			$.post("/machineTranslation/textToTranslation", {
+				"text" : text,
+				"from" : from,
+				"to" : to
 			}, function(data) {
 				var dataJson = JSON.parse(data)
 				$("#text1").html(dataJson.dst);

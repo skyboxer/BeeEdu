@@ -10,7 +10,51 @@
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
 </head>
 <body>
-<fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+<script>
+    layui.use(['jquery'],function () {
+        var $ = layui.jquery;
+        $.ajax({
+            url:'/appDetail/getList',
+            data:{"page":1,"limit":9999999999999999},
+            async:true,
+            type:"post",
+            contextType:"application/json;charset=utf8",
+            dataType:"json",
+            success:function (data){
+               var appIdList = new Array();
+               for(var Index in data){
+                if(appIdList.length ==0){
+                    var fieldset={};
+                    fieldset["appId"]=data[Index].appId;
+                    var appDetailType=""
+                    switch (data[Index].applicationTypeId) {
+                        case 0:
+                            appDetailType="语音转写(时长)"
+                            break;
+                        case 1:
+                            appDetailType="语音合成(时长)";
+                            break;
+                        case 2:
+                            appDetailType="机器翻译(字符)";
+                            break;
+                        case 3:
+                            appDetailType="语音(时长)";
+                            break;
+                    }
+                    fieldset["applicationType"]=appDetailType;
+                    fieldset["serviceTotal"]=data[Index].serviceTotal;
+                    fieldset["serviceTotal"]=data[Index].serviceTotal;
+                };
+               }
+            }
+        })
+    })
+
+    var fieldset='<fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;" id="fieldsetList">' +
+        '<legend>appid</legend>'+
+        '</fieldset>'
+</script>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;" id="fieldsetList">
 <legend>应用1</legend>
 </fieldset>
 语音识别
