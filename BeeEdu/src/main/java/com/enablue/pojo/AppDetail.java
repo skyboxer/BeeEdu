@@ -16,6 +16,7 @@ public class AppDetail {
     private String appId;
     private Integer applicationTypeId;
     private Integer serviceTotal;
+    private Integer residualService;;
     private Integer serviceUnit;
     private Date startDate;
     private Date expireDate;
@@ -31,24 +32,7 @@ public class AppDetail {
     private String config8;
     private String config9;
     private String config10;
-    private Integer endServiceTotal;
     private List<App> app;
-
-    public List<App> getApp() {
-        return app;
-    }
-
-    public Integer getEndServiceTotal() {
-        return endServiceTotal;
-    }
-
-    public void setEndServiceTotal(Integer endServiceTotal) {
-        this.endServiceTotal = endServiceTotal;
-    }
-
-    public void setApp(App app) {
-        this.app = (List<App>) app;
-    }
 
     public Integer getId() {
         return id;
@@ -88,6 +72,14 @@ public class AppDetail {
 
     public void setServiceTotal(Integer serviceTotal) {
         this.serviceTotal = serviceTotal;
+    }
+
+    public Integer getResidualService() {
+        return residualService;
+    }
+
+    public void setResidualService(Integer residualService) {
+        this.residualService = residualService;
     }
 
     public Integer getServiceUnit() {
@@ -210,29 +202,6 @@ public class AppDetail {
         this.config10 = config10;
     }
 
-    public AppDetail(Integer id, Integer applicationId, String appId, Integer applicationTypeId, Integer serviceTotal, Integer serviceUnit, Date startDate, Date expireDate, Integer deleteStatus, Integer usableStatus, String config1, String config2, String config3, String config4, String config5, String config6, String config7, String config8, String config9, String config10) {
-        this.id = id;
-        this.applicationId = applicationId;
-        this.appId = appId;
-        this.applicationTypeId = applicationTypeId;
-        this.serviceTotal = serviceTotal;
-        this.serviceUnit = serviceUnit;
-        this.startDate = startDate;
-        this.expireDate = expireDate;
-        this.deleteStatus = deleteStatus;
-        this.usableStatus = usableStatus;
-        this.config1 = config1;
-        this.config2 = config2;
-        this.config3 = config3;
-        this.config4 = config4;
-        this.config5 = config5;
-        this.config6 = config6;
-        this.config7 = config7;
-        this.config8 = config8;
-        this.config9 = config9;
-        this.config10 = config10;
-    }
-
     @Override
     public String toString() {
         return "AppDetail{" +
@@ -241,6 +210,7 @@ public class AppDetail {
                 ", appId='" + appId + '\'' +
                 ", applicationTypeId=" + applicationTypeId +
                 ", serviceTotal=" + serviceTotal +
+                ", residualService=" + residualService +
                 ", serviceUnit=" + serviceUnit +
                 ", startDate=" + startDate +
                 ", expireDate=" + expireDate +
@@ -256,8 +226,6 @@ public class AppDetail {
                 ", config8='" + config8 + '\'' +
                 ", config9='" + config9 + '\'' +
                 ", config10='" + config10 + '\'' +
-                ", endServiceTotal=" + endServiceTotal +
-                ", app=" + app +
                 '}';
     }
 }

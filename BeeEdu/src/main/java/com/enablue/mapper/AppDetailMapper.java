@@ -41,7 +41,7 @@ public interface AppDetailMapper {
      * @param applicationTypeId
      * @param serviceTotal
      */
-      List<AppDetail> queryAppDetailByType(@Param("applicationTypeId") Integer applicationTypeId,  @Param("serviceTotal") Long serviceTotal);
+    List<AppDetail> queryAppDetailByType(@Param("applicationTypeId") Integer applicationTypeId,  @Param("serviceTotal") Integer serviceTotal);
 
     /**
      * 查询各个appid下的服务量 用于main页面图形

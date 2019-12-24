@@ -39,7 +39,7 @@ import java.util.Properties;
 @Service
 public class IfasrServiceImpl implements IfasrService {
     @Autowired
-    private PullApplicationService pullApplicationService;
+    private AppDetailMapper appDetailMapper;
     /**
      * 创建语音转写任务
      * @param fileName 文件名
@@ -77,7 +77,7 @@ public class IfasrServiceImpl implements IfasrService {
                 //获取录音文件时长
                 Long recordingLength = getRecordingLength(file);
                 //获取应用
-                List<AppDetail> appDetails = pullApplicationService.getApplication(0, recordingLength);
+                List<AppDetail> appDetails = appDetailMapper.queryAppDetailByType(0, recordingLength.intValue());
                 System.out.println("appDetails = " + appDetails);
                 if (appDetails == null){
                     throw new Exception("请检查应用剩余服务时长");
