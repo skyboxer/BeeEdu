@@ -31,19 +31,19 @@ public class AppDetail {
     private String config8;
     private String config9;
     private String config10;
-    private Integer endServiceTotal;
+    private Integer residualService;
     private List<App> app;
 
     public List<App> getApp() {
         return app;
     }
 
-    public Integer getEndServiceTotal() {
-        return endServiceTotal;
+    public Integer getresidualService() {
+        return residualService;
     }
 
-    public void setEndServiceTotal(Integer endServiceTotal) {
-        this.endServiceTotal = endServiceTotal;
+    public void setresidualService(Integer residualService) {
+        this.residualService = residualService;
     }
 
     public void setApp(App app) {
@@ -256,7 +256,7 @@ public class AppDetail {
                 ", config8='" + config8 + '\'' +
                 ", config9='" + config9 + '\'' +
                 ", config10='" + config10 + '\'' +
-                ", endServiceTotal=" + endServiceTotal +
+                ", residualService=" + residualService +
                 ", app=" + app +
                 '}';
     }
