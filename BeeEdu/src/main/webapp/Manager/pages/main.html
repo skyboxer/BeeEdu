@@ -10,50 +10,6 @@
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
 </head>
 <body>
-<script>
-    layui.use(['jquery'],function () {
-        var $ = layui.jquery;
-        $.ajax({
-            url:'/appDetail/getList',
-            data:{"page":1,"limit":9999999999999999},
-            async:true,
-            type:"post",
-            contextType:"application/json;charset=utf8",
-            dataType:"json",
-            success:function (data){
-               var appIdList = new Array();
-               for(var Index in data){
-                if(appIdList.length ==0){
-                    var fieldset={};
-                    fieldset["appId"]=data[Index].appId;
-                    var appDetailType=""
-                    switch (data[Index].applicationTypeId) {
-                        case 0:
-                            appDetailType="语音转写(时长)"
-                            break;
-                        case 1:
-                            appDetailType="语音合成(时长)";
-                            break;
-                        case 2:
-                            appDetailType="机器翻译(字符)";
-                            break;
-                        case 3:
-                            appDetailType="语音(时长)";
-                            break;
-                    }
-                    fieldset["applicationType"]=appDetailType;
-                    fieldset["serviceTotal"]=data[Index].serviceTotal;
-                    fieldset["serviceTotal"]=data[Index].serviceTotal;
-                };
-               }
-            }
-        })
-    })
-
-    var fieldset='<fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;" id="fieldsetList">' +
-        '<legend>appid</legend>'+
-        '</fieldset>'
-</script>
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;" id="fieldsetList">
 <legend>应用1</legend>
 </fieldset>
@@ -107,7 +63,55 @@
     layui.use(['element'], function () {
         var $ = layui.jquery,layer = layui.layer
             ,element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
-
+        $.ajax({
+            url:'/appDetail/getServiceTypeTotalList',
+            async:true,
+            type:"post",
+            contextType:"application/json;charset=utf8",
+            dataType:"json",
+            success:function (e){
+                var data = e.data;
+                $("body").empty();
+                var fieldset ="";
+                for(var Index in data){
+                    var typeIdList = data[Index].typeList.split(",");
+                    var serviceTotalList = data[Index].serviceTotalList.split(",");
+                    var residualServiceList = data[Index].residualServiceList.split(",");
+                    fieldset +='<fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;" id="fieldsetList">' +
+                        '<legend>'+data[Index].appId+'</legend>' +
+                        '</fieldset>' +
+                        '<br>';
+                    for(var i in typeIdList){
+                        var appDetailType ="";
+                        var percent=0;
+                        switch (typeIdList[i]) {
+                            case "0":
+                                appDetailType="语音转写(时长)"
+                                break;
+                            case "1":
+                                appDetailType="语音合成(时长)";
+                                break;
+                            case "2":
+                                appDetailType="机器翻译(字符)";
+                                break;
+                            case "3":
+                                appDetailType="语音(时长)";
+                                break;
+                        }
+                        var num = parseFloat(residualServiceList[i]);
+                        var total = parseFloat(serviceTotalList[i]);
+                        percent= (total <= 0 ? "0%" : (Math.round(num / total * 10000) / 100.00)+"%");
+                        fieldset+= appDetailType +
+                            '<div class="layui-progress layui-progress-big" style="width: 70%;" lay-showpercent="true">\n' +
+                            '    <div class="layui-progress-bar" lay-percent="'+percent+'"></div>\n' +
+                            '</div>\n' +
+                            '<br>'
+                    }
+                }
+                $("body").append(fieldset);
+                element.render('progress');
+            }
+        })
     });
 </script>
 

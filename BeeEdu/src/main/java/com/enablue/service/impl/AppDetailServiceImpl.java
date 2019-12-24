@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import static com.enablue.service.impl.AppServiceImpl.getJsonObject;
@@ -68,6 +69,21 @@ public class AppDetailServiceImpl implements AppDetailService {
         JSONObject returnJson = new JSONObject();
         int status = appDetailMapper.updateAppDetail(appDetail);
         return getJsonObject(returnJson, status);
+    }
+
+    @Override
+    public JSONObject getAppDetailTotal() {
+        JSONObject returnJson = new JSONObject();
+        List<Map<String,Object>> listMap = appDetailMapper.queryAppDetailTotal();
+        if (listMap.size() < 0) {
+            returnJson.put("code", -1);
+            returnJson.put("data", null);
+            returnJson.put("msg", "查询失败");
+            return returnJson;
+        }
+        returnJson.put("code", 0);
+        returnJson.put("data", listMap);
+        return returnJson;
     }
 
 }

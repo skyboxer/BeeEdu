@@ -34,6 +34,12 @@ public class AppDetailController {
         return appDetailService.getAppDetailList(paramMap);
     }
 
+    @RequestMapping(value = "getServiceTypeTotalList",method = RequestMethod.POST,produces = "application/json")
+    public JSONObject getServiceTotalList(){
+
+        return appDetailService.getAppDetailTotal();
+    }
+
     @RequestMapping(value = "add",method = RequestMethod.POST,produces = "application/json")
     public JSONObject addOperator(@RequestBody AppDetail appDetail){
 

@@ -48,6 +48,25 @@
         LIMIT 0,1
     </select>
 
+    <!--<resultMap id="serviceTypeTotal" type="java.lang.HashMap">
+        <result property="appId" column="appId" jdbcType="VARCHAR"/>
+        <result property="applicationId" column="applicationId" jdbcType="Int"/>
+        <result property="typeList" column="typeList" jdbcType="VARCHAR"/>
+        <result property="serviceTotalList" column="serviceTotalList" jdbcType="VARCHAR"/>
+        <result property="residualServiceList" column="residualServiceList" jdbcType="VARCHAR"/>
+    </resultMap>-->
+    <!--查询各个appid下的服务量-->
+    <select id="queryAppDetailTotal" resultType="map">
+        SELECT
+        appid appId,
+        application_id applicationId,
+        GROUP_CONCAT(application_type_id) typeList,
+        GROUP_CONCAT(serviceTotal) serviceTotalList,
+        GROUP_CONCAT(residual_service) residualServiceList
+        FROM application_detail
+        where deleteStatus = 0
+        GROUP BY application_id
+    </select>
 
     <insert id="insertAppDetail" parameterType="AppDetail" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         INSERT  INTO application_detail

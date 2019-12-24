@@ -2,6 +2,7 @@ package com.enablue.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.enablue.pojo.AppDetail;
+import org.junit.Test;
 
 import java.util.Map;
 
@@ -31,4 +32,10 @@ public interface AppDetailService {
      * @return
      */
     JSONObject updateAppDetail(AppDetail appDetail);
+
+    /**
+     * 查询各个appid下的服务量 用于main页面图形
+     * @return
+     */
+    JSONObject getAppDetailTotal();
 }

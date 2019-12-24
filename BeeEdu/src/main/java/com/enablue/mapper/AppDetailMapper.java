@@ -3,6 +3,7 @@ package com.enablue.mapper;
 import com.enablue.pojo.AppDetail;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,4 +42,10 @@ public interface AppDetailMapper {
      * @param serviceTotal
      */
       List<AppDetail> queryAppDetailByType(@Param("applicationTypeId") Integer applicationTypeId,  @Param("serviceTotal") Long serviceTotal);
+
+    /**
+     * 查询各个appid下的服务量 用于main页面图形
+     * @return
+     */
+    List<Map<String,Object>> queryAppDetailTotal();
 }
