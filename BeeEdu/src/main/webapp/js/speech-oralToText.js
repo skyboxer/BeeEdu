@@ -337,10 +337,14 @@ class IatTaste {
 var conditionChange = function(text) {
 	var from = $("#languageTypeOne option:selected").val();
 	var to = $("#languageTypeTwo option:selected").val();
-	$.post("/textTranslation", {
-			TEXT : text,
-			FROM : from,
-			TO : to
+	if(to == from){
+		alert("请选择翻译的目标语言！")
+		return;
+	}
+	$.post("/machineTranslation/textToTranslation", {
+			"text" : text,
+			"from" : from,
+			"to" : to
 	},
 	function(data) {
 		var dataJson = JSON.parse(data)
