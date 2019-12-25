@@ -69,6 +69,7 @@ public class CharchaterFilter implements Filter {
 
         //过滤带.html后缀的
         if (path.indexOf(".html") > -1 || path.equals("/")){
+            System.out.println("method = " + account);
             // 判断如果没有取到员工信息,就跳转到登陆页面
             if (account == null) {
                 // 跳转到登陆页面
