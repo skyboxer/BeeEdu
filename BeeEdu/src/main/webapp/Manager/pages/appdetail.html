@@ -89,7 +89,7 @@
             }
           }}
         , {field: 'serviceTotal', title: '服务总量', width: 100}
-        , {field: 'endServiceTotal', title: '剩余服务', width: 100}
+        , {field: 'residualService', title: '剩余服务', width: 100}
         , {field: 'startDate', title: '开始时间', width: 200, edit: 'text', sort: true}
         , {field: 'expireDate', title: '到期时间', width: 200, edit: 'text', sort: true}
         , {field: 'lock', title: '是否锁定', width: 110, templet: '#checkLock', unresize: true}
@@ -177,7 +177,7 @@
               $('#addAppDetailLayer #id').val(data.id);
               $('#addAppDetailLayer #applicationTypeId').val(data.applicationTypeId);
               $('#addAppDetailLayer #serviceTotal').val(data.serviceTotal);
-              $('#addAppDetailLayer #endServiceTotal').val(data.endServiceTotal);
+              $('#addAppDetailLayer #residualService').val(data.residualService);
               $('#addAppDetailLayer #serviceUnit').val(data.serviceUnit);
               $('#addAppDetailLayer #startDate').val(data.startDate);
               $('#addAppDetailLayer #expireDate').val(data.expireDate);
@@ -227,7 +227,7 @@
         "applicationTypeId":data.field.applicationTypeId,
         "serviceUnit":data.field.serviceUnit,
         "serviceTotal":data.field.serviceTotal,
-        "endServiceTotal":data.field.endServiceTotal,
+        "residualService":data.field.residualService,
         "startDate":data.field.startDate,
         "expireDate":data.field.expireDate,
         "config1":data.field.config1,
@@ -316,7 +316,7 @@
         <div class="layui-inline">
           <label class="layui-form-label">剩余服务</label>
           <div class="layui-input-block">
-            <input type="number" name="endServiceTotal" id="endServiceTotal" required  lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+            <input type="number" name="residualService" id="residualService" required  lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
           </div>
         </div>
 
