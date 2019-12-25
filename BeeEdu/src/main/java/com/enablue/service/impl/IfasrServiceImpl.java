@@ -3,7 +3,10 @@ package com.enablue.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.enablue.mapper.AppDetailMapper;
+import com.enablue.mapper.ApplicationDetailOperationMapper;
+import com.enablue.pojo.Account;
 import com.enablue.pojo.AppDetail;
+import com.enablue.pojo.ApplicationDetailOperation;
 import com.enablue.pojo.Word;
 import com.enablue.service.IfasrService;
 import com.enablue.service.PullApplicationService;
@@ -17,6 +20,7 @@ import it.sauronsoftware.jave.EncoderException;
 import it.sauronsoftware.jave.MultimediaInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -26,6 +30,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.util.HashMap;
 import java.util.List;
@@ -40,12 +45,15 @@ import java.util.Properties;
 public class IfasrServiceImpl implements IfasrService {
     @Autowired
     private AppDetailMapper appDetailMapper;
+    @Autowired
+    private ApplicationDetailOperationMapper applicationDetailOperationMapper;
     /**
      * 创建语音转写任务
      * @param fileName 文件名
      * @return result 结果集
      */
     @Override
+    @Transactional
     public HashMap<String, Object> speechTask(String fileName) {
         HashMap<String, Object> result = new HashMap<>();
         //2.处理请求
@@ -68,6 +76,8 @@ public class IfasrServiceImpl implements IfasrService {
                 String localFile =request.getServletContext().getRealPath("/upload")+File.separator + fileName;
                 //配置文件路劲
                 String config = request.getServletContext().getRealPath("config.properties");
+                //拿到用户账号
+                Account account = (Account) request.getSession().getAttribute("account");
                 //判断文件是否存在
                 File file = new File(localFile);
                 if(!file.exists()){
@@ -80,8 +90,11 @@ public class IfasrServiceImpl implements IfasrService {
                 List<AppDetail> appDetails = appDetailMapper.queryAppDetailByType(0, recordingLength.intValue());
                 System.out.println("appDetails = " + appDetails);
                 if (appDetails == null){
-                    throw new Exception("请检查应用剩余服务时长");
+                    result.put("flag", false);
+                    result.put("msg", "转写失败");
+                    return result;
                 }
+                AppDetail appDetail = appDetails.get(0);
                 //遍历请求中的cookie，如有存在cookie就直接返回结果
                 Cookie[] cookies = request.getCookies();
                 for (Cookie cookie:cookies) {
@@ -98,7 +111,7 @@ public class IfasrServiceImpl implements IfasrService {
                 HashMap<String, String> params = new HashMap<>();
                 params.put("has_participle", "false");
                 // 初始化LFASRClient实例
-                LfasrClientImp lc = LfasrClientImp.initLfasrClient("5da68c15","7a56dc3b573590a616682096eead7921");
+                LfasrClientImp lc = LfasrClientImp.initLfasrClient(appDetail.getConfig1(),appDetail.getConfig2());
                 //上传文件
                 taskId = lfasrUpload(lc, localFile, params);
                 //打印过程
@@ -109,8 +122,20 @@ public class IfasrServiceImpl implements IfasrService {
                     result.put("flag", true);
                     result.put("TaskId", taskId);
                     response.addCookie(new Cookie(fileName,taskId));
+                    //添加日志信息
+                    ApplicationDetailOperation operation = new ApplicationDetailOperation(appDetail.getId(),
+                            appDetail.getAppId(),
+                            appDetail.getApplicationTypeId(),
+                            appDetail.getResidualService(),
+                            appDetail.getResidualService()-recordingLength.intValue(),
+                            account.getId()
+                            );
+                    System.out.println("appDetail = " + appDetail);
+                    appDetail.setResidualService(appDetail.getResidualService()-recordingLength.intValue());
+                    applicationDetailOperationMapper.addApplicationDetailOperation(operation);
+                    appDetailMapper.updateAppDetail(appDetail);
                 }
-            } catch (Exception e) {
+            } catch (LfasrException | EncoderException e) {
                 e.printStackTrace();
                 result.put("flag", false);
                 return result;
