@@ -57,7 +57,7 @@ public class AppDetailServiceImpl implements AppDetailService {
         //获取用户ID
         Account account = (Account) sessionCommon.getSession().getAttribute("manager");
         //添加操作日志
-        aDO=new ApplicationDetailOperation(applicationDetailId,
+        aDO=new ApplicationDetailOperation(appDetail.getId(),
                 String.valueOf(appDetail.getAppId()),appDetail.getApplicationTypeId(),
                 appDetail.getServiceTotal(),appDetail.getServiceTotal(),account.getId());
         aDOM.addApplicationDetailOperation(aDO);
