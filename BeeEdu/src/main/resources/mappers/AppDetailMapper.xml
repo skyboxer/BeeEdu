@@ -64,13 +64,6 @@
         AND usableStatus!=1
     </select>
 
-    <!--<resultMap id="serviceTypeTotal" type="java.lang.HashMap">
-        <result property="appId" column="appId" jdbcType="VARCHAR"/>
-        <result property="applicationId" column="applicationId" jdbcType="Int"/>
-        <result property="typeList" column="typeList" jdbcType="VARCHAR"/>
-        <result property="serviceTotalList" column="serviceTotalList" jdbcType="VARCHAR"/>
-        <result property="residualServiceList" column="residualServiceList" jdbcType="VARCHAR"/>
-    </resultMap>-->
     <!--查询各个appid下的服务量-->
     <select id="queryAppDetailTotal" resultType="map">
         SELECT
@@ -86,9 +79,9 @@
 
     <insert id="insertAppDetail" parameterType="AppDetail" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         INSERT  INTO application_detail
-        (application_id,appId,application_type_id,serviceTotal,serviceUnit,startDate,expireDate,config1,config2,config3,config4,config5,config6,config7,config8,config9,config10
+        (application_id,appId,application_type_id,serviceTotal,residual_service,serviceUnit,startDate,expireDate,config1,config2,config3,config4,config5,config6,config7,config8,config9,config10
         )
-        value (#{applicationId},#{appId},#{applicationTypeId},#{serviceTotal},#{serviceUnit},#{startDate},#{expireDate},#{config1},#{config2},#{config3},#{config4},#{config5},#{config6},#{config7},#{config8},#{config9},#{config10})
+        value (#{applicationId},#{appId},#{applicationTypeId},#{serviceTotal},#{residualService},#{serviceUnit},#{startDate},#{expireDate},#{config1},#{config2},#{config3},#{config4},#{config5},#{config6},#{config7},#{config8},#{config9},#{config10})
     </insert>
 
     <update id="updateAppDetail" parameterType="AppDetail">
@@ -105,6 +98,9 @@
             </if>
             <if test="serviceTotal!=null and serviceTotal!=&quot;&quot;">
                 serviceTotal=#{serviceTotal},
+            </if>
+            <if test="residualService!=null and residualService!=&quot;&quot;">
+                residual_service=#{residualService},
             </if>
             <if test="serviceUnit!=null and serviceUnit!=&quot;&quot;">
                 serviceUnit=#{serviceUnit},
