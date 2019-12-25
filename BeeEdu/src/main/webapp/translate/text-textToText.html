@@ -165,8 +165,11 @@
 				"text" : text,
 				"from" : from,
 				"to" : to
-			}, function(data) {
-				var dataJson = JSON.parse(data)
+			}, function(e) {
+				var dataJson = e.data;
+				if (e.code!=0){
+					layer.msg(dataJson.msg);
+				}
 				$("#text1").html(dataJson.dst);
 				contextStatus = false;
 			})
