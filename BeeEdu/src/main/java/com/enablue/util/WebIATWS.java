@@ -32,6 +32,7 @@ public class WebIATWS extends WebSocketListener {
 	public static final int StatusFirstFrame = 0;
 	public static final int StatusContinueFrame = 1;
 	public static final int StatusLastFrame = 2;
+	private  static String appId;
 	public static final Gson json = new Gson();
 	Decoder decoder = new Decoder();
 	// 开始时间
@@ -63,7 +64,7 @@ public class WebIATWS extends WebSocketListener {
 						JsonObject common = new JsonObject(); // 第一帧必须发送
 						JsonObject data = new JsonObject(); // 每一帧都要发送
 						// 填充common
-						common.addProperty("app_id", WebApiParameters.APPID);
+						common.addProperty("app_id", appId);
 						// 填充business
 						business.addProperty("language", "zh_cn");
 						// business.addProperty("language", "en_us");//英文
@@ -196,7 +197,8 @@ public class WebIATWS extends WebSocketListener {
 		}
 	}
 
-	public static String getAuthUrl(String hostUrl, String apiKey, String apiSecret) throws Exception {
+	public static String getAuthUrl(String hostUrl,String appIds, String apiKey, String apiSecret) throws Exception {
+		appId= appIds;
 		URL url = new URL(hostUrl);
 		SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
 		format.setTimeZone(TimeZone.getTimeZone("GMT"));

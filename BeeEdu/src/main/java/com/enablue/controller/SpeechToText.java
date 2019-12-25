@@ -22,7 +22,7 @@ import com.enablue.util.WebIATWS;
  */
 @WebServlet("/speechToText")
 public class SpeechToText extends HttpServlet{
-	private static final long serialVersionUID = 1L;
+	/*private static final long serialVersionUID = 1L;
 	public static  PrintWriter out;
 	@SuppressWarnings("unused")
 	@Override
@@ -40,7 +40,7 @@ public class SpeechToText extends HttpServlet{
 		String fileName = strs[0].toString();
 		String filePathName = uploadFilePath+fileName+".txt";
 		WebIATWS.setFileName(filePathName);
-		
+
 		// 构建鉴权url
         String authUrl;
 		try {
@@ -54,13 +54,13 @@ public class SpeechToText extends HttpServlet{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		super.doPost(req, resp);
 	}
-
+*/
 }

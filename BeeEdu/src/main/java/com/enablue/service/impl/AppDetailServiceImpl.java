@@ -52,15 +52,20 @@ public class AppDetailServiceImpl implements AppDetailService {
     @Transactional(propagation = Propagation.REQUIRED)
     public JSONObject addAppDetail(AppDetail appDetail) {
         JSONObject returnJson = new JSONObject();
-        //添加返回是id
-        int applicationDetailId = appDetailMapper.insertAppDetail(appDetail);
-        //获取用户ID
-        Account account = (Account) sessionCommon.getSession().getAttribute("manager");
-        //添加操作日志
-        aDO=new ApplicationDetailOperation(appDetail.getId(),
-                String.valueOf(appDetail.getAppId()),appDetail.getApplicationTypeId(),
-                appDetail.getServiceTotal(),appDetail.getServiceTotal(),account.getId());
-        aDOM.addApplicationDetailOperation(aDO);
+        int applicationDetailId= -1;
+        try{
+            //添加返回是id
+            applicationDetailId = appDetailMapper.insertAppDetail(appDetail);
+            //获取用户ID
+            Account account = (Account) sessionCommon.getSession().getAttribute("manager");
+            //添加操作日志
+            aDO=new ApplicationDetailOperation(appDetail.getId(),
+                    String.valueOf(appDetail.getAppId()),appDetail.getApplicationTypeId(),
+                    appDetail.getServiceTotal(),appDetail.getServiceTotal(),account.getId());
+            aDOM.addApplicationDetailOperation(aDO);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return getJsonObject(returnJson, applicationDetailId);
     }
 
