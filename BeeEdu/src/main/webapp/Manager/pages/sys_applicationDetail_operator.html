@@ -14,10 +14,10 @@
 <table class="layui-hide" id="test"></table>
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
-      <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+      <!--<button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
       <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
       <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
-    </div>
+-->    </div>
   </script>
    
   <script type="text/html" id="barDemo">
@@ -45,12 +45,24 @@ layui.use('table', function(){
     ,cols: [[
       {type: 'checkbox', fixed: 'left'}
       ,{field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true}
-      ,{field:'applicationDetailId', title:'应用详情ID', width:120, edit: 'text'}
-      // ,{field:'email', title:'邮箱', width:150, edit: 'text', templet: function(res){
-      //   return '<em>'+ res.email +'</em>'
-      // }}
-      ,{field:'appid', title:'appid', width:80, edit: 'text', sort: true}
-      ,{field:'applicationTypeId', title:'应用类型ID', width:100}
+      ,{field:'applicationDetailId', title:'应用详情ID', width:80, edit: 'text'}
+      ,{field:'appid', title:'appid', width:100, edit: 'text', sort: true}
+      ,{field:'applicationTypeId', title:'应用类型ID', width:100,templet:function (res) {
+          switch (res.applicationTypeId) {
+            case 0:
+              return '<em>语音转写(时长)</em>'
+              break;
+            case 1:
+              return '<em>语音合成(时长)</em>'
+              break;
+            case 2:
+              return '<em>机器翻译(字符量)</em>'
+              break;
+            case 3:
+              return '<em>语音听写(服务量)</em>'
+              break;
+          }
+        }}
       ,{field:'operationDate', title:'操作日期',width:200}
       ,{field:'startServiceTotal', title:'操作前服务时长', width:180}
       ,{field:'endServiceTotal', title:'操作后服务时长', width:180}

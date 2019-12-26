@@ -3,8 +3,10 @@ package com.enablue.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.enablue.common.SessionCommon;
 import com.enablue.mapper.AppDetailMapper;
+import com.enablue.mapper.AppMapper;
 import com.enablue.mapper.ApplicationDetailOperationMapper;
 import com.enablue.pojo.Account;
+import com.enablue.pojo.App;
 import com.enablue.pojo.AppDetail;
 import com.enablue.pojo.ApplicationDetailOperation;
 import com.enablue.service.AppDetailService;
@@ -28,6 +30,9 @@ public class AppDetailServiceImpl implements AppDetailService {
     @Autowired
     private ApplicationDetailOperationMapper aDOM;
     private ApplicationDetailOperation aDO;
+    private App app;
+    @Autowired
+    private AppMapper appMapper;
     @Autowired
     private SessionCommon sessionCommon;
     @Override
@@ -54,6 +59,16 @@ public class AppDetailServiceImpl implements AppDetailService {
         JSONObject returnJson = new JSONObject();
         int applicationDetailId= -1;
         try{
+            Map<String,Object> queryMap = new HashMap<>();
+            queryMap.put("applicationTypeId",appDetail.getApplicationTypeId());
+            queryMap.put("applicationId",appDetail.getApplicationId());
+            int listCount = appDetailMapper.queryAppDetailCount(queryMap);
+            if(listCount>0){
+                returnJson.put("code", -1);
+                returnJson.put("data", null);
+                returnJson.put("msg", "应用已有该类型服务");
+                return returnJson;
+            }
             //添加返回是id
             applicationDetailId = appDetailMapper.insertAppDetail(appDetail);
             //获取用户ID
@@ -73,6 +88,19 @@ public class AppDetailServiceImpl implements AppDetailService {
     public JSONObject updateAppDetail(AppDetail appDetail) {
         JSONObject returnJson = new JSONObject();
         int status = appDetailMapper.updateAppDetail(appDetail);
+        Map<String,Integer> map = new HashMap<String, Integer>();
+        map.put("applicationId",appDetail.getApplicationId());
+        List<AppDetail> appDetailsList = appDetailMapper.queryUsableAppDetail(map);
+        app = new App();
+        app.setId(Long.valueOf(appDetail.getApplicationId()));
+        if (appDetailsList.size()<=0){
+            app.setUsableStatus(1);
+            app.setDeleteStatus(1);
+        }else {
+            app.setUsableStatus(0);
+            app.setDeleteStatus(0);
+        }
+        appMapper.updateApp(app);
         return getJsonObject(returnJson, status);
     }
 
@@ -90,5 +118,4 @@ public class AppDetailServiceImpl implements AppDetailService {
         returnJson.put("data", listMap);
         return returnJson;
     }
-
 }

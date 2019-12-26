@@ -7,6 +7,7 @@ import com.enablue.service.AppService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 @Service
@@ -31,6 +32,14 @@ public class AppServiceImpl implements AppService {
     @Override
     public JSONObject addApp(App app) {
         JSONObject returnJson = new JSONObject();
+        Map<String ,String> map = new HashMap<>();
+        map.put("appId",app.getAppId());
+        List<App> appList =appMapper.queryAppList(map);
+        if(appList.size()>0){
+            returnJson.put("code", -1);
+            returnJson.put("msg", "应用已存在");
+            return returnJson;
+        }
         int status =  appMapper.insertApp(app);
         return getJsonObject(returnJson, status);
     }

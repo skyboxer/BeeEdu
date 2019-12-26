@@ -8,11 +8,17 @@
     <!-- 查询的statement，id：在同一个命名空间下的唯一标识，resultType：sql语句的结果集封装类型 -->
     <select id="queryAppList" resultType="App" parameterType="map">
         select * from application
-        <!--<where>
-            <if test="name != null and name != ''">
+        <where>
+            <if test="name != null">
                 and name like CONCAT('%',#{name},'%')
             </if>
-        </where>-->
+            <if test="appId!=null">
+                and appId =#{appId}
+            </if>
+            and deleteStatus = 0
+            and usableStatus = 0
+            order by id DESC
+        </where>
     </select>
 
     <insert id="insertApp" parameterType="App">
@@ -22,10 +28,25 @@
     </insert>
 
     <update id="updateApp" parameterType="App">
-        UPDATE application
-        SET (appid,`name`,operator_id,deleteStatus,usableStatus)
-        value (#{appId},#{name},#{operatorId},#{deleteStatus},#{usableStatus})
-        where  id = #(id)
+        update application
+        <set>
+            <if test="appId!=null">
+                appId=#{appId},
+            </if>
+            <if test="name!=null">
+                `name`=#{name},
+            </if>
+            <if test="operatorId!=null">
+                operator_id=#{operatorId},
+            </if>
+            <if test="deleteStatus!=null">
+                deleteStatus=#{deleteStatus},
+            </if>
+            <if test="usableStatus!=null">
+                usableStatus=#{usableStatus},
+            </if>
+        </set>
+        where id=#{id}
     </update>
 
 </mapper>
