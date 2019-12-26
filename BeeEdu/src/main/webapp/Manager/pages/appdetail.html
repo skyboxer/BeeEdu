@@ -284,15 +284,14 @@
           layer.msg(data.msg)
           layer.close(toolbarAddLayerIndex);
           document.getElementById("addAppDetailForm").reset();
-          table.render();
         },
         error:function (XMLHttpRequest,textStatus,errorThrown) {
           layer.msg("请求失败！");
           layer.close(toolbarAddLayerIndex); //再执行关闭
           document.getElementById("addAppDetailForm").reset();
-          table.render();
         }
       })
+      table.reload('test');
     }
   });
 
