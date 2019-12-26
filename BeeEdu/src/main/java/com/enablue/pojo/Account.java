@@ -9,11 +9,11 @@ public class Account {
     private Integer id;
     private String name;
     private String password;
+    private Integer Administrator;
 
     public Integer getId() {
         return id;
     }
-
     public void setId(Integer id) {
         this.id = id;
     }
@@ -34,12 +34,21 @@ public class Account {
         this.password = password;
     }
 
+    public Integer getAdministrator() {
+        return Administrator;
+    }
+
+    public void setAdministrator(Integer administrator) {
+        Administrator = administrator;
+    }
+
     @Override
     public String toString() {
         return "Account{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
+                ", Administrator=" + Administrator +
                 '}';
     }
 }

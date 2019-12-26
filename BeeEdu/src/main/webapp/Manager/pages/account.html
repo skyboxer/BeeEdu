@@ -57,11 +57,18 @@
             , cols: [[
                 {type: 'checkbox', fixed: 'left'}
                 , {field: 'id', title: 'ID', width: 80, fixed: 'left', unresize: true, sort: true}
-                , {field: 'name', title: '账户名', width: 100, edit: 'text'}
-                , {field: 'password', title: '密码', width: 100,edit: 'password'}
+                , {field: 'name', title: '账户名', width: 130, edit: 'text'}
+                , {field: 'password', title: '密码', width: 130,edit: 'password'}
                 // , {field: 'joinTime', title: '创建时间', width: 120, edit: 'text', sort: true}
                 // , {field: 'joinTime', title: '修改时间', width: 120, edit: 'text', sort: true}
                 , {field: 'lock', title: '是否锁定', width: 110, templet: '#checkLock', unresize: true}
+                , {field: ' Administrator', title: '是否为管理员', width: 170,edit: 'text',templet: function (result) {
+                        if (result.Administrator===1){
+                            return "是"
+                        }else {
+                            return "否"
+                        }
+                    }}
                 , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150}
             ]]
             , page: true

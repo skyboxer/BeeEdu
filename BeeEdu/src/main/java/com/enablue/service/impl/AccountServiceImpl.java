@@ -51,6 +51,11 @@ public class AccountServiceImpl implements AccountService {
                 result.put("errorMsg", "账号或密码错误");
                 return result;
             }
+            if (temp.getAdministrator()==1){
+                result.put("permission",true);
+            }else {
+                result.put("permission",false);
+            }
             result.put("flag", true);
             result.put("account",temp);
             return result;
@@ -62,38 +67,6 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
-    /***
-     * 管理员登录
-     * @param manager
-     * @return
-     */
-    @Override
-    public HashMap<String, Object> managerLogin(Account manager) {
-        HashMap<String, Object> result = new HashMap<>();
-        try{
-            if (manager==null || manager.getName() == null  || manager.getPassword() ==null){
-                result.put("flag", false);
-                result.put("errorMsg", "账号密码不能为空");
-                return result;
-            }
-            //查询数据
-            Account temp = accountMapper.queryManagerAccount(manager.getName(), manager.getPassword());
-            if (temp == null){
-                result.put("flag", false);
-                result.put("errorMsg", "账号或密码错误");
-                return result;
-            }
-            result.put("flag", true);
-            result.put("manager",temp);
-            return result;
-        }catch (Exception e){
-            e.printStackTrace();
-            result.put("flag", false);
-            result.put("errorMsg", "登录失败");
-            return result;
-        }
-
-    }
     /**
      * 查询所有用户
      * @return
@@ -106,6 +79,7 @@ public class AccountServiceImpl implements AccountService {
             //查询总记录数
             List<Account> accountList =accountMapper.queryAllAccount();
             List<Account> accountPageList =accountMapper.queryPageAccount(page,limit);
+            System.out.println("accountPageList = " + accountPageList);
             int count = accountList.size();
             if (accountPageList.size()<1){
                 result.put("code", -1);
@@ -136,7 +110,7 @@ public class AccountServiceImpl implements AccountService {
     public HashMap<String, Object> addAccount(Account account) {
         HashMap<String, Object> result = new HashMap<>();
         try{
-            int count = accountMapper.addAccount(account.getName(),account.getPassword());
+            int count = accountMapper.addAccount(account);
             if(count  < 1){
                 result.put("message","添加失败");
                 return  result;

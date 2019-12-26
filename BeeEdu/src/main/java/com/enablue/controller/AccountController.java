@@ -47,19 +47,6 @@ public class AccountController{
     }
 
     /**
-     * 管理员登录
-     * @param manager
-     * @return
-     */
-    @RequestMapping("/Manager/managerLogin")
-    public HashMap<String,Object> managerLogin(Account manager){
-        HashMap<String, Object> result = accountService.managerLogin(manager);
-        //设置session
-        ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession().setAttribute("manager",result.get("manager"));
-        return result;
-    }
-
-    /**
      * 用户查询
      * @return
      */

@@ -6,7 +6,7 @@
 <mapper namespace="com.enablue.mapper.AccountMapper">
     <!--添加用户-->
     <insert id="addAccount">
-        INSERT INTO bee_edu.account (
+        INSERT INTO account (
         name,
         password,
         bindStatus,
@@ -16,12 +16,12 @@
         )
         VALUES
             (
-                #{name},
-                #{password},
+                #{account.name},
+                #{account.password},
                 '0',
                 '0',
                 '0',
-                '0'
+                #{account.Administrator}
             );
     </insert>
     <!--用户修改-->
@@ -43,47 +43,38 @@
 		SELECT
 		    id,
             name,
-            password
+            password,
+            Administrator
         FROM
             account
         WHERE
-	        NAME LIKE #{name} and PASSWORD LIKE #{password} and bindStatus = 0 and deleteStatus = 0 and usableStatus = 0 and Administrator = 0
+	        NAME LIKE #{name} and PASSWORD LIKE #{password} and bindStatus = 0 and deleteStatus = 0 and usableStatus = 0
 	</select>
-    <!--查询管理员账号-->
-    <select id="queryManagerAccount" resultType="Account">
-		SELECT
-		    id,
-            name,
-            password
-        FROM
-            account
-        WHERE
-	        NAME LIKE #{name} and PASSWORD LIKE #{password} and bindStatus = 0 and deleteStatus = 0 and usableStatus = 0 and Administrator = 1
-    </select>
+
     <!--查询所有用户-->
     <select id="queryAllAccount" resultType="Account">
         SELECT
             id,
             NAME,
-            PASSWORD
+            PASSWORD,
+            Administrator
         FROM
             account
         WHERE
             bindStatus = 0
         AND deleteStatus = 0
         AND usableStatus = 0
-        AND Administrator = 0
      </select>
     <!--分页查询用户数据-->
     <select id="queryPageAccount" resultType="Account">
-        SELECT id,name,password FROM
+        SELECT id,name,password, Administrator
+        FROM
             account
         WHERE
         bindStatus = 0
         AND deleteStatus = 0
         AND usableStatus = 0
-        AND Administrator = 0
-        LIMIT 0, 1
+        LIMIT #{page},#{limit}
     </select>
 
 </mapper>

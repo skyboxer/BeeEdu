@@ -89,7 +89,13 @@
                 formDate,function (result) {
                   //登录成功
                   if(result.flag){
-                    location.href="/index.html";
+                    debugger;
+                    if (result.permission){
+                      location.href="/Manager/index.html";
+                    }else {
+                      location.href="/index.html";
+                    }
+
                   }else{
                     //登录失败
                     $("#prompt").attr("class","bg-red");

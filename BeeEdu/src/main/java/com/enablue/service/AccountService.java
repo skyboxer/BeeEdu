@@ -14,8 +14,6 @@ import java.util.List;
 public interface AccountService {
      HashMap<String, Object> login(Account account);
 
-    HashMap<String, Object> managerLogin(Account manager);
-
     HashMap<String, Object> queryAllAccount(Long page, Long limit);
 
     HashMap<String, Object> addAccount(Account account);

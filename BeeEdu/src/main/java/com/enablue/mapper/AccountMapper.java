@@ -13,13 +13,13 @@ public interface AccountMapper {
 
     Account queryAccount(@Param("name") String name, @Param("password") String password);
 
-    Account queryManagerAccount(@Param("name")String name,@Param("password") String password);
+
 
     List<Account> queryPageAccount(@Param("page")Long page,@Param("limit") Long limit );
 
     List<Account> queryAllAccount();
 
-    int addAccount(@Param("name") String name, @Param("password") String password);
+    int addAccount(@Param("account") Account account);
 
     int deleteAccount(@Param("id") Long id);
 
