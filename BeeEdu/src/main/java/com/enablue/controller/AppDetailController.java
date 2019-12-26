@@ -26,11 +26,11 @@ public class AppDetailController {
     @Autowired
     private AppDetailService appDetailService;
     @RequestMapping(value = "getList",method = RequestMethod.GET)
-    public JSONObject getOperatorList(int page, int limit){
+    public JSONObject getOperatorList(int page, int limit,String applicationId){
         Map<String,Object> paramMap = new HashMap<>();
         paramMap.put("pageIndex",page-1);
         paramMap.put("pageSize",limit);
-        paramMap.put("applicationId","");
+        paramMap.put("applicationId",applicationId);
         return appDetailService.getAppDetailList(paramMap);
     }
 

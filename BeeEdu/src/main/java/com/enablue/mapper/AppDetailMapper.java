@@ -48,4 +48,10 @@ public interface AppDetailMapper {
      * @return
      */
     List<Map<String,Object>> queryAppDetailTotal();
+
+    /**
+     * 查询应用下的可用详情
+     * @return
+     */
+    List<AppDetail> queryUsableAppDetail(Map map);
 }

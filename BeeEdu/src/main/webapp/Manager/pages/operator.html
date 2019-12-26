@@ -10,19 +10,23 @@
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
 </head>
 <body>
+<div class="demoTable">
+    搜索手机号：
+    <div class="layui-inline">
+        <input class="layui-input" name="telSearch" id="searchTel">
+    </div>
+    <button class="layui-btn" data-type="reload">搜索</button>
+</div>
 
 <table class="layui-hide" id="test" lay-filter="operatorList"></table>
 
 <!--这里是左侧操作-->
 <script type="text/html" id="toolbar">
     <div class="layui-row">
-        <div class="layui-col-md1">
+        <div class="layui-col-md2">
             <a class="layui-btn layui-btn-xs" lay-event="add"><i class="layui-icon"></i></a>
         </div>
-        <div class="layui-col-md3">
-            <input type="text" name="telSearch" placeholder="按手机号" class="layui-input" lay-event="searchTel" id="searchTel">
-        </div>
-        <div class="layui-col-md8"></div>
+        <div class="layui-col-md10"></div>
     </div>
 </script>
 <!--这里是右侧表格数据操作-->
@@ -89,12 +93,25 @@
                 });
             }
         });
-
-        $("#searchTel").on('keyup', function (e) {
-            if (event.keyCode == 13) {
-                alert("名字查询");
+       var active = {
+            reload: function(){
+                var demoReload = $('#searchTel');
+                //执行重载
+                table.reload('test', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: {
+                         "tel":demoReload.val()
+                    }
+                }, 'data');
             }
+        };
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
         });
+
         var addAppLayerOpenIndex = null;
         var addAppLayerObjData = null;
         //监听行工具事件
@@ -149,13 +166,12 @@
             }
         });
         form.on('checkbox(lockAccount)', function (obj) {
-            /*layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);*/
             var dataObj = {"id":obj.value}
             dataObj["usableStatus"] = 0;
             if(obj.elem.checked) {
                 dataObj["usableStatus"] = 1;
             }
-            operatorForm("/appDetail/update",dataObj);
+            operatorForm("/operator/update",dataObj);
         })
         form.on('submit(addAppForm)', function(data){
             //layer.msg(JSON.stringify(data.field));
@@ -221,6 +237,11 @@
                     form.render();
                 }
             })
+            table.reload('test',{
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
         }
     });
 </script>

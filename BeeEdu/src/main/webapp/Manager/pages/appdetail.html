@@ -10,20 +10,25 @@
   <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
 </head>
 <body>
+<form class="layui-form" action="" style="width: 30%;">
+  <div class="layui-form-item">
+    <label class="layui-form-label">选择应用</label>
+    <div class="layui-input-block">
+      <select name="city" id="searchAppName"  lay-verify="" lay-search lay-filter="searchAppName">
+      </select>
+    </div>
+  </div>
+</form>
 
 <table class="layui-hide" id="test" lay-filter="operatorList"></table>
 
 <!--这里是左侧操作-->
 <script type="text/html" id="toolbar">
   <div class="layui-row">
-    <div class="layui-col-md1">
+    <div class="layui-col-md2">
       <a class="layui-btn layui-btn-xs" lay-event="add"><i class="layui-icon"></i></a>
     </div>
-    <div class="layui-col-md3">
-      <select name="city" id="searchAppName"  lay-verify="" lay-search lay-filter="searchAppName">
-      </select>
-    </div>
-    <div class="layui-col-md8"></div>
+    <div class="layui-col-md10"></div>
   </div>
 </script>
 <script type="text/html">
@@ -36,7 +41,7 @@
 </script>
 
 <script type="text/html" id="checkLock">
-  <input type="checkbox" name="lock" value="{{d.id}}" title="锁定" lay-filter="lockAccount" {{d.usableStatus== 1
+  <input type="checkbox" name="lock" value="{{d.id}},{{d.applicationId}}" title="锁定" lay-filter="lockAccount" {{d.usableStatus== 1
          ? 'checked' : ''}}>
 </script>
 
@@ -44,11 +49,13 @@
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 
 <script>
-  layui.use(['table', 'layer', 'jquery','laydate'], function () {
+  layui.use(['table', 'layer', 'laydate','jquery','form'], function () {
     var table = layui.table,
             layer = layui.layer,
-            $ = layui.jquery, form = layui.form,
+            $ = layui.jquery,
+            form = layui.form,
             laydate = layui.laydate;
+
     //主动渲染
     table.render({
       elem: '#test'
@@ -59,6 +66,7 @@
         {type: 'checkbox', fixed: 'left'}
         , {field: 'id', title: 'ID', width: 80, fixed: 'left', unresize: true, sort: true}
         , {field: 'appId', title: 'APPID', width: 100, edit: 'text'}
+        ,{field: 'applicationId', title: '应用ID', width: 100, edit: 'text',hide:true}
         , {field: 'applicationTypeId', title: '服务类型', width: 100,templet:function (res) {
             switch (res.applicationTypeId) {
               case 0:
@@ -105,11 +113,12 @@
         contextType:"application/json;charset=utf8",
         dataType:"json",
         success:function (data) {
-          var options = "";
+          var options = "<option value='null'>全部</option>";
           for (var i=0;i<data.data.length;i++){
             options += "<option value='"+data.data[i].id+","+data.data[i].appId+","+data.data[i].name+"'>"+data.data[i].name+":"+data.data[i].appId+"</option>";
           }
           $("#searchAppName").html(options);
+          form.render();
         }
       })
     var toolbarAddLayerIndex = null;
@@ -145,10 +154,21 @@
         });
       }
     });
-    form.on('select(searchAppName)', function(data){
-      console.log(data.elem); //得到select原始DOM对象
-      console.log(data.value); //得到被选中的值
-      console.log(data.othis); //得到美化后的DOM对象
+    form.on('select(searchAppName)', function(e){
+      console.log(e.elem); //得到select原始DOM对象
+      console.log(e.value); //得到被选中的值
+      console.log(e.othis); //得到美化后的DOM对象
+      var data=e.value;
+      var dataJson=data.split(",");
+          //执行重载
+          table.reload('test', {
+            page: {
+              curr: 1 //重新从第 1 页开始
+            }
+            ,where: {
+              "applicationId":dataJson[0]
+            }
+          }, 'data');
     });
     //监听行工具事件
     table.on('tool(operatorList)', function (obj) {
@@ -156,7 +176,7 @@
       switch (obj.event) {
         case 'del':
           layer.confirm('真的删除行么', function (index) {
-            var dataObj = {"id":data.id,"deleteStatus":1}
+            var dataObj = {"id":data.id,"applicationId":data.applicationId,"deleteStatus":1}
             updateFaction("/appDetail/update",dataObj);
           });
           break;
@@ -212,7 +232,9 @@
       }
     });
     form.on('checkbox(lockAccount)', function (obj) {
-      var dataObj = {"id":obj.value}
+      var data = obj.value;
+      var dataList = data.split(",");
+      var dataObj = {"id":dataList[0],"applicationId":dataList[1]}
       dataObj["usableStatus"] = 0;
       if(obj.elem.checked) {
         dataObj["usableStatus"] = 1;
@@ -262,15 +284,14 @@
           layer.msg(data.msg)
           layer.close(toolbarAddLayerIndex);
           document.getElementById("addAppDetailForm").reset();
-          form.render();
         },
         error:function (XMLHttpRequest,textStatus,errorThrown) {
           layer.msg("请求失败！");
           layer.close(toolbarAddLayerIndex); //再执行关闭
           document.getElementById("addAppDetailForm").reset();
-          form.render();
         }
       })
+      table.reload('test');
     }
   });
 

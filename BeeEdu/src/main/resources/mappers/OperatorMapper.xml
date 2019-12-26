@@ -9,8 +9,8 @@
     <select id="queryOperatorList" resultType="Operator" parameterType="map">
         select * from operator
         <where>
-            <if test="tel != null and tel != ''">
-                and tel like #{tel}+"%"
+            <if test="tel != null">
+                and tel like #{tel,jdbcType=VARCHAR}"%"
             </if>
             and deleteStatus = 0
         </where>
@@ -19,8 +19,8 @@
     <select id="querOperatorCount" resultType="java.lang.Integer" parameterType="map">
         select count(id) from operator
         <where>
-            <if test="tel != null and tel != ''">
-                and tel like #{tel}+"%"
+            <if test="tel != null">
+                and tel like #{tel,jdbcType=VARCHAR}"%"
             </if>
             and deleteStatus = 0
         </where>

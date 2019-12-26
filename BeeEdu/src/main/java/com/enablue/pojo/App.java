@@ -1,5 +1,6 @@
 package com.enablue.pojo;
 
+
 /**
  * @author chinaxjk
  * 应用类
@@ -18,6 +19,20 @@ public class App {
         this.appId = appId;
         this.name = name;
         this.operatorId = operatorId;
+        this.deleteStatus = deleteStatus;
+        this.usableStatus = usableStatus;
+    }
+
+    public App(Integer usableStatus) {
+        this.usableStatus = usableStatus;
+    }
+
+    public App() {
+
+    }
+
+    public App(Long id, Integer deleteStatus, Integer usableStatus) {
+        this.id = id;
         this.deleteStatus = deleteStatus;
         this.usableStatus = usableStatus;
     }
