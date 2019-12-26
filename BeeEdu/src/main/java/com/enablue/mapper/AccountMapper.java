@@ -13,7 +13,7 @@ public interface AccountMapper {
 
     Account queryAccount(@Param("name") String name, @Param("password") String password);
 
-
+    List<Account> queryAccountByName(@Param("name") String name);
 
     List<Account> queryPageAccount(@Param("page")Long page,@Param("limit") Long limit );
 

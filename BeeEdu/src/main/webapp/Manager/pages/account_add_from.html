@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">单行选择框</label>
+                <label class="layui-form-label">设置为</label>
                 <div class="layui-input-inline">
                     <select name="Administrator" lay-filter="aihao">
                         <option value=""></option>
@@ -51,9 +51,9 @@
 
 <script>
     //Demo
-    layui.use('form', function(){
+    layui.use(['form','layer'], function(){
         var form = layui.form;
-        var layer = layui.layer;
+        var layer = layui.layer,
         $=layui.jquery;
         //监听提交
         form.on('submit(formDemo)', function(data){
@@ -63,7 +63,7 @@
             var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
             $.post("/Manager/addAccount",fromData,function (result) {
                     if (result != null){
-                        layer.msg(result.message);
+                        parent.layer.msg(result.message);
                     }
             },"json")
             parent.layer.close(index); //再执行关闭

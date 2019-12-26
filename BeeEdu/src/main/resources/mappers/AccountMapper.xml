@@ -76,5 +76,20 @@
         AND usableStatus = 0
         LIMIT #{page},#{limit}
     </select>
+    <!--根据账号查询用户-->
+    <select id="queryAccountByName" resultType="Account">
+       SELECT
+            id,
+            NAME,
+            PASSWORD,
+            Administrator
+        FROM
+            account
+        WHERE
+        name like #{name}
+        AND bindStatus = 0
+        AND deleteStatus = 0
+        AND usableStatus = 0
+    </select>
 
 </mapper>

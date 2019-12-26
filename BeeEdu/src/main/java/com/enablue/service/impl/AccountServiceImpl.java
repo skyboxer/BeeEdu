@@ -12,6 +12,7 @@ import com.enablue.pojo.Account;
 import com.enablue.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.io.IOException;
@@ -107,21 +108,26 @@ public class AccountServiceImpl implements AccountService {
      * @return
      */
     @Override
+    @Transactional
     public HashMap<String, Object> addAccount(Account account) {
         HashMap<String, Object> result = new HashMap<>();
-        try{
-            int count = accountMapper.addAccount(account);
-            if(count  < 1){
-                result.put("message","添加失败");
-                return  result;
-            }
-            result.put("message","添加成功");
-            return result;
-        }catch (Exception e){
-            e.printStackTrace();
-            result.put("message","修改失败");
+        if (account==null){
+            result.put("message","添加失败");
+            return  result;
+        }
+        List<Account> accountList = accountMapper.queryAccountByName(account.getName());
+        if (accountList.size()>=1){
+            result.put("message","用户名已存在");
             return result;
         }
+        int count = accountMapper.addAccount(account);
+        if(count  < 1){
+            result.put("message","添加失败");
+            return  result;
+        }
+        result.put("message","添加成功");
+        return result;
+
     }
 
     /**
