@@ -62,6 +62,7 @@
         AND residual_service>#{serviceTotal}
         AND deleteStatus!=1
         AND usableStatus!=1
+        ORDER BY residual_service DESC
     </select>
 
     <!--查询各个appid下的服务量-->
