@@ -36,7 +36,7 @@
 </script>
 
 <script type="text/html" id="checkLock">
-  <input type="checkbox" name="lock" value="{{d.id}}" title="锁定" lay-filter="lockAccount" {{d.usableStatus== 1
+  <input type="checkbox" name="lock" value="{{d.id}},{{d.applicationId}}" title="锁定" lay-filter="lockAccount" {{d.usableStatus== 1
          ? 'checked' : ''}}>
 </script>
 
@@ -59,6 +59,7 @@
         {type: 'checkbox', fixed: 'left'}
         , {field: 'id', title: 'ID', width: 80, fixed: 'left', unresize: true, sort: true}
         , {field: 'appId', title: 'APPID', width: 100, edit: 'text'}
+        ,{field: 'applicationId', title: '应用ID', width: 100, edit: 'text',hide:true}
         , {field: 'applicationTypeId', title: '服务类型', width: 100,templet:function (res) {
             switch (res.applicationTypeId) {
               case 0:
@@ -156,7 +157,7 @@
       switch (obj.event) {
         case 'del':
           layer.confirm('真的删除行么', function (index) {
-            var dataObj = {"id":data.id,"deleteStatus":1}
+            var dataObj = {"id":data.id,"applicationId":data.applicationId,"deleteStatus":1}
             updateFaction("/appDetail/update",dataObj);
           });
           break;
@@ -212,7 +213,9 @@
       }
     });
     form.on('checkbox(lockAccount)', function (obj) {
-      var dataObj = {"id":obj.value}
+      var data = obj.value;
+      var dataList = data.split(",");
+      var dataObj = {"id":dataList[0],"applicationId":dataList[1]}
       dataObj["usableStatus"] = 0;
       if(obj.elem.checked) {
         dataObj["usableStatus"] = 1;

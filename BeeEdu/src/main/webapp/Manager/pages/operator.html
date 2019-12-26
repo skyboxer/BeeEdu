@@ -149,13 +149,12 @@
             }
         });
         form.on('checkbox(lockAccount)', function (obj) {
-            /*layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);*/
             var dataObj = {"id":obj.value}
             dataObj["usableStatus"] = 0;
             if(obj.elem.checked) {
                 dataObj["usableStatus"] = 1;
             }
-            operatorForm("/appDetail/update",dataObj);
+            operatorForm("/operator/update",dataObj);
         })
         form.on('submit(addAppForm)', function(data){
             //layer.msg(JSON.stringify(data.field));
@@ -221,6 +220,11 @@
                     form.render();
                 }
             })
+            table.reload('test',{
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
         }
     });
 </script>

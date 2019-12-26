@@ -20,6 +20,10 @@
         order by application_id
         limit #{pageIndex},#{pageSize}
     </select>
+    <!--查询应用下的可用详情-->
+    <select id="queryUsableAppDetail" resultType="AppDetail" parameterType="map">
+        select * from application_detail where deleteStatus=0 and application_id =#{applicationId}
+    </select>
 
     <select id="queryAppDetailCount" resultType="java.lang.Integer" parameterType="map">
         select count(id) from application_detail
