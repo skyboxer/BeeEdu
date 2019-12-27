@@ -17,6 +17,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -100,5 +102,23 @@ public class AccountController{
         }
         HashMap<String,Object> result = accountService.addAccount(account);
         return result;
+    }
+
+    /**
+     * 退出登录
+     */
+    @RequestMapping("/Manager/loginOut")
+    public void loginOut() {
+
+        HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
+        Account account = (Account) session.getAttribute("account");
+        if (null != account){
+            session.invalidate();
+        }
+        try {
+            ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse().sendRedirect("/login.html");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
