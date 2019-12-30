@@ -7,6 +7,7 @@ import com.enablue.mapper.ApplicationDetailOperationMapper;
 import com.enablue.pojo.Account;
 import com.enablue.pojo.AppDetail;
 import com.enablue.pojo.ApplicationDetailOperation;
+import com.enablue.util.POIUtil;
 import com.enablue.util.WebOTS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
@@ -84,28 +85,8 @@ public class MachineTranslationController {
         String uploadFilePath = req.getServletContext().getRealPath("/upload/");
         String fileNamePath = uploadFilePath + fileName;
         WebOTS webOTS = new WebOTS();
-        StringBuffer restData = new StringBuffer();
-        BufferedInputStream in = null;
-        File file = new File(fileNamePath);
-        Reader fileRead = null;
-        //char[] fileChar = new char[(int)file.length()];
-        List<Character> fileChar = new ArrayList<>();
         try {
-            fileRead = new FileReader(file);//创建读取字符流对象
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        int temp, len = 0, i = 0;
-        try {//获取读取内容
-            while ((temp = fileRead.read()) != -1) {
-                /*fileChar[i++] = (char) temp;*/
-                fileChar.add((char) temp);
-            }
-            fileRead.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
+            List<Character> fileChar = POIUtil.readWord(fileNamePath);
             String resultStr;
             JSONObject resultJson;
             StringBuffer count = new StringBuffer();

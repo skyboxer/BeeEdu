@@ -77,7 +77,7 @@
                             <div class="form-group">
                                 <form id="form" method="post" enctype="multipart/form-data">
                                     <input type="file" name="file" id="exampleInputFile">
-                                    <p class="help-block">支持文件扩展名:txt(UTF-8)</p>
+                                    <p class="help-block">支持格式:doc/docx/txt(UTF-8)</p>
                                 </form>
                             </div>
                         </div>
@@ -220,7 +220,6 @@
 </body>
 <script type="text/javascript">
     $(function () {
-        var timecount = 0;
         $.getJSON("../datas/machine.json", function (obj) {
             var options = "";
             $.each(obj, function (i, d) {
@@ -288,8 +287,9 @@
         $("#submitTextUpload").click(function () {
             $("#submitTextUpload").hide();
             $("#submitTranslation").hide();
+            translationSchedule(0);
+            translationUpload(80);
             var formData = new FormData($("#form")[0]);
-            startTime();
             $.ajax({
                 url: '/fileUpload',
                 type: 'post',
@@ -300,89 +300,25 @@
                 success: function (data) {
                     var dataJson = JSON.parse(data);
                     if (dataJson.status == 0) {
+                        $("#output").val("");
+                        $("#textareaTwo").val("");
                         $("#submitTranslation").show();
                         restFileName = dataJson.fileName;
+                        translationUpload(100);
                     } else {
                         alert(dataJson.message)
+                        translationUpload(80);
                     }
                     $("#submitTextUpload").show();
-                    entTime();
                 },
                 error: function (response) {
-                    entTime();
+                    translationUpload(80);
                     console.log(response);
                 }
             });
         })
-
-        /*打开上传文件*/
-
-        /*var filePath = "";
-        $("#openFile").change(function(event){
-            document.getElementById("uploadSchedule").style.width="0%";
-            document.getElementById("translationSchedule").style.width = "0%";
-            var filesList = document.querySelector('#openFile').files;
-            if(filesList.length==0){
-                //如果取消上传，则改文件的长度为0
-                document.getElementById("uploadSchedule").style.width="0%";
-                return;
-            }else{
-                //如果有文件上传，这在这里面进行
-                var input = event.target;
-                var reader = new FileReader();
-                startTime();
-                var path = getObjectUrl(input.files[0]);
-                if(filePath != path){
-                    filePath = path;
-                    $.ajax({
-                        url:path,
-                        contentType:"application/json; charset=utf-8",
-                        dataType:"text",
-                        success:function (data,type) {
-                            entTime();
-                            $("#output").html(data);
-                        },
-                        error:function () {
-                            entTime();
-                            alert("读取文件出错");
-                        }
-                    })
-                }
-
-            }
-
-        })*/
-
-
-        function getObjectUrl(file) {
-            var url = null;
-            if (window.createObjectURL != undefined) {
-                // basic
-                url = window.createObjectURL(file);
-            } else if (window.webkitURL != undefined) {
-                // webkit or chrome
-                url = window.webkitURL.createObjectURL(file);
-            } else if (window.URL != undefined) {
-                // mozilla(firefox)
-                url = window.URL.createObjectURL(file);
-            }
-            return url;
-        }
-
-        /*进度条*/
-        var time = function () {
-            document.getElementById("uploadSchedule").style.width = timecount
-                + "%"
-            timecount++
-        }
-
-        var startTime = function () {
-            timecount = 0;
-            myVar = setInterval(time, 1000);
-        }
-        var entTime = function () {
-            document.getElementById("uploadSchedule").style.width = "100%";
-            clearTimeout(myVar);
+        function translationUpload(num){
+            document.getElementById("uploadSchedule").style.width =num+ "%";
         }
 
         function translationSchedule(num) {
