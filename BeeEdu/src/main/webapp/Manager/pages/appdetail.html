@@ -98,8 +98,8 @@
           }}
         , {field: 'serviceTotal', title: '服务总量', width: 100}
         , {field: 'residualService', title: '剩余服务', width: 100}
-        , {field: 'startDate', title: '开始时间', width: 200, edit: 'text', sort: true}
-        , {field: 'expireDate', title: '到期时间', width: 200, edit: 'text', sort: true}
+        , {field: 'startDate', title: '开始时间', width: 200, edit: 'text', sort: true,placeholder:'yyyy-MM-dd HH:mm:ss'}
+        , {field: 'expireDate', title: '到期时间', width: 200, edit: 'text', sort: true,placeholder:'yyyy-MM-dd HH:mm:ss'}
         , {field: 'lock', title: '是否锁定', width: 110, templet: '#checkLock', unresize: true}
         , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150}
       ]]
@@ -113,7 +113,7 @@
         contextType:"application/json;charset=utf8",
         dataType:"json",
         success:function (data) {
-          var options = "<option value='null'>全部</option>";
+          var options = "<option  value=''>全部</option>";
           for (var i=0;i<data.data.length;i++){
             options += "<option value='"+data.data[i].id+","+data.data[i].appId+","+data.data[i].name+"'>"+data.data[i].name+":"+data.data[i].appId+"</option>";
           }
@@ -356,13 +356,13 @@
         <div class="layui-inline">
           <label class="layui-form-label">开始时间</label>
           <div class="layui-input-block">
-            <input type="text" class="layui-input" id="startDate"  name="startDate">
+            <input type="text" class="layui-input" id="startDate"  name="startDate" placeholder="yyyy-MM-dd HH:mm">
           </div>
         </div>
         <div class="layui-inline">
           <label class="layui-form-label">结束时间</label>
           <div class="layui-input-block">
-            <input type="text" class="layui-input" id="expireDate" name="expireDate">
+            <input type="text" class="layui-input" id="expireDate" name="expireDate" placeholder="yyyy-MM-dd HH:mm">
           </div>
         </div>
       </div>
