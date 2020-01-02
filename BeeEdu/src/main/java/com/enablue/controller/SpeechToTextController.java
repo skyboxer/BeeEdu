@@ -55,7 +55,7 @@ public class SpeechToTextController {
         String authUrl;
         try {
             //获取应用
-            List<AppDetail> appConfig = appDetailMapper.queryAppDetailByType(3, 1);
+            List<AppDetail> appConfig = appDetailMapper.queryAppDetailByType(3, 1,null);
             if(appConfig.size()<=0){
                 jsonObject.put("code",-1);
                 jsonObject.put("msg","没有可用服务！");
@@ -92,7 +92,7 @@ public class SpeechToTextController {
     @RequestMapping(value = "updateEndServiceTotal", method = RequestMethod.POST, produces = "application/json")
     public JSONObject updateEndServiceTotal(){
         JSONObject jsonObject = new JSONObject();
-        List<AppDetail> appConfig = appDetailMapper.queryAppDetailByType(3, 1);
+        List<AppDetail> appConfig = appDetailMapper.queryAppDetailByType(3, 1,null);
         jsonObject.put("code",0);
         if(appConfig.size()<=0){
             jsonObject.put("code",-1);

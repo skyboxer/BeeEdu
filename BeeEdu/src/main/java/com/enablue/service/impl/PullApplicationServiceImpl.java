@@ -24,7 +24,7 @@ public class PullApplicationServiceImpl implements PullApplicationService {
     @Override
     public List<AppDetail> getApplication(Integer applicationTypeId, Integer serviceTotal) {
         try{
-            return appDetailMapper.queryAppDetailByType(applicationTypeId, serviceTotal);
+            return appDetailMapper.queryAppDetailByType(applicationTypeId, serviceTotal,null);
         }catch (Exception e){
             e.printStackTrace();
             return null;

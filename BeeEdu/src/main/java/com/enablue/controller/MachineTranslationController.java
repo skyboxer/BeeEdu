@@ -47,7 +47,7 @@ public class MachineTranslationController {
         JSONObject jsonObject = new JSONObject();
         try {
             // 统计调用量并记录
-            List<AppDetail> appConfig = appDetailMapper.queryAppDetailByType(2, text.length());
+            List<AppDetail> appConfig = appDetailMapper.queryAppDetailByType(2, text.length(),null);
             int nowEndServiceTotal = appConfig.get(0).getResidualService() - text.length();
             //获取用户ID
             Account account = (Account) sessionCommon.getSession().getAttribute("account");
@@ -98,7 +98,7 @@ public class MachineTranslationController {
             for (char countChar : fileChar) {
                 count.append(countChar);
                 if (count.length() >= 4000 && countChar == sign) {
-                    List<AppDetail> appConfig = appDetailMapper.queryAppDetailByType(2, count.length());
+                    List<AppDetail> appConfig = appDetailMapper.queryAppDetailByType(2, count.length(),null);
                     resultStr = webOTS.getTranslate(from, to, count.toString(), appConfig.get(0).getConfig1(), appConfig.get(0).getConfig2(), appConfig.get(0).getConfig3());
                     resultJson = JSONObject.parseObject(resultStr);
                     restDataList.add(resultJson.getJSONObject("data").getJSONObject("result").getJSONObject("trans_result"));
@@ -119,7 +119,7 @@ public class MachineTranslationController {
                 }
             }
             if (count.length() < 4000) {
-                List<AppDetail> appConfig = appDetailMapper.queryAppDetailByType(2, count.length());
+                List<AppDetail> appConfig = appDetailMapper.queryAppDetailByType(2, count.length(),null);
                 resultStr = webOTS.getTranslate(from, to, count.toString(), appConfig.get(0).getConfig1(),
                         appConfig.get(0).getConfig2(), appConfig.get(0).getConfig3());
                 resultJson = JSONObject.parseObject(resultStr);
