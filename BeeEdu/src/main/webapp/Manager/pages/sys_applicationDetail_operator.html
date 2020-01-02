@@ -10,20 +10,28 @@
   <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
 </head>
 <body>
- 
+
+<form class="layui-form" action="" style="width: 30%;">
+  <div class="layui-form-item">
+    <label class="layui-form-label">选择类型</label>
+    <div class="layui-input-block">
+      <select name="city" id="searchTypeName"  lay-verify="" lay-search lay-filter="searchTypeName">
+      </select>
+    </div>
+  </div>
+</form>
+
 <table class="layui-hide" id="test"></table>
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
-      <!--<button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
-      <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
-      <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
--->    </div>
+
+     </div>
   </script>
-   
+
   <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-  </script>          
+  </script>
           
 <script src="../layui/layui.js" charset="utf-8"></script>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 --> 
@@ -31,7 +39,8 @@
 <script>
 layui.use('table', function(){
   var table = layui.table;
-  
+  form = layui.form;
+  $ = layui.jquery;
   table.render({
     elem: '#test'
     ,url:'/Manager/queryAllApplicationDetailOperation'
@@ -45,9 +54,9 @@ layui.use('table', function(){
     ,cols: [[
       {type: 'checkbox', fixed: 'left'}
       ,{field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true}
-      ,{field:'applicationDetailId', title:'应用详情ID', width:80, edit: 'text'}
+      ,{field:'applicationDetailId', title:'应用详情ID', width:180, edit: 'text'}
       ,{field:'appid', title:'appid', width:100, edit: 'text', sort: true}
-      ,{field:'applicationTypeId', title:'应用类型ID', width:100,templet:function (res) {
+      ,{field:'applicationTypeId', title:'应用类型', width:180,templet:function (res) {
           switch (res.applicationTypeId) {
             case 0:
               return '<em>语音转写(时长)</em>'
@@ -70,7 +79,25 @@ layui.use('table', function(){
     ]]
     ,page: true
   });
-  
+  //异步查询类型
+  $.ajax({
+    url:"/Manager/getTypeList",
+    data:"",
+    async:true,
+    type:"post",
+    contextType:"application/json;charset=utf8",
+    dataType:"json",
+    success:function (result) {
+      var data = result.data;
+      var options = "<option value='null'>全部</option>";
+      for (var i=0;i<data.length;i++){
+        options += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
+      }
+      $("#searchTypeName").html(options);
+      form.render();
+    }
+  })
+
   //头工具栏事件
   table.on('toolbar(test)', function(obj){
     var checkStatus = table.checkStatus(obj.config.id);
@@ -93,7 +120,7 @@ layui.use('table', function(){
       break;
     };
   });
-  
+
   //监听行工具事件
   table.on('tool(test)', function(obj){
     var data = obj.data;

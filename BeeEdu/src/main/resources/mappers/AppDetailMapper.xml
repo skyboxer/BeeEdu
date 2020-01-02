@@ -66,6 +66,9 @@
         AND residual_service>#{serviceTotal}
         AND deleteStatus!=1
         AND usableStatus!=1
+        <if test="facilitator != null and facilitator != ''">
+            AND config9 LIKE #{facilitator}
+        </if>
         ORDER BY residual_service DESC
     </select>
 

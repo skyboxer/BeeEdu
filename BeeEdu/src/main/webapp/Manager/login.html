@@ -20,7 +20,7 @@
             <!-- input的value为空时弹出提醒 -->
             <h7 id="prompt"></h7>
             <div id="change_margin_2">
-                <input class="password" id="password" type="password" name="password" placeholder="请输入密码">
+                <input class="password" id="password" type="password" onkeyup="value=value.replace(/[\u4e00-\u9fa5]/ig,'')" name="password" placeholder="请输入密码">
             </div>
             <div id="change_margin_3">
                 <input class="content-form-signup" type="submit" value="登录">
