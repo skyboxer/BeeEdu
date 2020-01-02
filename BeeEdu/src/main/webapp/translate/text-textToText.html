@@ -51,8 +51,13 @@
 									</select>
 								</div>
 							</div>
-							<div class="col-md-5">
+							<div class="col-md-2">
 								<p id="textNum">0/1000</p>
+							</div>
+							<div class="col-md-3">
+								翻译引擎 <select class="btn btn-default dropdown-toggle btn-xs"
+											 aria-labelledby="dropdownMenu1" id="engineType">
+							</select>
 							</div>
 							<div class="col-md-2">
 								<button type="button" class="btn btn-block btn-default btn-xs"
@@ -134,7 +139,10 @@
 	<script src="../AdminLTE-master/dist/js/adminlte.min.js"></script>
 </body>
 <script type="text/javascript">
+	//import ur from "../AdminLTE-master/bower_components/moment/src/locale/ur";
+
 	$(function() {
+		//语种初始化
 		$.getJSON("../datas/machine.json", function(obj) {
 			var options = "";
 			$.each(obj, function(i, d) {
@@ -143,9 +151,19 @@
 			$("#languageType0").html(options);
 			$("#languageType1").html(options);
 		});
+		//翻译引擎初始化
+		$.getJSON("../datas/engineType.json", function(obj) {
+			var options = "";
+			$.each(obj, function(i, d) {
+				options += '<option value='+ i+'>' + d + '</option>';
+			});
+			$("#engineType").html(options);
+		});
+		//提交翻译
 		$('#submitTranslation').click(function () {
 			textChange();
 		});
+		//输入字数更新
 		$("#text").bind('input',function () {
 			var text = $("#text").val();
 			$("#textNum").html(text.length+"/1000")
@@ -157,18 +175,30 @@
 		var text = $("#text").val();
 		var from = $("#languageType0 option:selected").val();
 		var to = $("#languageType1 option:selected").val();
+		var engineType = $("#engineType option:selected").val();
 		if(from == to){
 			alert("请选择目标语言")
 		}
+		var url = "/machineTranslation/";
+		var datas={"text" : text,
+			"from" : from,
+			"to" : to};
+		switch (engineType) {
+			case  "bd":
+				datas["engineType"]="百度";
+				url="/machineTranslation/textToTranslationBD";
+				break;
+				default:
+					datas["engineType"]="讯飞";
+					url="/machineTranslation/textToTranslation";
+					break;
+		}
 		if(from != to && contextStatus){
-			$.post("/machineTranslation/textToTranslation", {
-				"text" : text,
-				"from" : from,
-				"to" : to
-			}, function(e) {
-				var dataJson = e.data;
+			$("#text1").html("");
+			$.post(url, datas, function(e) {
+				var dataJson = e;
 				if (e.code!=0){
-					layer.msg(dataJson.msg);
+					alert(e.msg);
 				}
 				$("#text1").html(dataJson.dst);
 				contextStatus = false;

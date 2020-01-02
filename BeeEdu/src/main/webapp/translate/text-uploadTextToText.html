@@ -65,7 +65,12 @@
                             </select>
                             </div>
                         </div>
-                        <div class="col-md-8"></div>
+                        <div class="col-md-3">
+                            翻译引擎 <select class="btn btn-default dropdown-toggle btn-xs"
+                                         aria-labelledby="dropdownMenu1" id="engineType">
+                        </select>
+                        </div>
+                        <div class="col-md-5"></div>
                     </div>
                 </div>
             </div><br>
@@ -220,6 +225,7 @@
 </body>
 <script type="text/javascript">
     $(function () {
+        //语种初始化
         $.getJSON("../datas/machine.json", function (obj) {
             var options = "";
             $.each(obj, function (i, d) {
@@ -228,14 +234,24 @@
             $("#languageTypeOne").html(options);
             $("#languageTypeTwo").html(options);
         });
+        //翻译引擎初始化
+        $.getJSON("../datas/engineType.json", function(obj) {
+            var options = "";
+            $.each(obj, function(i, d) {
+                options += '<option value='+ i+'>' + d + '</option>';
+            });
+            $("#engineType").html(options);
+        });
+
         $('#text').bind('input', function () { //兼容IE9及以上版本和其他浏览器
             conditionChange();
             contextStatus = true;
         });
-
+        //提交翻译
         $("#submitTranslation").click(function () {
             conditionChange();
         })
+        //一键复制
         $("#copyFn").click(function () {
             var val = document.getElementById('textareaTwo');
             val.select();
@@ -243,7 +259,7 @@
             alert("已复制好，可贴粘。");
 
         })
-
+        //点击上传
         $("#saveFn").click(function () {
             var content = $("#textareaTwo").html();
             var data = new Blob([content], {type: "text/plain;charset=UTF-8"});
@@ -257,21 +273,35 @@
         var restFileName = null;
         /*翻译*/
         var conditionChange = function () {
-            var text = $("#output").val();
             var from = $("#languageTypeOne option:selected").val();
             var to = $("#languageTypeTwo option:selected").val();
+            var engineType = $("#engineType option:selected").val();
             if (from == to || restFileName == null) {
                 alert("请选择目标语言/要上传的文件")
             }
+            var url = "/machineTranslation/";
+            var dataObject ={
+                from: from,
+                to: to,
+                fileName: restFileName
+            }
+            switch (engineType) {
+                case  "bd":
+                    url="/machineTranslation/textFileToTranslationBD";
+                    dataObject["engineType"]="百度";
+                    break;
+                    default:
+                        url="/machineTranslation/textFileToTranslation";
+                        dataObject["engineType"]="讯飞";
+                        break;
+            }
             if (from != to && restFileName != null) {
                 translationSchedule(50);
+                $("#output").val("");
+                $("#textareaTwo").val("");
                 $.post({
-                    url: "/machineTranslation/textFileToTranslation",
-                    data: {
-                        from: from,
-                        to: to,
-                        fileName: restFileName
-                    },
+                    url:url,
+                    data: dataObject,
                     success: function (data) {
                         translationSchedule(100);
                         if (data.code == 0) {
@@ -285,6 +315,10 @@
             }
         }
         $("#submitTextUpload").click(function () {
+            if(jQuery("input[type='file']").val()==""){
+                alert("请选择要上传的文件")
+                return;
+            }
             $("#submitTextUpload").hide();
             $("#submitTranslation").hide();
             translationSchedule(0);
@@ -300,8 +334,6 @@
                 success: function (data) {
                     var dataJson = JSON.parse(data);
                     if (dataJson.status == 0) {
-                        $("#output").val("");
-                        $("#textareaTwo").val("");
                         $("#submitTranslation").show();
                         restFileName = dataJson.fileName;
                         translationUpload(100);
