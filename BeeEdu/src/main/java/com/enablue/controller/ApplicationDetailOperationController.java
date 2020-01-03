@@ -18,7 +18,7 @@ public class ApplicationDetailOperationController {
     @Autowired
     private ApplicationDetailOperationService applicationDetailOperationService;
     @RequestMapping("/Manager/queryAllApplicationDetailOperation")
-    public HashMap<String,Object> queryAllApplicationDetailOperation(@Param("page")Long page , @Param("limit") Long limit ){
+    public HashMap<String,Object> queryAllApplicationDetailOperation(Long page , Long limit ){
         if (page==null || page<1){
             page=1L;
         }

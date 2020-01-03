@@ -53,7 +53,7 @@ public class AccountController{
      * @return
      */
     @RequestMapping("/Manager/queryAllAccount")
-    public HashMap<String,Object> queryAccount(@Param("page") Long page ,@Param("limit") Long limit ) {
+    public HashMap<String,Object> queryAccount( Long page , Long limit ) {
         if (page==null || page<1){
             page=1L;
         }
@@ -70,7 +70,7 @@ public class AccountController{
      * @return
      */
     @RequestMapping("/Manager/deleteAccount")
-    public HashMap<String,Object> deleteAccount(@Param("id") Long id) {
+    public HashMap<String,Object> deleteAccount(Long id) {
         if ( id==null ){
             return null;
         }

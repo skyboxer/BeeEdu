@@ -205,11 +205,9 @@
               $('#addAppDetailLayer #config1').val(data.config1);
               $('#addAppDetailLayer #config2').val(data.config2);
               $('#addAppDetailLayer #config3').val(data.config3);
-              $('#addAppDetailLayer #config9').val(data.config9);
               $('#addAppDetailLayer #configRemark1').val(remarkList[0]);
               $('#addAppDetailLayer #configRemark2').val(remarkList[1]);
               $('#addAppDetailLayer #configRemark3').val(remarkList[2]);
-              $('#addAppDetailLayer #configRemark9').val(remarkList[3]);
               laydate.render({
                 elem: '#startDate' //指定元素
                 ,zIndex: 99999999,
@@ -257,7 +255,6 @@
         "config1":data.field.config1,
         "config2":data.field.config2,
         "config3":data.field.config3,
-        "config9":data.field.config9,
         "config10":data.field.config1+","+data.field.config2+","+data.field.config3
       }
       var requestUrl = null;
@@ -409,25 +406,6 @@
           <label class="layui-form-label">备注</label>
           <div class="layui-input-block">
             <input type="text" class="layui-input" name="configRemark3" id="configRemark3">
-          </div>
-        </div>
-      </div>
-      <div class="layui-form-item">
-        <div class="layui-inline">
-          <label class="layui-form-label">配置9</label>
-          <div class="layui-input-block">
-            <!--<input type="text" class="layui-input" name="config9" id="config9">-->
-            <select name="config9" id="config9" lay-verify="required">
-              <option value="">无</option>
-              <option value="百度">百度</option>
-              <option value="讯飞">讯飞</option>
-            </select>
-          </div>
-        </div>
-        <div class="layui-inline">
-          <label class="layui-form-label">备注</label>
-          <div class="layui-input-block">
-            <input type="text" class="layui-input" name="configRemark9" id="configRemark9" placeholder="填写：百度或者讯飞">
           </div>
         </div>
       </div>

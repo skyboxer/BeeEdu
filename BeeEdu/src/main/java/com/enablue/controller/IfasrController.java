@@ -19,19 +19,19 @@ public class IfasrController {
     @Autowired
     private IfasrService ifasrService;
     @RequestMapping("/speechTask")
-    public HashMap<String,Object> speechTask(@Param("fileName") String fileName){
+    public HashMap<String,Object> speechTask( String fileName){
         HashMap<String, Object> result = new HashMap<>();
         result=ifasrService.speechTask(fileName);
         return result;
     }
     @RequestMapping("/resultsQuery")
-    public HashMap<String,Object> resultsQuery(@Param("taskid")String taskid ){
+    public HashMap<String,Object> resultsQuery(String taskid ){
         HashMap<String, Object> result = new HashMap<>();
         result=ifasrService.resultsQuery(taskid);
         return result;
     }
     @RequestMapping("/captionResultsQuery")
-    public HashMap<String,Object> captionResultsQuery(@Param("taskid") String taskid){
+    public HashMap<String,Object> captionResultsQuery(String taskid){
         HashMap<String, Object> result = new HashMap<>();
         result=ifasrService.captionResultsQuery(taskid);
         return result;
