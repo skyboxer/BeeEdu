@@ -37,6 +37,17 @@
             account_id
             FROM
             sys_applicationDetail_operation
+            <where>
+                <if test="typeId!=null">
+                     application_type_id=#{typeId}
+                </if>
+                <if test="startDate!=null  and startDate!=&quot;&quot; and endDate!=null  and endDate!=&quot;&quot;">
+                    <![CDATA[and operationDate>=]]>
+                   #{startDate}
+                    <![CDATA[and operationDate<=]]>
+                   #{endDate}
+                </if>
+            </where>
     </select>
 
     <select id="queryApplicationDetailOperation" parameterType="ApplicationDetailOperation" resultType="ApplicationDetailOperation">
@@ -71,6 +82,17 @@
         account_id
     FROM
         sys_applicationDetail_operation
+        <where>
+            <if test="typeId!=null">
+                 application_type_id=#{typeId}
+            </if>
+            <if test="startDate!=null  and startDate!=&quot;&quot; and endDate!=null  and endDate!=&quot;&quot;">
+                <![CDATA[and operationDate>=]]>
+                #{startDate}
+                <![CDATA[and operationDate<=]]>
+                #{endDate}
+            </if>
+        </where>
     ORDER BY operationDate DESC
     LIMIT #{page},#{limit}
     </select>

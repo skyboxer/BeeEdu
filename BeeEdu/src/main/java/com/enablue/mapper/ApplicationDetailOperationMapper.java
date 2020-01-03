@@ -23,8 +23,13 @@ public interface ApplicationDetailOperationMapper {
     /**
      * 查询所有操作日志
      * @return
+     * @param typeId
+     * @param startDate
+     * @param endDate
      */
-    List<ApplicationDetailOperation> queryAllApplicationDetailOperation();
+    List<ApplicationDetailOperation> queryAllApplicationDetailOperation(@Param("typeId") Long typeId,
+                                                                        @Param("startDate") String startDate,
+                                                                        @Param("endDate") String endDate);
 
     /**
      * 条件查询(applicationTypeId)
@@ -33,5 +38,17 @@ public interface ApplicationDetailOperationMapper {
      */
     List<ApplicationDetailOperation> queryApplicationDetailOperation(ApplicationDetailOperation applicationDetailOperation);
 
-    List<ApplicationDetailOperation> queryPageApplicationDetailOperation(@Param("page") Long page, @Param("limit") Long limit);
+    /**
+     * 分页查询
+     * @param page
+     * @param limit
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    List<ApplicationDetailOperation> queryPageApplicationDetailOperation( @Param("page") Long page,
+                                                                          @Param("limit") Long limit,
+                                                                          @Param("typeId") Long typeId,
+                                                                          @Param("startDate") String startDate,
+                                                                          @Param("endDate") String endDate);
 }

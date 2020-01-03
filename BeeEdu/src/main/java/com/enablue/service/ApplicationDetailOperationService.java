@@ -1,7 +1,5 @@
 package com.enablue.service;
 
-import org.springframework.stereotype.Service;
-
 import java.util.HashMap;
 
 /***
@@ -9,5 +7,5 @@ import java.util.HashMap;
  * 王成
  */
 public interface ApplicationDetailOperationService {
-    HashMap<String, Object> queryAllApplicationDetailOperation(Long page, Long limit);
+    HashMap<String, Object> queryAllApplicationDetailOperation(Long page, Long limit, Long typeId, String timeHorizon);
 }

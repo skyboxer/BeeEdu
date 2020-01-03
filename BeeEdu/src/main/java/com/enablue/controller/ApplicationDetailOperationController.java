@@ -18,14 +18,14 @@ public class ApplicationDetailOperationController {
     @Autowired
     private ApplicationDetailOperationService applicationDetailOperationService;
     @RequestMapping("/Manager/queryAllApplicationDetailOperation")
-    public HashMap<String,Object> queryAllApplicationDetailOperation(Long page , Long limit ){
+    public HashMap<String,Object> queryAllApplicationDetailOperation(Long page , Long limit,Long typeId,String timeHorizon ){
         if (page==null || page<1){
             page=1L;
         }
         if (limit==null){
             limit=10L;
         }
-        HashMap<String, Object> result = applicationDetailOperationService.queryAllApplicationDetailOperation(page,limit);
+        HashMap<String, Object> result = applicationDetailOperationService.queryAllApplicationDetailOperation(page,limit,typeId,timeHorizon);
         return result;
     }
 }
