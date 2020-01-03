@@ -75,14 +75,14 @@
     <!--查询各个appid下的服务量-->
     <select id="queryAppDetailTotal" resultType="map">
         SELECT
-        appid appId,
+         appId,
         application_id applicationId,
         GROUP_CONCAT(application_type_id) typeList,
         GROUP_CONCAT(serviceTotal) serviceTotalList,
         GROUP_CONCAT(residual_service) residualServiceList
         FROM application_detail
         where deleteStatus = 0
-        GROUP BY application_id
+        GROUP BY application_id,appId
     </select>
 
     <insert id="insertAppDetail" parameterType="AppDetail" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
