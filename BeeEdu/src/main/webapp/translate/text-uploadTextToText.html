@@ -225,15 +225,6 @@
 </body>
 <script type="text/javascript">
     $(function () {
-        //语种初始化
-        $.getJSON("../datas/machine.json", function (obj) {
-            var options = "";
-            $.each(obj, function (i, d) {
-                options += '<option value="' + i + '">' + d + '</option>';
-            });
-            $("#languageTypeOne").html(options);
-            $("#languageTypeTwo").html(options);
-        });
         //翻译引擎初始化
         $.getJSON("../datas/engineType.json", function(obj) {
             var options = "";
@@ -241,6 +232,28 @@
                 options += '<option value='+ i+'>' + d + '</option>';
             });
             $("#engineType").html(options);
+            $("#engineType").trigger("change");
+        });
+        $("#engineType").change(function (e) {
+            var target = e.target;
+            var url ="../datas/"
+            switch (target.value) {
+                case "xf":
+                    url = url +"machine.json"
+                    break;
+                default:
+                    url = url +"machineBD.json"
+                    break;
+            }
+            //语种初始化
+            $.getJSON(url, function(obj) {
+                var options = "";
+                $.each(obj, function (i, d) {
+                    options += '<option value="' + i + '">' + d + '</option>';
+                });
+                $("#languageTypeOne").html(options);
+                $("#languageTypeTwo").html(options);
+            });
         });
 
         $('#text').bind('input', function () { //兼容IE9及以上版本和其他浏览器
