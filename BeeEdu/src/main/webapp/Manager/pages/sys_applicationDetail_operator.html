@@ -10,21 +10,30 @@
   <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
 </head>
 <body>
-
+<!--类型选择-->
 <form class="layui-form" action="" style="width: 30%;">
   <div class="layui-form-item">
     <label class="layui-form-label">选择类型</label>
-    <div class="layui-input-block">
-      <select name="city" id="searchTypeName"  lay-verify="" lay-search lay-filter="searchTypeName">
+    <div class="layui-input-inline">
+      <select name="city" id="searchTypeName"  name="type" lay-verify="" lay-search lay-filter="searchTypeName">
       </select>
     </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">时间范围</label>
+      <div class="layui-input-inline">
+        <input type="text" class="layui-input" name="timeHorizon" id="test10" placeholder=" - ">
+      </div>
+    </div>
+
+    <button type="submit" id="filtrate" class="layui-btn" >筛选</button>
   </div>
 </form>
+
 
 <table class="layui-hide" id="test"></table>
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
-
      </div>
   </script>
 
@@ -38,8 +47,8 @@
  
 <script>
 layui.use('table', function(){
-  var table = layui.table;
-  form = layui.form;
+  var table = layui.table,
+  form = layui.form,
   $ = layui.jquery;
   table.render({
     elem: '#test'
@@ -79,25 +88,10 @@ layui.use('table', function(){
     ]]
     ,page: true
   });
-  //异步查询类型
-  $.ajax({
-    url:"/Manager/getTypeList",
-    data:"",
-    async:true,
-    type:"post",
-    contextType:"application/json;charset=utf8",
-    dataType:"json",
-    success:function (result) {
-      var data = result.data;
-      var options = "<option value='null'>全部</option>";
-      for (var i=0;i<data.length;i++){
-        options += "<option value='"+data[i].id+"'>"+data[i].name+"</option>";
-      }
-      $("#searchTypeName").html(options);
-      form.render();
-    }
-  })
+  //筛选条件提交
+  form.on('select(filtrate)',function () {
 
+  })
   //头工具栏事件
   table.on('toolbar(test)', function(obj){
     var checkStatus = table.checkStatus(obj.config.id);
@@ -143,6 +137,16 @@ layui.use('table', function(){
     }
   });
 });
+//时间选择器
+layui.use('laydate',function () {
+  var laydate = layui.laydate;
+  //日期时间范围
+  laydate.render({
+    elem: '#test10'
+    ,type: 'datetime'
+    ,range: true
+  });
+})
 </script>
 
 </body>

@@ -17,10 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author chinaxjk
@@ -38,7 +36,7 @@ public class MachineTranslationController {
     private SessionCommon sessionCommon;
 
     /**
-     * 讯飞文本翻译
+     * 文本翻译
      *
      * @param from,to,text
      * @return json
@@ -161,7 +159,7 @@ public class MachineTranslationController {
                 }
             }
             if (count.length() < 4000) {
-                List<AppDetail> appConfig = appDetailMapper.queryAppDetailByType(2, count.length(),engineType);
+                List<AppDetail> appConfig = appDetailMapper.queryAppDetailByType(2, count.length(),null);
                 resultStr = webOTS.getTranslate(from, to, count.toString(), appConfig.get(0).getConfig1(),
                         appConfig.get(0).getConfig2(), appConfig.get(0).getConfig3());
                 resultJson = JSONObject.parseObject(resultStr);
@@ -198,7 +196,7 @@ public class MachineTranslationController {
      */
     @Transactional(propagation = Propagation.REQUIRED)
     @RequestMapping(value = "textFileToTranslationBD", method = RequestMethod.POST, produces = "application/json")
-    public JSONObject textFileToTranslationBD(String from, String to, String fileName,String engineType, HttpServletRequest req) {
+    public JSONObject textFileToTranslationBD(String from, String to, String fileName, String engineType,HttpServletRequest req) {
         JSONObject jsonObject = new JSONObject();
         String uploadFilePath = req.getServletContext().getRealPath("/upload/");
         String fileNamePath = uploadFilePath + fileName;
@@ -215,12 +213,15 @@ public class MachineTranslationController {
             TransApi api;
             for (char countChar : fileChar) {
                 count.append(countChar);
-                if (count.length() >= 2000 && countChar == sign) {
+                if (count.length() >= 1500 && countChar == sign) {
                     List<AppDetail> appConfig = appDetailMapper.queryAppDetailByType(2, count.length(),engineType);
-                     api = new TransApi( appConfig.get(0).getConfig1(), appConfig.get(0).getConfig2());
-                    resultStr =api.getTransResult(count.toString(),"auto",to);
+                    //调用百度翻译
+                     api = new TransApi(appConfig.get(0).getConfig1(),appConfig.get(0).getConfig2() );
+                    resultStr = api.getTransResult(count.toString(),"auto",to);
                     resultJson = JSONObject.parseObject(resultStr).getJSONArray("trans_result");
-                    restDataList.add((JSONObject)resultJson.get(0));
+                    for (Object object:resultJson) {
+                        restDataList.add((JSONObject) object);
+                    }
                     System.out.println("countlength" + count.length() + count);
                     // 统计调用量并记录
                     int nowEndServiceTotal = appConfig.get(0).getResidualService() - count.length();
@@ -233,16 +234,18 @@ public class MachineTranslationController {
                     //修改操作剩余服务量
                     appConfig.get(0).setResidualService(nowEndServiceTotal);
                     appDetailMapper.updateAppDetail(appConfig.get(0));
+
                     count.setLength(0);
                 }
             }
-            if (count.length() < 2000) {
-                List<AppDetail> appConfig = appDetailMapper.queryAppDetailByType(2, count.length(),engineType);
-                api = new TransApi( appConfig.get(0).getConfig1(), appConfig.get(0).getConfig2());
-                resultStr =api.getTransResult(count.toString(),"auto",to);
+            if (count.length() < 1500) {
+                List<AppDetail> appConfig = appDetailMapper.queryAppDetailByType(2, count.length(),null);
+                //调用百度翻译
+                api = new TransApi(appConfig.get(0).getConfig1(),appConfig.get(0).getConfig2() );
+                resultStr = api.getTransResult(count.toString(),"auto",to);
                 resultJson = JSONObject.parseObject(resultStr).getJSONArray("trans_result");
-                for (Object object : resultJson){
-                    restDataList.add((JSONObject)object);
+                for (Object object:resultJson) {
+                    restDataList.add((JSONObject) object);
                 }
                 // 统计调用量并记录
                 int nowEndServiceTotal = appConfig.get(0).getResidualService() - count.length();
