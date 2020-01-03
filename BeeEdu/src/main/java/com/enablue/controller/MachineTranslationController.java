@@ -100,9 +100,12 @@ public class MachineTranslationController {
             //调用百度翻译
             TransApi api = new TransApi(appConfig.get(0).getConfig1(),appConfig.get(0).getConfig2() );
             String resultStr = api.getTransResult(text,"auto",to);
-            JSONArray resultJson = JSONObject.parseObject(resultStr).getJSONArray("trans_result");
-            jsonObject.put("code", 0);
-            jsonObject.put("data",(JSONObject) resultJson.get(0));
+            System.out.println("百度翻译api结果"+resultStr);
+            if(resultStr!=null){
+                JSONArray resultJson = JSONObject.parseObject(resultStr).getJSONArray("trans_result");
+                jsonObject.put("code", 0);
+                jsonObject.put("data", resultJson.get(0));
+            }
         } catch (Exception e) {
             jsonObject.put("code", -1);
             jsonObject.put("msg", "翻译出错");
