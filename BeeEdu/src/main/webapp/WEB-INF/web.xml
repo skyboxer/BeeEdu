@@ -5,22 +5,7 @@
 		  http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
 
-        <!--http转https-->
-        <login-config>
-                <!-- Authorization setting for SSL -->
-                <auth-method>CLIENT-CERT</auth-method>
-                <realm-name>Client Cert Users-only Area</realm-name>
-        </login-config>
-        <security-constraint>
-                <!-- Authorization setting for SSL -->
-                <web-resource-collection >
-                        <web-resource-name >SSL</web-resource-name>
-                        <url-pattern>/*</url-pattern>
-                </web-resource-collection>
-                <user-data-constraint>
-                        <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-                </user-data-constraint>
-        </security-constraint>
+
 
         <!-- Filter,过滤器 -->
         <filter>

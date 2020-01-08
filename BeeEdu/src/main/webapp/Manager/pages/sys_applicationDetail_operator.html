@@ -11,24 +11,26 @@
 </head>
 <body>
 <!--类型选择-->
-<form class="layui-form" id="conditionalForm" action="" style="width: 100%;">
-      <label class="layui-form-label">选择类型</label>
-      <div class="layui-input-inline">
-        <select  id="searchTypeName"  name="type" lay-verify="" lay-search lay-filter="searchTypeName">
-        </select>
-      </div>
-
-      <div class="layui-inline">
-        <label class="layui-form-label">时间范围</label>
-        <div class="layui-input-inline">
-          <input type="text"  class="layui-input" name="timeHorizon" id="test10" placeholder=" - ">
-        </div>
-      </div>
-
+<form class="layui-form" id="conditionalForm" action="" style="width: 30%;">
+  <div class="layui-form-item">
+    <label class="layui-form-label">选择类型</label>
     <div class="layui-input-inline">
-      <label class="layui-form-label"></label>
+      <select  id="searchTypeName"  name="type" lay-verify="" lay-search lay-filter="searchTypeName">
+      </select>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">时间范围</label>
+      <div class="layui-input-inline">
+        <input type="text"  class="layui-input" name="timeHorizon" id="test10" placeholder=" - ">
+      </div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-input-block">
       <button class="layui-btn" lay-submit lay-filter="formQuery">查询</button>
     </div>
+  </div>
 </form>
 
 
@@ -64,8 +66,8 @@ layui.use('table', function(){
     ,cols: [[
       {type: 'checkbox', fixed: 'left'}
       ,{field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true}
-      ,{field:'applicationDetailId', title:'应用详情ID', width:100, edit: 'text'}
-      ,{field:'appid', title:'appid', width:180, edit: 'text', sort: true}
+      ,{field:'applicationDetailId', title:'应用详情ID', width:180, edit: 'text'}
+      ,{field:'appid', title:'appid', width:100, edit: 'text', sort: true}
       ,{field:'applicationTypeId', title:'应用类型', width:180,templet:function (res) {
           switch (res.applicationTypeId) {
             case 0:
@@ -85,9 +87,6 @@ layui.use('table', function(){
       ,{field:'operationDate', title:'操作日期',width:200}
       ,{field:'startServiceTotal', title:'操作前服务时长', width:180}
       ,{field:'endServiceTotal', title:'操作后服务时长', width:180}
-      ,{field:'ServiceUsage', title:'服务用量', width:180,templet:function (res) {
-             return res.startServiceTotal-res.endServiceTotal;
-        }}
       ,{field:'accountId', title:'操作用户ID', width:100}
     ]]
     ,page: true
@@ -110,7 +109,9 @@ layui.use('table', function(){
     }
   })
   //监听提交
-  form.on('submit(formQuery)', function(data){//重载
+  form.on('submit(formQuery)', function(data){
+    layer.msg(JSON.stringify(data.field));
+    //重载
     table.reload('test', {
       page: {
         curr: 1 //重新从第 1 页开始
