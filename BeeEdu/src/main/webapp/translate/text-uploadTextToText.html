@@ -241,6 +241,9 @@
                 case "xf":
                     url = url +"machine.json"
                     break;
+                case "google":
+                    url= url+"machineGoogle.json"
+                    break;
                 default:
                     url = url +"machineBD.json"
                     break;
@@ -248,10 +251,16 @@
             //语种初始化
             $.getJSON(url, function(obj) {
                 var options = "";
+                var options0 ='<option value="auto">自动检测</option>'+options;
                 $.each(obj, function (i, d) {
                     options += '<option value="' + i + '">' + d + '</option>';
                 });
-                $("#languageTypeOne").html(options);
+                if(target.value !="xf"){
+                 options0 +=options;
+                }else{
+                    options0 =options;
+                }
+                $("#languageTypeOne").html(options0);
                 $("#languageTypeTwo").html(options);
             });
         });
@@ -302,6 +311,10 @@
                 case  "bd":
                     url="/machineTranslation/textFileToTranslationBD";
                     dataObject["engineType"]="百度";
+                    break;
+                case  "google":
+                    dataObject["engineType"]="Google";
+                    url="/machineTranslation/textFileToTranslationGoogle";
                     break;
                     default:
                         url="/machineTranslation/textFileToTranslation";

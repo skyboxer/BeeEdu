@@ -3,6 +3,7 @@ package com.enablue.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.enablue.common.SessionCommon;
+import com.enablue.googleutil.GoogleApi;
 import com.enablue.mapper.AppDetailMapper;
 import com.enablue.mapper.ApplicationDetailOperationMapper;
 import com.enablue.pojo.Account;
@@ -11,6 +12,7 @@ import com.enablue.pojo.ApplicationDetailOperation;
 import com.enablue.util.POIUtil;
 import com.enablue.util.TransApi;
 import com.enablue.util.WebOTS;
+import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,45 +74,7 @@ public class MachineTranslationController {
         return jsonObject;
     }
 
-    /**
-     * 百度文本翻译
-     *
-     * @param from,to,text
-     * @return json
-     */
-    @Transactional(propagation = Propagation.REQUIRED)
-    @RequestMapping(value = "textToTranslationBD", method = RequestMethod.POST, produces = "application/json")
-    public JSONObject textToTranslationBD(String from, String to, String text,String engineType) {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            // 统计调用量并记录
-            List<AppDetail> appConfig = appDetailMapper.queryAppDetailByType(2, text.length(),engineType);
-            int nowEndServiceTotal = appConfig.get(0).getResidualService() - text.length();
-            //获取用户ID
-            Account account = (Account) sessionCommon.getSession().getAttribute("account");
-            //添加操作日志
-            applicationDetailOperation = new ApplicationDetailOperation(appConfig.get(0).getId(), appConfig.get(0).getAppId(),
-                    2, appConfig.get(0).getResidualService(), nowEndServiceTotal, account.getId());
-            applicationDetailOperationMapper.addApplicationDetailOperation(applicationDetailOperation);
-            //修改操作剩余服务量
-            appConfig.get(0).setResidualService(nowEndServiceTotal);
-            appDetailMapper.updateAppDetail(appConfig.get(0));
-            //调用百度翻译
-            TransApi api = new TransApi(appConfig.get(0).getConfig1(),appConfig.get(0).getConfig2() );
-            String resultStr = api.getTransResult(text,"auto",to);
-            System.out.println("百度翻译api结果"+resultStr);
-            if(resultStr!=null){
-                JSONArray resultJson = JSONObject.parseObject(resultStr).getJSONArray("trans_result");
-                jsonObject.put("code", 0);
-                jsonObject.put("data", resultJson.get(0));
-            }
-        } catch (Exception e) {
-            jsonObject.put("code", -1);
-            jsonObject.put("msg", "翻译出错");
-            e.printStackTrace();
-        }
-        return jsonObject;
-    }
+
 
     /**
      * 讯飞文本文件翻译
@@ -180,6 +144,46 @@ public class MachineTranslationController {
             }
             jsonObject.put("code", 0);
             jsonObject.put("data", restDataList);
+        } catch (Exception e) {
+            jsonObject.put("code", -1);
+            jsonObject.put("msg", "翻译出错");
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
+
+    /**
+     * 百度文本翻译
+     *
+     * @param from,to,text
+     * @return json
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    @RequestMapping(value = "textToTranslationBD", method = RequestMethod.POST, produces = "application/json")
+    public JSONObject textToTranslationBD(String from, String to, String text,String engineType) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            // 统计调用量并记录
+            List<AppDetail> appConfig = appDetailMapper.queryAppDetailByType(2, text.length(),engineType);
+            int nowEndServiceTotal = appConfig.get(0).getResidualService() - text.length();
+            //获取用户ID
+            Account account = (Account) sessionCommon.getSession().getAttribute("account");
+            //添加操作日志
+            applicationDetailOperation = new ApplicationDetailOperation(appConfig.get(0).getId(), appConfig.get(0).getAppId(),
+                    2, appConfig.get(0).getResidualService(), nowEndServiceTotal, account.getId());
+            applicationDetailOperationMapper.addApplicationDetailOperation(applicationDetailOperation);
+            //修改操作剩余服务量
+            appConfig.get(0).setResidualService(nowEndServiceTotal);
+            appDetailMapper.updateAppDetail(appConfig.get(0));
+            //调用百度翻译
+            TransApi api = new TransApi(appConfig.get(0).getConfig1(),appConfig.get(0).getConfig2() );
+            String resultStr = api.getTransResult(text,"auto",to);
+            System.out.println("百度翻译api结果"+resultStr);
+            if(resultStr!=null){
+                JSONArray resultJson = JSONObject.parseObject(resultStr).getJSONArray("trans_result");
+                jsonObject.put("code", 0);
+                jsonObject.put("data", resultJson.get(0));
+            }
         } catch (Exception e) {
             jsonObject.put("code", -1);
             jsonObject.put("msg", "翻译出错");
@@ -259,6 +263,95 @@ public class MachineTranslationController {
                 appConfig.get(0).setResidualService(nowEndServiceTotal);
                 appDetailMapper.updateAppDetail(appConfig.get(0));
 
+                count.setLength(0);
+            }
+            jsonObject.put("code", 0);
+            jsonObject.put("data", restDataList);
+        } catch (Exception e) {
+            jsonObject.put("code", -1);
+            jsonObject.put("msg", "翻译出错");
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
+
+    /**
+     * google文本翻译
+     *
+     * @param from,to,text
+     * @return json
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    @RequestMapping(value = "textToTranslationGoogle", method = RequestMethod.POST, produces = "application/json")
+    public JSONObject textToTranslationGoogle(String from, String to, String text,String engineType) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            //调用google翻译
+            GoogleApi googleApi = new GoogleApi();
+            String resultStr = googleApi.translate(text,  to);
+            System.out.println("百度翻译api结果"+resultStr);
+            JSONObject data = new JSONObject();
+            data.put("src",text);
+            data.put("dst",resultStr);
+            if(resultStr!=null){
+                jsonObject.put("code", 0);
+                jsonObject.put("data", data);
+            }
+        } catch (Exception e) {
+            jsonObject.put("code", -1);
+            jsonObject.put("msg", "翻译出错");
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
+
+    /**
+     * google文本文件翻译
+     *
+     * @param from,to,text
+     * @return json
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    @RequestMapping(value = "textFileToTranslationGoogle", method = RequestMethod.POST, produces = "application/json")
+    public JSONObject textFileToTranslationGoogle(String from, String to, String fileName, String engineType,HttpServletRequest req) {
+        JSONObject jsonObject = new JSONObject();
+        String uploadFilePath = req.getServletContext().getRealPath("/upload/");
+        String fileNamePath = uploadFilePath + fileName;
+        try {
+            List<Character> fileChar = POIUtil.readWord(fileNamePath);
+            String resultStr;
+            JSONArray  resultJson;
+            StringBuffer count = new StringBuffer();
+            List<JSONObject> restDataList = new ArrayList<>();
+            char sign = '.';
+            if (from.equals("cn") || from.equals("cht")) {
+                sign = '。';
+            }
+            GoogleApi googleApi;
+            JSONObject data ;
+            for (char countChar : fileChar) {
+                count.append(countChar);
+                if (count.length() >= 1500 && countChar == sign) {
+                    //调用google翻译
+                     googleApi = new GoogleApi();
+                     resultStr = googleApi.translate(count.toString(),  to);
+                    data = new JSONObject();
+                    data.put("src",count.toString());
+                    data.put("dst",resultStr);
+                   restDataList.add(data);
+                    System.out.println("countlength" + count.length() + count);
+                    count.setLength(0);
+                }
+            }
+            if (count.length() < 1500) {
+                //调用google翻译
+                googleApi = new GoogleApi();
+                resultStr = googleApi.translate(count.toString(),  to);
+                data = new JSONObject();
+                data.put("src",count.toString());
+                data.put("dst",resultStr);
+                restDataList.add(data);
+                System.out.println("countlength" + count.length() + count);
                 count.setLength(0);
             }
             jsonObject.put("code", 0);

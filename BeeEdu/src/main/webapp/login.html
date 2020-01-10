@@ -39,11 +39,11 @@
 
     <form  id="loginForm" action="" method="post">
       <div class="form-group has-feedback">
-        <input  id="name"  name="name" onkeyup="value=value.replace(/[\u4e00-\u9fa5_\s]/ig,'')" type="text" class="form-control" placeholder="账号">
+        <input  id="name"  name="name" onkeyup="value=value.replace(/[\u4e00-\u9fa5]/ig,'')" type="text" class="form-control" placeholder="账号">
         <span id="prompt"></span>
       </div>
       <div class="form-group has-feedback">
-        <input id="password"  name="password" type="password" onkeyup="value=value.replace(/[\u4e00-\u9fa5_\s]/ig,'')" class="form-control" placeholder="密码">
+        <input id="password"  name="password" type="password" onkeyup="value=value.replace(/[\u4e00-\u9fa5]/ig,'')" class="form-control" placeholder="密码">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
 
