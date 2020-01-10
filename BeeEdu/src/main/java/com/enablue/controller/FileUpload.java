@@ -78,7 +78,7 @@ public class FileUpload extends HttpServlet {
         if (!uploadDir.exists()) {
             uploadDir.mkdir();
         }
-
+        
         try {
             // 解析请求的内容提取文件数据
             List<FileItem> formItems = upload.parseRequest(request);
@@ -89,6 +89,7 @@ public class FileUpload extends HttpServlet {
                     if (!item.isFormField()) {
                         String fileName = new File(item.getName()).getName();
                         long timeStamp = System.currentTimeMillis();
+
                         String filePath = uploadPath + File.separator + timeStamp+fileName;
                         File storeFile = new File(filePath);
                         // 在控制台输出文件的上传路径

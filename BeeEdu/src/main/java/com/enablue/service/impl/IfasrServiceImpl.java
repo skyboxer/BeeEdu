@@ -18,6 +18,7 @@ import com.iflytek.msp.cpdb.lfasr.model.Message;
 import it.sauronsoftware.jave.Encoder;
 import it.sauronsoftware.jave.EncoderException;
 import it.sauronsoftware.jave.MultimediaInfo;
+import org.apache.poi.hssf.record.DVALRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +33,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
@@ -96,12 +99,17 @@ public class IfasrServiceImpl implements IfasrService {
                 }
                 AppDetail appDetail = appDetails.get(0);
                 //遍历请求中的cookie，如有存在cookie就直接返回结果
+
+
+
+
                 Cookie[] cookies = request.getCookies();
                 for (Cookie cookie:cookies) {
                     if (fileName.equals( cookie.getName() )){
                         result.put("flag", true);
-                        result.put("TaskId", cookie.getValue());
-                        System.out.println("cookie_taskId= " + cookie.getValue());
+
+                        result.put("TaskId",URLDecoder.decode(cookie.getValue(), "UTF-8"));
+                        System.out.println("cookie_taskId= " + URLDecoder.decode(cookie.getValue(), "UTF-8"));
                         return result;
                     }
                 }
@@ -121,7 +129,8 @@ public class IfasrServiceImpl implements IfasrService {
                 } else {
                     result.put("flag", true);
                     result.put("TaskId", taskId);
-                    response.addCookie(new Cookie(fileName,taskId));
+                    String encode = URLEncoder.encode(fileName, "UTF-8");
+                    response.addCookie(new Cookie(encode,taskId));
                     //添加日志信息
                     ApplicationDetailOperation operation = new ApplicationDetailOperation(appDetail.getId(),
                             appDetail.getAppId(),
@@ -135,7 +144,7 @@ public class IfasrServiceImpl implements IfasrService {
                     applicationDetailOperationMapper.addApplicationDetailOperation(operation);
                     appDetailMapper.updateAppDetail(appDetail);
                 }
-            } catch (LfasrException | EncoderException e) {
+            } catch (LfasrException | EncoderException | UnsupportedEncodingException e) {
                 e.printStackTrace();
                 result.put("flag", false);
                 return result;
@@ -186,12 +195,16 @@ public class IfasrServiceImpl implements IfasrService {
 
             }
 
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
-            System.out.println(" --------------- ");
-            result.put("flag", false);
-            result.put("msg", "转写异常");
-            return result;
+            System.out.println("------------------" );
+            result.put("flag",false);
+            result.put("msg","查询失败");
+        } catch (LfasrException e) {
+            e.printStackTrace();
+            System.out.println("------------------" );
+            result.put("flag",false);
+            result.put("msg","转写失败");
         }
         return result;
     }
@@ -228,7 +241,12 @@ public class IfasrServiceImpl implements IfasrService {
                 result.put("msg",message.getFailed());
             }
 
-        } catch (Exception e) {
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("------------------" );
+            result.put("flag",false);
+            result.put("msg","查询失败");
+        } catch (LfasrException e) {
             e.printStackTrace();
             System.out.println("------------------" );
             result.put("flag",false);
@@ -246,25 +264,24 @@ public class IfasrServiceImpl implements IfasrService {
      * @param words 拿到的查询结果文本
      * @param result 封装结果
      */
-   private void caption_in_file(String realPath,String taskId,List<Word> words,HashMap<String,Object> result){
+   private void caption_in_file(String realPath,String taskId,List<Word> words,HashMap<String,Object> result) throws IOException {
 
-       try {
+
            //写入文件
            FileWriter writer = new FileWriter(realPath+ File.separator+taskId+".srt",true);
-
            //控制变量
            String onebest="";
            int count=1;
-           String temp="  ";
+           StringBuffer temp=new StringBuffer();
            Word tempWord=null;
            for (Word word:words) {
-
+               //判断上一句是否为短句
                if (tempWord!=null){
                    word.setBg(tempWord.getBg());
                    word.setOnebest(tempWord.getOnebest()+word.getOnebest());
                }
-               //获取内容  过滤语气词
-               onebest = word.getOnebest().replaceAll("嗯|啊|吧|嘛|啊|呢", "");
+               //获取内容
+               onebest = word.getOnebest();
                //空句过滤
                if ("".equals(onebest)||onebest==null|| onebest.length() <= 1){
                    continue;
@@ -272,6 +289,7 @@ public class IfasrServiceImpl implements IfasrService {
                //判断整体内容是否小于7个字符串
                if(onebest.length()<7){
                    tempWord=word;
+                   continue;
                }
                //
                //获取时间
@@ -281,59 +299,62 @@ public class IfasrServiceImpl implements IfasrService {
                //按标点符号分割字符串
                String[] strings = onebest.split("，|。|！|？");
                //设置临时缓存变量
-               String temp2="";
+               StringBuffer temp2=new StringBuffer();
                for (String s: strings) {
                    if (s.length()<=5){
                        //短句放入临时缓存区域
-                       temp2+=s;
-                   }else if(s.length()<=20){
-                       temp+=count+"\r\n";
+                       temp2.append(s);
+                   }else if(s.length()<=15){
+                       temp.append(count+"\r\n");
                        count++;
-                       temp2+=s;
+                       if (temp2.length()>1){
+                           temp2.append(",");
+                       }
+                       temp2.append(s);
                        String bg= TimpStampUtil.processingTimeStamp(beginTime);
                        String ed= TimpStampUtil.processingTimeStamp(beginTime+temp2.length()*time);
-                       temp+=bg+" --> "+ed+"\r\n"+temp2+"\r\n\r\n";
+                       temp.append(bg+" --> "+ed+"\r\n"+temp2+"\r\n\r\n");
                        //更新时间坐标
                        beginTime=beginTime+temp2.length()*time;
                        //清楚零时缓存
-                       temp2="";
+                       temp2.delete(0,temp2.length());
                    }else {
-                       temp+=count+"\r\n";
+                       temp.append(count+"\r\n");
                        count++;
-                       temp2+=s;
+                       if (temp2.length()>1){
+                           temp2.append(",");
+                       }
+                       temp2.append(s);
                        //截取前20个字符作为一段字幕
                        String bg= TimpStampUtil.processingTimeStamp(beginTime);
                        String ed= TimpStampUtil.processingTimeStamp(beginTime+20*time);
-                       temp+=bg+" --> "+ed+"\r\n"+temp2.substring(0,20)+"\r\n\r\n";
+                       temp.append(bg+" --> "+ed+"\r\n"+temp2.substring(0,15)+"\r\n\r\n");
                        //更新时间坐标
                        beginTime=beginTime+temp2.length()*time;
                        //截取后面的字符作为一段字幕
-                       temp+=count+"\r\n";
+                       temp.append(count+"\r\n");
                        count++;
                        bg= TimpStampUtil.processingTimeStamp(beginTime);
-                       ed= TimpStampUtil.processingTimeStamp(beginTime+temp2.substring(20).length()*time);
-                       temp+=bg+" --> "+ed+"\r\n"+temp2.substring(20)+"\r\n\r\n";
+                       ed= TimpStampUtil.processingTimeStamp(beginTime+temp2.substring(15).length()*time);
+                       temp.append(bg+" --> "+ed+"\r\n"+temp2.substring(15)+"\r\n\r\n");
                        //更新时间坐标
-                       beginTime=beginTime+temp2.substring(20).length()*time;
+                       beginTime=beginTime+temp2.substring(15).length()*time;
                        //清楚零时缓存
-                       temp2="";
+                       temp2.delete(0,temp2.length());
                    }
                }
+               //释放临时存储短句
+               tempWord=null;
            }
-           writer.write(temp);
+           writer.write(temp.toString());
            writer.flush();
            writer.close();
 
            result.put("flag",true);
            result.put("msg","生成成功");
-           result.put("result",temp);
+           result.put("result",temp.toString());
            result.put("fileName",taskId+".srt");
-       } catch (IOException e) {
-           e.printStackTrace();
-           System.out.println(" ---------------- " );
-           result.put("flag",false);
-           result.put("msg","生成异常");
-       }
+
 
    }
     /**
@@ -343,10 +364,10 @@ public class IfasrServiceImpl implements IfasrService {
      * @param words 拿到的查询结果文本
      * @param result 封装结果
      */
-    private void text_in_file(String realPath,String taskId,List<Word> words,HashMap<String,Object> result){
+    private void text_in_file(String realPath,String taskId,List<Word> words,HashMap<String,Object> result) throws IOException {
         //写入文件
         FileWriter writer;
-        try {
+
             writer = new FileWriter(realPath + File.separator + taskId + ".txt", true);
             //控制变量
             int count = 1;
@@ -399,12 +420,7 @@ public class IfasrServiceImpl implements IfasrService {
             result.put("msg", "转写成功");
             result.put("result", temp);
             result.put("fileName", taskId + ".txt");
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println(" --------------- ");
-            result.put("flag", false);
-            result.put("msg", "转写异常");
-        }
+
     }
     /**
      *  根据订单号查询结果
