@@ -19,9 +19,9 @@ public class IfasrController {
     @Autowired
     private IfasrService ifasrService;
     @RequestMapping("/speechTask")
-    public HashMap<String,Object> speechTask( String fileName){
+    public HashMap<String,Object> speechTask( String fileName,String language){
         HashMap<String, Object> result = new HashMap<>();
-        result=ifasrService.speechTask(fileName);
+        result=ifasrService.speechTask(fileName,language);
         return result;
     }
     @RequestMapping("/resultsQuery")

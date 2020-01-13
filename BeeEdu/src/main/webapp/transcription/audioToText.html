@@ -107,9 +107,9 @@
 						<div class="col-md-12">
 							<div class="dropdown">
 								音频语言
-								<select class="btn btn-default dropdown-toggle">
-									<option value="zh_cn">中文</option>
-									<option value="en_us">英文</option>
+								<select name="language" id="Samples" class="btn btn-default dropdown-toggle">
+									<option value="cn" selected>中文</option>
+									<option value="en">英文</option>
 								</select>
 							</div>
 							<span id="prompt2"></span>
@@ -238,7 +238,8 @@
 			if(fileName&&fileName!==("null")){
 				$("#prompt2").text("准备转写中...");
 				//文件转写
-				$.get("speechTask?fileName="+fileName,
+				let language=$("#Samples").val();
+				$.get("speechTask?fileName="+fileName+"&language="+language,
 						function (data) {
 							if(data.flag){
 							$("#prompt2").text("正在转写....")

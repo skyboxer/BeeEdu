@@ -57,7 +57,7 @@ public class IfasrServiceImpl implements IfasrService {
      */
     @Override
     @Transactional
-    public HashMap<String, Object> speechTask(String fileName) {
+    public HashMap<String, Object> speechTask(String fileName,String language) {
         HashMap<String, Object> result = new HashMap<>();
         //2.处理请求
         if (fileName != null) {
@@ -118,6 +118,7 @@ public class IfasrServiceImpl implements IfasrService {
                 //设置参数
                 HashMap<String, String> params = new HashMap<>();
                 params.put("has_participle", "false");
+                params.put("language", language);
                 // 初始化LFASRClient实例
                 LfasrClientImp lc = LfasrClientImp.initLfasrClient(appDetail.getConfig1(),appDetail.getConfig2());
                 //上传文件
@@ -385,14 +386,14 @@ public class IfasrServiceImpl implements IfasrService {
                     continue;
                 }
                 //一句话只要不超过5个字就不算一句，只要不超过十个字就不算一整句
-                String[] strings = onebest.split("，|。|！|？");
+                String[] strings = onebest.split("，|。|！|？|,|\\.|\\?");
                 for (String s : strings) {
                     if (s.length() <= 5) {
                         temp2 += s;
                     } else if (s.length() <= 10) {
-                        temp2 += s + "，";
+                        temp2 += s + ",";
                     } else {
-                        temp2 += s + "。";
+                        temp2 += s + ".";
                     }
                 }
 
