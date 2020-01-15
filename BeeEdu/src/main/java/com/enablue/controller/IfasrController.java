@@ -20,20 +20,12 @@ public class IfasrController {
     private IfasrService ifasrService;
     @RequestMapping("/speechTask")
     public HashMap<String,Object> speechTask( String fileName,String language){
-        HashMap<String, Object> result = new HashMap<>();
-        result=ifasrService.speechTask(fileName,language);
+        HashMap<String, Object> result = ifasrService.speechTask(fileName,language);
         return result;
     }
     @RequestMapping("/resultsQuery")
-    public HashMap<String,Object> resultsQuery(String taskid ){
-        HashMap<String, Object> result = new HashMap<>();
-        result=ifasrService.resultsQuery(taskid);
-        return result;
-    }
-    @RequestMapping("/captionResultsQuery")
-    public HashMap<String,Object> captionResultsQuery(String taskid){
-        HashMap<String, Object> result = new HashMap<>();
-        result=ifasrService.captionResultsQuery(taskid);
+    public HashMap<String,Object> resultsQuery(String taskid,String language,String methods){
+        HashMap<String, Object> result = ifasrService.resultsQuery(taskid,language,methods);
         return result;
     }
 }

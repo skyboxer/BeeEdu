@@ -9,6 +9,5 @@ import java.util.HashMap;
  */
 public interface IfasrService {
     HashMap<String, Object> speechTask(String fileName, String language);
-    HashMap<String, Object> resultsQuery(String taskid);
-    HashMap<String, Object> captionResultsQuery(String taskid);
+    HashMap<String, Object> resultsQuery(String taskid, String language, String methods);
 }

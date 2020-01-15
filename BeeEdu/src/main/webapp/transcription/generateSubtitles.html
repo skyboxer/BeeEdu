@@ -244,8 +244,7 @@
 								var count=3;
 								//执行定时任务
 								let ref = setInterval(function () {
-
-									$.get("captionResultsQuery?taskid="+data.TaskId,
+									$.get("resultsQuery?taskid="+data.TaskId+"&language="+data.language+"&methods=caption",
 											function (data) {
 												if(data.flag){
 													document.getElementById("download").href="/downloadServlet?filename="+data.fileName;
