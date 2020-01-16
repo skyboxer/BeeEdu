@@ -79,17 +79,9 @@
                     <div class="row">
 						<div class="col-md-1"></div>
                         <div class="col-md-4">
-                            <div class="form-group">
-                                <form id="form" method="post" enctype="multipart/form-data">
-                                    <input type="file" name="file" id="exampleInputFile">
-                                    <p class="help-block">支持格式:doc/docx/txt(UTF-8)</p>
-                                </form>
-                            </div>
                         </div>
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-block btn-default btn-xs"
-                                    id="submitTextUpload">点击上传
-                            </button>
+
                         </div>
                         <div class="col-md-5">
                             <div class="progress-group">
@@ -128,50 +120,43 @@
                     <div class="col-md-6"></div>
                     <div class="col-md-6">
                         <div class="row">
-                            <div class="col-md-7"></div>
+                            <div class="col-md-9"></div>
                             <div class="col-md-2">
-                                <button type="button" class="btn btn-block btn-default btn-xs" id="copyFn">
-                                    <font style="vertical-align: inherit;"><font
-                                            style="vertical-align: inherit;">一键复制</font></font>
-                                </button>
-                            </div>
-                            <div class="col-md-2">
-                                <button type="button" class="btn btn-block btn-default btn-xs" id="saveFn">
-                                    <font style="vertical-align: inherit;"><font
-                                            style="vertical-align: inherit;">下载</font></font>
-                                </button>
                             </div>
 							<div class="col-md-1"></div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="row">
-							<div class="col-md-1"></div>
-                            <div class="col-md-11">
-                                <p class="help-block">
-                                    上传文件预览
-                                </p>
-                                <textarea class="form-control" rows="20" name=textarea readonly
-                                          id="output"></textarea>
+                    <div class="col-lg-2"></div>
+                    <div class="col-md-8">
+                        <div class="box">
+                            <div class="box-header">
+                            </div>
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <form id="form" method="post" enctype="multipart/form-data">
+                                        <p class="help-block">请上传doc或docx的xml文件(UTF-8)</p>
+                                        <input type="file" class="btn btn-block btn-default btn-flat btn-lg" name="file" id="exampleInputFile" style="height: 200px">
+                                    </form>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6"></div>
+                                    <div class="col-md-3">
+                                        <button type="button" class="btn btn-block btn-default "
+                                                id="submitTextUpload">点击上传
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <a type="button" class="btn btn-block btn-default "  id="download"  href="#">
+                                            文件下载
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="row">
-                            <div class="col-md-11">
-                                <p class="help-block">
-                                    <font style="vertical-align: inherit;"><font
-                                            style="vertical-align: inherit;">翻译结果预览</font></font>
-                                </p>
-                                <textarea class="form-control" rows="20" name=textarea readonly
-                                          id="textareaTwo"></textarea>
-                            </div>
-							<div class="col-md-1"></div>
-                        </div>
-
-                    </div>
+                    <div class="col-lg-2"></div>
                 </div>
             </div>
         </div>
@@ -273,25 +258,6 @@
         $("#submitTranslation").click(function () {
             conditionChange();
         })
-        //一键复制
-        $("#copyFn").click(function () {
-            var val = document.getElementById('textareaTwo');
-            val.select();
-            document.execCommand("Copy");
-            alert("已复制好，可贴粘。");
-
-        })
-        //点击上传
-        $("#saveFn").click(function () {
-            var content = $("#textareaTwo").html();
-            var data = new Blob([content], {type: "text/plain;charset=UTF-8"});
-            var downloadUrl = window.URL.createObjectURL(data);
-            var anchor = document.createElement("a");
-            anchor.href = downloadUrl;
-            anchor.download = "newfile.txt";
-            anchor.click();
-            window.URL.revokeObjectURL(data);
-        })
         var restFileName = null;
         /*翻译*/
         var conditionChange = function () {
@@ -301,7 +267,7 @@
             if (from == to || restFileName == null) {
                 alert("请选择目标语言/要上传的文件")
             }
-            var url = "/machineTranslation/";
+            var url = "/uploadFileTranslate/wordUploadTranslate";
             var dataObject ={
                 from: from,
                 to: to,
@@ -309,22 +275,20 @@
             }
             switch (engineType) {
                 case  "bd":
-                    url="/machineTranslation/textFileToTranslationBD";
+                   // url="/machineTranslation/textFileToTranslationBD";
                     dataObject["engineType"]="百度";
                     break;
                 case  "google":
                     dataObject["engineType"]="Google";
-                    url="/machineTranslation/textFileToTranslationGoogle";
+                   // url="/machineTranslation/textFileToTranslationGoogle";
                     break;
                     default:
-                        url="/machineTranslation/textFileToTranslation";
+                  //      url="/machineTranslation/textFileToTranslation";
                         dataObject["engineType"]="讯飞";
                         break;
             }
             if (from != to && restFileName != null) {
                 translationSchedule(50);
-                $("#output").val("");
-                $("#textareaTwo").val("");
                 $.post({
                     url:url,
                     data: dataObject,
@@ -332,8 +296,7 @@
                         translationSchedule(100);
                         if (data.code == 0) {
                             for (var rest in data.data) {
-                                $("#output").val($("#output").val()+data.data[rest].src);
-                                $("#textareaTwo").val($("#textareaTwo").val()+data.data[rest].dst);
+                                document.getElementById("download").href="/downloadServlet?filename="+restFileName;
                             }
                         }
                     }

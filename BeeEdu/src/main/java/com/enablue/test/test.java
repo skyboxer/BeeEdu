@@ -2,7 +2,7 @@ package com.enablue.test;
 
 import com.enablue.googleutil.GoogleApi;
 
-public class Test {
+public class test {
 
     public static void main(String[] args) throws Exception {
         // 普通方式初始化

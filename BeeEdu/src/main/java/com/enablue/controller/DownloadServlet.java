@@ -39,7 +39,12 @@ public class DownloadServlet extends HttpServlet {
 
 
             //1、读取文件到inputstream中：
-            String realPath = getServletContext().getRealPath("/result");
+            String realPath = null;
+            if(filename.endsWith(".xml")){
+                realPath = getServletContext().getRealPath("/upload");
+            }else{
+                realPath = getServletContext().getRealPath("/result");
+            }
             File file = new File(realPath + File.separator + filename);
             System.out.println("file = " + file);
             inputStream = new FileInputStream(file);
