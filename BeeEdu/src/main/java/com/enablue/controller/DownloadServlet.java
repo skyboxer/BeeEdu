@@ -21,44 +21,60 @@ import java.io.InputStream;
 @WebServlet("/downloadServlet")
 public class DownloadServlet extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)  {
         doGet(request, response);
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response){
+        ServletOutputStream outputStream=null;
+        InputStream inputStream=null;
+        try {
+            //文件下载： 流拷贝
+            String filename = request.getParameter("filename");
 
-        //文件下载： 流拷贝
-        String filename = request.getParameter("filename");
-
-        //设置头信息：1、content-disposition ；2、mimetype
-        response.setHeader("content-disposition","attchement;filename="+filename);
-        response.setContentType(getServletContext().getMimeType(filename));
-
-
-        //1、读取文件到inputstream中：
-        String realPath = getServletContext().getRealPath("/result");
-        File file = new File(realPath+File.separator+filename);
-        System.out.println("file = " + file);
-        InputStream inputStream = new FileInputStream(file);
+            //设置头信息：1、content-disposition ；2、mimetype
+            response.setHeader("content-disposition", "attchement;filename=" + filename);
+            response.setContentType(getServletContext().getMimeType(filename));
 
 
-        //2、获取输出流： 写出到浏览器
-        ServletOutputStream outputStream = response.getOutputStream();
+            //1、读取文件到inputstream中：
+            String realPath = getServletContext().getRealPath("/result");
+            File file = new File(realPath + File.separator + filename);
+            System.out.println("file = " + file);
+            inputStream = new FileInputStream(file);
 
 
-        //3、流拷贝
-        int len = 0;
-        byte[] buf = new byte[1024];
+            //2、获取输出流： 写出到浏览器
+             outputStream = response.getOutputStream();
 
-        while ( (len=inputStream.read(buf))!=-1 ){
-            outputStream.write(buf,0,len);
+
+            //3、流拷贝
+            int len = 0;
+            byte[] buf = new byte[1024];
+
+            while ((len = inputStream.read(buf)) != -1) {
+                outputStream.write(buf, 0, len);
+            }
+
+            //释放资源
+            outputStream.close();
+            inputStream.close();
+        }catch ( IOException e){
+            e.printStackTrace();
+        }finally {
+            try {
+                if (outputStream!=null){
+                    outputStream.close();
+                }
+                if (inputStream!=null){
+                    inputStream.close();
+                }
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+
         }
-
-        //释放资源
-        outputStream.close();
-        inputStream.close();
-
 
     }
 }
