@@ -445,7 +445,7 @@ public class IfasrServiceImpl implements IfasrService {
                     continue;
                 }
                 //判断整体内容是否小于7个字符串
-                if (onebest.length() < 7) {
+                if (onebest.length() < 4) {
                     tempWord = word;
                     continue;
                 }
@@ -483,10 +483,19 @@ public class IfasrServiceImpl implements IfasrService {
                         if (temp2.length() > 1) {
                             temp2.append(",");
                         }
-                        //截取前20个字符作为一段字幕
+
                         for (int i=0;i<s1.length;i++){
                             temp2.append(s1[i]+" ");
-                            if (i%8 == 0 && i != 0){
+                            if (i==s1.length-1){
+                                String bg = TimpStampUtil.processingTimeStamp(beginTime);
+                                String ed = TimpStampUtil.processingTimeStamp(beginTime + 20 * time);
+                                temp.append(bg + " --> " + ed + "\r\n" + temp2 + "\r\n\r\n");
+                                //更新时间坐标
+                                beginTime = beginTime + s1.length * time * 3;
+                                count++;
+                                //清楚临时缓存
+                                temp2.delete(0, temp2.length());
+                            }else if (i%7 == 0 && i != 0){
                                 String bg = TimpStampUtil.processingTimeStamp(beginTime);
                                 String ed = TimpStampUtil.processingTimeStamp(beginTime + 20 * time);
                                 temp.append(bg + " --> " + ed + "\r\n" + temp2 + "\r\n\r\n");
@@ -497,17 +506,7 @@ public class IfasrServiceImpl implements IfasrService {
                                     //截取后面的字符作为一段字幕
                                     temp.append(count + "\r\n");
                                 }
-                                //清楚零时缓存
-                                temp2.delete(0, temp2.length());
-
-                            }else if (i==s1.length-1){
-                                String bg = TimpStampUtil.processingTimeStamp(beginTime);
-                                String ed = TimpStampUtil.processingTimeStamp(beginTime + 20 * time);
-                                temp.append(bg + " --> " + ed + "\r\n" + temp2 + "\r\n\r\n");
-                                //更新时间坐标
-                                beginTime = beginTime + s1.length * time * 3;
-                                count++;
-                                //清楚零时缓存
+                                //清楚临时缓存
                                 temp2.delete(0, temp2.length());
                             }
                         }
