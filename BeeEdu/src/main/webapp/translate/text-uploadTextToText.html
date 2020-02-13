@@ -288,12 +288,10 @@
                         break;
             }
             if (from != to && restFileName != null) {
-                translationSchedule(50);
                 $.post({
                     url:url,
                     data: dataObject,
                     success: function (data) {
-                        translationSchedule(100);
                         if (data.code == 0) {
                             for (var rest in data.data) {
                                 document.getElementById("download").href="/downloadServlet?filename="+restFileName;
@@ -310,8 +308,7 @@
             }
             $("#submitTextUpload").hide();
             $("#submitTranslation").hide();
-            translationSchedule(0);
-            translationUpload(80);
+            uploadInterval(true)
             var formData = new FormData($("#form")[0]);
             $.ajax({
                 url: '/fileUpload',
@@ -325,16 +322,14 @@
                     if (dataJson.status == 0) {
                         $("#submitTranslation").show();
                         restFileName = dataJson.fileName;
-                        translationUpload(100);
+                        uploadInterval(false)
                     } else {
                         alert(dataJson.message)
-                        translationUpload(80);
                     }
                     $("#submitTextUpload").show();
                 },
                 error: function (response) {
-                    translationUpload(80);
-                    console.log(response);
+                    alert(response);
                 }
             });
         })
@@ -345,6 +340,34 @@
         function translationSchedule(num) {
             document.getElementById("translationSchedule").style.width = num + "%";
         }
+
+        function uploadInterval(bn) {
+            var num = 0;
+            var uploadTime ;
+            if(bn){
+                uploadTime =  setInterval(function () {
+                    translationUpload(num);
+                    num ++
+                },2000);
+            }else {
+                translationUpload(100);
+                clearInterval(uploadTime);
+            }
+        }
+
+        function scheduleInterval(bn) {
+            var num = 0;
+            var scheduleTime ;
+            if(bn){
+                scheduleTime =  setInterval(function () {
+                    translationSchedule(num);
+                    num ++
+                },2000);
+            }else {
+                translationSchedule(100);
+                window .clearInterval(scheduleTime);
+            }
+            }
     })
 </script>
 </html>
