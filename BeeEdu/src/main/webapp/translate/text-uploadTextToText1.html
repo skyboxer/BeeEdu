@@ -117,15 +117,24 @@
                 </div>
 				<br>
                 <div class="row">
-                    <div class="col-md-6"></div>
-                    <div class="col-md-6">
-                        <div class="row">
-                            <div class="col-md-9"></div>
-                            <div class="col-md-2">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="word" checked=""><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+                                    Word XML Document
+                                </font></font></label>
                             </div>
-							<div class="col-md-1"></div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="ppt"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+                                    Microsoft PowerPoint XML Presentation
+                                </font></font></label>
+                            </div>
                         </div>
                     </div>
+                    <div class="col-md-6"></div>
                 </div>
                 <div class="row">
                     <div class="col-lg-2"></div>
@@ -210,6 +219,28 @@
 </body>
 <script type="text/javascript">
     $(function () {
+        $("#submitTranslation").hide();
+        $("#download").hide();
+        //上传定时任务
+        var uploadTime =  null;    //setInterval(uploadSchedule,2000);
+        var scheduleTime =  null;   //setInterval(translationSchedule,2000);
+        var uploadNum = 0;
+        function uploadSchedule() {
+            document.getElementById("uploadSchedule").style.width =uploadNum+ "%";
+            if(uploadNum ==99){
+                uploadNum = 0
+            }
+            uploadNum ++;
+        }
+        var translationNum =0;
+        function translationSchedule() {
+            document.getElementById("translationSchedule").style.width = translationNum + "%";
+            if(translationNum ==99){
+                translationNum = 0
+            }
+            translationNum ++;
+        }
+
         //翻译引擎初始化
         $.getJSON("../datas/engineType.json", function(obj) {
             var options = "";
@@ -267,7 +298,16 @@
             if (from == to || restFileName == null) {
                 alert("请选择目标语言/要上传的文件")
             }
-            var url = "/uploadFileTranslate/wordUploadTranslate";
+            var xmlType = $("input[name='optionsRadios']:checked").val();
+            var url;
+            switch (xmlType) {
+                case  "ppt":
+                    url = "/uploadFileTranslate/pptUploadTranslate";
+                    break;
+                default:
+                    url = "/uploadFileTranslate/wordUploadTranslate";
+                    break;
+            }
             var dataObject ={
                 from: from,
                 to: to,
@@ -288,6 +328,8 @@
                         break;
             }
             if (from != to && restFileName != null) {
+                translationNum = 0;
+                scheduleTime =  setInterval(translationSchedule,2000);
                 $.post({
                     url:url,
                     data: dataObject,
@@ -296,7 +338,13 @@
                             for (var rest in data.data) {
                                 document.getElementById("download").href="/downloadServlet?filename="+restFileName;
                             }
+                        }else{
+                            alert(data.msg);
                         }
+                        clearInterval(scheduleTime);
+                        translationNum = 100;
+                        translationSchedule();
+                        $("#download").show();
                     }
                 });
             }
@@ -306,10 +354,11 @@
                 alert("请选择要上传的文件")
                 return;
             }
+           //~
             $("#submitTextUpload").hide();
-            $("#submitTranslation").hide();
-            uploadInterval(true)
             var formData = new FormData($("#form")[0]);
+            uploadNum = 0;
+            uploadTime =setInterval(uploadSchedule,2000);
             $.ajax({
                 url: '/fileUpload',
                 type: 'post',
@@ -320,54 +369,18 @@
                 success: function (data) {
                     var dataJson = JSON.parse(data);
                     if (dataJson.status == 0) {
-                        $("#submitTranslation").show();
                         restFileName = dataJson.fileName;
-                        uploadInterval(false)
+                        $("#submitTranslation").show();
                     } else {
                         alert(dataJson.message)
                     }
+                    clearInterval(uploadTime);
+                    uploadNum =100;
+                    uploadSchedule();
                     $("#submitTextUpload").show();
-                },
-                error: function (response) {
-                    alert(response);
                 }
             });
         })
-        function translationUpload(num){
-            document.getElementById("uploadSchedule").style.width =num+ "%";
-        }
-
-        function translationSchedule(num) {
-            document.getElementById("translationSchedule").style.width = num + "%";
-        }
-
-        function uploadInterval(bn) {
-            var num = 0;
-            var uploadTime ;
-            if(bn){
-                uploadTime =  setInterval(function () {
-                    translationUpload(num);
-                    num ++
-                },2000);
-            }else {
-                translationUpload(100);
-                clearInterval(uploadTime);
-            }
-        }
-
-        function scheduleInterval(bn) {
-            var num = 0;
-            var scheduleTime ;
-            if(bn){
-                scheduleTime =  setInterval(function () {
-                    translationSchedule(num);
-                    num ++
-                },2000);
-            }else {
-                translationSchedule(100);
-                window .clearInterval(scheduleTime);
-            }
-            }
     })
 </script>
 </html>
