@@ -2,6 +2,7 @@ package com.enablue.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.enablue.service.WordTranslationService;
+import com.enablue.util.WXmlFormat;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -36,6 +37,12 @@ public class UploadFileTranslateController {
         //word文件路径
         String uploadFilePath = req.getServletContext().getRealPath("/upload/") + fileName;
         try {
+            Boolean formatStatus =WXmlFormat.paragraphFormat(uploadFilePath);
+            if(formatStatus==false){
+                jsonObject.put("code", -1);
+                jsonObject.put("msg", "格式化失败！");
+                return jsonObject;
+            }
             SAXReader saxReader = new SAXReader();
             Document document = saxReader.read(new File(uploadFilePath));//上传的 xml 对象
             List<Element> doc = document.getRootElement().elements();//xml内容的doc标签
@@ -43,7 +50,7 @@ public class UploadFileTranslateController {
             for (Element part0 : doc) {
                 wDocument = part0.element("xmlData").element("document");
                 if (wDocument != null) {
-                    wDocument = part0.element("xmlData").element("document");
+                 /*   wDocument = part0.element("xmlData").element("document");*/
                     break;
                 }
             }
@@ -93,6 +100,7 @@ public class UploadFileTranslateController {
             XMLWriter writer = new XMLWriter(outputStream,format);
             writer.write(document);
             writer.close();
+            System.out.println("翻译完成，写入完毕！");
             jsonObject.put("code", 0);
             jsonObject.put("data", uploadFilePath);
         } catch (DocumentException e) {
