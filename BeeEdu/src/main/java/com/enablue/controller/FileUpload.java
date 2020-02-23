@@ -87,9 +87,8 @@ public class FileUpload extends HttpServlet {
                 for (FileItem item : formItems) {
                     // 处理不在表单中的字段
                     if (!item.isFormField()) {
-                        String fileName = new File(item.getName()).getName();
+                        String fileName = new File(item.getName()).getName().replaceAll("\\[|\\]|\\|\\^|\\`|\\{|\\||\\}", "");
                         long timeStamp = System.currentTimeMillis();
-
                         String filePath = uploadPath + File.separator + timeStamp+fileName;
                         File storeFile = new File(filePath);
                         // 在控制台输出文件的上传路径

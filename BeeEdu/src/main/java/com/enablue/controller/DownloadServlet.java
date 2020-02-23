@@ -46,9 +46,11 @@ public class DownloadServlet extends HttpServlet {
                 realPath = getServletContext().getRealPath("/result");
             }
             File file = new File(realPath + File.separator + filename);
+            if (!file.exists()){
+                return ;
+            }
             System.out.println("file = " + file);
             inputStream = new FileInputStream(file);
-
 
             //2、获取输出流： 写出到浏览器
              outputStream = response.getOutputStream();
