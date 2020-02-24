@@ -18,7 +18,7 @@ import java.util.List;
 public class WXmlFormat {
     /*public static void main(String[] args) {
         try {
-            paragraphFormat("/home/cnxjk/文档/探究运筹学在生活中的应用.xml");
+            paragraphFormat("/home/cnxjk/文档/wechat File/WeChat Files/Z942649365264/FileStorage/File/2020-02/1582521529483魔鬼逻辑学_凡禹_江西美术_2017.9.xml");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -61,8 +61,8 @@ public class WXmlFormat {
                 }
                 if( wrElementList.get(0).element("t") != null){
                     wrElementList.get(0).element("t").setText(String.valueOf(newWpValue));
+                    System.out.println( "原文：===》"+wrElementList.get(0).element("t").getText());
                 }
-                //System.out.println( wrElementList.get(0).element("t").getText());
             }
             // 设置XML文档格式
             OutputFormat outputFormat = OutputFormat.createPrettyPrint();

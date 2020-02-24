@@ -52,7 +52,6 @@ public class UploadFileTranslateController {
             for (Element part0 : doc) {
                 wDocument = part0.element("xmlData").element("document");
                 if (wDocument != null) {
-                 /*   wDocument = part0.element("xmlData").element("document");*/
                     break;
                 }
             }
@@ -63,42 +62,43 @@ public class UploadFileTranslateController {
                 case "Google":
                             for (Node node : nodeList) {
                                 text = node.getText();
-                                Boolean kongGe =  Pattern.matches("^[\\s]*$",text);
-                                if(kongGe){
+                                if(text == null || text.isEmpty()){
                                     continue;
                                 }
                                     translateText = wordTranslationService.googleTreansl(from, to, text);
                                     if (translateText != null) {
                                         node.setText(String.valueOf(translateText));
                                 }
+                                    System.out.println("原文：=========》》》"+text);
+                                System.out.println("译文：=========》》》"+translateText);
                             }
                     break;
                 case "百度":
                             for (Node node : nodeList) {
-                                System.out.println(node.getStringValue());
                                 text = node.getText();
-                                Boolean kongGe =  Pattern.matches("^[\\s]*$",text);
-                                if(kongGe){
+                                if(text == null || text.isEmpty()){
                                     continue;
                                 }
                                     translateText = wordTranslationService.baiduTransl(from, to, text, engineType, req);
                                     if (translateText != null) {
                                         node.setText(String.valueOf(translateText));
                                 }
+                                System.out.println("原文：=========》》》"+text);
+                                System.out.println("译文：=========》》》"+translateText);
                             }
                     break;
                 case "讯飞":
                             for (Node node : nodeList) {
-                                System.out.println(node.getStringValue());
                                 text = node.getText();
-                                Boolean kongGe =  Pattern.matches("^[\\s]*$",text);
-                                if(kongGe){
+                                if(text == null || text.isEmpty()){
                                     continue;
                                 }
                                     translateText = wordTranslationService.xunfeiTransl(from, to, text, engineType, req);
                                     if (translateText != null) {
                                         node.setText(String.valueOf(translateText));
                                 }
+                                System.out.println("原文：=========》》》"+text);
+                                System.out.println("译文：=========》》》"+translateText);
                             }
                     break;
             }

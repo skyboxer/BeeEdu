@@ -70,7 +70,9 @@ public class GoogleApi {
                 }
             }
         } catch (Exception e) {
-            throw new RuntimeException("获取 tkk 出错");
+           // throw new RuntimeException("获取 tkk 出错");
+            e.printStackTrace();
+            System.out.println("获取 tkk 出错");
         }
 
         return null;
@@ -85,7 +87,9 @@ public class GoogleApi {
                 result = (String) invocable.invokeFunction("tk", new Object[]{word, tkk});
             }
         } catch (Exception e) {
-            throw new RuntimeException("获取 tk 出错");
+           // throw new RuntimeException("获取 tk 出错");
+            e.printStackTrace();
+            System.out.println("获取 tk 出错");
         }
 
         return result;
@@ -99,7 +103,9 @@ public class GoogleApi {
         String tkk = getTKK();
 
         if (StringUtils.isBlank(tkk)) {
-            throw new RuntimeException("无法获取 tkk");
+            // throw new RuntimeException("无法获取 tkk");
+            //e.printStackTrace();
+            System.out.println("无法获取 tkk");
         }
 
         String tk = getTK(word, tkk);
@@ -134,10 +140,12 @@ public class GoogleApi {
                     rBuffer.append(r);
                 }
             }
-
             return rBuffer.toString();
         } catch (Exception e) {
-            throw new RuntimeException("结果集解析出错");
+            //throw new RuntimeException("结果集解析出错");
+            System.out.println("结果集解析出错");
+            e.printStackTrace();
+            return null;
         }
     }
 
