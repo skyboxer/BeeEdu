@@ -356,6 +356,9 @@
             }
            //~
             $("#submitTextUpload").hide();
+            $("#submitTranslation").hide();
+            $("#download").hide();
+            document.getElementById("translationSchedule").style.width =  "0%";
             var formData = new FormData($("#form")[0]);
             uploadNum = 0;
             uploadTime =setInterval(uploadSchedule,2000);

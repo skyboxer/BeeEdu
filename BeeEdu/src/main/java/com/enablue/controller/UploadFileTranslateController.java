@@ -137,60 +137,15 @@ public class UploadFileTranslateController {
             SAXReader saxReader = new SAXReader();
             Document document = saxReader.read(new File(uploadFilePath));//上传的 xml 对象
             Element elementRoot = document.getRootElement();
-            List<Element> elementList = elementRoot.elements();
+            List<Element> elementPartList = elementRoot.elements();
             String elementName = null;
             String pattern = "^\\/ppt\\/slides\\/slide[1-9]\\d*.xml$";
-            List<Element> elementSPList = null;     //获取段落
-            List<Element> elementRList = null;      //单行集合
-            for(Element element : elementList) {
-                elementName = element.attributeValue("name");
-                //每页ppt节点
-                if (Pattern.matches(pattern,elementName)){
-                    System.out.println(element.attributeValue("name"));
-                    elementSPList = element.element("xmlData").element("sld").element("cSld").element("spTree").elements("sp");
-                    for(Element elementSP : elementSPList){
-                        elementRList = elementSP.element("txBody").element("p").elements("r");
-                        if(elementRList.size()<=0){
-                            continue;
-                        }
-                        StringBuffer text = null;
-                        for (Element elementR : elementRList){
-                           Boolean kongGe =  Pattern.matches("^[\\s]*$",elementR.getStringValue());
-                           if(kongGe){
-                               continue;
-                           }
-                           text = new StringBuffer(elementR.getStringValue());
-                            StringBuffer translateText = null;
-                            switch (engineType) {
-                                case "Google":
-                                        if(text.length()>0){
-                                            translateText = wordTranslationService.googleTreansl(from, to, text.toString());
-                                            if (translateText != null) {
-                                                elementR.element("t").setText(String.valueOf(translateText));
-                                            }
-                                        }
-                                    break;
-                                case "百度":
-                                        if (text.length() > 2) {
-                                            translateText = wordTranslationService.baiduTransl(from, to, text.toString(), engineType, req);
-                                            if (translateText != null) {
-                                                elementR.element("t").setText(String.valueOf(translateText));
-                                            }
-                                        }
-                                    break;
-                                case "讯飞":
-                                        if(text.length()>2){
-                                            translateText = wordTranslationService.xunfeiTransl(from, to, text.toString(), engineType, req);
-                                            if (translateText != null) {
-                                                elementR.element("t").setText(String.valueOf(translateText));
-                                            }
-                                        }
-                                    break;
-                            }
-                            System.out.println("原文"+text);
-                            System.out.println("译文"+translateText.toString());
-                        }
-                    }
+            for(Element elementPart : elementPartList) {
+                elementName = elementPart.attributeValue("name");
+                //每页ppt对象
+                if(Pattern.matches(pattern,elementName)) {
+                    Element spTree =  elementPart.element("xmlData").element("sld").element("cSld").element("spTree");
+                    traversal(spTree,engineType,from,to,req);
                 }
             }
             FileOutputStream outputStream = new FileOutputStream(uploadFilePath);
@@ -210,5 +165,64 @@ public class UploadFileTranslateController {
             e.printStackTrace();
         }
         return jsonObject;
+    }
+
+    private   void traversal(Element spTree,String engineType,String from,String to,HttpServletRequest req){
+        List<Element> childList = spTree.elements("sp");
+        List<Element> child1List = spTree.elements("grpSp");
+        if(childList.size()>0){
+            elementSpTraversal(childList, engineType, from, to, req);
+        }
+        if(child1List.size()>0){
+            for(Element child1 : child1List){
+                traversal(child1,engineType, from, to, req);
+            }
+        }
+    }
+
+    private   void elementSpTraversal(List<Element> elementSpList,String engineType,String from,String to,HttpServletRequest req) {
+        List<Element> elementPList ;      //单行集合
+        List<Element> elementRList;      //单行集合
+        StringBuffer text = null;
+        for (Element elementSP : elementSpList) {
+            elementPList = elementSP.element("txBody").elements("p");
+            for (Element elementP : elementPList) {
+                elementRList = elementP.elements("r");
+                if (elementRList.size() <= 0) {
+                    continue;
+                }
+                for (Element elementR : elementRList) {
+                    System.out.println(elementR.element("t").getText());
+                    Boolean kongGe = Pattern.matches("^[\\s]*$", elementR.element("t").getText());
+                    if (kongGe) {
+                        continue;
+                    }
+                    text = new StringBuffer(elementR.element("t").getText());
+                    StringBuffer translateText = null;
+                    switch (engineType) {
+                        case "Google":
+                            translateText = wordTranslationService.googleTreansl(from, to, text.toString());
+                            if (translateText != null) {
+                                elementRList.get(0).element("t").setText(String.valueOf(translateText));
+                            }
+                            break;
+                        case "百度":
+                            translateText = wordTranslationService.baiduTransl(from, to, text.toString(), engineType, req);
+                            if (translateText != null) {
+                                elementRList.get(0).element("t").setText(String.valueOf(translateText));
+                            }
+                            break;
+                        case "讯飞":
+                            translateText = wordTranslationService.xunfeiTransl(from, to, text.toString(), engineType, req);
+                            if (translateText != null) {
+                                elementRList.get(0).element("t").setText(String.valueOf(translateText));
+                            }
+                            break;
+                    }
+                    System.out.println("原文 ====>>" + text);
+                    System.out.println("译文 <<====" + translateText.toString());
+                }
+            }
+        }
     }
 }
