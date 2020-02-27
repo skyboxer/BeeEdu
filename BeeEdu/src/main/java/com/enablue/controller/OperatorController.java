@@ -48,4 +48,14 @@ public class OperatorController {
         return operatorService.updateOperator(operator);
     }
 
+    /**
+     * 查询账号下的应用
+     * 王成
+     * 2020-02-27
+     */
+    @RequestMapping("query")
+    public HashMap<String,Object> queryApplicationById(Integer id){
+        return operatorService.queryApplicationByid(id);
+    }
+
 }

@@ -34,6 +34,7 @@
     <a class="layui-btn layui-btn-xs" lay-event="addapp">添加app</a>
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
 </script>
 
 <script type="text/html" id="checkLock">
@@ -67,7 +68,7 @@
                 , {field: 'tel', title: '电话', width: 200, edit: 'text', sort: true}
                 , {field: 'password', title: '密码', width: 200}
                 , {field: 'usableStatus', title: '是否锁定', width: 110, templet: '#checkLock', unresize: true}
-                , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 200}
+                , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 250}
             ]]
             , page: true
         });
@@ -160,6 +161,23 @@
                             addAppLayerObjData = data;
                         }
                     })
+                    break;
+                case "detail":
+                    $.get("/operator/query",{"id":data.id},function (data) {
+                        let appsHtml="";
+                        let apps=data.apps;
+                        for (let i=0;i<apps.length;i++) {
+                            appsHtml+='            <div class="layui-form-item">\n' +
+                                '                    <label>'+apps[i].name+'</label>\n' +
+                                '                </div>'
+                        }
+                        $("#appsFormFilter").html(appsHtml);
+                        layer.open({
+                            type: 1,
+                            title:"应用列表",
+                            content: $('#appsForm')
+                        })
+                    },"json")
                     break;
                 default:
                     break;
@@ -305,5 +323,12 @@
             </div>
         </form>
     </div>
+</div>
+<div class="layui-card" hidden id="appsForm">
+        <!--<div class="layui-card-header"></div>-->
+        <div class="layui-card-body">
+            <form class="layui-form" action="" id="appsFormFilter" lay-filter="appsFormFilter">
+            </form>
+        </div>
 </div>
 </html>
