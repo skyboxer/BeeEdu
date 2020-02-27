@@ -92,13 +92,15 @@ public class WordTranslationImpl implements WordTranslationService {
                     //调用百度翻译
                     api = new TransApi(appConfig.get(0).getConfig1(),appConfig.get(0).getConfig2() );
                     resultStr = api.getTransResult(count.toString(),"auto",to);
-                    resultJson = JSONObject.parseObject(resultStr).getJSONArray("trans_result");
-                    for (Object object:resultJson) {
-                        JSONObject jsonObject = (JSONObject) object;
-                        translText.append(jsonObject.get("dst"));
+                    if(resultStr!= null) {
+                        resultJson = JSONObject.parseObject(resultStr).getJSONArray("trans_result");
+                        for (Object object : resultJson) {
+                            JSONObject jsonObject = (JSONObject) object;
+                            translText.append(jsonObject.get("dst"));
+                        }
                     }
 
-                    // 统计调用量并记录
+                   /* // 统计调用量并记录
                     int nowEndServiceTotal = appConfig.get(0).getResidualService() - count.length();
                     //获取用户ID
                     Account account = (Account) sessionCommon.getSession().getAttribute("account");
@@ -108,7 +110,7 @@ public class WordTranslationImpl implements WordTranslationService {
                     applicationDetailOperationMapper.addApplicationDetailOperation(applicationDetailOperation);
                     //修改操作剩余服务量
                     appConfig.get(0).setResidualService(nowEndServiceTotal);
-                    appDetailMapper.updateAppDetail(appConfig.get(0));
+                    appDetailMapper.updateAppDetail(appConfig.get(0));*/
 
                     count.setLength(0);
                 }
@@ -118,13 +120,15 @@ public class WordTranslationImpl implements WordTranslationService {
                 //调用百度翻译
                 api = new TransApi(appConfig.get(0).getConfig1(),appConfig.get(0).getConfig2() );
                 resultStr = api.getTransResult(count.toString(),"auto",to);
-                resultJson = JSONObject.parseObject(resultStr).getJSONArray("trans_result");
-                for (Object object:resultJson) {
-                    JSONObject jsonObject = (JSONObject) object;
-                    translText.append(jsonObject.get("dst"));
+                System.out.println("百度结果resultStr=="+resultStr);
+                if(resultStr!= null) {
+                    resultJson = JSONObject.parseObject(resultStr).getJSONArray("trans_result");
+                    for (Object object : resultJson) {
+                        JSONObject jsonObject = (JSONObject) object;
+                        translText.append(jsonObject.get("dst"));
+                    }
                 }
-
-                // 统计调用量并记录
+               /* // 统计调用量并记录
                 int nowEndServiceTotal = appConfig.get(0).getResidualService() - count.length();
                 //获取用户ID
                 Account account = (Account) sessionCommon.getSession().getAttribute("account");
@@ -134,7 +138,7 @@ public class WordTranslationImpl implements WordTranslationService {
                 applicationDetailOperationMapper.addApplicationDetailOperation(applicationDetailOperation);
                 //修改操作剩余服务量
                 appConfig.get(0).setResidualService(nowEndServiceTotal);
-                appDetailMapper.updateAppDetail(appConfig.get(0));
+                appDetailMapper.updateAppDetail(appConfig.get(0));*/
                 count.setLength(0);
             }
             return  translText;
@@ -167,7 +171,7 @@ public class WordTranslationImpl implements WordTranslationService {
                     resultJson = JSONObject.parseObject(resultStr);
                     translText.append(resultJson.getJSONObject("data").getJSONObject("result").getJSONObject("trans_result").get("dst"));
                     System.out.println("countlength" + count.length() + count);
-                    // 统计调用量并记录
+                   /* // 统计调用量并记录
                     int nowEndServiceTotal = appConfig.get(0).getResidualService() - count.length();
                     //获取用户ID
                     Account account = (Account) sessionCommon.getSession().getAttribute("account");
@@ -177,7 +181,7 @@ public class WordTranslationImpl implements WordTranslationService {
                     applicationDetailOperationMapper.addApplicationDetailOperation(applicationDetailOperation);
                     //修改操作剩余服务量
                     appConfig.get(0).setResidualService(nowEndServiceTotal);
-                    appDetailMapper.updateAppDetail(appConfig.get(0));
+                    appDetailMapper.updateAppDetail(appConfig.get(0));*/
 
                     count.setLength(0);
                 }
@@ -188,7 +192,7 @@ public class WordTranslationImpl implements WordTranslationService {
                         appConfig.get(0).getConfig2(), appConfig.get(0).getConfig3());
                 resultJson = JSONObject.parseObject(resultStr);
                 translText.append(resultJson.getJSONObject("data").getJSONObject("result").getJSONObject("trans_result").get("dst"));
-                // 统计调用量并记录
+               /* // 统计调用量并记录
                 int nowEndServiceTotal = appConfig.get(0).getResidualService() - count.length();
                 //获取用户ID
                 Account account = (Account) sessionCommon.getSession().getAttribute("account");
@@ -198,7 +202,7 @@ public class WordTranslationImpl implements WordTranslationService {
                 applicationDetailOperationMapper.addApplicationDetailOperation(applicationDetailOperation);
                 //修改操作剩余服务量
                 appConfig.get(0).setResidualService(nowEndServiceTotal);
-                appDetailMapper.updateAppDetail(appConfig.get(0));
+                appDetailMapper.updateAppDetail(appConfig.get(0));*/
                 count.setLength(0);
             }
             return  translText;

@@ -1,6 +1,12 @@
 package com.enablue.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.enablue.common.SessionCommon;
+import com.enablue.mapper.AppDetailMapper;
+import com.enablue.mapper.ApplicationDetailOperationMapper;
+import com.enablue.pojo.Account;
+import com.enablue.pojo.AppDetail;
+import com.enablue.pojo.ApplicationDetailOperation;
 import com.enablue.service.WordTranslationService;
 import com.enablue.util.PXmlFormat;
 import com.enablue.util.WXmlFormat;
@@ -33,6 +39,16 @@ public class UploadFileTranslateController {
     @Autowired
     public WordTranslationService wordTranslationService;
 
+    @Autowired
+    private AppDetailMapper appDetailMapper;
+    @Autowired
+    private ApplicationDetailOperationMapper applicationDetailOperationMapper;
+    private ApplicationDetailOperation applicationDetailOperation;
+    @Autowired
+    private SessionCommon sessionCommon;
+
+    private  int pptTextCountTotal = 0;
+
     @RequestMapping(value = "wordUploadTranslate", method = RequestMethod.POST, produces = "application/json")
     public JSONObject wordUploadTranslate(String from, String to, String fileName, String engineType, HttpServletRequest req) {
         JSONObject jsonObject = new JSONObject();
@@ -58,50 +74,92 @@ public class UploadFileTranslateController {
             List<Node> nodeList = wDocument.selectNodes("//w:body//w:t");
             String text;
             StringBuffer translateText;
+            int textTotalNum;
+            //获取用户ID
+            List<AppDetail> appConfig;
+            int nowEndServiceTotal;
+            Account account = (Account) sessionCommon.getSession().getAttribute("account");
             switch (engineType) {
                 case "Google":
+                            textTotalNum = 0;
                             for (Node node : nodeList) {
                                 text = node.getText();
                                 if(text == null || text.isEmpty()){
                                     continue;
                                 }
-                                    translateText = wordTranslationService.googleTreansl(from, to, text);
-                                    if (translateText != null) {
-                                        node.setText(String.valueOf(translateText));
+                                Thread.sleep(2000);
+                                translateText = wordTranslationService.googleTreansl(from, to, text);
+                                if (translateText != null) {
+                                    node.setText(String.valueOf(translateText));
                                 }
-                                    System.out.println("原文：=========》》》"+text);
+                                System.out.println("原文：===="+textTotalNum+"=====》》》"+text);
                                 System.out.println("译文：=========》》》"+translateText);
+                                textTotalNum +=text.length();
                             }
+                    //添加操作日志
+                    applicationDetailOperation = new ApplicationDetailOperation(0, "google",
+                            2,textTotalNum,textTotalNum,  account.getId());
+                    applicationDetailOperationMapper.addApplicationDetailOperation(applicationDetailOperation);
                     break;
                 case "百度":
+                    textTotalNum = 0;
                             for (Node node : nodeList) {
                                 text = node.getText();
                                 if(text == null || text.isEmpty()){
                                     continue;
                                 }
-                                    translateText = wordTranslationService.baiduTransl(from, to, text, engineType, req);
+                                Thread.sleep(2000);
+                                translateText = wordTranslationService.baiduTransl(from, to, text, engineType, req);
                                     if (translateText != null) {
                                         node.setText(String.valueOf(translateText));
                                 }
                                 System.out.println("原文：=========》》》"+text);
                                 System.out.println("译文：=========》》》"+translateText);
+                                textTotalNum +=text.length();
                             }
+                    //获取用户ID
+                   appConfig = appDetailMapper.queryAppDetailByType(2, textTotalNum,engineType);
+                    // 统计调用量并记录
+                    nowEndServiceTotal = appConfig.get(0).getResidualService() -textTotalNum;
+                    //添加操作日志
+                    applicationDetailOperation = new ApplicationDetailOperation(appConfig.get(0).getId(), appConfig.get(0).getAppId(),
+                            2, appConfig.get(0).getResidualService(), nowEndServiceTotal, account.getId());
+                    applicationDetailOperationMapper.addApplicationDetailOperation(applicationDetailOperation);
+                    //修改操作剩余服务量
+                    appConfig.get(0).setResidualService(nowEndServiceTotal);
+                    appDetailMapper.updateAppDetail(appConfig.get(0));
                     break;
                 case "讯飞":
+                    textTotalNum = 0;
                             for (Node node : nodeList) {
                                 text = node.getText();
                                 if(text == null || text.isEmpty()){
                                     continue;
                                 }
                                     translateText = wordTranslationService.xunfeiTransl(from, to, text, engineType, req);
+                                Thread.sleep(2000);
                                     if (translateText != null) {
                                         node.setText(String.valueOf(translateText));
                                 }
                                 System.out.println("原文：=========》》》"+text);
                                 System.out.println("译文：=========》》》"+translateText);
-                            }
+                                textTotalNum +=text.length();
+                                }
+                    //获取用户ID
+                   appConfig = appDetailMapper.queryAppDetailByType(2, textTotalNum,engineType);
+                    // 统计调用量并记录
+                    nowEndServiceTotal = appConfig.get(0).getResidualService() -textTotalNum;
+                    //获取用户ID
+                    //添加操作日志
+                    applicationDetailOperation = new ApplicationDetailOperation(appConfig.get(0).getId(), appConfig.get(0).getAppId(),
+                            2, appConfig.get(0).getResidualService(), nowEndServiceTotal, account.getId());
+                    applicationDetailOperationMapper.addApplicationDetailOperation(applicationDetailOperation);
+                    //修改操作剩余服务量
+                    appConfig.get(0).setResidualService(nowEndServiceTotal);
+                    appDetailMapper.updateAppDetail(appConfig.get(0));
                     break;
             }
+
             FileOutputStream outputStream = new FileOutputStream(uploadFilePath);
             OutputFormat format = OutputFormat.createPrettyPrint();
             format.setEncoding("utf-8");
@@ -116,6 +174,8 @@ public class UploadFileTranslateController {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
         return jsonObject;
@@ -140,12 +200,35 @@ public class UploadFileTranslateController {
             List<Element> elementPartList = elementRoot.elements();
             String elementName = null;
             String pattern = "^\\/ppt\\/slides\\/slide[1-9]\\d*.xml$";
+            this.pptTextCountTotal = 0;
             for(Element elementPart : elementPartList) {
                 elementName = elementPart.attributeValue("name");
                 //每页ppt对象
                 if(Pattern.matches(pattern,elementName)) {
                     Element spTree =  elementPart.element("xmlData").element("sld").element("cSld").element("spTree");
                     traversal(spTree,engineType,from,to,req);
+                }
+            }
+            if(this.pptTextCountTotal !=0){
+                Account account = (Account) sessionCommon.getSession().getAttribute("account");
+                //获取用户ID
+                if(engineType.equals("Google")){
+                    //添加操作日志
+                    applicationDetailOperation = new ApplicationDetailOperation(0, "google",
+                            2,this.pptTextCountTotal,this.pptTextCountTotal,  account.getId());
+                    applicationDetailOperationMapper.addApplicationDetailOperation(applicationDetailOperation);
+                }else{
+                    List<AppDetail> appConfig = appDetailMapper.queryAppDetailByType(2, this.pptTextCountTotal,engineType);
+                    // 统计调用量并记录
+                    int nowEndServiceTotal = appConfig.get(0).getResidualService() -this.pptTextCountTotal;
+                    //获取用户ID
+                    //添加操作日志
+                    applicationDetailOperation = new ApplicationDetailOperation(appConfig.get(0).getId(), appConfig.get(0).getAppId(),
+                        2, appConfig.get(0).getResidualService(), nowEndServiceTotal, account.getId());
+                    applicationDetailOperationMapper.addApplicationDetailOperation(applicationDetailOperation);
+                    //修改操作剩余服务量
+                    appConfig.get(0).setResidualService(nowEndServiceTotal);
+                    appDetailMapper.updateAppDetail(appConfig.get(0));
                 }
             }
             FileOutputStream outputStream = new FileOutputStream(uploadFilePath);
@@ -171,7 +254,8 @@ public class UploadFileTranslateController {
         List<Element> childList = spTree.elements("sp");
         List<Element> child1List = spTree.elements("grpSp");
         if(childList.size()>0){
-            elementSpTraversal(childList, engineType, from, to, req);
+           int textEacnSheetTotal = elementSpTraversal(childList, engineType, from, to, req);
+           this.pptTextCountTotal+=textEacnSheetTotal;
         }
         if(child1List.size()>0){
             for(Element child1 : child1List){
@@ -180,10 +264,11 @@ public class UploadFileTranslateController {
         }
     }
 
-    private   void elementSpTraversal(List<Element> elementSpList,String engineType,String from,String to,HttpServletRequest req) {
+    private   int elementSpTraversal(List<Element> elementSpList,String engineType,String from,String to,HttpServletRequest req) {
         List<Element> elementPList ;      //单行集合
         List<Element> elementRList;      //单行集合
         StringBuffer text = null;
+        int textEachSheetTotal = 0;
         for (Element elementSP : elementSpList) {
             elementPList = elementSP.element("txBody").elements("p");
             for (Element elementP : elementPList) {
@@ -202,27 +287,44 @@ public class UploadFileTranslateController {
                     switch (engineType) {
                         case "Google":
                             translateText = wordTranslationService.googleTreansl(from, to, text.toString());
+                            try {
+                                Thread.sleep(2000);
+                            }catch (InterruptedException e){
+                                e.printStackTrace();
+                            }
                             if (translateText != null) {
                                 elementRList.get(0).element("t").setText(String.valueOf(translateText));
                             }
                             break;
                         case "百度":
                             translateText = wordTranslationService.baiduTransl(from, to, text.toString(), engineType, req);
+                            try {
+                                Thread.sleep(2000);
+                            }catch (InterruptedException e){
+                                e.printStackTrace();
+                            }
                             if (translateText != null) {
                                 elementRList.get(0).element("t").setText(String.valueOf(translateText));
                             }
                             break;
                         case "讯飞":
                             translateText = wordTranslationService.xunfeiTransl(from, to, text.toString(), engineType, req);
+                            try {
+                                Thread.sleep(2000);
+                            }catch (InterruptedException e){
+                                e.printStackTrace();
+                            }
                             if (translateText != null) {
                                 elementRList.get(0).element("t").setText(String.valueOf(translateText));
                             }
                             break;
                     }
+                    textEachSheetTotal +=text.length();
                     System.out.println("原文 ====>>" + text);
                     System.out.println("译文 <<====" + translateText.toString());
                 }
             }
         }
+        return textEachSheetTotal;
     }
 }
