@@ -158,6 +158,6 @@ public class GoogleApi {
      * @throws Exception
      */
     public String translate(String word, String to) throws Exception {
-        return translate(word, null, to);
+        return translate(word, "auto", to);
     }
 }
