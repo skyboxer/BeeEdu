@@ -108,6 +108,23 @@ public class AccountController{
      * 退出登录
      */
     @RequestMapping("/Manager/loginOut")
+    public void managerloginOut() {
+
+        HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
+        Account account = (Account) session.getAttribute("account");
+        if (null != account){
+            session.invalidate();
+        }
+        try {
+            ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse().sendRedirect("/login.html");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    /**
+     * 退出登录
+     */
+    @RequestMapping("/loginOut")
     public void loginOut() {
 
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
