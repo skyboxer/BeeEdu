@@ -293,7 +293,7 @@ public class MachineTranslationController {
             Account account = (Account) sessionCommon.getSession().getAttribute("account");
             //添加操作日志
             applicationDetailOperation = new ApplicationDetailOperation(0, "google",
-                    10,text.length() ,text.length(),  account.getId());
+                    2,text.length() ,text.length(),  account.getId());
             applicationDetailOperationMapper.addApplicationDetailOperation(applicationDetailOperation);
             System.out.println("Google翻译api结果"+resultStr);
             JSONObject data = new JSONObject();
