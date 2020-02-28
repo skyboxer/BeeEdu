@@ -64,4 +64,25 @@ public class OperatorServiceImpl implements OperatorService {
         int status = operatorMapper.updateOperator(operator);
         return getJsonObject(returnJson, status);
     }
+
+    /**
+     * 根据账号id查询应用
+     * 王成
+     * @param id
+     * @return
+     */
+    @Override
+    public HashMap<String, Object> queryApplicationByid(Integer id) {
+        HashMap<String, Object> result = new HashMap<>();
+        List<App> appList=appMapper.queryAppListByOperatorId(id);
+        if (appList.size()>0){
+            result.put("code",1);
+            result.put("apps",appList);
+            result.put("msg","查询成功");
+        }else {
+            result.put("code",0);
+            result.put("msg","查询失败");
+        }
+        return result;
+    }
 }

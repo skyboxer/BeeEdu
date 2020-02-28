@@ -3,6 +3,7 @@ package com.enablue.service;
 import com.alibaba.fastjson.JSONObject;
 import com.enablue.pojo.Operator;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -31,4 +32,12 @@ public interface OperatorService {
      * @return
      */
     JSONObject updateOperator(Operator operator);
+
+    /**
+     * 根据账号id查询应用
+     * 王成
+     * @param id
+     * @return
+     */
+    HashMap<String, Object> queryApplicationByid(Integer id);
 }

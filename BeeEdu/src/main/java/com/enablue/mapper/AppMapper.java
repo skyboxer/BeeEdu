@@ -31,4 +31,12 @@ public interface AppMapper {
      * @return
      */
     int updateApp(App app);
+
+    /**
+     * 根据账号id查询应用
+     * 王成
+     * @param id 账号id
+     * @return
+     */
+    List<App> queryAppListByOperatorId(Integer id);
 }

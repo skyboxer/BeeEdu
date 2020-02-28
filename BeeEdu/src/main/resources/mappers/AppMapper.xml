@@ -20,6 +20,22 @@
             order by id DESC
         </where>
     </select>
+    <!--根据账号id查询应用  王成-->
+    <select id="queryAppListByOperatorId" resultType="App">
+        SELECT
+            id,
+            appId,
+            NAME,
+            operator_id,
+            deleteStatus,
+            usableStatus
+        FROM
+            application
+        WHERE
+            operator_id=#{id}
+        AND deleteStatus = 0
+        AND usableStatus = 0
+    </select>
 
     <insert id="insertApp" parameterType="App">
         INSERT  INTO application
