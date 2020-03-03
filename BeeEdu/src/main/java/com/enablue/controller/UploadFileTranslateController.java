@@ -87,7 +87,7 @@ public class UploadFileTranslateController {
                                 if(text == null || text.isEmpty()){
                                     continue;
                                 }
-                                Thread.sleep(2000);
+                                Thread.sleep(3000);
                                 translateText = wordTranslationService.googleTreansl(from, to, text);
                                 if (translateText != null) {
                                     node.setText(String.valueOf(translateText));
@@ -108,7 +108,7 @@ public class UploadFileTranslateController {
                                 if(text == null || text.isEmpty()){
                                     continue;
                                 }
-                                Thread.sleep(2000);
+                                Thread.sleep(3000);
                                 translateText = wordTranslationService.baiduTransl(from, to, text, engineType, req);
                                     if (translateText != null) {
                                         node.setText(String.valueOf(translateText));
@@ -137,7 +137,7 @@ public class UploadFileTranslateController {
                                     continue;
                                 }
                                     translateText = wordTranslationService.xunfeiTransl(from, to, text, engineType, req);
-                                Thread.sleep(2000);
+                                Thread.sleep(3000);
                                     if (translateText != null) {
                                         node.setText(String.valueOf(translateText));
                                 }
@@ -288,7 +288,7 @@ public class UploadFileTranslateController {
                         case "Google":
                             translateText = wordTranslationService.googleTreansl(from, to, text.toString());
                             try {
-                                Thread.sleep(2000);
+                                Thread.sleep(3000);
                             }catch (InterruptedException e){
                                 e.printStackTrace();
                             }
@@ -299,7 +299,7 @@ public class UploadFileTranslateController {
                         case "百度":
                             translateText = wordTranslationService.baiduTransl(from, to, text.toString(), engineType, req);
                             try {
-                                Thread.sleep(2000);
+                                Thread.sleep(3000);
                             }catch (InterruptedException e){
                                 e.printStackTrace();
                             }
@@ -310,7 +310,7 @@ public class UploadFileTranslateController {
                         case "讯飞":
                             translateText = wordTranslationService.xunfeiTransl(from, to, text.toString(), engineType, req);
                             try {
-                                Thread.sleep(2000);
+                                Thread.sleep(3000);
                             }catch (InterruptedException e){
                                 e.printStackTrace();
                             }
