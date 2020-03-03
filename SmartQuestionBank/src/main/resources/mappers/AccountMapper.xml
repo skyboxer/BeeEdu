@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace(命名空间)：映射文件的唯一标识 -->
+<mapper namespace="com.enablue.mapper.AccountMapper">
+    <!--添加用户-->
+    <insert id="addAccount">
+        INSERT INTO account (
+        name,
+        password,
+        bindStatus,
+        deleteStatus,
+        usableStatus,
+        Administrator
+        )
+        VALUES
+            (
+                #{account.name},
+                #{account.password},
+                '0',
+                '0',
+                '0',
+                #{account.Administrator}
+            );
+    </insert>
+    <!--用户修改-->
+    <update id="updataAccount">
+        UPDATE account
+        SET 
+         name = #{account.name},
+         password = #{account.password}
+        WHERE
+            (id = #{account.id});
+    </update>
+    <!--用户删除-->
+    <update id="deleteAccount">
+        UPDATE account SET deleteStatus = 1 WHERE id = #{id}
+    </update>
+
+    <!-- 查询的statement，id：在同一个命名空间下的唯一标识，resultType：sql语句的结果集封装类型 -->
+    <select id="queryAccount" resultType="Account">
+		SELECT
+		    id,
+            name,
+            password,
+            Administrator
+        FROM
+            account
+        WHERE
+	        NAME LIKE #{name} and PASSWORD LIKE #{password} and bindStatus = 0 and deleteStatus = 0 and usableStatus = 0
+	</select>
+
+    <!--查询所有用户-->
+    <select id="queryAllAccount" resultType="Account">
+        SELECT
+            id,
+            NAME,
+            PASSWORD,
+            Administrator
+        FROM
+            account
+        WHERE
+            bindStatus = 0
+        AND deleteStatus = 0
+        AND usableStatus = 0
+     </select>
+    <!--分页查询用户数据-->
+    <select id="queryPageAccount" resultType="Account">
+        SELECT id,name,password, Administrator
+        FROM
+            account
+        WHERE
+        bindStatus = 0
+        AND deleteStatus = 0
+        AND usableStatus = 0
+        LIMIT #{page},#{limit}
+    </select>
+    <!--根据账号查询用户-->
+    <select id="queryAccountByName" resultType="Account">
+       SELECT
+            id,
+            NAME,
+            PASSWORD,
+            Administrator
+        FROM
+            account
+        WHERE
+        name like #{name}
+        AND bindStatus = 0
+        AND deleteStatus = 0
+        AND usableStatus = 0
+    </select>
+
+</mapper>
