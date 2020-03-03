@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+		PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<!--	&lt;!&ndash; 引入外部资源文件，resource：相对路径，url：绝对路径 &ndash;&gt;-->
+<!--	<properties resource="jdbc.properties" />-->
+
+	<settings>
+		<!-- 开启驼峰匹配：经典的数据库列名（多个单词下划线连接）映射到经典的java属性名（多个单词驼峰连接） -->
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+		<setting name="logImpl" value="STDOUT_LOGGING" />
+	</settings>
+
+<!--	<typeAliases>-->
+<!--		&lt;!&ndash; 类型别名：type-pojo类的全路径，alias-别名名称（可随便写，推荐和类名一致） &ndash;&gt;-->
+<!--		&lt;!&ndash; <typeAlias type="cn.itcast.mybatis.pojo.User" alias="user" /> &ndash;&gt;-->
+<!--		&lt;!&ndash; 开启别名包扫描，name：包路径，扫描的别名就是类名，并且大小写不敏感 &ndash;&gt;-->
+<!--		<package name="pojo"/>-->
+
+<!--	</typeAliases>-->
+<!--	&lt;!&ndash; 环境：说明可以配置多个，default:指定生效的环境 &ndash;&gt;-->
+<!--	<environments default="development">-->
+<!--		&lt;!&ndash; id:环境的唯一标识 &ndash;&gt;-->
+<!--		<environment id="development">-->
+<!--			&lt;!&ndash; 事务管理器，type：类型 &ndash;&gt;-->
+<!--			<transactionManager type="JDBC" />-->
+<!--			&lt;!&ndash; 数据源：type-池类型的数据源 &ndash;&gt;-->
+<!--			<dataSource type="POOLED">-->
+<!--				<property name="driver" value="${jdbc.driverClass}" />-->
+<!--				<property name="url" value="${jdbc.url}" />-->
+<!--				<property name="username" value="${jdbc.username}" />-->
+<!--				<property name="password" value="${jdbc.password}" />-->
+<!--			</dataSource>-->
+<!--		</environment>-->
+<!--	</environments>-->
+<!--	&lt;!&ndash; 映射文件 &ndash;&gt;-->
+<!--	<mappers>-->
+<!--		<mapper resource="mappers/AccountMapper.xml"/>-->
+<!--	</mappers>-->
+</configuration>

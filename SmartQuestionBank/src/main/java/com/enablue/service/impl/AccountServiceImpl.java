@@ -1,0 +1,175 @@
+package com.enablue.service.impl;
+
+import com.enablue.mapper.AccountMapper;
+import com.enablue.pojo.Account;
+import com.enablue.service.AccountService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.List;
+
+/**
+ * 用户服务实现类
+ * 王成
+ * 2019.12.3 11:25
+ */
+@Service
+public class AccountServiceImpl implements AccountService {
+    @Autowired
+    AccountMapper accountMapper;
+    /**
+     * 用户登录
+     * @param
+     * @param
+     * @return
+     */
+    @Override
+    public HashMap<String, Object> login(Account account) {
+        HashMap<String, Object> result = new HashMap<>();
+        try {
+            if (account==null || account.getName() == null  || account.getPassword() ==null){
+                result.put("flag", false);
+                result.put("errorMsg", "账号密码不能为空");
+                return result;
+            }
+            //查询数据
+            Account temp = accountMapper.queryAccount(account.getName(), account.getPassword());
+            if (temp == null){
+                result.put("flag", false);
+                result.put("errorMsg", "账号或密码错误");
+                return result;
+            }
+            if (temp.getAdministrator()==1){
+                result.put("permission",true);
+            }else {
+                result.put("permission",false);
+            }
+            result.put("flag", true);
+            result.put("account",temp);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("flag", false);
+            result.put("errorMsg", "账号或密码错误");
+            return result;
+        }
+    }
+
+    /**
+     * 查询所有用户
+     * @return
+     */
+    @Override
+    public HashMap<String, Object> queryAllAccount(Long page, Long limit) {
+        HashMap<String, Object> result = new HashMap<>();
+        try{
+            page=(page-1)*limit;
+            //查询总记录数
+            List<Account> accountList =accountMapper.queryAllAccount();
+            List<Account> accountPageList =accountMapper.queryPageAccount(page,limit);
+            System.out.println("accountPageList = " + accountPageList);
+            int count = accountList.size();
+            if (accountPageList.size()<1){
+                result.put("code", -1);
+                result.put("data", null);
+                result.put("msg", "查询失败");
+                return result;
+            }
+            result.put("code", 0);
+            result.put("data", accountPageList);
+            result.put("count",count);
+            return result;
+        }catch (Exception e){
+            e.printStackTrace();
+            result.put("code", -1);
+            result.put("data", null);
+            result.put("msg", "查询失败");
+            return result;
+        }
+
+    }
+
+    /**
+     *  添加用户
+     * @param account
+     * @return
+     */
+    @Override
+    @Transactional
+    public HashMap<String, Object> addAccount(Account account) {
+        HashMap<String, Object> result = new HashMap<>();
+        if (account==null){
+            result.put("message","添加失败");
+            return  result;
+        }
+        List<Account> accountList = accountMapper.queryAccountByName(account.getName());
+        if (accountList.size()>=1){
+            result.put("message","用户名已存在");
+            return result;
+        }
+        int count = accountMapper.addAccount(account);
+        if(count  < 1){
+            result.put("message","添加失败");
+            return  result;
+        }
+        result.put("message","添加成功");
+        return result;
+
+    }
+
+    /**
+     * 用户删除
+     * @param id
+     * @return
+     */
+    @Override
+    public HashMap<String, Object> deleteAccount(Long id) {
+        HashMap<String, Object> result = new HashMap<>();
+        try{
+            int count =accountMapper.deleteAccount(id);
+            if(count < 1){
+                result.put("message","删除失败");
+                result.put("code",-1);
+                return result;
+            }
+            result.put("message","删除成功");
+            result.put("code",0);
+            return result;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            result.put("message","修改失败");
+            result.put("code",-1);
+            return result;
+        }
+    }
+
+    /***
+     * 用户修改
+     * @param account
+     * @return
+     */
+    @Override
+    public HashMap<String, Object> updataAccount(Account account) {
+        HashMap<String, Object> result = new HashMap<>();
+        try{
+            int count =accountMapper.updataAccount(account);
+            if(count < 1){
+                result.put("message","修改失败");
+                result.put("code",-1);
+                return result;
+            }
+            result.put("message","修改成功");
+            result.put("code",0);
+            return result;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            result.put("message","修改失败");
+            result.put("code",-1);
+            return result;
+        }
+    }
+}
