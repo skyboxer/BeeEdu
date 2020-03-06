@@ -18,19 +18,19 @@ import java.util.HashMap;
 public class TypePoolController {
     @Autowired
     private TypePoolService typePoolService;
-    @RequestMapping("addType")
+    @RequestMapping("addTypePool")
     public HashMap<String,Object> addTypePool(TypePool typePool){
         return typePoolService.addTypePool(typePool);
     }
-    @RequestMapping("updataSubject")
+    @RequestMapping("updataTypePool")
     public HashMap<String,Object> updataTypePool(TypePool typePool){
         return typePoolService.updataTypePool(typePool);
     }
-    @RequestMapping("daleteSubject")
+    @RequestMapping("daleteTypePool")
     public HashMap<String,Object> daleteType(int id){
         return typePoolService.daleteTypePool(id);
     }
-    @RequestMapping("querySubject")
+    @RequestMapping("queryTypePool")
     public HashMap<String,Object> queryAllType(Long page,Long limit){
         return typePoolService.queryAllType(page,limit);
     }
