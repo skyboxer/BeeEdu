@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace(命名空间)：映射文件的唯一标识 -->
+<mapper namespace="com.enablue.mapper.TPAnswerMapper">
+    <!--添加-->
+    <insert id="addTPAswer" parameterType="TPAnswer">
+        INSERT INTO tp_answer  (
+        answer_id,
+        answer_content,
+        gmt_create,
+        gmt_modified
+        )
+        VALUES
+            (
+                #{answerId},
+                #{answerContent},
+                #{gmtCreate},
+                #{gmtModified}
+            );
+    </insert>
+</mapper>

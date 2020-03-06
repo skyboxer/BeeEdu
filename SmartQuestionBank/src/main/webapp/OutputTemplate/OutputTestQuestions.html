@@ -12,6 +12,37 @@
     <script src="../layuiv256/layui.js" charset="utf-8"></script>
     <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 </head>
+<style>
+    .gw_num{
+        border: 1px solid #dbdbdb;
+        width: 110px;line-height: 35px;
+        overflow: hidden;
+    }
+    .gw_num em{display: block;
+        height: 35px;
+        width: 31px;
+        float: left;
+        color: #7A7979;
+        border-right: 1px solid #dbdbdb;
+        text-align: center;
+        cursor: pointer;
+        font-style:normal;
+    }
+    .gw_num .num{display: block;
+        float: left;
+        text-align: center;
+        width: 42px;
+        font-style: normal;
+        font-size: 14px;
+        line-height: 35px;
+        border: 0;
+    }
+    .gw_num em.add{
+        float: right;
+        border-right: 0;
+        border-left: 1px solid #dbdbdb;
+    }
+</style>
 <body>
 <blockquote class="layui-elem-quote">
     录入模板
@@ -60,9 +91,30 @@
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
         </div>
     </div>
+    <!--计数器-->
+    <div class="gw_num">
+        <em class="jian">-</em>
+        <input type="text" value="0" class="num" />
+        <em class="add">+</em>
+    </div>
+
 </form>
 
 <script>
+    //加
+    $(".add").click(function(){
+        var n=$(this).prev().val();
+        var num=parseInt(n)+1;
+        if(num>100){ return;}
+        $(this).prev().val(num);
+    });
+    //减
+    $(".jian").click(function(){
+        var n=$(this).next().val();
+        var num=parseInt(n)-1;
+        if(num<1){ return;}
+        $(this).next().val(num);
+    });
     //Demo
     layui.use(['form','rate'], function(){
         var form = layui.form,

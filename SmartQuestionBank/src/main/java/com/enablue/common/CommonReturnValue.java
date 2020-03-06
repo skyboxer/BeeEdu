@@ -1,0 +1,49 @@
+package com.enablue.common;
+
+import com.alibaba.fastjson.JSONObject;
+import com.google.gson.annotations.JsonAdapter;
+import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * @author cnxjk
+ * 结果集处理
+ */
+@Component
+public class CommonReturnValue {
+
+    private JSONObject jsonObject;
+
+    /**
+     * update,delete
+     * @param code
+     * @param msg
+     * @return
+     */
+    public JSONObject CommonReturnValue(int code, String msg) {
+        this.jsonObject = jsonObject;
+        jsonObject = new JSONObject();
+        jsonObject.put("code",code);
+        jsonObject.put("msg",msg);
+        return jsonObject;
+    }
+
+    /**
+     * select
+     * @param code
+     * @param msg
+     * @param list
+     * @return
+     */
+    public JSONObject CommonReturnValue(int code, String msg, List list) {
+        this.jsonObject = jsonObject;
+        jsonObject = new JSONObject();
+        jsonObject.put("code",code);
+        jsonObject.put("msg",msg);
+        jsonObject.put("data",list);
+        return jsonObject;
+    }
+}

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace(命名空间)：映射文件的唯一标识 -->
+<mapper namespace="com.enablue.mapper.VariablePoolMapper">
+    <!--添加-->
+    <insert id="addVariablePool" parameterType="VariablePool">
+        INSERT INTO variable_pool  (
+        variable_id,
+        template_id,
+        variable_content,
+        gmt_create,
+        gmt_modified
+        )
+        VALUES
+            (
+                #{variableId},
+                #{templateId},
+                #{variableContent},
+                #{gmtModified},
+                #{gmtModified}
+            );
+    </insert>
+</mapper>

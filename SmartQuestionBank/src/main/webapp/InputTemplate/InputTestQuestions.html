@@ -12,6 +12,7 @@
     <script src="../layuiv256/layui.js" charset="utf-8"></script>
     <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 </head>
+
 <body>
 <blockquote class="layui-elem-quote">
     录入模板
@@ -57,6 +58,12 @@
                 </select>
             </div>
         </div>
+        <!--计数器-->
+        <div class="layui-btn-group">
+            <button class="layui-btn" onclick="add()">+</button>
+            <input type="button" class="layui-btn" id="num" value="0"></input>
+            <button class="layui-btn" id="jian">-</button>
+        </div>
 
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">难度等级</label>
@@ -78,6 +85,14 @@
     </form>
 
     <script>
+
+        //计数
+        function add(){
+           var n=$("#num").val();
+           alert(n);
+
+        }
+
         //Demo
         layui.use(['form','rate'], function(){
             var form = layui.form,
@@ -108,6 +123,8 @@
             })
 
         });
+
+
     </script>
 
 </body>
