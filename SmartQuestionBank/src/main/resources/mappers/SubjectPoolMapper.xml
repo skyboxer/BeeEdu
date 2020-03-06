@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace(命名空间)：映射文件的唯一标识 -->
+<mapper namespace="com.enablue.mapper.SubjectPoolMapper">
+    <!--增加新的科目-->
+    <insert id="addSubject">
+        INSERT INTO subject_pool (
+        subject_name,
+        gmt_create,
+        gmt_modified
+        )
+        VALUES
+        (
+          #{subjectPool.name},
+          #{subjectPool.gmtCreate},
+          #{subjectPool.gmtModified}
+        )
+    </insert>
+    <update id="updataSubject">
+          UPDATE subject_pool
+          SET
+             subject_name =#{subjectPool.name},
+             gmt_modified =#{subjectPool.gmtModified}
+          WHERE
+            subject_id = #{subjectPool.subjectId};
+    </update>
+    <delete id="daleteSubject">
+        DELETE
+        FROM
+            subject_pool
+        WHERE
+            subject_id = #{id}
+    </delete>
+    <select id="queryAllSubject" resultType="SubjectPool">
+        SELECT subject_id,subject_name FROM subject_pool
+    </select>
+    <select id="queryPageSubject" resultType="SubjectPool">
+        SELECT subject_id,subject_name FROM subject_pool
+        LIMIT #{page},#{limit}
+    </select>
+</mapper>

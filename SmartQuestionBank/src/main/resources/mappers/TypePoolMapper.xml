@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace(命名空间)：映射文件的唯一标识 -->
+<mapper namespace="com.enablue.mapper.TypePoolMapper">
+
+    <insert id="addTypePool">
+     INSERT INTO type_pool (
+        subject_id,
+        plate_name,
+        amount,
+        gmt_create,
+        gmt_modified
+    )
+    VALUES
+    (
+       #{typePool.subjectId},
+       #{typePool.plateName},
+       #{typePool.amount},
+       #{typePool.gmtCreate},
+       #{typePool.gmtModified}
+    );
+    </insert>
+    <update id="updataTypePool">
+        UPDATE type_pool
+        SET
+         subject_id = #{typePool.subjectId},
+         plate_name = #{typePool.plateName},
+         amount = #{typePool.amount},
+         gmt_modified = #{typePool.gmtModified}
+        WHERE
+        plate_id=#{typePool.plateId}
+    </update>
+    <delete id="daleteTypePool">
+        DELETE
+        FROM
+            type_pool
+        WHERE
+            plate_id = #{id}
+    </delete>
+    <select id="queryAllTypet" resultType="TypePool">
+        SELECT
+            plate_id,
+            subject_id,
+            plate_name,
+            amount
+        FROM
+            type_pool
+    </select>
+    <select id="queryType" resultType="TypePool">
+        SELECT
+            plate_id,
+            subject_id,
+            plate_name,
+            amount
+        FROM
+            type_pool
+        LIMIT #{page},#{limit}
+    </select>
+</mapper>
