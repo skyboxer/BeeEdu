@@ -30,8 +30,11 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
 
     @Override
     public int addTestQuestions(TemplatePool templatePool, List<VariablePool> variablePoolList, TPAnswer tpAnswer) {
-        int tempStatus =templatePoolMapper.addTemplatePool(templatePool);
+        //返回的是答案id
         int tpAnswerStatus = tpAnswerMapper.addTPAswer(tpAnswer);
+        //存入对象
+        templatePool.setAnswerId(tpAnswer.getAnswerId());
+        int tempStatus =templatePoolMapper.addTemplatePool(templatePool);
         if(tempStatus<=0 || tpAnswerStatus<=0){
             return -1;
         }
