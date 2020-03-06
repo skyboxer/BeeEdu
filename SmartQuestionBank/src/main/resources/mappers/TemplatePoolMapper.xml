@@ -10,6 +10,7 @@
         template_content,
         subject_id,
         type_id,
+        answer_id,
         difficulty_grade,
         gmt_create,
         gmt_modified
@@ -19,13 +20,14 @@
                 #{templateContent},
                 #{subjectId},
                 #{typeId},
+                #{answerId}
                 #{difficultyGrade},
                 #{gmtCreate},
                 #{getModified}
             );
     </insert>
     <select id="getTemplatePooList" parameterType="TemplatePool">
-        select template_id,template_content,subject_id,type_id,defficulty_grade,gmt_create,gmt_modified
+        select template_id,template_content,subject_id,type_id,answer_id,defficulty_grade,gmt_create,gmt_modified
         from template_pool
         <where>
             <if test="subjectId != null">
@@ -36,6 +38,9 @@
             </if>
             <if test="defficultyGrade != null">
                 defficulty_grade = #{defficultyGrade}
+            </if>
+            <if test="templateNum != null">
+                order by rand() limit templateNum
             </if>
         </where>
     </select>

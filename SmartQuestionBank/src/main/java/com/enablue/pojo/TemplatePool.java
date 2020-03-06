@@ -14,9 +14,30 @@ public class TemplatePool {
     private String templateContent;
     private int subjectId;
     private int typeId;
+    private int answerId;
+
     private int difficultyGrade;
+
+    public int getTemplateNum() {
+        return templateNum;
+    }
+
+    public void setTemplateNum(int templateNum) {
+        this.templateNum = templateNum;
+    }
+
     private Date gmtCreate;
     private Date getModified;
+
+    private int templateNum;
+
+    public int getAnswerId() {
+        return answerId;
+    }
+
+    public void setAnswerId(int answerId) {
+        this.answerId = answerId;
+    }
 
     public TemplatePool() {
 

@@ -5,7 +5,7 @@
 <!-- namespace(命名空间)：映射文件的唯一标识 -->
 <mapper namespace="com.enablue.mapper.TPAnswerMapper">
     <!--添加-->
-    <insert id="addTPAswer" parameterType="TPAnswer">
+    <insert id="addTPAswer" parameterType="TPAnswer" useGeneratedKeys="true" keyProperty="answerId" >
         INSERT INTO tp_answer  (
         answer_id,
         answer_content,
