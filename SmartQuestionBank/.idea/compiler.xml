@@ -9,5 +9,8 @@
         <module name="SmartQuestionBank" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="SmartQuestionBank" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
