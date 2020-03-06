@@ -22,4 +22,13 @@
                 #{gmtModified}
             );
     </insert>
+    <select id="getVariablePoolList">
+        select variable_id,template_id,variable_content,gmt_create,gmt_modified
+        from variable_pool
+        <where>
+            <if test="templateId != null">
+                template_id = #{templateId}
+            </if>
+        </where>
+    </select>
 </mapper>

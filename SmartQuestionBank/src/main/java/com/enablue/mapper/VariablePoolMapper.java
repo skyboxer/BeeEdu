@@ -22,5 +22,5 @@ public interface VariablePoolMapper {
      * @param variablePool
      * @return
      */
-    List<VariablePool> getVariablePool(VariablePool variablePool);
+    List<VariablePool> getVariablePoolList(VariablePool variablePool);
 }

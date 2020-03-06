@@ -20,4 +20,15 @@
                 #{gmtModified}
             );
     </insert>
+    <select id="getTPAswer" parameterType="TPAnswer">
+        select answer_id,
+        answer_content,
+        gmt_create,
+        gmt_modified from tp_answer
+        <where>
+            <if test="answerId != null">
+                answer_id = #{answerId}
+            </if>
+        </where>
+    </select>
 </mapper>

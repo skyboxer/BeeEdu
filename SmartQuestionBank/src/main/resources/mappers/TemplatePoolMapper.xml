@@ -25,7 +25,19 @@
             );
     </insert>
     <select id="getTemplatePooList" parameterType="TemplatePool">
-
+        select template_id,template_content,subject_id,type_id,defficulty_grade,gmt_create,gmt_modified
+        from template_pool
+        <where>
+            <if test="subjectId != null">
+                subject_id = #{subjectId}
+            </if>
+            <if test="typeId != null">
+                type_id = #{typeId}
+            </if>
+            <if test="defficultyGrade != null">
+                defficulty_grade = #{defficultyGrade}
+            </if>
+        </where>
     </select>
 
 </mapper>
