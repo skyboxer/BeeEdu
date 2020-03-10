@@ -9,16 +9,16 @@ import java.util.Date;
  * 答案类
  */
 public class TPAnswer {
-    private int answerId;
+    private Integer answerId;
     private String answerContent;
     private Date gmtCreate;
     private Date gmtModified;
 
-    public int getAnswerId() {
+    public Integer getAnswerId() {
         return answerId;
     }
 
-    public void setAnswerId(int answerId) {
+    public void setAnswerId(Integer answerId) {
         this.answerId = answerId;
     }
 

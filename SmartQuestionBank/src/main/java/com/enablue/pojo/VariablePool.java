@@ -10,8 +10,8 @@ import java.util.Date;
  */
 public class VariablePool {
 
-    private int variableId;
-    private int templateId;
+    private Integer variableId;
+    private Integer templateId;
     private String variableContent;
     private Date gmtCreate;
     private Date gmtModified;
@@ -20,19 +20,27 @@ public class VariablePool {
 
     }
 
-    public int getVariableId() {
+    public VariablePool(Integer variableId, Integer templateId, String variableContent, Date gmtCreate, Date gmtModified) {
+        this.variableId = variableId;
+        this.templateId = templateId;
+        this.variableContent = variableContent;
+        this.gmtCreate = gmtCreate;
+        this.gmtModified = gmtModified;
+    }
+
+    public Integer getVariableId() {
         return variableId;
     }
 
-    public void setVariableId(int variableId) {
+    public void setVariableId(Integer variableId) {
         this.variableId = variableId;
     }
 
-    public int getTemplateId() {
+    public Integer getTemplateId() {
         return templateId;
     }
 
-    public void setTemplateId(int templateId) {
+    public void setTemplateId(Integer templateId) {
         this.templateId = templateId;
     }
 
@@ -58,23 +66,5 @@ public class VariablePool {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public VariablePool(int templateId, String variableContent, Date gmtCreate, Date gmtModified) {
-        this.templateId = templateId;
-        this.variableContent = variableContent;
-        this.gmtCreate = gmtCreate;
-        this.gmtModified = gmtModified;
-    }
-
-    @Override
-    public String toString() {
-        return "VariablePool{" +
-                "variableId=" + variableId +
-                ", templateId=" + templateId +
-                ", variableContent='" + variableContent + '\'' +
-                ", gmtCreate=" + gmtCreate +
-                ", gmtModified=" + gmtModified +
-                '}';
     }
 }
