@@ -18,7 +18,7 @@ public class TemplatePool {
 
     private Integer difficultyGrade;
     private Date gmtCreate;
-    private Date getModified;
+    private Date gmtModified;
 
     private Integer templateNum;
 
@@ -79,12 +79,12 @@ public class TemplatePool {
         this.gmtCreate = gmtCreate;
     }
 
-    public Date getGetModified() {
-        return getModified;
+    public Date getGmtModified() {
+        return gmtModified;
     }
 
-    public void setGetModified(Date getModified) {
-        this.getModified = getModified;
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = gmtModified;
     }
 
     public Integer getTemplateNum() {
