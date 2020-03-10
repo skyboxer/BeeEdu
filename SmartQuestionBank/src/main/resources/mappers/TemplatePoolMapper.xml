@@ -21,7 +21,7 @@
                 #{templatePool.subjectId},
                 #{templatePool.typeId},
                 #{templatePool.answerId},
-                3,
+                #{templatePool.difficultyGrade},
                 #{templatePool.gmtCreate},
                 #{templatePool.getModified}
             )
