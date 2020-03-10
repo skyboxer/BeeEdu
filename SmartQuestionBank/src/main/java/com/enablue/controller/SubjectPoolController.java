@@ -16,20 +16,54 @@ import java.util.HashMap;
 public class SubjectPoolController {
     @Autowired
     private SubjectPoolService subjectPoolService;
+
+    /**
+     * 添加科目
+     * @param subjectPool
+     * @return
+     */
     @RequestMapping("addSubject")
     public HashMap<String,Object> addSubject(SubjectPool subjectPool){
         return subjectPoolService.addSubject(subjectPool);
     }
+
+    /**
+     * 修改科目
+     * @param subjectPool
+     * @return
+     */
     @RequestMapping("updataSubject")
     public HashMap<String,Object> updataSubject(SubjectPool subjectPool){
         return subjectPoolService.updataSubject(subjectPool);
     }
+
+    /**
+     * 删除科目
+     * @param id
+     * @return
+     */
     @RequestMapping("daleteSubject")
     public HashMap<String,Object> daleteSubject(int id){
         return subjectPoolService.daleteSubject(id);
     }
-    @RequestMapping("querySubject")
+
+    /**
+     * 分页查询科目
+     * @param page
+     * @param limit
+     * @return
+     */
+    @RequestMapping("queryPageSubject")
     public HashMap<String,Object> queryAllSubject(Long page,Long limit){
         return subjectPoolService.queryAllSubject(page,limit);
+    }
+
+    /**
+     * 查询所有科目
+     * @return
+     */
+    @RequestMapping("/querySubject")
+    public HashMap<String,Object> querySubject(){
+        return subjectPoolService.querySubject();
     }
 }

@@ -30,8 +30,12 @@ public class TypePoolController {
     public HashMap<String,Object> daleteType(int id){
         return typePoolService.daleteTypePool(id);
     }
-    @RequestMapping("queryTypePool")
+    @RequestMapping("queryPageTypePool")
     public HashMap<String,Object> queryAllType(Long page,Long limit){
         return typePoolService.queryAllType(page,limit);
+    }
+    @RequestMapping("queryTypePoolBySubject")
+    public HashMap<String,Object> queryTypeBySubjectId(Integer subId){
+        return typePoolService.queryTypeBySubjectId(subId);
     }
 }

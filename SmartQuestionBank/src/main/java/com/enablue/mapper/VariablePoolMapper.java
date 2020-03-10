@@ -1,6 +1,7 @@
 package com.enablue.mapper;
 
 import com.enablue.pojo.VariablePool;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -22,5 +23,5 @@ public interface VariablePoolMapper {
      * @param variablePool
      * @return
      */
-    List<VariablePool> getVariablePoolList(VariablePool variablePool);
+    List<VariablePool> getVariablePoolList(@Param("variablePool") VariablePool variablePool);
 }

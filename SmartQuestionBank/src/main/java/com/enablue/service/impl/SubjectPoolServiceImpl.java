@@ -5,6 +5,7 @@ import com.enablue.pojo.SubjectPool;
 import com.enablue.service.SubjectPoolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -98,6 +99,7 @@ public class SubjectPoolServiceImpl implements SubjectPoolService {
      * @return
      */
     @Override
+    @Transactional
     public HashMap<String, Object> queryAllSubject(Long page, Long limit) {
         HashMap<String, Object> result = new HashMap<>();
         if (page==null || page<1){
@@ -118,5 +120,25 @@ public class SubjectPoolServiceImpl implements SubjectPoolService {
         result.put("data", subjectPoolList);
         result.put("count",subjectPools.size());
         return result;
+    }
+
+    /**
+     * 查询所有科目
+     * @return
+     */
+    @Override
+    public HashMap<String, Object> querySubject() {
+        HashMap<String, Object> result = new HashMap<>();
+        List<SubjectPool> subjectPools=subjectPoolMapper.queryAllSubject();
+        if (subjectPools.size()<1){
+            result.put("code",-1);
+            result.put("msg","查询失败");
+            return result;
+        }
+        result.put("code", 0);
+        result.put("data", subjectPools);
+        result.put("msg","查询成功");
+        return result;
+
     }
 }

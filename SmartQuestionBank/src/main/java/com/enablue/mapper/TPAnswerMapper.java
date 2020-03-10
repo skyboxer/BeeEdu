@@ -2,6 +2,7 @@ package com.enablue.mapper;
 
 import com.enablue.pojo.TPAnswer;
 import com.enablue.pojo.TemplatePool;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @author cnxjk
@@ -14,12 +15,12 @@ public interface TPAnswerMapper {
      * @param tpAnswer
      * @return
      */
-    int addTPAswer(TPAnswer tpAnswer);
+    int addTPAswer(@Param("tpAnswer") TPAnswer tpAnswer);
 
     /**
      * 查询答案(根据id查询)
      * @param tpAnswer
      * @return
      */
-    TPAnswer getTPAswer(TPAnswer tpAnswer);
+    TPAnswer getTPAswer(@Param("tpAnswer") TPAnswer tpAnswer);
 }

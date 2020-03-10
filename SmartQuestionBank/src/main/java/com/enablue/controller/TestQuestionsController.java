@@ -26,37 +26,32 @@ public class TestQuestionsController {
     @Autowired
     private CommonReturnValue commonReturnValue;
 
-    private TemplatePool templatePool;
-    private TPAnswer tpAnswer;
-    private VariablePool variablePool;
-
+    /**
+     * 添加实体模板
+     * @param templatePool 试题模板
+     * @param tpAnswer 模板答案
+     * @param variableQuantity 标识变量
+     * @return
+     */
     @RequestMapping("addTestQuestions")
-    public JSONObject addTestQuestions(){
-        templatePool=new TemplatePool();
-        templatePool.setTemplateContent("(11+90) X 10");
-        templatePool.setSubjectId(1);
-        templatePool.setTypeId(1);
-        templatePool.setDifficultyGrade(1);
+    public JSONObject addTestQuestions(TemplatePool templatePool,TPAnswer tpAnswer,String variableQuantity){
+        //设置试题创建日期
         templatePool.setGmtCreate(new Date());
         templatePool.setGetModified(new Date());
-
-        tpAnswer = new TPAnswer();
-        tpAnswer.setAnswerContent("11 + 90 = 101;101 X 10 = 1010");
-        tpAnswer.setAnswerId(2);
+        //设置模板答案创建日期
         tpAnswer.setGmtCreate(new Date());
         tpAnswer.setGmtModified(new Date());
-
-        variablePool = new VariablePool();
+        //分离出试题中的标识变量放入list集合中
         List<VariablePool> variablePoolList = new ArrayList<VariablePool>();
-        String [] num = new String[]{"11","90","10"};
-        variablePool.setGmtCreate(new Date());
-        variablePool.setGmtModified(new Date());
-        variablePool.setTemplateId(2);
-        for(String s :num){
-            variablePool.setVariableContent(s);
+        String[] strings = variableQuantity.split("/");
+        for (int i = 0; i < strings.length; i++) {
+            VariablePool variablePool = new VariablePool();
+            variablePool.setGmtCreate(new Date());
+            variablePool.setGmtModified(new Date());
+            variablePool.setVariableContent(strings[i]);
             variablePoolList.add(variablePool);
         }
-
+        //添加试题模板
         int a = impotTestQuestionsService.addTestQuestions(templatePool,variablePoolList,tpAnswer);
         if(a>0) {
             return commonReturnValue.CommonReturnValue(200, "成功！");
