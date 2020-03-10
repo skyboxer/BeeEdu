@@ -14,10 +14,10 @@
         )
         VALUES
             (
-                #{answerId},
-                #{answerContent},
-                #{gmtCreate},
-                #{gmtModified}
+                #{tpAnswer.answerId},
+                #{tpAnswer.answerContent},
+                #{tpAnswer.gmtCreate},
+                #{tpAnswer.gmtModified}
             );
     </insert>
     <select id="getTPAswer" parameterType="Integer" resultType="com.enablue.pojo.TPAnswer">
@@ -27,7 +27,7 @@
         gmt_modified from tp_answer
         <where>
             <if test="answerId != null">
-                answer_id = #{answerId}
+                answer_id = #{tpAnswer.answerId}
             </if>
         </where>
     </select>

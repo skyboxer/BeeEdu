@@ -14,4 +14,5 @@ public interface SubjectPoolService {
     HashMap<String,Object> updataSubject(SubjectPool subjectPool);
     HashMap<String,Object> daleteSubject(int id);
     HashMap<String, Object> queryAllSubject(Long page, Long limit);
+    HashMap<String, Object> querySubject();
 }

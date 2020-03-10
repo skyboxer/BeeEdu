@@ -14,4 +14,5 @@ public interface TypePoolService {
     HashMap<String,Object> updataTypePool(TypePool typePool);
     HashMap<String,Object> daleteTypePool(int id);
     HashMap<String, Object> queryAllType(Long page, Long limit);
+    HashMap<String, Object> queryTypeBySubjectId(Integer subId);
 }

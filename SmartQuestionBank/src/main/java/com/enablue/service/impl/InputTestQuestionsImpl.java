@@ -10,6 +10,7 @@ import com.enablue.pojo.VariablePool;
 import com.enablue.service.ImpotTestQuestionsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,17 +30,22 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
 
 
     @Override
-    public int addTestQuestions(TemplatePool templatePool, List<VariablePool> variablePoolList, TPAnswer tpAnswer) {
+    @Transactional
+    public int  addTestQuestions(TemplatePool templatePool, List<VariablePool> variablePoolList, TPAnswer tpAnswer) {
         //返回的是答案id
         int tpAnswerStatus = tpAnswerMapper.addTPAswer(tpAnswer);
-        //存入对象
+        //设置答案id
         templatePool.setAnswerId(tpAnswer.getAnswerId());
+        //添加模板
         int tempStatus =templatePoolMapper.addTemplatePool(templatePool);
         if(tempStatus<=0 || tpAnswerStatus<=0){
             return -1;
         }
         int variableStatus = 0;
         for (VariablePool variablePool : variablePoolList) {
+            //设置标识变量的模板id
+            variablePool.setTemplateId(templatePool.getTemplateId());
+            //添加标识变量
             variableStatus = variablePoolMapper.addVariablePool(variablePool);
             if(variableStatus<=0){
                 return -1;

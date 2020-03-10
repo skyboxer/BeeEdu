@@ -1,6 +1,7 @@
 package com.enablue.mapper;
 
 import com.enablue.pojo.VariablePool;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 

@@ -8,24 +8,24 @@ import java.util.Date;
  */
 public class SubjectPool {
     Integer subjectId;
-    String  name;
+    String  subjectName;
     Date    gmtCreate;
     Date    gmtModified;
 
-    public Integer getsubjectId() {
+    public Integer getSubjectId() {
         return subjectId;
     }
 
-    public void setsubjectId(Integer subjectId) {
+    public void setSubjectId(Integer subjectId) {
         this.subjectId = subjectId;
     }
 
-    public String getName() {
-        return name;
+    public String getSubjectName() {
+        return subjectName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
     }
 
     public Date getGmtCreate() {

@@ -21,49 +21,45 @@
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">试题模板</label>
             <div class="layui-input-block">
-                <textarea placeholder="请输入内容" class="layui-textarea" name="template_content"></textarea>
+                <textarea placeholder="请输入内容" class="layui-textarea" name="templateContent"></textarea>
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">标识("/"分割)</label>
             <div class="layui-input-block">
-                <input type="text" name="username" lay-verify="required" lay-reqtext="标识是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
+                <input type="text" name="variableQuantity" lay-verify="required" lay-reqtext="标识是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">答案模板</label>
+            <label class="layui-form-label">模板答案</label>
             <div class="layui-input-block">
-                <textarea placeholder="请输入内容" class="layui-textarea" name="variable_content"></textarea>
+                <textarea placeholder="请输入内容" class="layui-textarea" name="answerContent"></textarea>
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">科目/板块</label>
+
             <div class="layui-input-inline">
-                <select name="quiz1">
-                    <option value="">请选择科目</option>
-                    <option value="1" selected="">三年级数学</option>
-                    <option value="2">三年级英语</option>
+                <select name="subjectId" lay-filter="subjectlist" id="subjectlist">
+                    <option value="" selected>请选择科目</option>
                 </select>
             </div>
+
             <div class="layui-input-inline">
-                <select name="quiz2">
+                <select name="typeId" id="typeList">
                     <option value="">请选择板块</option>
-                    <option value="1">计算</option>
-                    <option value="2">填空</option>
-                    <option value="3">选择</option>
-                    <option value="3">应用</option>
                 </select>
             </div>
         </div>
-        <!--计数器-->
-        <div class="layui-btn-group">
-            <button class="layui-btn" onclick="add()">+</button>
-            <input type="button" class="layui-btn" id="num" value="0"></input>
-            <button class="layui-btn" id="jian">-</button>
-        </div>
+<!--        &lt;!&ndash;计数器&ndash;&gt;-->
+<!--        <div class="layui-btn-group">-->
+<!--            <button class="layui-btn" onclick="add()">+</button>-->
+<!--            <input type="button" class="layui-btn" id="num" value="0"></input>-->
+<!--            <button class="layui-btn" id="jian">-</button>-->
+<!--        </div>-->
 
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">难度等级</label>
@@ -86,25 +82,65 @@
 
     <script>
 
-        //计数
-        function add(){
-           var n=$("#num").val();
-           alert(n);
-
-        }
-
+        // //计数
+        // function add(){
+        //    var n=$("#num").val();
+        //    alert(n);
+        //
+        // }
         //Demo
-        layui.use(['form','rate'], function(){
+
+        layui.use(['form','rate','jquery','element'], function(){
             var form = layui.form,
             rate = layui.rate;
-
+            $=layui.jquery;
+            var element = layui.element;
             //监听提交
             form.on('submit(formDemo)', function(data){
-                layer.msg(JSON.stringify(data.field));
+                $.post("/testQuestionsController/addTestQuestions",data.field,function (data) {
+
+                },"json");
                 return false;
             });
 
+            //异步查询科目表
+            $.get("/querySubject",function (result) {
+                if (result.code!==-1){
+                    let Subjects = result.data;
+                    let subjectHtml='<option value="" selected>请选择科目</option>\n';
+                    for (let i=0;i<Subjects.length;i++){
+                        subjectHtml+='<option value="'+Subjects[i].subjectId+'">'+Subjects[i].subjectName+'</option>\n'
+                    }
+                    $("#subjectlist").html(subjectHtml);
+                    //重新加载当前页面
+                    form.render();
+                }else {
+                    layer.msg(result.msg)
+                }
 
+            },"json");
+            //下拉菜单点击事件
+
+            form.on('select(subjectlist)', function(data){
+                // console.log(data.elem); //得到select原始DOM对象
+                // console.log(data.value); //得到被选中的值
+                // console.log(data.othis); //得到美化后的DOM对象
+
+               let subId=data.value;
+               console.log(subId);
+               if (subId!=="" &&subId!=null ){
+                    //发送请求查询题目类型表
+                    $.get("/queryTypePoolBySubject",{"subId":subId},function (result) {
+                        var plates = result.data;
+                        let plateHtml="<option value=\"\">请选择板块</option>\n"
+                        for (let i=0;i<plates.length;i++){
+                            plateHtml+='<option value="'+plates[i].plateId+'">'+plates[i].plateName+'</option>\n'
+                        }
+                        $("#typeList").html(plateHtml)
+                        form.render();
+                    },"json")
+               }
+            })
             //自定义文本
             rate.render({
                 elem: '#test5'
@@ -123,7 +159,6 @@
             })
 
         });
-
 
     </script>
 

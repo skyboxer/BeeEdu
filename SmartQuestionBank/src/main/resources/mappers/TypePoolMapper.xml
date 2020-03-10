@@ -58,4 +58,14 @@
             type_pool
         LIMIT #{page},#{limit}
     </select>
+    <select id="queryTypeBySubjectId" resultType="TypePool">
+        SELECT
+            plate_id,
+            subject_id,
+            plate_name
+        FROM
+            type_pool
+        WHERE
+            subject_id=#{subId}
+    </select>
 </mapper>

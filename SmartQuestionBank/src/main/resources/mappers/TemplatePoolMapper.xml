@@ -5,7 +5,7 @@
 <!-- namespace(命名空间)：映射文件的唯一标识 -->
 <mapper namespace="com.enablue.mapper.TemplatePoolMapper">
     <!--添加-->
-    <insert id="addTemplatePool" parameterType="TemplatePool">
+    <insert id="addTemplatePool"  useGeneratedKeys="true" keyColumn="template_id" keyProperty="templateId" parameterType="TemplatePool">
         INSERT INTO template_pool  (
         template_content,
         subject_id,
@@ -17,41 +17,32 @@
         )
         VALUES
             (
-                #{templateContent},
-                #{subjectId},
-                #{typeId},
-                #{answerId}
-                #{difficultyGrade},
-                #{gmtCreate},
-                #{getModified}
-            );
+                #{templatePool.templateContent},
+                #{templatePool.subjectId},
+                #{templatePool.typeId},
+                #{templatePool.answerId},
+                3,
+                #{templatePool.gmtCreate},
+                #{templatePool.getModified}
+            )
     </insert>
-    <select id="getTemplatePooList" parameterType="TemplatePool" resultMap="templatePoolMap">
-        select template_id,template_content,subject_id,type_id,answer_id,difficulty_grade,gmt_create,gmt_modified
+    <select id="getTemplatePooList" parameterType="TemplatePool">
+        select template_id,template_content,subject_id,type_id,answer_id,defficulty_grade,gmt_create,gmt_modified
         from template_pool
-        where 1 = 1
+        <where>
             <if test="subjectId != null">
-                and subject_id = #{subjectId}
+                subject_id = #{templatePool.subjectId}
             </if>
             <if test="typeId != null">
-                and type_id = #{typeId}
+                type_id = #{templatePool.typeId}
             </if>
-            <if test="difficultyGrade != null">
-                and difficulty_grade = #{difficultyGrade}
+            <if test="defficultyGrade != null">
+                defficulty_grade = #{templatePool.defficultyGrade}
             </if>
             <if test="templateNum != null">
-                order by rand() limit #{templateNum}
+                order by rand() limit templateNum
             </if>
+        </where>
     </select>
-    <resultMap id="templatePoolMap" type="com.enablue.pojo.TemplatePool">
-        <id column="template_id" property="templateId"/>
-        <result column="template_content" property="templateContent"/>
-        <result column="subject_id" property="subjectId"/>
-        <result column="type_id" property="typeId"/>
-        <result column="answer_id" property="answerId"/>
-        <result column="difficulty_grade" property="difficultyGrade"/>
-        <result column="gmt_create" property="gmtCreate"/>
-        <result column="gmt_modified" property="gmtModified"/>
-    </resultMap>
 
 </mapper>

@@ -118,4 +118,24 @@ public class TypePoolServiceImpl implements TypePoolService {
         result.put("count",typePools.size());
         return result;
     }
+
+    /**
+     * 根据科目查找题目的类型
+     * @param subId
+     * @return
+     */
+    @Override
+    public HashMap<String, Object> queryTypeBySubjectId(Integer subId) {
+        HashMap<String, Object> result = new HashMap<>();
+        List<TypePool> typePools=typePoolMapper.queryTypeBySubjectId(subId);
+        if (typePools.size()<1){
+            result.put("code",-1);
+            result.put("msg","查询失败");
+            return result;
+        }
+        result.put("code", 0);
+        result.put("data", typePools);
+        result.put("msg","查询成功");
+        return result;
+    }
 }
