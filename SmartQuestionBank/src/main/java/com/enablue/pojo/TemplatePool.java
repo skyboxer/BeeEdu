@@ -10,43 +10,24 @@ import java.util.Date;
  * 题库模板
  */
 public class TemplatePool {
-    private int templateId;
+    private Integer templateId;
     private String templateContent;
-    private int subjectId;
-    private int typeId;
-    private int answerId;
+    private Integer subjectId;
+    private Integer typeId;
+    private Integer answerId;
 
-    private int difficultyGrade;
-
-    public int getTemplateNum() {
-        return templateNum;
-    }
-
-    public void setTemplateNum(int templateNum) {
-        this.templateNum = templateNum;
-    }
-
+    private Integer difficultyGrade;
     private Date gmtCreate;
     private Date getModified;
 
-    private int templateNum;
+    private Integer templateNum;
 
-    public int getAnswerId() {
-        return answerId;
+
+    public Integer getTemplateId() {
+        return templateId;
     }
 
-    public void setAnswerId(int answerId) {
-        this.answerId = answerId;
-    }
-
-    public TemplatePool() {
-
-    }
-
-    public int getTemplateId(){
-        return this.templateId;
-    }
-    public void setTemplateId(int templateId){
+    public void setTemplateId(Integer templateId) {
         this.templateId = templateId;
     }
 
@@ -58,27 +39,35 @@ public class TemplatePool {
         this.templateContent = templateContent;
     }
 
-    public int getSubjectId() {
+    public Integer getSubjectId() {
         return subjectId;
     }
 
-    public void setSubjectId(int subjectId) {
+    public void setSubjectId(Integer subjectId) {
         this.subjectId = subjectId;
     }
 
-    public int getTypeId() {
+    public Integer getTypeId() {
         return typeId;
     }
 
-    public void setTypeId(int typeId) {
+    public void setTypeId(Integer typeId) {
         this.typeId = typeId;
     }
 
-    public int getDifficultyGrade() {
+    public Integer getAnswerId() {
+        return answerId;
+    }
+
+    public void setAnswerId(Integer answerId) {
+        this.answerId = answerId;
+    }
+
+    public Integer getDifficultyGrade() {
         return difficultyGrade;
     }
 
-    public void setDifficultyGrade(int difficultyGrade) {
+    public void setDifficultyGrade(Integer difficultyGrade) {
         this.difficultyGrade = difficultyGrade;
     }
 
@@ -98,35 +87,14 @@ public class TemplatePool {
         this.getModified = getModified;
     }
 
-    public TemplatePool(int templateId, String templateContent, int subjectId, int typeId, int difficultyGrade, Date gmtCreate, Date getModified) {
-        this.templateId = templateId;
-        this.templateContent = templateContent;
-        this.subjectId = subjectId;
-        this.typeId = typeId;
-        this.difficultyGrade = difficultyGrade;
-        this.gmtCreate = gmtCreate;
-        this.getModified = getModified;
+    public Integer getTemplateNum() {
+        return templateNum;
     }
 
-    public TemplatePool(String templateContent, int subjectId, int typeId, int difficultyGrade, Date gmtCreate, Date getModified) {
-        this.templateContent = templateContent;
-        this.subjectId = subjectId;
-        this.typeId = typeId;
-        this.difficultyGrade = difficultyGrade;
-        this.gmtCreate = gmtCreate;
-        this.getModified = getModified;
+    public void setTemplateNum(Integer templateNum) {
+        this.templateNum = templateNum;
     }
 
-    @Override
-    public String toString() {
-        return "TemplatePool{" +
-                "templateId=" + templateId +
-                ", templateContent='" + templateContent + '\'' +
-                ", subjectId=" + subjectId +
-                ", typeId=" + typeId +
-                ", difficultyGrade=" + difficultyGrade +
-                ", gmtCreate=" + gmtCreate +
-                ", getModified=" + getModified +
-                '}';
+    public TemplatePool() {
     }
 }
