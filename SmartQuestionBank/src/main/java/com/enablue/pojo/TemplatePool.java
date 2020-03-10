@@ -28,7 +28,7 @@ public class TemplatePool {
     }
 
     private Date gmtCreate;
-    private Date getModified;
+    private Date gmtModified;
 
     private Integer templateNum;
 
@@ -111,43 +111,25 @@ public class TemplatePool {
         this.gmtCreate = gmtCreate;
     }
 
-    public Date getGetModified() {
-        return getModified;
-    }
-
-    public void setGetModified(Date getModified) {
-        this.getModified = getModified;
-    }
-
-    public TemplatePool(Integer templateId, String templateContent, Integer subjectId, Integer typeId, Integer difficultyGrade, Date gmtCreate, Date getModified) {
+    public TemplatePool(Integer templateId, String templateContent, Integer subjectId, Integer typeId, Integer answerId, Integer difficultyGrade, Date gmtCreate, Date gmtModified, Integer templateNum, List<VariablePool> variablePoolList, TPAnswer tpAnswer) {
         this.templateId = templateId;
         this.templateContent = templateContent;
         this.subjectId = subjectId;
         this.typeId = typeId;
+        this.answerId = answerId;
         this.difficultyGrade = difficultyGrade;
         this.gmtCreate = gmtCreate;
-        this.getModified = getModified;
+        this.gmtModified = gmtModified;
+        this.templateNum = templateNum;
+        this.variablePoolList = variablePoolList;
+        this.tpAnswer = tpAnswer;
     }
 
-    public TemplatePool(String templateContent, Integer subjectId, Integer typeId, Integer difficultyGrade, Date gmtCreate, Date getModified) {
-        this.templateContent = templateContent;
-        this.subjectId = subjectId;
-        this.typeId = typeId;
-        this.difficultyGrade = difficultyGrade;
-        this.gmtCreate = gmtCreate;
-        this.getModified = getModified;
+    public Date getGmtModified() {
+        return gmtModified;
     }
 
-    @Override
-    public String toString() {
-        return "TemplatePool{" +
-                "templateId=" + templateId +
-                ", templateContent='" + templateContent + '\'' +
-                ", subjectId=" + subjectId +
-                ", typeId=" + typeId +
-                ", difficultyGrade=" + difficultyGrade +
-                ", gmtCreate=" + gmtCreate +
-                ", getModified=" + getModified +
-                '}';
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = gmtModified;
     }
 }

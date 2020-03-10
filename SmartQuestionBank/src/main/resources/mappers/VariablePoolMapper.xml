@@ -27,7 +27,7 @@
         from variable_pool
         <where>
             <if test="templateId != null">
-                template_id = #{variablePool.templateId}
+                template_id = #{templateId}
             </if>
         </where>
     </select>

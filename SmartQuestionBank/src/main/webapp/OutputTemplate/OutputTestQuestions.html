@@ -62,7 +62,7 @@
             if(subjectList != null){
                 var options = '<option value="">请选择科目</option>';
                 for(var index in subjectList){
-                    options+='<option value="'+subjectList[index].subjectId+'">'+subjectList[index].subjectId+'</option>';
+                    options+='<option value="'+subjectList[index].subjectId+'">'+subjectList[index].subjectName+'</option>';
                 }
                 $("#subjectSelect").html(options);
                 form.render();
@@ -74,7 +74,7 @@
             layer.msg(data.value);
             //存入科目id
             parameter.subjectId = data.value;
-            $.get("/queryTypePool",function (e) {
+            $.get("/queryPageTypePool",function (e) {
                 var typePoolList = e.data;
                 if(typePoolList!=null){
                     for(var index in typePoolList){

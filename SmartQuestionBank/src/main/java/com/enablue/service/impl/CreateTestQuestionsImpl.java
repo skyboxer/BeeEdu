@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author cnxjk
@@ -50,11 +52,48 @@ public class CreateTestQuestionsImpl implements CreateTestQuestionsService {
                     tpAnswerPool = tpAnswerMapper.getTPAswer(templatePool.getAnswerId());
                     templatePool.setTpAnswer(tpAnswerPool);
                 }
+
+                typeTemplatePoolList =templatePoolFactory(typeTemplatePoolList,templatePoolWhere.getTemplateNum());
                 testQuestionJSON.add(typeTemplatePoolList);
             }
         }
 
         return testQuestionJSON;
+    }
+
+    public List<TemplatePool> templatePoolFactory(List<TemplatePool> typeTemplatePoolList,int sum){
+        List<TemplatePool> templatePoolList = new ArrayList<>();
+        if(typeTemplatePoolList.size()>0){
+            List<VariablePool> variablePools = typeTemplatePoolList.get(0).getVariablePoolList();
+            TemplatePool templatePool =null;
+            String templateContent = "";
+            String tpAnswerContent ="";
+            int variableNum = 0;
+            int j = 0;
+            for(int i=0;i<sum;i++){
+                if(j >= typeTemplatePoolList.size()){
+                    j=0;
+                }
+                //找到第一道题
+                templatePool = typeTemplatePoolList.get(j);
+                for(VariablePool variablePool : variablePools){
+                    Random random = new Random();
+                    //获取题的内容
+                    templateContent = templatePool.getTemplateContent();
+                    //变量转成int类型
+                    variableNum = Integer.valueOf(variablePool.getVariableContent());
+                    System.out.println("旧的"+templateContent+variablePool.getVariableContent());
+                    int newNum = variableNum+random.nextInt(99);
+                    templateContent.replaceAll(variablePool.getVariableContent(),String.valueOf(newNum)).trim();
+                    templatePool.setTemplateContent(templateContent);
+                }
+                System.out.println("新的"+templateContent);
+                templatePoolList.add(templatePool);
+                j++;
+            }
+
+        }
+        return templatePoolList;
     }
 
 
