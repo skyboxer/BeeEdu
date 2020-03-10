@@ -19,8 +19,8 @@ public interface TPAnswerMapper {
 
     /**
      * 查询答案(根据id查询)
-     * @param tpAnswer
+     * @param answerId
      * @return
      */
-    TPAnswer getTPAswer(@Param("tpAnswer") TPAnswer tpAnswer);
+    TPAnswer getTPAswer(Integer answerId);
 }

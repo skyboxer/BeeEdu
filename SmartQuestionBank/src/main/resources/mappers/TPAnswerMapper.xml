@@ -20,7 +20,7 @@
                 #{tpAnswer.gmtModified}
             );
     </insert>
-    <select id="getTPAswer" parameterType="TPAnswer">
+    <select id="getTPAswer" parameterType="Integer" resultType="com.enablue.pojo.TPAnswer">
         select answer_id,
         answer_content,
         gmt_create,
