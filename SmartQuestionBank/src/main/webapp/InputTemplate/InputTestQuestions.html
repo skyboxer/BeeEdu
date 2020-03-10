@@ -120,23 +120,29 @@
                 }
 
             },"json");
-            //下拉菜单点击事件
 
+            //监听下拉菜单
             form.on('select(subjectlist)', function(data){
                 // console.log(data.elem); //得到select原始DOM对象
                 // console.log(data.value); //得到被选中的值
                 // console.log(data.othis); //得到美化后的DOM对象
-               let subId=data.value;
+                //清除原来的联动下拉框
+                $("#typeList").html("<option value=\"\">请选择板块</option>")
+                form.render();
+                let subId=data.value;
                if (subId!=="" &&subId!=null ){
                     //发送请求查询题目类型表
                     $.get("/queryTypePoolBySubject",{"subId":subId},function (result) {
-                        var plates = result.data;
-                        let plateHtml="<option value=\"\">请选择板块</option>\n"
-                        for (let i=0;i<plates.length;i++){
-                            plateHtml+='<option value="'+plates[i].plateId+'">'+plates[i].plateName+'</option>\n'
+                        if (result.code===0){
+                            var plates = result.data;
+                            let plateHtml="<option value=\"\">请选择板块</option>\n"
+                            for (let i=0;i<plates.length;i++){
+                                plateHtml+='<option value="'+plates[i].plateId+'">'+plates[i].plateName+'</option>\n'
+                            }
+                            $("#typeList").html(plateHtml)
+                            form.render();
                         }
-                        $("#typeList").html(plateHtml)
-                        form.render();
+
                     },"json")
                }
             })
