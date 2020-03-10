@@ -18,8 +18,8 @@ public interface TPAnswerMapper {
 
     /**
      * 查询答案(根据id查询)
-     * @param tpAnswer
+     * @param answerId
      * @return
      */
-    TPAnswer getTPAswer(TPAnswer tpAnswer);
+    TPAnswer getTPAswer(Integer answerId);
 }

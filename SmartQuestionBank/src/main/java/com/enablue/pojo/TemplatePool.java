@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author cnxjk
@@ -22,6 +23,25 @@ public class TemplatePool {
 
     private Integer templateNum;
 
+    private List<VariablePool> variablePoolList;
+
+    private TPAnswer tpAnswer;
+
+    public TPAnswer getTpAnswer() {
+        return tpAnswer;
+    }
+
+    public void setTpAnswer(TPAnswer tpAnswer) {
+        this.tpAnswer = tpAnswer;
+    }
+
+    public List<VariablePool> getVariablePoolList() {
+        return variablePoolList;
+    }
+
+    public void setVariablePoolList(List<VariablePool> variablePoolList) {
+        this.variablePoolList = variablePoolList;
+    }
 
     public Integer getTemplateId() {
         return templateId;

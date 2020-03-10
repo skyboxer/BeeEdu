@@ -19,8 +19,8 @@ public interface VariablePoolMapper {
 
     /**
      * 根据题库id查询对应变量
-     * @param variablePool
+     * @param templateId
      * @return
      */
-    List<VariablePool> getVariablePoolList(VariablePool variablePool);
+    List<VariablePool> getVariablePoolList(Integer templateId);
 }

@@ -12,78 +12,25 @@
     <script src="../layuiv256/layui.js" charset="utf-8"></script>
     <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 </head>
-<style>
-    .gw_num{
-        border: 1px solid #dbdbdb;
-        width: 110px;line-height: 35px;
-        overflow: hidden;
-    }
-    .gw_num em{display: block;
-        height: 35px;
-        width: 31px;
-        float: left;
-        color: #7A7979;
-        border-right: 1px solid #dbdbdb;
-        text-align: center;
-        cursor: pointer;
-        font-style:normal;
-    }
-    .gw_num .num{display: block;
-        float: left;
-        text-align: center;
-        width: 42px;
-        font-style: normal;
-        font-size: 14px;
-        line-height: 35px;
-        border: 0;
-    }
-    .gw_num em.add{
-        float: right;
-        border-right: 0;
-        border-left: 1px solid #dbdbdb;
-    }
-</style>
 <body>
 <blockquote class="layui-elem-quote">
-    录入模板
+    创建试卷
 </blockquote>
 <form class="layui-form" action="">
 
     <div class="layui-form-item">
-        <label class="layui-form-label">科目/板块</label>
+        <label class="layui-form-label">年级/科目</label>
         <div class="layui-input-inline">
-            <select name="quiz1">
-                <option value="">请选择科目</option>
-                <option value="1" selected="">三年级数学</option>
-                <option value="2">三年级英语</option>
+            <select name="subjectSelect" id="subjectSelect" lay-filter="subjectSelect" class="layui-select">
+
             </select>
         </div>
     </div>
 
-        <div class="layui-collapse">
-            <div class="layui-colla-item">
-                <h2 class="layui-colla-title">杜甫</h2>
-                <div class="layui-colla-content layui-show">内容区域</div>
-            </div>
-            <div class="layui-colla-item">
-                <h2 class="layui-colla-title">李清照</h2>
-                <div class="layui-colla-content layui-show">内容区域</div>
-            </div>
-            <div class="layui-colla-item">
-                <h2 class="layui-colla-title">鲁迅</h2>
-                <div class="layui-colla-content layui-show">内容区域</div>
-            </div>
-        </div>
-     <div class="layui-form-item layui-form-text">
-        <label class="layui-form-label">难度等级</label>
-        <div class="layui-input-block">
-            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
-                <legend></legend>
-            </fieldset>
-            <div id="test5"></div>
-
-        </div>
+    <div  id="typePool">
+        
     </div>
+
 
     <div class="layui-form-item">
         <div class="layui-input-block">
@@ -91,60 +38,149 @@
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
         </div>
     </div>
-    <!--计数器-->
-    <div class="gw_num">
-        <em class="jian">-</em>
-        <input type="text" value="0" class="num" />
-        <em class="add">+</em>
-    </div>
 
 </form>
 
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+    <legend>结果预览</legend>
+</fieldset>
+<div id="preview"></div>
+
 <script>
-    //加
-    $(".add").click(function(){
-        var n=$(this).prev().val();
-        var num=parseInt(n)+1;
-        if(num>100){ return;}
-        $(this).prev().val(num);
-    });
-    //减
-    $(".jian").click(function(){
-        var n=$(this).next().val();
-        var num=parseInt(n)-1;
-        if(num<1){ return;}
-        $(this).next().val(num);
-    });
-    //Demo
-    layui.use(['form','rate'], function(){
+    layui.use(['form','rate','jquery','layer','laytpl'], function(){
         var form = layui.form,
-            rate = layui.rate;
+            rate = layui.rate,
+            $ = layui.jquery,
+            layer = layui.layer,
+            laytpl = layui.laytpl;
+        var parameter = {
+            subjectId:"", //科目
+            plateList:[] //板块集合
+        };
+        $.get("/querySubject",function (e) {
+            var subjectList = e.data;
+            if(subjectList != null){
+                var options = '<option value="">请选择科目</option>';
+                for(var index in subjectList){
+                    options+='<option value="'+subjectList[index].subjectId+'">'+subjectList[index].subjectId+'</option>';
+                }
+                $("#subjectSelect").html(options);
+                form.render();
+            }
+
+        });
+
+        form.on('select(subjectSelect)',function (data) {
+            layer.msg(data.value);
+            //存入科目id
+            parameter.subjectId = data.value;
+            $.get("/queryTypePool",function (e) {
+                var typePoolList = e.data;
+                if(typePoolList!=null){
+                    for(var index in typePoolList){
+                        var difficultyArray = [{name:'难度1',number:0},{name:'难度2',number:0},{name:'难度3',number:0},{name:'难度4',number:0},{name:'难度5',number:0}];
+                        //初始化总数
+                        difficultyArray[0].number = typePoolList[index].amount;
+                        parameter.plateList[index]={
+                            plateId :typePoolList[index].plateId,
+                            plateName:typePoolList[index].plateName,
+                            difficultyArray:difficultyArray};
+                    }
+                }
+                showPlate();
+                form.render();
+            })
+        });
+        function showPlate(){
+            var plateList = parameter.plateList;
+            var plate = '';
+            for(var index1 in plateList){
+                plate += '<div class="layui-form-item">'
+                plate += '<label class="layui-form-label">'+plateList[index1].plateName+'</label>';
+                plate += '<div class="layui-input-block">';
+                for(var index2 in plateList[index1].difficultyArray){
+                    plate += '<div class="layui-btn-group">' +
+                        '<button type="button" class="layui-btn layui-btn-primary layui-btn-sm">'+plateList[index1].difficultyArray[index2].name+'</button>' +
+                        '<button type="button" class="layui-btn layui-btn-primary layui-btn-sm" name ="addNum" value="'+ index1 + ","+index2+'"><i class="layui-icon">&#xe624;</i></button>' +
+                        '<button type="button" class="layui-btn layui-btn-primary layui-btn-sm">'+plateList[index1].difficultyArray[index2].number+'</button>' +
+                        '<button type="button" class="layui-btn layui-btn-primary layui-btn-sm" name ="reduceNum" value="'+ index1 + ","+index2+'"><i class="layui-icon layui-icon-subtraction"></i></button>' +
+                        '</div>';
+                }
+                plate += '</div></div>';
+            }
+            $("#typePool").html(plate);
+        }
+        $(document).on('click','button[name="addNum"]',function () {
+            var indexArray = this.value.split(",");
+            parameter.plateList[indexArray[0]].difficultyArray[indexArray[1]].number++;
+            showPlate();
+        });
+        $(document).on('click','button[name="reduceNum"]',function () {
+            var indexArray = this.value.split(",");
+            var num = parameter.plateList[indexArray[0]].difficultyArray[indexArray[1]].number;
+            if(num >0){
+
+                parameter.plateList[indexArray[0]].difficultyArray[indexArray[1]].number--;
+            }
+            showPlate();
+        });
 
         //监听提交
         form.on('submit(formDemo)', function(data){
-            layer.msg(JSON.stringify(data.field));
+            $.post("/testQuestionsController/createTestQuestions",{"parameter":JSON.stringify(parameter)} ,function (e) {
+                layer.msg(e.msg)
+
+                //第三步：渲染模版
+                var data = { //数据
+                    "title":"试卷预览"
+                    ,"list": e.data//[{"modname":"弹层","alias":"layer","site":"layer.layui.com"},{"modname":"表单","alias":"form"}]
+                }
+                var getTpl = demo.innerHTML
+                    ,view = document.getElementById('preview');
+                laytpl(getTpl).render(data, function(html){
+                    view.innerHTML = html;
+                });
+            })
             return false;
         });
 
-
-        //自定义文本
-        rate.render({
-            elem: '#test5'
-            ,value: 3
-            ,text: true
-            ,setText: function(value){ //自定义文本的回调
-                var arrs = {
-                    '1': '简单'
-                    ,'2': '一般'
-                    ,'3': '中等'
-                    ,'4': '困难'
-                    ,'5': '拓展'
-                };
-                this.span.text(arrs[value] || ( value + "星"));
-            }
-        })
-
     });
+</script>
+<script id="demo" type="text/html">
+    <h3>{{ d.title }}</h3>
+    <!--<ul>-->
+        {{#  layui.each(d.list, function(index, item){ }}
+        {{#  layui.each(item ,function(index2,item2){  }}
+        <div class="layui-row layui-col-space10">
+            <div class="layui-col-md4">
+                板块Id：{{ item2.typeId }}
+            </div>
+            <div class="layui-col-md8">
+                困难等级：{{ item2.difficultyGrade }}星
+            </div>
+        </div>
+        <div class="layui-row layui-col-space10">
+            <div class="layui-col-md12">样题：{{ item2.templateContent }} </div>
+        </div>
+        <div class="layui-row layui-col-space10">
+            <div class="layui-col-md12">答案：{{ item2.tpAnswer.answerContent }}</div>
+        </div>
+    <!--<li>
+            <span>板块Id：{{ item2.typeId }}</span>
+            <span>困难等级：{{ item2.difficultyGrade }}星</span>
+        </li>
+        <li>
+            <span>样题：{{ item2.templateContent }}</span>
+        </li>
+        <li>
+            <span>答案：{{ item2.tpAnswer.answerContent }}</span>
+        </li>-->
+        {{#  }); }}
+        {{#  }); }}
+        {{#  if(d.list.length === 0){ }}
+        无数据
+        {{#  } }}
+   <!-- </ul>-->
 </script>
 
 </body>
