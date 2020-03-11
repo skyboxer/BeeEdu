@@ -57,7 +57,7 @@
             subjectId:"", //科目
             plateList:[] //板块集合
         };
-        $.get("/querySubject",function (e) {
+        $.get("../querySubject",function (e) {
             var subjectList = e.data;
             if(subjectList != null){
                 var options = '<option value="">请选择科目</option>';
@@ -74,7 +74,7 @@
             layer.msg(data.value);
             //存入科目id
             parameter.subjectId = data.value;
-            $.get("/queryPageTypePool",function (e) {
+            $.get("../queryPageTypePool",function (e) {
                 var typePoolList = e.data;
                 if(typePoolList!=null){
                     for(var index in typePoolList){
@@ -127,7 +127,7 @@
 
         //监听提交
         form.on('submit(formDemo)', function(data){
-            $.post("/testQuestionsController/createTestQuestions",{"parameter":JSON.stringify(parameter)} ,function (e) {
+            $.post("../testQuestionsController/createTestQuestions",{"parameter":JSON.stringify(parameter)} ,function (e) {
                 layer.msg(e.msg)
 
                 //第三步：渲染模版

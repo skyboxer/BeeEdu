@@ -113,7 +113,7 @@
 
     </dependencies>
     <build>
-        <finalName>ROOT</finalName>
+        <finalName>ROOT1</finalName>
         <plugins>
             <!--JDK编译插件-->
             <plugin>
