@@ -15,59 +15,41 @@ public class TemplatePool {
     private String templateContent;
     private Integer subjectId;
     private Integer typeId;
-    private Integer answerId;
-
     private Integer difficultyGrade;
-
-    public Integer getTemplateNum() {
-        return templateNum;
-    }
-
-    public void setTemplateNum(Integer templateNum) {
-        this.templateNum = templateNum;
-    }
-
+    private Integer answerId;
     private Date gmtCreate;
-    private Date gmtModified;
-
+    private Date getModified;
     private Integer templateNum;
-
     private List<VariablePool> variablePoolList;
-
     private TPAnswer tpAnswer;
 
-    public TPAnswer getTpAnswer() {
-        return tpAnswer;
-    }
-
-    public void setTpAnswer(TPAnswer tpAnswer) {
-        this.tpAnswer = tpAnswer;
-    }
-
-    public List<VariablePool> getVariablePoolList() {
-        return variablePoolList;
-    }
-
-    public void setVariablePoolList(List<VariablePool> variablePoolList) {
-        this.variablePoolList = variablePoolList;
-    }
-
-    public Integer getAnswerId() {
-        return answerId;
-    }
-
-    public void setAnswerId(Integer answerId) {
-        this.answerId = answerId;
-    }
-
     public TemplatePool() {
-
     }
 
-    public Integer getTemplateId(){
-        return this.templateId;
+    public TemplatePool(Integer templateId, String templateContent, Integer subjectId, Integer typeId, Integer difficultyGrade, Date gmtCreate, Date getModified) {
+        this.templateId = templateId;
+        this.templateContent = templateContent;
+        this.subjectId = subjectId;
+        this.typeId = typeId;
+        this.difficultyGrade = difficultyGrade;
+        this.gmtCreate = gmtCreate;
+        this.getModified = getModified;
     }
-    public void setTemplateId(Integer templateId){
+
+    public TemplatePool(String templateContent, Integer subjectId, Integer typeId, Integer difficultyGrade, Date gmtCreate, Date getModified) {
+        this.templateContent = templateContent;
+        this.subjectId = subjectId;
+        this.typeId = typeId;
+        this.difficultyGrade = difficultyGrade;
+        this.gmtCreate = gmtCreate;
+        this.getModified = getModified;
+    }
+
+    public Integer getTemplateId() {
+        return templateId;
+    }
+
+    public void setTemplateId(Integer templateId) {
         this.templateId = templateId;
     }
 
@@ -103,6 +85,14 @@ public class TemplatePool {
         this.difficultyGrade = difficultyGrade;
     }
 
+    public Integer getAnswerId() {
+        return answerId;
+    }
+
+    public void setAnswerId(Integer answerId) {
+        this.answerId = answerId;
+    }
+
     public Date getGmtCreate() {
         return gmtCreate;
     }
@@ -111,25 +101,52 @@ public class TemplatePool {
         this.gmtCreate = gmtCreate;
     }
 
-    public TemplatePool(Integer templateId, String templateContent, Integer subjectId, Integer typeId, Integer answerId, Integer difficultyGrade, Date gmtCreate, Date gmtModified, Integer templateNum, List<VariablePool> variablePoolList, TPAnswer tpAnswer) {
-        this.templateId = templateId;
-        this.templateContent = templateContent;
-        this.subjectId = subjectId;
-        this.typeId = typeId;
-        this.answerId = answerId;
-        this.difficultyGrade = difficultyGrade;
-        this.gmtCreate = gmtCreate;
-        this.gmtModified = gmtModified;
+    public Date getGetModified() {
+        return getModified;
+    }
+
+    public void setGetModified(Date getModified) {
+        this.getModified = getModified;
+    }
+
+    public Integer getTemplateNum() {
+        return templateNum;
+    }
+
+    public void setTemplateNum(Integer templateNum) {
         this.templateNum = templateNum;
+    }
+
+    public List<VariablePool> getVariablePoolList() {
+        return variablePoolList;
+    }
+
+    public void setVariablePoolList(List<VariablePool> variablePoolList) {
         this.variablePoolList = variablePoolList;
+    }
+
+    public TPAnswer getTpAnswer() {
+        return tpAnswer;
+    }
+
+    public void setTpAnswer(TPAnswer tpAnswer) {
         this.tpAnswer = tpAnswer;
     }
 
-    public Date getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Date gmtModified) {
-        this.gmtModified = gmtModified;
+    @Override
+    public String toString() {
+        return "TemplatePool{" +
+                "templateId=" + templateId +
+                ", templateContent='" + templateContent + '\'' +
+                ", subjectId=" + subjectId +
+                ", typeId=" + typeId +
+                ", difficultyGrade=" + difficultyGrade +
+                ", answerId=" + answerId +
+                ", gmtCreate=" + gmtCreate +
+                ", getModified=" + getModified +
+                ", templateNum=" + templateNum +
+                ", variablePoolList=" + variablePoolList +
+                ", tpAnswer=" + tpAnswer +
+                '}';
     }
 }
