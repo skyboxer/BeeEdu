@@ -23,6 +23,6 @@ public interface TemplatePoolMapper {
      * @param templatePool
      * @return
      */
-    List<TemplatePool> getTemplatePooList(@Param("templatePool") TemplatePool templatePool);
+    List<TemplatePool> getTemplatePooList(TemplatePool templatePool);
 
 }
