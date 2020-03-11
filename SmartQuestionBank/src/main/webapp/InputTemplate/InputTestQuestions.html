@@ -98,14 +98,14 @@
             var difficultyGrade=-1;
             //监听提交
             form.on('submit(formDemo)', function(data){
-                $.post("/testQuestionsController/addTestQuestions?difficultyGrade="+difficultyGrade ,data.field,function (data) {
+                $.post("../testQuestionsController/addTestQuestions?difficultyGrade="+difficultyGrade ,data.field,function (data) {
                     layer.msg(data.msg)
                 },"json");
                 return false;
             });
 
             //异步查询科目表
-            $.get("/querySubject",function (result) {
+            $.get("../querySubject",function (result) {
                 if (result.code!==-1){
                     let Subjects = result.data;
                     let subjectHtml='<option value="" selected>请选择科目</option>\n';
@@ -129,7 +129,7 @@
                let subId=data.value;
                if (subId!=="" &&subId!=null ){
                     //发送请求查询题目类型表
-                    $.get("/queryTypePoolBySubject",{"subId":subId},function (result) {
+                    $.get("../queryTypePoolBySubject",{"subId":subId},function (result) {
                         var plates = result.data;
                         let plateHtml="<option value=\"\">请选择板块</option>\n"
                         for (let i=0;i<plates.length;i++){
