@@ -40,8 +40,14 @@ public class RecursiveEquation {
         HashMap<String, Object> map = new HashMap<>();
         //生成随机四位数的被加数
         int addend = (int) (Math.random()*10000);
+        if (addend<1000){
+            addend+=1000;
+        }
         //生成随机四位数的加数
         int add = (int) (Math.random()*10000);
+        if (add<1000){
+            add+=1000;
+        }
         //生成运算式
         String expression=addend+" + " + add +" = ";
         //生成答案
@@ -65,8 +71,14 @@ public class RecursiveEquation {
         HashMap<String, Object> map = new HashMap<>();
         //生成随机四位数的被减数
         int subtracted = (int) (Math.random()*10000);
+        if (subtracted<1000){
+            subtracted+=1000;
+        }
         //生成随机三位数的减数
         int minus = (int) (Math.random()*1000);
+        if (minus<100) {
+            minus+=100;
+        }
         //生成运算式
         String expression=subtracted+" - " + minus +" = ";
         //生成答案
@@ -91,8 +103,14 @@ public class RecursiveEquation {
         HashMap<String, Object> map = new HashMap<>();
         //生成随机两位数的被乘数
         int multiplicand = (int) (Math.random()*100);
+        if (multiplicand<10){
+            multiplicand+=10;
+        }
         //生成随机两位数的乘数
         int multiplier = (int) (Math.random()*100);
+        if (multiplier<10){
+            multiplier+=10;
+        }
         //生成运算式
         String expression=multiplicand+" × " + multiplier +" = ";
         //生成答案
@@ -120,9 +138,12 @@ public class RecursiveEquation {
         while (true){
             //生成随机五位数的被除数
             dividend = (int) (Math.random()*100000);
+            if (dividend<10000){
+                dividend+=10000;
+            }
             //生成随机一位数的除数
             divisor = (int) (Math.random()*10);
-            if (dividend%divisor==0&&divisor!=0){
+            if (divisor!=0 && divisor!=1 && dividend%divisor==0){
                 break;
             }
         }
