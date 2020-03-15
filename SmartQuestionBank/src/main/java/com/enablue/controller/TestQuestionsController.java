@@ -45,7 +45,7 @@ public class TestQuestionsController {
     public JSONObject addTestQuestions(TemplatePool templatePool,TPAnswer tpAnswer,String variableQuantity){
         //设置试题创建日期
         templatePool.setGmtCreate(new Date());
-        templatePool.setGmtModified(new Date());
+        templatePool.setGetModified(new Date());
         //设置模板答案创建日期
         tpAnswer.setGmtCreate(new Date());
         tpAnswer.setGmtModified(new Date());
