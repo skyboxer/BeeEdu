@@ -28,7 +28,7 @@
     </div>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">试卷名</label>
+        <label class="layui-form-label">试卷标题</label>
         <div class="layui-input-block">
             <input type="text" name="title" required  lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
         </div>
@@ -45,10 +45,10 @@
 
 </form>
 
-<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+<!--<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
     <legend>结果预览</legend>
 </fieldset>
-<div id="preview"></div>
+<div id="preview"></div>-->
 
 <script>
     layui.use(['form','rate','jquery','layer','laytpl'], function(){
@@ -79,7 +79,7 @@
                         content: '创建成功！是否要下载试题！', //这里content是一个普通的String
                         yes: function(index,layero){
                             var filename = data.field.title+".doc";
-                            window.open("../downLoadServlet?filename="+filename);
+                            window.open(encodeURI("../downLoadServlet?filename="+filename));
                             layer.close(index);
                         }
                     });
