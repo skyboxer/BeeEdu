@@ -135,10 +135,10 @@ public class Algorithm {
         int answer = 0;
         //一个加号
         if(addSize ==0){
-             value = "("+variableArray[0] +"×"+variableArray[1]+") + ("+variableArray[2]+"×"+variableArray[3]+")";
+             value = "("+variableArray[0]+"×"+variableArray[1]+")+("+variableArray[2]+"×"+variableArray[3]+")";
              answer = (variableArray[0]*variableArray[1])+(variableArray[2]*variableArray[3]);
         }else{
-            value = "("+variableArray[0] +"×"+variableArray[1]+") + ("+variableArray[2]+"×"+variableArray[3]+") + "+variableArray[4];
+            value = "("+variableArray[0]+"×"+variableArray[1]+")+("+variableArray[2]+"×"+variableArray[3]+")+"+variableArray[4];
             answer = (variableArray[0]*variableArray[1])+(variableArray[2]*variableArray[3])+variableArray[4];
 
         }
@@ -164,10 +164,10 @@ public class Algorithm {
         int answer = 0;
         if(addSize ==0){
             //随机三位数+随机三位数+随机三
-            value = variableArray[0] +" + "+variableArray[1]+" + "+variable1;
+            value = variableArray[0]+"+"+variableArray[1]+"+"+variable1;
             answer = variableArray[0]+variableArray[1]+variable1;
         }else{
-            value = variableArray[0] +" + "+variableArray[1]+" + "+variable1+" + "+variable2;
+            value = variableArray[0]+"+"+variableArray[1]+"+"+variable1+"+"+variable2;
             answer = variableArray[0]+variableArray[1]+variable1+variable1;
         }
         jsonObject2.put("name",name);
@@ -193,22 +193,22 @@ public class Algorithm {
         switch (addSize){
             case 0:
                 //随机三位数+随机三位数+随机三
-                value = variable1+" - "+variable2+" - "+variable3;
+                value = variable1+"-"+variable2+"-"+variable3;
                 answer = variable1-variable2-variable3;
                 break;
             case 1:
                 //随机三位数+随机三位数+随机三
-                value = variable1+" - ("+variable2+" - "+variable3+")";
+                value = variable1+"-("+variable2+"-"+variable3+")";
                 answer = variable1-(variable2-variable3);
                 break;
             case 2:
                 //随机三位数+随机三位数+随机三
-                value = variable1+" - "+variable2+" - "+variable3+" - "+variable4;
+                value = variable1+"-"+variable2+"-"+variable3+"-"+variable4;
                 answer = variable1-variable2-variable3-variable4;
                 break;
             default:
                 //随机三位数+随机三位数+随机三
-                value = variable1+" - "+variable2+" - ("+variable3+" - "+variable4+")";
+                value = variable1+"-"+variable2+"-("+variable3+"-"+variable4+")";
                 answer = variable1-variable2-(variable3-variable4);
                 break;
         }
@@ -230,10 +230,10 @@ public class Algorithm {
         String value = "";
         int answer = 0;
         if(addSize ==0){
-            value = variableArray[0] +" × "+variableArray[1]+" × "+variableArray[2];
+            value = variableArray[0] +"×"+variableArray[1]+"×"+variableArray[2];
             answer = variableArray[0]*variableArray[1]*variableArray[2];
         }else{
-            value = variableArray[0] +" × "+variableArray[1]+" × "+variableArray[2]+" × "+variableArray[3];
+            value = variableArray[0] +"×"+variableArray[1]+"×"+variableArray[2]+"×"+variableArray[3];
             answer = variableArray[0]*variableArray[1]*variableArray[2]*variableArray[3];
         }
         jsonObject4.put("name",name);
@@ -273,7 +273,7 @@ public class Algorithm {
                     remainder1 = variable3%variable4;
                 }while (remainder1!=0);
                 answer =variable1/variable2/variable4;
-                value = variable1+" ÷ "+variable2+" ÷ "+variable4;
+                value = variable1+"÷"+variable2+"÷"+variable4;
                 System.out.println(value+"="+answer);
                 break;
             case 1:
@@ -286,7 +286,7 @@ public class Algorithm {
                     variable5= RandomNumFactory.RandomNumFactory(new int[]{100,1000});
                     remainder2=variable5%(variable2/variable4);
                 }while (remainder2!=0);
-                value = variable5+" ÷ ("+variable2+" ÷ "+variable4+")";
+                value = variable5+"÷("+variable2+"÷"+variable4+")";
                 answer = variable5/(variable2/variable4);
                 System.out.println(value+"="+answer);
                 break;
@@ -304,7 +304,7 @@ public class Algorithm {
                     variable4= RandomNumFactory.RandomNumFactory(new int[]{1,10});
                     remainder3=(variable1/variable3/variable6)%variable4;
                 }while (remainder3!=0);
-                value = variable1+" ÷ "+variable3+" ÷ "+variable6+" ÷ " +variable4;
+                value = variable1+"÷"+variable3+"÷"+variable6+"÷" +variable4;
                 answer = variable1/variable3/variable6/variable4;
                 System.out.println(value+"="+answer);
                 break;
@@ -319,7 +319,7 @@ public class Algorithm {
                     variable4= RandomNumFactory.RandomNumFactory(new int[]{1,10});
                     remainder2=(variable1/variable2)%(variable3/variable4);
                 }while (remainder2!=0);
-                value = variable1+" ÷ "+variable2+" ÷ ("+variable3+" ÷ " +variable4+")";
+                value = variable1+"÷"+variable2+"÷("+variable3+"÷" +variable4+")";
                 answer = variable1/variable2/(variable3/variable4);
                 System.out.println(value+"="+answer);
                 break;
