@@ -27,9 +27,7 @@
         </div>
     </div>
 
-    <div  id="typePool">
-        
-    </div>
+
 
 
     <div class="layui-form-item">
@@ -67,62 +65,6 @@
                 $("#subjectSelect").html(options);
                 form.render();
             }
-
-        });
-
-        form.on('select(subjectSelect)',function (data) {
-            layer.msg(data.value);
-            //存入科目id
-            parameter.subjectId = data.value;
-            $.get("../queryPageTypePool",function (e) {
-                var typePoolList = e.data;
-                if(typePoolList!=null){
-                    for(var index in typePoolList){
-                        var difficultyArray = [{name:'难度1',number:0},{name:'难度2',number:0},{name:'难度3',number:0},{name:'难度4',number:0},{name:'难度5',number:0}];
-                        //初始化总数
-                        difficultyArray[0].number = typePoolList[index].amount;
-                        parameter.plateList[index]={
-                            plateId :typePoolList[index].plateId,
-                            plateName:typePoolList[index].plateName,
-                            difficultyArray:difficultyArray};
-                    }
-                }
-                showPlate();
-                form.render();
-            })
-        });
-        function showPlate(){
-            var plateList = parameter.plateList;
-            var plate = '';
-            for(var index1 in plateList){
-                plate += '<div class="layui-form-item">'
-                plate += '<label class="layui-form-label">'+plateList[index1].plateName+'</label>';
-                plate += '<div class="layui-input-block">';
-                for(var index2 in plateList[index1].difficultyArray){
-                    plate += '<div class="layui-btn-group">' +
-                        '<button type="button" class="layui-btn layui-btn-primary layui-btn-sm">'+plateList[index1].difficultyArray[index2].name+'</button>' +
-                        '<button type="button" class="layui-btn layui-btn-primary layui-btn-sm" name ="addNum" value="'+ index1 + ","+index2+'"><i class="layui-icon">&#xe624;</i></button>' +
-                        '<button type="button" class="layui-btn layui-btn-primary layui-btn-sm">'+plateList[index1].difficultyArray[index2].number+'</button>' +
-                        '<button type="button" class="layui-btn layui-btn-primary layui-btn-sm" name ="reduceNum" value="'+ index1 + ","+index2+'"><i class="layui-icon layui-icon-subtraction"></i></button>' +
-                        '</div>';
-                }
-                plate += '</div></div>';
-            }
-            $("#typePool").html(plate);
-        }
-        $(document).on('click','button[name="addNum"]',function () {
-            var indexArray = this.value.split(",");
-            parameter.plateList[indexArray[0]].difficultyArray[indexArray[1]].number++;
-            showPlate();
-        });
-        $(document).on('click','button[name="reduceNum"]',function () {
-            var indexArray = this.value.split(",");
-            var num = parameter.plateList[indexArray[0]].difficultyArray[indexArray[1]].number;
-            if(num >0){
-
-                parameter.plateList[indexArray[0]].difficultyArray[indexArray[1]].number--;
-            }
-            showPlate();
         });
 
         //监听提交
@@ -145,42 +87,6 @@
         });
 
     });
-</script>
-<script id="demo" type="text/html">
-    <h3>{{ d.title }}</h3>
-    <!--<ul>-->
-        {{#  layui.each(d.list, function(index, item){ }}
-        {{#  layui.each(item ,function(index2,item2){  }}
-        <div class="layui-row layui-col-space10">
-            <div class="layui-col-md4">
-                板块Id：{{ item2.typeId }}
-            </div>
-            <div class="layui-col-md8">
-                困难等级：{{ item2.difficultyGrade }}星
-            </div>
-        </div>
-        <div class="layui-row layui-col-space10">
-            <div class="layui-col-md12">样题：{{ item2.templateContent }} </div>
-        </div>
-        <div class="layui-row layui-col-space10">
-            <div class="layui-col-md12">答案：{{ item2.tpAnswer.answerContent }}</div>
-        </div>
-    <!--<li>
-            <span>板块Id：{{ item2.typeId }}</span>
-            <span>困难等级：{{ item2.difficultyGrade }}星</span>
-        </li>
-        <li>
-            <span>样题：{{ item2.templateContent }}</span>
-        </li>
-        <li>
-            <span>答案：{{ item2.tpAnswer.answerContent }}</span>
-        </li>-->
-        {{#  }); }}
-        {{#  }); }}
-        {{#  if(d.list.length === 0){ }}
-        无数据
-        {{#  } }}
-   <!-- </ul>-->
 </script>
 
 </body>
