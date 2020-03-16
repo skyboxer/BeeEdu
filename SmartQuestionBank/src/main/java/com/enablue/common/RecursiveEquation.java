@@ -1,5 +1,7 @@
 package com.enablue.common;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.*;
 
 /**
@@ -7,27 +9,39 @@ import java.util.*;
  * 王成
  */
 public class RecursiveEquation {
-    public HashMap<String, Object> generativeExpression(){
-        HashMap<String, Object> result = new HashMap<>();
-        int randomNumber = (int) (Math.random()*10);
-        randomNumber=randomNumber%4;
-        switch (randomNumber){
-            case 0:
-                result = addition();
-                break;
-            case 1:
-                result = Subtraction();
-                break;
-            case 2:
-                result = multiplication();
-                break;
-            case 3:
-                result = division();
-                break;
-            default:
-                break;
+    public List<JSONObject>  generativeExpression(String[] nameArray1){
+        JSONObject jsonObject=null;
+        ArrayList<JSONObject> list = new ArrayList<>();
+        //第一题
+        for(int i=0; i<nameArray1.length; i++){
+            jsonObject=new JSONObject();
+            HashMap<String, Object> result = null;
+            //生成随机加减乘除算式
+            int randomNumber = (int) (Math.random()*10);
+            randomNumber=randomNumber%4;
+            switch (randomNumber){
+                case 0:
+                    result = addition();
+                    break;
+                case 1:
+                    result = Subtraction();
+                    break;
+                case 2:
+                    result = multiplication();
+                    break;
+                case 3:
+                    result = division();
+                    break;
+                default:
+                    break;
+            }
+            jsonObject.put("name",nameArray1[i]);
+            jsonObject.put("value",result.get("expression"));//这里是自动生成
+            jsonObject.put("answer",result.get("answer"));//这里是自动生成
+            list.add(jsonObject);
         }
-        return result;
+
+        return list;
     }
 
     /**

@@ -9,6 +9,7 @@ import org.apache.poi.xwpf.usermodel.*;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,15 +27,9 @@ public class DocUtil {
         list.add(jsonObject);
         //创建竖式运算对象
         RecursiveEquation recursiveEquation = new RecursiveEquation();
-        //第一题
-        for(int i=0; i<nameArray1.length; i++){
-            jsonObject=new JSONObject();
-            HashMap<String, Object> result = recursiveEquation.generativeExpression();
-            jsonObject.put("name",nameArray1[i]);
-            jsonObject.put("value",result.get("expression"));//这里是自动生成
-            jsonObject.put("answer",result.get("answer"));//这里是自动生成
-            list.add(jsonObject);
-        }
+        //生成竖式运算
+        list.addAll(recursiveEquation.generativeExpression(nameArray1));
+
         Algorithm algorithm = new Algorithm();
         List<JSONObject> list2 = algorithm.recursiveComputation(nameArray2);
 
@@ -61,4 +56,5 @@ public class DocUtil {
             e.printStackTrace();
         }
     }
+
 }
