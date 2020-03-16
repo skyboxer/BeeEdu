@@ -26,6 +26,8 @@ public class DownLoadServlet extends HttpServlet {
         /**
          * 读取文件到inputStream流中
          */
+        //post请求乱码处理
+        request.setCharacterEncoding("UTF-8");
         //获取文件名
         String filename = request.getParameter("filename");
         //设置头信息:content-disposition,修改打开文件形式:以附件的形式打开 并且修改文件名为filename
