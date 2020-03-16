@@ -63,7 +63,7 @@ public class RecursiveEquation {
             add+=1000;
         }
         //生成运算式
-        String expression=addend+" + " + add +" = ";
+        String expression=addend+"+" + add +"=";
         //生成答案
         int answer=addend+add;
         //封装结果集
@@ -94,7 +94,7 @@ public class RecursiveEquation {
             minus+=100;
         }
         //生成运算式
-        String expression=subtracted+" - " + minus +" = ";
+        String expression=subtracted+"-" + minus +"=";
         //生成答案
         int answer=subtracted-minus;
         //封装结果集
@@ -126,7 +126,7 @@ public class RecursiveEquation {
             multiplier+=10;
         }
         //生成运算式
-        String expression=multiplicand+" × " + multiplier +" = ";
+        String expression=multiplicand+"×" + multiplier +"=";
         //生成答案
         int answer=multiplicand*multiplier;
         //封装结果集
@@ -163,7 +163,7 @@ public class RecursiveEquation {
         }
 
         //生成运算式
-        String expression=dividend+" ÷ " + divisor +" = ";
+        String expression=dividend+"÷" + divisor +"=";
         //生成答案
         int answer=dividend/divisor;
         //封装结果集
