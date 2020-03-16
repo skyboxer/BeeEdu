@@ -48,6 +48,22 @@ public class CommonReturnValue {
         return jsonObject;
     }
 
+    /**
+     * select
+     * @param code
+     * @param msg
+     * @param list
+     * @return
+     */
+    public JSONObject CommonReturnValue(String msg, int code, List<JSONObject> list) {
+        this.jsonObject = jsonObject;
+        jsonObject = new JSONObject();
+        jsonObject.put("code",code);
+        jsonObject.put("msg",msg);
+        jsonObject.put("data",list);
+        return jsonObject;
+    }
+
     public JSONObject CommonReturnValue(int code, String msg, JSONArray jsonArray){
         this.jsonObject = jsonObject;
         jsonObject = new JSONObject();

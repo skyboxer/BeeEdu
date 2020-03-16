@@ -27,12 +27,18 @@
         </div>
     </div>
 
+    <div class="layui-form-item">
+        <label class="layui-form-label">试卷名</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" required  lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+        </div>
+    </div>
 
 
 
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            <button class="layui-btn" lay-submit lay-filter="formDemo">创建试卷</button>
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
         </div>
     </div>
@@ -51,10 +57,7 @@
             $ = layui.jquery,
             layer = layui.layer,
             laytpl = layui.laytpl;
-        var parameter = {
-            subjectId:"", //科目
-            plateList:[] //板块集合
-        };
+
         $.get("../querySubject",function (e) {
             var subjectList = e.data;
             if(subjectList != null){
@@ -69,19 +72,19 @@
 
         //监听提交
         form.on('submit(formDemo)', function(data){
-            $.post("../testQuestionsController/createTestQuestions",{"parameter":JSON.stringify(parameter)} ,function (e) {
+            $.post("../createQuestionsController/createQuestions",data.field ,function (e) {
                 layer.msg(e.msg)
+                if (e.code==200){
+                    layer.open({
+                        content: '创建成功！是否要下载试题！', //这里content是一个普通的String
+                        yes: function(index,layero){
+                            var filename = data.field.title+".doc";
+                            window.open("../downLoadServlet?filename="+filename);
+                            layer.close(index);
+                        }
+                    });
 
-                //第三步：渲染模版
-                var data = { //数据
-                    "title":"试卷预览"
-                    ,"list": e.data//[{"modname":"弹层","alias":"layer","site":"layer.layui.com"},{"modname":"表单","alias":"form"}]
                 }
-                var getTpl = demo.innerHTML
-                    ,view = document.getElementById('preview');
-                laytpl(getTpl).render(data, function(html){
-                    view.innerHTML = html;
-                });
             })
             return false;
         });

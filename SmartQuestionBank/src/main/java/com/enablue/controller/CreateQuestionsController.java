@@ -1,9 +1,19 @@
 package com.enablue.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.enablue.common.CommonReturnValue;
+import com.enablue.common.RecursiveEquation;
+import com.enablue.util.Algorithm;
+import org.apache.http.HttpRequest;
+import org.apache.poi.hwpf.HWPFDocument;
+import org.apache.poi.hwpf.usermodel.Range;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,22 +25,62 @@ import java.util.List;
 @RequestMapping("createQuestionsController")
 @RestController
 public class CreateQuestionsController {
+    @Autowired
+    private CommonReturnValue commonReturnValue;
 
-    public JSONObject createQuestions(String title,String name){
+    @RequestMapping("createQuestions")
+    public JSONObject createQuestions(String title, String name, HttpServletRequest request){
         JSONObject resultObject = new JSONObject();
         String [] nameArray1 = new String[]{"${oneone}","${onetwo}",
                 "${onethree}","${onefour}"};
         String [] nameArray2 = new String[]{"${twoone}","${twotwo}",
                 "${twothree}","${twofour}","${twofive}","${twosix}"};
-        List<JSONObject> list = new ArrayList<>();
-        JSONObject jsonObject = null;
-        jsonObject = new JSONObject();
-        jsonObject.put("name","${title}");
-        jsonObject.put("value","三年级算法测试");
-        list.add(jsonObject);
-        return jsonObject;
-    }
+        List<JSONObject> questionList = new ArrayList<>();
+        JSONObject titleObject = new JSONObject();
+        titleObject.put("name","${title}");
+        titleObject.put("value",title);
+        questionList.add(titleObject);
+        //创建竖式运算对象
+        RecursiveEquation recursiveEquation = new RecursiveEquation();
+        //生成竖式运算
+        questionList.addAll(recursiveEquation.generativeExpression(nameArray1));
 
+        Algorithm algorithm = new Algorithm();
+        questionList.addAll(algorithm.recursiveComputation(nameArray2));
+
+        String templatePath = "/TemplateDoc/title.doc";
+        OutputStream outputStream;
+        HWPFDocument doc;
+        try {
+            //File file = new File(path);
+            ServletContext servletContext = request.getSession().getServletContext();
+            System.out.println(servletContext.getRealPath(templatePath));
+            InputStream is = new FileInputStream(servletContext.getRealPath(templatePath));
+            doc= new HWPFDocument(is);
+            Range range = doc.getRange();
+            for(JSONObject question : questionList){
+                range.replaceText(question.getString("name"),question.getString("value"));
+            }
+            String newPath =servletContext.getRealPath("/download/"+title+".doc");
+            String downloadPath = servletContext.getRealPath("/download");
+            File downloadPathFile = new File(downloadPath);
+            File newDoc = new File(newPath);
+            if(!downloadPathFile.exists()){
+                downloadPathFile.mkdir();
+                System.out.println("创建文件价");
+            }
+            if(!newDoc.exists()){
+                newDoc.createNewFile();
+                System.out.println("创建文件");
+            }
+            outputStream = new FileOutputStream(newPath);
+            doc.write(outputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return commonReturnValue.CommonReturnValue(-1,"创建失败");
+        }
+        return commonReturnValue.CommonReturnValue("创建成功",200,questionList);
+    }
 }
 
 
