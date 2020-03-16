@@ -17,7 +17,7 @@ import java.io.InputStream;
  * @date 2019/4/17 17:36
  * @description 处理文件下载业务
  **/
-@WebServlet("/downloadServlet")
+@WebServlet("/downLoadServlet")
 public class DownloadServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)  {
@@ -31,30 +31,22 @@ public class DownloadServlet extends HttpServlet {
         try {
             //文件下载： 流拷贝
             String filename = request.getParameter("filename");
-
+            request.setCharacterEncoding("utf-8");
             //设置头信息：1、content-disposition ；2、mimetype
-            response.setHeader("content-disposition", "attchement;filename=" + filename);
             response.setContentType(getServletContext().getMimeType(filename));
-
+            response.addHeader("Content-Disposition", "attachment;filename=" + new String(filename.getBytes("utf-8"),"ISO8859-1"));
 
             //1、读取文件到inputstream中：
-            String realPath = null;
-            if(filename.endsWith(".xml")){
-                realPath = getServletContext().getRealPath("/upload");
-            }else{
-                realPath = getServletContext().getRealPath("/result");
-            }
+            String realPath = getServletContext().getRealPath("/download");
+
             File file = new File(realPath + File.separator + filename);
             if (!file.exists()){
                 return ;
             }
             System.out.println("file = " + file);
             inputStream = new FileInputStream(file);
-
             //2、获取输出流： 写出到浏览器
              outputStream = response.getOutputStream();
-
-
             //3、流拷贝
             int len = 0;
             byte[] buf = new byte[1024];
