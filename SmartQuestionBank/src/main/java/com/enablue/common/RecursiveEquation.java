@@ -35,7 +35,7 @@ public class RecursiveEquation {
      * 王成
      * @return
      */
-    public HashMap<String,Object> addition(){
+    private HashMap<String,Object> addition(){
         //封装结果集
         HashMap<String, Object> map = new HashMap<>();
         //生成随机四位数的被加数
@@ -66,7 +66,7 @@ public class RecursiveEquation {
      * 减法运算（结果不能为负数）
      * @return
      */
-    public HashMap<String, Object>  Subtraction(){
+     private HashMap<String, Object>  Subtraction(){
         //封装结果集
         HashMap<String, Object> map = new HashMap<>();
         //生成随机四位数的被减数
@@ -98,7 +98,7 @@ public class RecursiveEquation {
      * 乘法运算
      * @return
      */
-    public HashMap<String, Object> multiplication(){
+    private HashMap<String, Object> multiplication(){
         //封装结果集
         HashMap<String, Object> map = new HashMap<>();
         //生成随机两位数的被乘数
@@ -129,7 +129,7 @@ public class RecursiveEquation {
      * 除法运算（要能除尽）
      * @return
      */
-    public HashMap<String, Object> division(){
+    private HashMap<String, Object> division(){
         //封装结果集
         HashMap<String, Object> map = new HashMap<>();
         int dividend=0;
@@ -156,7 +156,7 @@ public class RecursiveEquation {
         map.put("dividend",dividend);
         map.put("divisor",divisor);
         map.put("expression",expression);
-        map.put("answer",answer);
+        map.put("",answer);
         map.put("code",1);
         map.put("msg","生成成功");
         return map;

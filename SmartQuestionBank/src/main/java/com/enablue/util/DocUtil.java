@@ -1,11 +1,13 @@
 package com.enablue.util;
 
 import com.alibaba.fastjson.JSONObject;
+import com.enablue.common.RecursiveEquation;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.usermodel.Range;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class DocUtil {
@@ -20,12 +22,15 @@ public class DocUtil {
         jsonObject.put("name","${title}");
         jsonObject.put("value","三年级算法测试");
         list.add(jsonObject);
+        //创建竖式运算对象
+        RecursiveEquation recursiveEquation = new RecursiveEquation();
         //第一题
         for(int i=0; i<nameArray1.length; i++){
-            jsonObject = new JSONObject();
-                jsonObject.put("name",nameArray1[i]);
-                jsonObject.put("value","1232+1231");//这里是自动生成
-                jsonObject.put("answer","2463");//这里是自动生成
+            jsonObject=new JSONObject();
+            HashMap<String, Object> result = recursiveEquation.generativeExpression();
+            jsonObject.put("name",nameArray1[i]);
+            jsonObject.put("value",result.get("expression"));//这里是自动生成
+            jsonObject.put("answer",result.get("answer"));//这里是自动生成
             list.add(jsonObject);
         }
         Algorithm algorithm = new Algorithm();
@@ -47,7 +52,8 @@ public class DocUtil {
             for (JSONObject jsonObject2 :list2){
                 range.replaceText(jsonObject2.getString("name"),jsonObject2.getString("value"));
             }
-            outputStream = new FileOutputStream(new File("/home/cnxjk/下载/new.doc"));
+            //  /home/cnxjk/下载/new.doc
+            outputStream = new FileOutputStream(new File("D:\\BeeEdu\\SmartQuestionBank\\src\\main\\webapp\\OutputTemplate\\new.doc"));
             doc.write(outputStream);
         } catch (IOException e) {
             e.printStackTrace();
