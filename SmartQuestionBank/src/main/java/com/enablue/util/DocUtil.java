@@ -3,9 +3,7 @@ package com.enablue.util;
 import com.alibaba.fastjson.JSONObject;
 import com.enablue.common.RecursiveEquation;
 import org.apache.poi.hwpf.HWPFDocument;
-import org.apache.poi.hwpf.extractor.WordExtractor;
 import org.apache.poi.hwpf.usermodel.Range;
-import org.apache.poi.xwpf.usermodel.*;
 
 import java.io.*;
 import java.util.ArrayList;
