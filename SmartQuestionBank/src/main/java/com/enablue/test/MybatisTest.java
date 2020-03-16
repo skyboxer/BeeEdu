@@ -9,7 +9,10 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * mybatis测试类
@@ -18,7 +21,7 @@ import java.util.List;
  */
 public class MybatisTest {
     public static void main(String[] args) throws IOException {
-        String resource = "mybatis/mybatis-config.xml";
+        /*String resource = "mybatis/mybatis-config.xml";
         // 读取配置文件
         InputStream inputStream = Resources.getResourceAsStream(resource);
 
@@ -30,7 +33,7 @@ public class MybatisTest {
         // 初始化userDao
         AccountMapper mapper = sqlSession.getMapper(AccountMapper.class);
         List<Account> accounts = mapper.queryAllAccount();
-        System.out.println("accounts = " + accounts);
+        System.out.println("accounts = " + accounts);*/
 
 
     }

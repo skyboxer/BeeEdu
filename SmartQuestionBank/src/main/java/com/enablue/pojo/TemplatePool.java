@@ -149,4 +149,7 @@ public class TemplatePool {
                 ", tpAnswer=" + tpAnswer +
                 '}';
     }
+
+    public void setGmtModified(Date date) {
+    }
 }
