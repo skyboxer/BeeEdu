@@ -6,7 +6,8 @@ import com.enablue.common.RecursiveEquation;
 import com.enablue.util.Algorithm;
 import org.apache.http.HttpRequest;
 import org.apache.poi.hwpf.HWPFDocument;
-import org.apache.poi.hwpf.usermodel.Range;
+import org.apache.poi.hwpf.usermodel.*;
+import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,13 +53,30 @@ public class CreateQuestionsController {
         OutputStream outputStream;
         HWPFDocument doc;
         try {
-            //File file = new File(path);
             ServletContext servletContext = request.getSession().getServletContext();
             System.out.println(servletContext.getRealPath(templatePath));
             InputStream is = new FileInputStream(servletContext.getRealPath(templatePath));
             doc= new HWPFDocument(is);
             Range range = doc.getRange();
+            /*TableIterator tableIterator = new TableIterator(range);
+            while (tableIterator.hasNext()){
+                Table table = tableIterator.next();
+                for(int i = 0;i<table.numRows();i++){
+                    TableRow tableRow = table.getRow(i);
+                    for(int j =0;j<tableRow.numCells();j++){
+                        TableCell tableCell=tableRow.getCell(j);
+                        for(int k=0;k<tableCell.numParagraphs();k++){
+                            Paragraph paragraph = tableCell.getParagraph(k);
+                            for(JSONObject question : questionList){
+                                System.out.println(paragraph.getParagraph(k));
+                                paragraph.replaceText(question.getString("name"),question.getString("value"));
+                            }
+                        }
+                    }
+                }
+            }*/
             for(JSONObject question : questionList){
+                System.out.println(range.text());
                 range.replaceText(question.getString("name"),question.getString("value"));
             }
             String newPath =servletContext.getRealPath("/download/"+title+".doc");
