@@ -13,7 +13,7 @@
         )
         VALUES
         (
-          #{subjectPool.name},
+          #{subjectPool.subjectName},
           #{subjectPool.gmtCreate},
           #{subjectPool.gmtModified}
         )
@@ -21,7 +21,7 @@
     <update id="updataSubject">
           UPDATE subject_pool
           SET
-             subject_name =#{subjectPool.name},
+             subject_name =#{subjectPool.subjectName},
              gmt_modified =#{subjectPool.gmtModified}
           WHERE
             subject_id = #{subjectPool.subjectId};

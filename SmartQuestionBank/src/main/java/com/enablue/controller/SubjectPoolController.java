@@ -39,12 +39,12 @@ public class SubjectPoolController {
 
     /**
      * 删除科目
-     * @param id
+     * @param subjectId 科目id
      * @return
      */
     @RequestMapping("daleteSubject")
-    public HashMap<String,Object> daleteSubject(int id){
-        return subjectPoolService.daleteSubject(id);
+    public HashMap<String,Object> daleteSubject(int subjectId){
+        return subjectPoolService.daleteSubject(subjectId);
     }
 
     /**

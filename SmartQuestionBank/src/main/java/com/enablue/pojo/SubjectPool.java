@@ -43,4 +43,14 @@ public class SubjectPool {
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
     }
+
+    @Override
+    public String toString() {
+        return "SubjectPool{" +
+                "subjectId=" + subjectId +
+                ", subjectName='" + subjectName + '\'' +
+                ", gmtCreate=" + gmtCreate +
+                ", gmtModified=" + gmtModified +
+                '}';
+    }
 }
