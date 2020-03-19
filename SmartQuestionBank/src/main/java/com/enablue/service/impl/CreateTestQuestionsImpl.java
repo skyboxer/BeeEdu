@@ -1,5 +1,6 @@
 package com.enablue.service.impl;
 
+import com.alibaba.druid.sql.visitor.functions.Char;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.enablue.mapper.TPAnswerMapper;
@@ -9,6 +10,7 @@ import com.enablue.pojo.TPAnswer;
 import com.enablue.pojo.TemplatePool;
 import com.enablue.pojo.VariablePool;
 import com.enablue.service.CreateTestQuestionsService;
+import com.enablue.util.RandomNumFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author cnxjk
@@ -52,9 +56,7 @@ public class CreateTestQuestionsImpl implements CreateTestQuestionsService {
                     tpAnswerPool = tpAnswerMapper.getTPAswer(templatePool.getAnswerId());
                     templatePool.setTpAnswer(tpAnswerPool);
                 }
-
-                typeTemplatePoolList =templatePoolFactory(typeTemplatePoolList,templatePoolWhere.getTemplateNum());
-                testQuestionJSON.add(typeTemplatePoolList);
+                testQuestionJSON.add(templatePoolFactory(typeTemplatePoolList,templatePoolWhere.getTemplateNum()));
             }
         }
 
@@ -64,37 +66,29 @@ public class CreateTestQuestionsImpl implements CreateTestQuestionsService {
     public List<TemplatePool> templatePoolFactory(List<TemplatePool> typeTemplatePoolList,int sum){
         List<TemplatePool> templatePoolList = new ArrayList<>();
         if(typeTemplatePoolList.size()>0){
-            List<VariablePool> variablePools = typeTemplatePoolList.get(0).getVariablePoolList();
-            TemplatePool templatePool =null;
-            String templateContent = "";
-            String tpAnswerContent ="";
-            int variableNum = 0;
-            int j = 0;
-            for(int i=0;i<sum;i++){
-                if(j >= typeTemplatePoolList.size()){
-                    j=0;
+            for(int i =0;i<sum;i++){
+                TemplatePool templatePool = new TemplatePool();
+                //题目
+                int templateIndex= RandomNumFactory.RandomNumFactory(new int[]{0,typeTemplatePoolList.size()});
+                String templateContent = typeTemplatePoolList.get(templateIndex).getTemplateContent();
+                System.out.println("题目1>>>>=============================>>>"+templateContent);
+                StringBuffer newTemplateContent = new StringBuffer();
+                char[] templateContentChar = templateContent.toCharArray();
+                for (char string : templateContentChar) {
+                    // 判断是否为数字
+                    if ((string+"").matches("[0-9]")){
+                        newTemplateContent.append(RandomNumFactory.RandomNumFactory(new int[]{0,10}));
+                        continue;
+                    }
+                    newTemplateContent.append(string);
                 }
-                //找到第一道题
-                templatePool = typeTemplatePoolList.get(j);
-                for(VariablePool variablePool : variablePools){
-                    Random random = new Random();
-                    //获取题的内容
-                    templateContent = templatePool.getTemplateContent();
-                    //变量转成int类型
-                    variableNum = Integer.valueOf(variablePool.getVariableContent());
-                    System.out.println("旧的"+templateContent+variablePool.getVariableContent());
-                    int newNum = variableNum+random.nextInt(99);
-                    templateContent.replaceAll(variablePool.getVariableContent(),String.valueOf(newNum)).trim();
-                    templatePool.setTemplateContent(templateContent);
-                }
-                System.out.println("新的"+templateContent);
+                templatePool.setTemplateContent(String.valueOf(newTemplateContent));
+                System.out.println("题目2"+templatePool.getTemplateContent());
                 templatePoolList.add(templatePool);
-                j++;
             }
 
         }
         return templatePoolList;
     }
-
 
 }

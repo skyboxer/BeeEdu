@@ -148,39 +148,16 @@
 </script>
 <script id="demo" type="text/html">
     <h3>{{ d.title }}</h3>
-    <!--<ul>-->
         {{#  layui.each(d.list, function(index, item){ }}
         {{#  layui.each(item ,function(index2,item2){  }}
         <div class="layui-row layui-col-space10">
-            <div class="layui-col-md4">
-                板块Id：{{ item2.typeId }}
-            </div>
-            <div class="layui-col-md8">
-                困难等级：{{ item2.difficultyGrade }}星
-            </div>
+            <div class="layui-col-md12">样题：{{item2.templateContent}} </div>
         </div>
-        <div class="layui-row layui-col-space10">
-            <div class="layui-col-md12">样题：{{ item2.templateContent }} </div>
-        </div>
-        <div class="layui-row layui-col-space10">
-            <div class="layui-col-md12">答案：{{ item2.tpAnswer.answerContent }}</div>
-        </div>
-    <!--<li>
-            <span>板块Id：{{ item2.typeId }}</span>
-            <span>困难等级：{{ item2.difficultyGrade }}星</span>
-        </li>
-        <li>
-            <span>样题：{{ item2.templateContent }}</span>
-        </li>
-        <li>
-            <span>答案：{{ item2.tpAnswer.answerContent }}</span>
-        </li>-->
         {{#  }); }}
         {{#  }); }}
         {{#  if(d.list.length === 0){ }}
         无数据
         {{#  } }}
-   <!-- </ul>-->
 </script>
 
 </body>

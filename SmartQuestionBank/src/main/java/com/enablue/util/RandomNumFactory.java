@@ -35,5 +35,13 @@ public class RandomNumFactory {
         Arrays.sort(ranArray);
         return ranArray;
     }
-
+    public static int RandomNumSize(int x) {
+        final int[] sizeTable = {9, 99, 999, 9999, 99999, 999999, 9999999, 99999999, 999999999, Integer.MAX_VALUE};
+        for (int i =0;i<Integer.MAX_VALUE;i++){
+            if (x <= sizeTable[i]) {
+                return sizeTable[i];
+            }
+        }
+        return x;
+    }
 }
