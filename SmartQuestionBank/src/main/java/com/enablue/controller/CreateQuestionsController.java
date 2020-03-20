@@ -3,6 +3,8 @@ package com.enablue.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.enablue.common.CommonReturnValue;
 import com.enablue.common.RecursiveEquation;
+import com.enablue.pojo.TemplatePool;
+import com.enablue.service.CreateTestQuestionsService;
 import com.enablue.util.Algorithm;
 import org.apache.http.HttpRequest;
 import org.apache.poi.hwpf.HWPFDocument;
@@ -28,6 +30,8 @@ import java.util.List;
 public class CreateQuestionsController {
     @Autowired
     private CommonReturnValue commonReturnValue;
+    @Autowired
+    private CreateTestQuestionsService createTestQuestionsService;
 
     @RequestMapping("createQuestions")
     public JSONObject createQuestions(String title, String name, HttpServletRequest request){
@@ -36,6 +40,7 @@ public class CreateQuestionsController {
                 "${onethree}","${onefour}"};
         String [] nameArray2 = new String[]{"${twoone}","${twotwo}",
                 "${twothree}","${twofour}","${twofive}","${twosix}"};
+        String [] nameArray3 = new String[]{"${threeone}","${threetwo}","${threethree}"};
         List<JSONObject> questionList = new ArrayList<>();
         JSONObject titleObject = new JSONObject();
         titleObject.put("name","${title}");
@@ -46,8 +51,17 @@ public class CreateQuestionsController {
         //生成竖式运算
         questionList.addAll(recursiveEquation.generativeExpression(nameArray1));
 
+        //递等式计算
         Algorithm algorithm = new Algorithm();
         questionList.addAll(algorithm.recursiveComputation(nameArray2));
+
+        //填空题
+        List<TemplatePool> templatePoolList = new ArrayList<>();
+        templatePoolList.add(new TemplatePool(12));
+        templatePoolList.add(new TemplatePool(13));
+        templatePoolList.add(new TemplatePool(14));
+        questionList.addAll(createTestQuestionsService.templatePoolFactoryTwo(templatePoolList,nameArray3));
+
 
         String templatePath = "/TemplateDoc/title.doc";
         OutputStream outputStream;

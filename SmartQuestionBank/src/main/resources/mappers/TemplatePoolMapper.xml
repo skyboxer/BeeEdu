@@ -41,6 +41,9 @@
         select template_id,template_content,subject_id,type_id,answer_id,difficulty_grade,gmt_create,gmt_modified
         from template_pool
         where 1=1
+            <if test="templateId != null">
+                and template_id = #{templateId}
+            </if>
             <if test="subjectId != null">
                 and subject_id = #{subjectId}
             </if>

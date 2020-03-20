@@ -152,4 +152,8 @@ public class TemplatePool {
 
     public void setGmtModified(Date date) {
     }
+
+    public TemplatePool(Integer templateId) {
+        this.templateId = templateId;
+    }
 }

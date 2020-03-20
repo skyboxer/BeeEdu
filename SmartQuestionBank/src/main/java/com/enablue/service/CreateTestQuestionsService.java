@@ -3,7 +3,6 @@ package com.enablue.service;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.enablue.pojo.TemplatePool;
-import com.google.gson.JsonObject;
 
 import java.util.List;
 
@@ -14,5 +13,7 @@ import java.util.List;
 public interface CreateTestQuestionsService {
 
     JSONArray createTestQuestion(List<TemplatePool> templatePoolList);
+
+    List<JSONObject> templatePoolFactoryTwo(List<TemplatePool> typeTemplatePoolList,String[] nameArray);
 
 }

@@ -19,6 +19,67 @@ public class RandomNumFactory {
     }
 
     /**
+     * 三位数 末尾有1-2个0,非0部分为偶数
+     * @return
+     */
+    public static int threeNumFactory1(){
+        int returnNum = 0;
+        int status = RandomNumFactory(new int[]{0,1});
+        //一个0
+        if(status==0){
+            int twoNum = 0;
+            do {
+                 twoNum = RandomNumFactory(new int[]{10,100});
+            }while (twoNum%2!=0);
+            returnNum = twoNum*10;
+        }else {
+            int oneNum = 0;
+            do {
+                oneNum = RandomNumFactory(new int[]{2,10});
+            }while (oneNum%2!=0);
+            returnNum = oneNum*100;
+        }
+        return returnNum;
+    }
+    /**
+     * 三位数 末尾有1-2个0,非0部分为5
+     * @return
+     */
+    public static int threeNumFactory2(){
+        int returnNum = 0;
+        int status = RandomNumFactory(new int[]{0,1});
+        //一个0
+        if(status==0){
+            int twoNum = RandomNumFactory(new int[]{1,10});
+
+            returnNum = twoNum*100+5*10;
+        }else {
+            returnNum = 5*100;
+        }
+        return returnNum;
+    }
+
+    public static int fiveNumFactory1(int d){
+        int returnNum = 10000;
+        int twoNum;
+        for(int i=1;i<3;i++){
+            do {
+                twoNum = RandomNumFactory(new int[]{10,100});
+            }while (twoNum%d!=0);
+            if(i==1){
+                returnNum = twoNum*1000;
+            }else{
+                returnNum += twoNum;
+            }
+        }
+        return returnNum;
+    }
+
+   /* public static void main(String[] args) {
+        System.out.println(fiveNumFactory1(6));
+    }*/
+
+    /**
      * 获取一组数字
      * @param digit 位数
      * @param number 数量
