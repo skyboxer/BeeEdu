@@ -1,6 +1,5 @@
 package com.enablue.service.impl;
 
-import com.alibaba.druid.sql.visitor.functions.Char;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.enablue.mapper.TPAnswerMapper;
@@ -11,15 +10,12 @@ import com.enablue.pojo.TemplatePool;
 import com.enablue.pojo.VariablePool;
 import com.enablue.service.CreateTestQuestionsService;
 import com.enablue.util.RandomNumFactory;
+import com.enablue.util.TemplateFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author cnxjk
@@ -92,7 +88,7 @@ public class CreateTestQuestionsImpl implements CreateTestQuestionsService {
     }
 
     /**
-     *
+     * 应用题工厂函数
      * @param typeTemplatePoolList  id 集合
      * @param nameArray 占位符
      * @return
@@ -108,55 +104,10 @@ public class CreateTestQuestionsImpl implements CreateTestQuestionsService {
                    /* tpAnswerPool = tpAnswerMapper.getTPAswer(templatePool.getAnswerId());
                     templatePool.setTpAnswer(tpAnswerPool);*/
                 }
-            jsonObjects.add(templateJSONObjectFactory(templatePoolList.get(0),nameArray[index]));
+            jsonObjects.add(TemplateFactory.templateJSONObjectFactory(templatePoolList.get(0),nameArray[index]));
             index ++;
         }
         return jsonObjects;
-    }
-
-    public JSONObject templateJSONObjectFactory(TemplatePool templatePool,String name){
-        JSONObject jsonObject =new JSONObject();
-        StringBuffer newContent = new StringBuffer(templatePool.getTemplateContent());
-        switch (templatePool.getTemplateId()){
-            case 14:
-                for(VariablePool variablePool : templatePool.getVariablePoolList()){
-                    String[] strings = variablePool.getVariableContent().split(",");
-                    final int d = RandomNumFactory.RandomNumFactory(new int[]{2,10});
-                    String variable ="";
-                    switch (strings[0]){
-                        case "a":
-                            variable =String.valueOf(RandomNumFactory.threeNumFactory1());
-                            break;
-                        case "b":
-                            variable =String.valueOf(RandomNumFactory.threeNumFactory2());
-                            break;
-                        case "d":
-                            variable = String.valueOf(d);
-                            break;
-                        case "c":
-                            variable=String.valueOf(RandomNumFactory.fiveNumFactory1(d));
-                            break;
-                    }
-                    int length = ("$"+strings[0]).length();
-                    int lastIndex = newContent.lastIndexOf("$"+strings[0]);
-                    newContent.replace(lastIndex,lastIndex+length,variable);
-                }
-                break;
-            default:
-                for(VariablePool variablePool : templatePool.getVariablePoolList()){
-                    String[] strings = variablePool.getVariableContent().split(",");
-                    String variable =String.valueOf(RandomNumFactory.RandomNumFactory(new int[]{Integer.valueOf(strings[1]),Integer.valueOf(strings[2])}));
-                    int length = ("$"+strings[0]).length();
-                    int lastIndex = newContent.lastIndexOf("$"+strings[0]);
-                    newContent.replace(lastIndex,lastIndex+length,variable);
-                }
-                break;
-        }
-        System.out.println("新的内容"+newContent);
-        jsonObject.put("name",name);
-        jsonObject.put("value",newContent);
-        jsonObject.put("answer","");
-        return jsonObject;
     }
 
 }
