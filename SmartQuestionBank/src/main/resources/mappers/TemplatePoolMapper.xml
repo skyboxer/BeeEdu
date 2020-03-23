@@ -57,5 +57,14 @@
                 order by rand() limit #{templateNum}
             </if>
     </select>
+    <select id="queryTemplateBySubjectAndType" resultType="TemplatePool">
+        SELECT
+            *
+        FROM
+            template_pool
+        WHERE
+                subject_id = #{subjectId}
+        AND     type_id = #{typeId}
 
+    </select>
 </mapper>
