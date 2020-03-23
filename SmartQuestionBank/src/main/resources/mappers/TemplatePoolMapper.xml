@@ -26,6 +26,7 @@
                 #{templatePool.getModified}
             )
     </insert>
+
     <resultMap id="templatePoolMap" type="com.enablue.pojo.TemplatePool">
         <id column="template_id" property="templateId"></id>
         <result column="template_content" property="templateContent"/>
@@ -57,14 +58,34 @@
                 order by rand() limit #{templateNum}
             </if>
     </select>
-    <!---->
+    <!--根据科目和题型查询模板 王成-->
     <select id="queryTemplateBySubjectAndType" resultType="TemplatePool">
         SELECT
-            *
+           template_id,template_content,subject_id,type_id,answer_id,difficulty_grade,gmt_create,gmt_modified
         FROM
             template_pool
         WHERE
                 subject_id = #{subjectId}
         AND     type_id = #{typeId}
     </select>
+    <!--查询所有模板-->
+    <select id="queryAllTemplate" resultType="TemplatePool">
+        SELECT
+           template_id,template_content,subject_id,type_id,answer_id,difficulty_grade,gmt_create,gmt_modified
+        FROM
+            template_pool
+    </select>
+    <!--修改模板-->
+    <update id="updataTemplate">
+        UPDATE template_pool
+        SET 
+         template_content = #{templatePool.templateContent},
+         subject_id = #{templatePool.subjectId},
+         type_id = #{templatePool.typeId},
+         difficulty_grade = #{templatePool.difficultyGrade},
+         gmt_modified = #{templatePool.getModified},
+         answer_id = #{templatePool.answerId}
+        WHERE
+            (template_id = #{templatePool.templateId});
+    </update>
 </mapper>

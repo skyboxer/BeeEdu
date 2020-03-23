@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -53,4 +55,26 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
         }
         return 1;
     }
+
+
+    /**
+     * 修改模板
+     * @param templatePool
+     * @return
+     */
+    @Override
+    public HashMap<String, Object> updataTemplate(TemplatePool templatePool) {
+        HashMap<String, Object> result = new HashMap<>();
+        templatePool.setGetModified(new Date());
+        int count=templatePoolMapper.updataTemplate(templatePool);
+        if (count<1){
+            result.put("code",-1);
+            result.put("msg","修改失败");
+            return result;
+        }
+        result.put("code",1);
+        result.put("msg","修改成功");
+        return result;
+    }
+
 }

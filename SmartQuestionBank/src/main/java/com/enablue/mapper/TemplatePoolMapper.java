@@ -25,5 +25,24 @@ public interface TemplatePoolMapper {
      */
     List<TemplatePool> getTemplatePooList(TemplatePool templatePool);
 
+    /**
+     * 查询所有的模板
+     * @return
+     */
+    List<TemplatePool> queryAllTemplate();
+
+    /**
+     * 根据条件查询模板
+     * @param subjectId
+     * @param typeId
+     * @return
+     */
     List<TemplatePool> queryTemplateBySubjectAndType(@Param("subjectId") int subjectId,@Param("typeId")int typeId);
+
+    /**
+     * 修改模板
+     * @param templatePool
+     * @return
+     */
+    int updataTemplate(@Param("templatePool") TemplatePool templatePool);
 }

@@ -6,6 +6,7 @@ import com.enablue.pojo.VariablePool;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -18,5 +19,13 @@ public interface ImpotTestQuestionsService {
      * @return
      */
     int addTestQuestions(TemplatePool templatePool, List<VariablePool> variablePoolList, TPAnswer tpAnswer);
+    /**
+     * 修改试题
+     * @param templatePool
+     * @return
+     * 王成
+     */
+    HashMap<String,Object> updataTemplate(TemplatePool templatePool);
+
 
 }
