@@ -25,4 +25,5 @@ public interface TemplatePoolMapper {
      */
     List<TemplatePool> getTemplatePooList(TemplatePool templatePool);
 
+    List<TemplatePool> queryTemplateBySubjectAndType(@Param("subjectId") int subjectId,@Param("typeId")int typeId);
 }
