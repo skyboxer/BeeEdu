@@ -45,4 +45,20 @@ public interface TemplatePoolMapper {
      * @return
      */
     int updataTemplate(@Param("templatePool") TemplatePool templatePool);
+
+    /**
+     * 分页查询模板
+     * @param page
+     * @param limit
+     * @return
+     */
+    List<TemplatePool> queryPageTemplatePool(@Param("page") Long page, @Param("limit") Long limit);
+
+    /**
+     * 删除模板
+     * @param id
+     * @return
+     * 王成
+     */
+    int deleteTemplatePool(@Param("id") int id);
 }

@@ -15,17 +15,29 @@ import java.util.List;
  */
 public interface ImpotTestQuestionsService {
     /**
-     * 添加试题
+     * 添加试题模板
      * @return
      */
     int addTestQuestions(TemplatePool templatePool, List<VariablePool> variablePoolList, TPAnswer tpAnswer);
     /**
-     * 修改试题
+     * 修改试题模板
      * @param templatePool
      * @return
      * 王成
      */
     HashMap<String,Object> updataTemplate(TemplatePool templatePool);
 
+    /**
+     * 分页查询试题模板
+     * @return
+     * 王成
+     */
+    HashMap<String, Object> queryPageTemplatePool(Long page,Long limit);
 
+    /**
+     * 根据id删除模板
+     * @param id
+     * @return
+     */
+    HashMap<String, Object> deleteTemplatePool(int id);
 }

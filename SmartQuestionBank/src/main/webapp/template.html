@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>题目类型管理</title>
+    <title>模板管理</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -31,7 +31,7 @@
 </script>
 <!--这里是右侧表格数据操作-->
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="edit">修改类型名</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
@@ -52,15 +52,17 @@
         //主动渲染
         table.render({
             elem: '#test'
-            , url: '/queryPageTypePool'
+            , url: '/queryPageTemplatePool'
             , toolbar: '#toolbar' //开启头部工具栏，并为其绑定左侧模板
-            , title: '类型表'
+            , title: '模板表'
             , cols: [[
                 {type: 'checkbox', fixed: 'left'}
-                , {field: 'plateId', title: '类型ID', width: 180, fixed: 'left', unresize: true, sort: true}
-                , {field: 'subjectId', title: '科目ID', width: 180, fixed: 'left', unresize: true, sort: true}
-                , {field: 'plateName', title: '类型名', width: 130, edit: 'text'}
-                , {field: 'amount', title: '题目数量', width: 130, edit: 'text'}
+                , {field: 'templateId', title: '模板ID', width: 90, fixed: 'left', unresize: true, sort: true}
+                , {field: 'templateContent', title: '模板内容', width: 440, fixed: 'left', unresize: true,}
+                , {field: 'subjectId', title: '科目ID', width: 90, edit: 'text'}
+                , {field: 'typeId', title: '类型ID', width: 90, edit: 'text'}
+                , {field: 'difficultyGrade', title: '难度等级', width: 90, edit: 'text'}
+                , {field: 'answerId', title: '答案ID', width: 90, edit: 'text'}
                 // , {field: 'joinTime', title: '创建时间', width: 120, edit: 'text', sort: true}
                 // , {field: 'joinTime', title: '修改时间', width: 120, edit: 'text', sort: true}
                 , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150}
@@ -75,7 +77,7 @@
                     type: 2,
                     shade: [0.8, '#393D49'],
                     area: ['500px', '350px'],
-                    content: 'type_add_from.html' //这里content是一个普通的String
+                    content: 'template_add_from.html' //这里content是一个普通的String
                 });
             }
         });
@@ -92,7 +94,7 @@
                 case 'del':
                     layer.confirm('真的删除行么', function (index) {
                         //发送异步请求
-                        $.post("/daleteTypePool",{"id":data.plateId},function (result) {
+                        $.post("/daleteTypePool",{"id":data.templateId},function (result) {
                             if (result != null){
                                 layer.msg(result.msg);
                             }
@@ -106,7 +108,7 @@
                         type: 2,
                         shade: [0.8, '#393D49'],
                         area: ['500px', '350px'],
-                        content: 'type_update_from.html?plateId='+data.plateId //这里content是一个普通的String
+                        content: 'template_update_from.html?templateId='+data.templateId //这里content是一个普通的String
                     });
                     break;
                 default:

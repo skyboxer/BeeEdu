@@ -26,7 +26,10 @@
                 #{templatePool.getModified}
             )
     </insert>
-
+    <!--删除模板-->
+    <delete id="deleteTemplatePool">
+        DELETE FROM template_pool WHERE template_id=#{id}
+    </delete>
     <resultMap id="templatePoolMap" type="com.enablue.pojo.TemplatePool">
         <id column="template_id" property="templateId"></id>
         <result column="template_content" property="templateContent"/>
@@ -38,6 +41,7 @@
         <result column="gmt_modified" property="gmtModified"/>
 
     </resultMap>
+
     <select id="getTemplatePooList" parameterType="TemplatePool" resultMap="templatePoolMap">
         select template_id,template_content,subject_id,type_id,answer_id,difficulty_grade,gmt_create,gmt_modified
         from template_pool
@@ -68,12 +72,27 @@
                 subject_id = #{subjectId}
         AND     type_id = #{typeId}
     </select>
-    <!--查询所有模板-->
+    <!--查询所有模板 王成-->
     <select id="queryAllTemplate" resultType="TemplatePool">
         SELECT
            template_id,template_content,subject_id,type_id,answer_id,difficulty_grade,gmt_create,gmt_modified
         FROM
             template_pool
+    </select>
+    <!--分页查询模板-->
+    <select id="queryPageTemplatePool" resultType="TemplatePool">
+        SELECT
+            template_id,
+            template_content,
+            subject_id,
+            type_id,
+            answer_id,
+            difficulty_grade,
+            gmt_create,
+            gmt_modified
+        FROM
+            template_pool
+        LIMIT #{page},#{limit}
     </select>
     <!--修改模板-->
     <update id="updataTemplate">
