@@ -32,6 +32,7 @@
         WHERE
         plate_id=#{typePool.plateId}
     </update>
+    <!--根据id删除类型-->
     <delete id="daleteTypePool">
         DELETE
         FROM
@@ -39,6 +40,15 @@
         WHERE
             plate_id = #{id}
     </delete>
+    <!--根据科目删除类型-->
+    <delete id="daleteTypePoolBySubjectId">
+           DELETE
+        FROM
+            type_pool
+        WHERE
+            subject_id = #{id}
+    </delete>
+    <!--查询所有类型-->
     <select id="queryAllTypet" resultType="TypePool">
         SELECT
             plate_id,
@@ -48,6 +58,7 @@
         FROM
             type_pool
     </select>
+    <!--查询类型-->
     <select id="queryType" resultType="TypePool">
         SELECT
             plate_id,
@@ -58,6 +69,7 @@
             type_pool
         LIMIT #{page},#{limit}
     </select>
+    <!--根据科目id查询-->
     <select id="queryTypeBySubjectId" resultType="TypePool">
         SELECT
             plate_id,

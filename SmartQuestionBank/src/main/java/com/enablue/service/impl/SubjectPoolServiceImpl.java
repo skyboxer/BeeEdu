@@ -1,6 +1,7 @@
 package com.enablue.service.impl;
 
 import com.enablue.mapper.SubjectPoolMapper;
+import com.enablue.mapper.TypePoolMapper;
 import com.enablue.pojo.SubjectPool;
 import com.enablue.service.SubjectPoolService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ import java.util.List;
 public class SubjectPoolServiceImpl implements SubjectPoolService {
     @Autowired
     private SubjectPoolMapper subjectPoolMapper;
+    @Autowired
+    private TypePoolMapper typePoolMapper;
     /**
      * 添加科目
      * @param subjectPool
@@ -75,14 +78,16 @@ public class SubjectPoolServiceImpl implements SubjectPoolService {
 
     /**
      * 删除科目
-     * @param id
+     * @param id 科目id
      * @return
      */
     @Override
+    @Transactional
     public HashMap<String, Object> daleteSubject(int id) {
         HashMap<String, Object> result = new HashMap<>();
         int count=subjectPoolMapper.daleteSubject(id);
-        if (count < 1){
+        int count2=typePoolMapper.daleteTypePoolBySubjectId(id);
+        if (count < 1 && count2 <1){
             result.put("code",-1);
             result.put("msg","删除失败");
             return result;

@@ -2,11 +2,11 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>类型添加</title>
+    <title>类型修改</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="layuiv256/css/layui.css" media="all">
+    <link rel="stylesheet" href="../layuiv256/css/layui.css" media="all">
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
 </head>
 <body>
@@ -15,22 +15,35 @@
     <!--<div class="layui-card-header"></div>-->
     <div class="layui-card-body">
         <form id="form" class="layui-form" action="">
+
             <div class="layui-form-item">
-                <label class="layui-form-label">科目id</label>
+                <label class="layui-form-label">模板内容</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="subjectId" required  lay-verify="required"  placeholder="科目id" autocomplete="off" class="layui-input">
+                    <input type="text" name="subjectId" required  lay-verify="required"  placeholder="模板内容" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">题目类型名</label>
+                <label class="layui-form-label">科目ID</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="plateName" required  lay-verify="required"  placeholder="题型名" autocomplete="off" class="layui-input">
+                    <input type="text" name="subjectId" required  lay-verify="required"  placeholder="科目ID" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">题目数量</label>
+                <label class="layui-form-label">类型ID</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="amount" required  lay-verify="required"  placeholder="题型量" autocomplete="off" class="layui-input">
+                    <input type="text" name="typeId" required  lay-verify="required"  placeholder="类型ID" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">难度等级</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="difficultyGrade" required  lay-verify="required"  placeholder="难度等级" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">答案ID</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="answerId" required  lay-verify="required"  placeholder="答案ID" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
@@ -42,7 +55,7 @@
         </form>
     </div>
 </div>
-<script src="layuiv256/layui.js" charset="utf-8"></script>
+<script src="../layuiv256/layui.js" charset="utf-8"></script>
 
 <script>
     //Demo
@@ -50,13 +63,16 @@
         var form = layui.form;
         var layer = layui.layer,
         $=layui.jquery;
+        var search = window.location.search;
+        let templateId = decodeURI(search.substring(search.indexOf("=")+1));
+        $("#templateId").val(templateId)
         //监听提交
         form.on('submit(formDemo)', function(data){
             layer.msg(JSON.stringify(data.field));
             //表单序列化
             var fromData=$("#form").serialize();
             var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-            $.post("/addTypePool",fromData,function (result) {
+            $.post("/updataTemplatePool",fromData,function (result) {
                     if (result != null){
                         parent.layer.msg(result.msg);
                     }

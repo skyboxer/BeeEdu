@@ -14,4 +14,6 @@ public interface TypePoolMapper {
     List<TypePool> queryType(@Param("page") Long page, @Param("limit") Long limit);
 
     List<TypePool> queryTypeBySubjectId(@Param("subId") Integer subId);
+
+    int daleteTypePoolBySubjectId(@Param("id") int id);
 }
