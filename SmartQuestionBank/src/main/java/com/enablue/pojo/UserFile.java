@@ -79,7 +79,7 @@ public class UserFile {
     public void setSize(Integer size) {
         Size = size;
     }
-
+    public UserFile(){}
     public UserFile(Integer userId, String fileName, String newFileName) {
         this.userId = userId;
         this.fileName = fileName;

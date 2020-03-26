@@ -132,7 +132,8 @@ public class CreateTestQuestionsImpl implements CreateTestQuestionsService {
     public JSONObject getTestQuestionSaveLog() {
         User user= baseController.getSessionUser();
         List<UserFile> userFileList = userFileMapper.getUserFile(new UserFile(user.getUserId()));
-        if(userFileList.size()>=0){
+        if(userFileList.size()>0){
+            System.out.println(userFileList.size());
             return commonReturnValue.CommonReturnValue(200,"成功！",userFileList);
         }
         return commonReturnValue.CommonReturnValue(1005,"查询失败");
