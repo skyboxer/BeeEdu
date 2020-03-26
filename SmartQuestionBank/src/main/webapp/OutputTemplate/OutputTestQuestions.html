@@ -76,15 +76,24 @@
                 layer.msg(e.msg)
                 if (e.code==200){
                     layer.open({
-                        content: '创建成功！是否要下载试题！', //这里content是一个普通的String
-                        yes: function(index,layero){
-                            var filename = data.field.title+".doc";
-                            window.open(encodeURI("../downLoadServlet?filename="+filename));
-                            layer.close(index);
+                        type:2,
+                        content: 'http://view.xdocin.com/xdoc?_xdoc=http://www.enablue.com/ROOT1/download/'+e.newFileName+'.doc', //这里content是一个普通的String
+                        area: ['800px', '800px'],
+                        btn:['保存','下载','放弃'],
+                        yes:function (index,layero) {
+                            layer.msg("已将保存")
+                        },
+                        btn2:function (index,layero) {
+                            layer.msg("下载")
+                            window.open(encodeURI("../downLoadServlet?filename="+e.newFileName+".doc"));
+                        },
+                        btn3:function (index,layero) {
+                            layer.msg("放弃")
                         }
                     });
 
                 }
+
             })
             return false;
         });

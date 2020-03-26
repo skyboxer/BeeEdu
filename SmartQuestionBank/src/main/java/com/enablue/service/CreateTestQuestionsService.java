@@ -16,4 +16,17 @@ public interface CreateTestQuestionsService {
 
     List<JSONObject> templatePoolFactoryTwo(List<TemplatePool> typeTemplatePoolList,String[] nameArray);
 
+    /**
+     * 保存试卷
+     * @param
+     * @return
+     */
+    JSONObject saveTestQuestion(String fileName, String newFileName);
+
+    /**
+     * 查询用户下的试卷
+     * @return
+     */
+    JSONObject getTestQuestionSaveLog();
+
 }

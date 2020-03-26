@@ -6,6 +6,7 @@ import com.enablue.common.RecursiveEquation;
 import com.enablue.pojo.TemplatePool;
 import com.enablue.service.CreateTestQuestionsService;
 import com.enablue.util.Algorithm;
+import com.enablue.util.RandomNumFactory;
 import org.apache.http.HttpRequest;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.usermodel.*;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  *
@@ -36,6 +38,7 @@ public class CreateQuestionsController {
     @RequestMapping("createQuestions")
     public JSONObject createQuestions(String title, String name, HttpServletRequest request){
         JSONObject resultObject = new JSONObject();
+        String newFileName = RandomNumFactory.RandomTextFactory();
         String [] nameArray1 = new String[]{"${oneone}","${onetwo}",
                 "${onethree}","${onefour}"};
         String [] nameArray2 = new String[]{"${twoone}","${twotwo}",
@@ -93,7 +96,7 @@ public class CreateQuestionsController {
                 System.out.println(range.text());
                 range.replaceText(question.getString("name"),question.getString("value"));
             }
-            String newPath =servletContext.getRealPath("/download/"+title+".doc");
+            String newPath =servletContext.getRealPath("/download/"+newFileName+".doc");
             String downloadPath = servletContext.getRealPath("/download");
             File downloadPathFile = new File(downloadPath);
             File newDoc = new File(newPath);
@@ -111,7 +114,23 @@ public class CreateQuestionsController {
             e.printStackTrace();
             return commonReturnValue.CommonReturnValue(-1,"创建失败");
         }
-        return commonReturnValue.CommonReturnValue("创建成功",200,questionList);
+        return commonReturnValue.CommonReturnValue("创建成功",200,newFileName,questionList);
+    }
+
+    /**
+     * 保存创建试卷
+     * @param fileName
+     * @param newFileName
+     * @return
+     */
+    @RequestMapping("saveQuestions")
+    public JSONObject saveQuestions(String fileName, String newFileName){
+        return createTestQuestionsService.saveTestQuestion(fileName,newFileName);
+    }
+
+    @RequestMapping("getQuestionsLogs")
+    public JSONObject getQuestionsLogs(){
+        return createTestQuestionsService.getTestQuestionSaveLog();
     }
 }
 

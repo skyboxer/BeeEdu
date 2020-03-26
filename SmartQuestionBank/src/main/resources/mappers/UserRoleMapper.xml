@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace(命名空间)：映射文件的唯一标识 -->
+<mapper namespace="com.enablue.mapper.UserRoleMapper">
+
+    <resultMap id="UserRoleMap" type="com.enablue.pojo.UserRole">
+        <id column="id" property="roleId"/>
+        <result column="user_id" property="userId"/>
+        <result column="role_id" property="roleId"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+    </resultMap>
+
+    <select id="getUserRole" resultMap="UserRoleMap" parameterType="UserRole">
+        select id,user_id,role_id,gmt_create,gmt_modified
+        from user_role
+        where 1=1
+        <if test="roleId!=null">
+            and role_id = #{roleId}
+        </if>
+        <if test="userId!=null">
+            and user_id = #{userId}
+        </if>
+        <if test="page!=null and size!=null">
+            limit #{page},#{size}
+        </if>
+    </select>
+
+    <delete id="delUserRole" parameterType="UserRole">
+        delete from user_role where id = #{id}
+    </delete>
+
+    <update id="updateUserRole" parameterType="UserRole">
+        update user_role
+        set user_id = #{userId},role_id = #{roleId}
+        where id = #{id}
+    </update>
+
+    <insert id="addUserRole" parameterType="UserRole">
+        insert into user_role (user_id,role_id) value (#{userId},#{roleId})
+    </insert>
+
+</mapper>

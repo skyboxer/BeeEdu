@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace(命名空间)：映射文件的唯一标识 -->
+<mapper namespace="com.enablue.mapper.UserMapper">
+    <resultMap id="UserMap" type="com.enablue.pojo.User">
+        <id column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="user_tel" property="userTel"/>
+        <result column="user_password" property="userPassword"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+    </resultMap>
+    <select id="getUser" resultMap="UserMap" parameterType="User">
+        select user_id,user_name,user_password,user_tel,gmt_create,gmt_modified
+        from users
+        where 1=1
+        <if test="userId!=null">
+            and user_id = #{userId}
+        </if>
+        <if test="userName!=null">
+            and user_name = #{userName}
+        </if>
+        <if test="userTel!=null">
+            and user_tel = #{userTel}
+        </if>
+        <if test="page!=null and size!=null">
+            limit #{page},#{size}
+        </if>
+    </select>
+    <delete id="delUser" parameterType="User">
+        delete from users where user_id = #{userId}
+    </delete>
+    <update id="updateUser" parameterType="User">
+        update users
+        set user_name = #{userName},user_tel = #{userTel}
+        where user_id = #{userId}
+    </update>
+    <insert id="addUser" parameterType="User">
+        insert into users (user_name,user_tel) value (#{userName},#{userTel})
+    </insert>
+</mapper>
