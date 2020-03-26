@@ -13,4 +13,6 @@ public interface UserService {
     JSONObject userLogin(String tel, String password);
 
     List<User> updateUser(User user);
+
+    JSONObject quitLogin();
 }

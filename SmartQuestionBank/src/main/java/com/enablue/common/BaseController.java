@@ -30,4 +30,9 @@ public  class BaseController {
         HttpSession session = getRequest().getSession();
         session.setAttribute("ACCOUNT",sessionUser);
     }
+
+    public void delSessionUser(){
+        HttpSession session = getRequest().getSession();
+        session.removeAttribute("ACCOUNT");
+    }
 }

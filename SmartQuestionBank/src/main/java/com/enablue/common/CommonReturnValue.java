@@ -2,6 +2,7 @@ package com.enablue.common;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.enablue.pojo.User;
 import com.google.gson.annotations.JsonAdapter;
 import org.springframework.stereotype.Component;
 
@@ -95,6 +96,15 @@ public class CommonReturnValue {
         jsonObject.put("code",code);
         jsonObject.put("msg",msg);
         jsonObject.put("data",jsonObject);
+        return jsonObject;
+    }
+
+    public JSONObject CommonReturnValue(int code, String msg, User user){
+        this.jsonObject = jsonObject;
+        jsonObject = new JSONObject();
+        jsonObject.put("code",code);
+        jsonObject.put("msg",msg);
+        jsonObject.put("data",user);
         return jsonObject;
     }
 }

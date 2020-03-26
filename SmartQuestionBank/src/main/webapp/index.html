@@ -14,33 +14,15 @@
 
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
-        <div class="layui-logo">layui 后台布局</div>
-        <!-- 头部区域（可配合layui已有的水平导航） -->
-        <!--<ul class="layui-nav layui-layout-left">
-            <li class="layui-nav-item"><a href="">控制台</a></li>
-            <li class="layui-nav-item"><a href="">商品管理</a></li>
-            <li class="layui-nav-item"><a href="">用户</a></li>
-            <li class="layui-nav-item">
-                <a href="javascript:;">其它系统</a>
-                <dl class="layui-nav-child">
-                    <dd><a href="">邮件管理</a></dd>
-                    <dd><a href="">消息管理</a></dd>
-                    <dd><a href="">授权管理</a></dd>
-                </dl>
-            </li>
-        </ul>-->
+        <div class="layui-logo">智能题库</div>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
-                <a href="javascript:;">
+                <a href="javascript:;" id="userName">
                     <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                    Admin
+                    游客
                 </a>
-                <dl class="layui-nav-child">
-                    <dd><a href="">基本资料</a></dd>
-                    <dd><a href="">安全设置</a></dd>
-                </dl>
             </li>
-            <li class="layui-nav-item"><a href="">退了</a></li>
+            <li class="layui-nav-item"><a href="/ROOT1/userController/quitLogin">退了</a></li>
         </ul>
     </div>
 
@@ -51,9 +33,9 @@
                 <li class="layui-nav-item">
                     <a class="JumpHtml" href="javascript:;"  name ="OutputTemplate/OutputTestQuestions.html">创建试卷</a>
                 </li>
-                <li class="layui-nav-item">
+                <!--<li class="layui-nav-item">
                     <a class="JumpHtml" href="javascript:;"  name ="OutputTemplate/OutputTestQuestions1.html">创建试卷大题</a>
-                </li>
+                </li>-->
                 <li class="layui-nav-item">
                     <a href="javascript:;">基础数据操作</a>
                     <dl class="layui-nav-child">
@@ -77,7 +59,7 @@
 
     <div class="layui-footer">
         <!-- 底部固定区域 -->
-        © 赋蓝科技-自动化题库项目
+        © 赋蓝科技-智能题库
     </div>
 </div>
 
@@ -89,6 +71,8 @@
         $('.JumpHtml').on('click',function (e) {
             $('#rightContent iframe').attr("src",e.target.name);
         })
+        var storage = window.sessionStorage;
+        $("#userName").html('<img src="http://t.cn/RCzsdCq" class="layui-nav-img">'+storage.getItem("userName"))
     });
 </script>
 
