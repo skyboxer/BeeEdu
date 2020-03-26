@@ -52,7 +52,7 @@
         //主动渲染
         table.render({
             elem: '#test'
-            , url: '/queryPageTemplatePool'
+            , url: '../queryPageTemplatePool'
             , toolbar: '#toolbar' //开启头部工具栏，并为其绑定左侧模板
             , title: '模板表'
             , cols: [[
@@ -76,7 +76,7 @@
                 layer.open({
                     type: 2,
                     shade: [0.8, '#393D49'],
-                    area: ['600px', '500px'],
+                    area: ['600px', '800px'],
                     content: 'InputTestQuestions.html' //这里content是一个普通的String
                 });
             }
@@ -94,7 +94,7 @@
                 case 'del':
                     layer.confirm('真的删除行么', function (index) {
                         //发送异步请求
-                        $.post("/daleteTypePool",{"id":data.templateId},function (result) {
+                        $.post("../deleteTemplatePool",{"id":data.templateId},function (result) {
                             if (result != null){
                                 layer.msg(result.msg);
                             }
