@@ -3,43 +3,60 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace(命名空间)：映射文件的唯一标识 -->
-<mapper namespace="com.enablue.mapper.UserRoleMapper">
+<mapper namespace="com.enablue.mapper.RoleMenuMapper">
 
-    <resultMap id="UserRoleMap" type="com.enablue.pojo.UserRole">
-        <id column="id" property="roleId"/>
-        <result column="user_id" property="userId"/>
+    <resultMap id="RoleMenuMap" type="com.enablue.pojo.RoleMenu">
+        <id column="id" property="Id"/>
+        <result column="menu_id" property="menuId"/>
         <result column="role_id" property="roleId"/>
         <result column="gmt_create" property="gmtCreate"/>
         <result column="gmt_modified" property="gmtModified"/>
+        <collection property="menu" ofType="Menu">
+            <id column="menu_id1" property="menuId"/>
+            <result column="parent_id1" property="parentId"/>
+            <result column="menu_name1" property="menuName"/>
+            <result column="menu_url1" property="menuUrl"/>
+            <result column="gmt_create1" property="gmtCreate"/>
+            <result column="gmt_modified1" property="gmtModified"/>
+        </collection>
     </resultMap>
 
-    <select id="getUserRole" resultMap="UserRoleMap" parameterType="UserRole">
-        select id,user_id,role_id,gmt_create,gmt_modified
-        from user_role
+    <select id="getRoleMenu" resultMap="RoleMenuMap" parameterType="RoleMenu">
+        select rm.id,
+        rm.menu_id,
+        rm.role_id,
+        rm.gmt_create,
+        rm.gmt_modified,
+        m.menu_id menu_id1,
+        m.parent_id parent_id1,
+        m.menu_name menu_name1,
+        m.menu_url menu_url1,
+        m.gmt_create gmt_create1,
+        m.gmt_modified gmt_modified1
+        from role_menu rm
+        left join menus m
+        on rm.menu_id = m.menu_id
         where 1=1
         <if test="roleId!=null">
             and role_id = #{roleId}
         </if>
-        <if test="userId!=null">
-            and user_id = #{userId}
-        </if>
-        <if test="page!=null and size!=null">
-            limit #{page},#{size}
+        <if test="menuId!=null">
+            and menu_id = #{menuId}
         </if>
     </select>
 
-    <delete id="delUserRole" parameterType="UserRole">
-        delete from user_role where id = #{id}
+    <delete id="delRoleMenu" parameterType="RoleMenu">
+        delete from role_menu where id = #{id}
     </delete>
 
-    <update id="updateUserRole" parameterType="UserRole">
-        update user_role
-        set user_id = #{userId},role_id = #{roleId}
+    <update id="updateRoleMenu" parameterType="RoleMenu">
+        update role_menu
+        set menu_id = #{menuId},role_id = #{roleId}
         where id = #{id}
     </update>
 
-    <insert id="addUserRole" parameterType="UserRole">
-        insert into user_role (user_id,role_id) value (#{userId},#{roleId})
+    <insert id="addRoleMenu" parameterType="RoleMenu">
+        insert into role_menu (menu_id,role_id) value (#{menuId},#{roleId})
     </insert>
 
 </mapper>

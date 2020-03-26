@@ -3,13 +3,19 @@ package com.enablue.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.enablue.common.BaseController;
 import com.enablue.common.CommonReturnValue;
+import com.enablue.mapper.RoleMenuMapper;
 import com.enablue.mapper.UserMapper;
+import com.enablue.mapper.UserRoleMapper;
+import com.enablue.pojo.Menu;
+import com.enablue.pojo.RoleMenu;
 import com.enablue.pojo.User;
+import com.enablue.pojo.UserRole;
 import com.enablue.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.jms.Session;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -23,6 +29,10 @@ public class UserServiceImpl extends BaseController implements UserService {
     private BaseController baseController;
     @Autowired
     private CommonReturnValue commonReturnValue;
+    @Autowired
+    private UserRoleMapper userRoleMapper;
+    @Autowired
+    private RoleMenuMapper roleMenuMapper;
 
     @Override
     public JSONObject userLogin(String tel, String password) {
@@ -49,5 +59,24 @@ public class UserServiceImpl extends BaseController implements UserService {
     public JSONObject quitLogin() {
         baseController.delSessionUser();
         return commonReturnValue.CommonReturnValue(200,"已经退出！");
+    }
+
+    @Override
+    public JSONObject userMenu() {
+        User user= baseController.getSessionUser();
+        UserRole userRole = new UserRole();
+        userRole.setUserId(user.getUserId());
+        List<UserRole> userRoleList =userRoleMapper.getUserRole(userRole);
+        List<Menu> menuList = new ArrayList<>();
+        RoleMenu roleMenu;
+        for(UserRole userRole1 : userRoleList){
+            roleMenu = new RoleMenu();
+            roleMenu.setRoleId(userRole1.getRoleId());
+            List<RoleMenu> roleMenuList = roleMenuMapper.getRoleMenu(roleMenu);
+            for (RoleMenu roleMenu1 :roleMenuList){
+                menuList.add(roleMenu1.getMenu());
+            }
+        }
+        return commonReturnValue.CommonReturnValue(200,"成功",menuList);
     }
 }

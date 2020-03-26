@@ -15,4 +15,6 @@ public interface UserService {
     List<User> updateUser(User user);
 
     JSONObject quitLogin();
+
+    JSONObject userMenu();
 }

@@ -97,6 +97,9 @@ public class UserRole {
         this.gmtCreate = gmtCreate;
         this.gmtModified = gmtModified;
     }
+    public UserRole(){
+
+    }
 
     public UserRole(Integer userId, User user, Integer roleId, Role role) {
         this.userId = userId;
