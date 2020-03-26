@@ -3,42 +3,50 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace(命名空间)：映射文件的唯一标识 -->
-<mapper namespace="com.enablue.mapper.RoleMapper">
+<mapper namespace="com.enablue.mapper.MenuMapper">
 
-    <resultMap id="RoleMap" type="com.enablue.pojo.Role">
-        <id column="role_id" property="roleId"/>
-        <result column="role_name" property="roleName"/>
+    <resultMap id="MenuMap" type="com.enablue.pojo.Menu">
+        <id column="menu_id" property="menuId"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="menu_name" property="menuName"/>
+        <result column="menu_url" property="menuUrl"/>
         <result column="gmt_create" property="gmtCreate"/>
         <result column="gmt_modified" property="gmtModified"/>
     </resultMap>
 
-    <select id="getRole" resultMap="RoleMap" parameterType="Role">
-        select role_id,role_name,gmt_create,gmt_modified
-        from roles
+    <select id="getMenu" resultMap="MenuMap" parameterType="Menu">
+        select menu_id,parent_id,menu_name,menu_url,gmt_create,gmt_modified
+        from menus
         where 1=1
-        <if test="roleId!=null">
-            and role_id = #{roleId}
+        <if test="menuId!=null">
+            and menu_id = #{menuId}
         </if>
-        <if test="roleName!=null">
-            and role_name = #{roleName}
+        <if test="parentId!=null">
+            and parent_id = #{parentId}
+        </if>
+        <if test="menuName!=null">
+            and menu_name = #{menuName}
+        </if>
+        <if test="menuUrl!=null">
+            and menu_url = #{menuUrl}
         </if>
         <if test="page!=null and size!=null">
             limit #{page},#{size}
         </if>
     </select>
 
-    <delete id="delRole" parameterType="Role">
-        delete from roles where role_id = #{roleId}
+    <delete id="delMenu" parameterType="Menu">
+        delete from menus where menu_id = #{menuId}
     </delete>
 
-    <update id="updateRole" parameterType="Role">
-        update roles
-        set role_name = #{roleName}
-        where role_id = #{roleId}
+    <update id="updateMenu" parameterType="Menu">
+        update menus
+        set menu_name = #{menuName},menu_url = #{menuUrl},parent_id = #{parentId}
+        where menu_id = #{menuId}
     </update>
 
-    <insert id="addRole" parameterType="Role">
-        insert into roles (role_name) value (#{roleName})
+    <insert id="addMenu" parameterType="Menu">
+        insert into menus (menu_name,menu_url,parent_id) value (#{menuName},#{menuUrl},#{parentId})
     </insert>
 
 </mapper>

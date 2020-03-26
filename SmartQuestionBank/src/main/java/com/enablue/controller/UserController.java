@@ -39,4 +39,9 @@ public class UserController {
         }
         return userService.quitLogin();
     }
+    @RequestMapping("userMenu")
+    public JSONObject userMenu(){
+       return userService.userMenu();
+    }
+
 }
