@@ -45,10 +45,19 @@
 
 </form>
 
-<div id="preview"></div>
+<!--这里是右侧表格数据操作-->
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<div id="history">
+
+</div>
 
 <script>
-    layui.use(['form','rate','jquery','layer','laytpl'], function(){
+    layui.use(['form','table','rate','jquery','layer','laytpl'], function(){
+        let table=layui.table
         var form = layui.form,
             rate = layui.rate,
             $ = layui.jquery,
@@ -65,6 +74,24 @@
                 $("#subjectSelect").html(options);
                 form.render();
             }
+        });
+
+        //主动渲染
+        table.render({
+            elem: '#history'
+            , url: '../createQuestionsController/getQuestionsLogs'
+            , toolbar: '#toolbar' //开启头部工具栏，并为其绑定左侧模板
+            , title: '模板表'
+            , cols: [[
+                {type: 'checkbox', fixed: 'left'}
+                , {field: 'userName', title: '用户名', width: 440, fixed: 'left', unresize: true,}
+                , {field: 'fileName', title: '用户文件', width: 90, edit: 'text'}
+                , {field: 'gmtModified', title: '操作日期', width: 90, edit: 'text'}
+                // , {field: 'joinTime', title: '创建时间', width: 120, edit: 'text', sort: true}
+                // , {field: 'joinTime', title: '修改时间', width: 120, edit: 'text', sort: true}
+                , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150}
+            ]]
+            , page: true
         });
 
         //监听提交
