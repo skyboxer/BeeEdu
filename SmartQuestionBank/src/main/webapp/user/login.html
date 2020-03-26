@@ -48,9 +48,12 @@
         form = layui.form;
 
         form.on('submit(formDemo)', function(data){
-            $.post("userController/userLogin",data.field ,function (e) {
+            $.post("/ROOT1/userController/userLogin",data.field ,function (e) {
                 if(e.code ==200){
                     window.location.href="/ROOT1/index.html"
+                    var storage = window.sessionStorage;
+                    storage.setItem("userName",e.data.userName);
+                    storage.setItem("user",e.data.userTel);
                 }else{
                     layer.msg(e.msg);
                 }

@@ -35,25 +35,31 @@ public class RequestFilter implements Filter {
         if(method.equalsIgnoreCase("post")){
             request.setCharacterEncoding("utf-8");
         }
+        //登录和静态资源放行
         System.out.println("path"+path+", method"+method);
         if(path.indexOf("login.html")>-1 || path.indexOf(".css")>-1
                 ||path.indexOf(".js")>-1 || path.indexOf("layuiv256")>-1){
             filterChain.doFilter(request, response);
             return;
         }
+        //登录请求放行
         if(path.indexOf("userController")>-1){
             response.setContentType("charset=utf-8");
             filterChain.doFilter(request, response);
             return;
         }
+        //未登录跳转
         HttpSession session = request.getSession();
         Object object = session.getAttribute("ACCOUNT");
         if(object == null){
-            RequestDispatcher requestDispatcher =request.getRequestDispatcher("/user/login.html");
-            requestDispatcher.forward(request,response);
+            /*RequestDispatcher requestDispatcher =request.getRequestDispatcher("/user/login.html");
+            requestDispatcher.forward(request,response);*/
+            response.sendRedirect("/ROOT1/user/login.html");
             return;
+        }else{
+            filterChain.doFilter(request, response);
         }
-        filterChain.doFilter(request, response);
+
     }
 
     @Override
