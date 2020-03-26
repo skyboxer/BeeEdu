@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace(命名空间)：映射文件的唯一标识 -->
+<mapper namespace="com.enablue.mapper.UserFileMapper">
+
+    <resultMap id="UserFileMap" type="com.enablue.pojo.UserFile">
+        <id column="id" property="Id"/>
+        <result column="user_id" property="userId"/>
+        <result column="file_name" property="fileName"/>
+        <result column="new_file_name" property="newFileName"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+    </resultMap>
+
+    <select id="getUserFile" resultMap="UserFileMap" parameterType="UserFile">
+        select id,user_id,file_name,new_file_name,gmt_create,gmt_modified
+        from user_file
+        where 1=1
+        <if test="fileName!=null">
+            and file_name = #{fileName}
+        </if>
+        <if test="newFileName!=null">
+            and new_file_name = #{newFileName}
+        </if>
+        <if test="userId!=null">
+            and user_id = #{userId}
+        </if>
+        <if test="page!=null and size!=null">
+            limit #{page},#{size}
+        </if>
+    </select>
+
+    <delete id="delUserFile" parameterType="UserFile">
+        delete from user_file where id = #{id}
+    </delete>
+
+    <update id="updateUserFile" parameterType="UserFile">
+        update user_file
+        set user_id = #{userId},file_name = #{fileName},new_file_name = #{newFileName}
+        where id = #{id}
+    </update>
+
+    <insert id="addUserFile" parameterType="UserFile">
+        insert into user_file (user_id,file_name,new_file_name) value (#{userId},#{fileName},#{newFileName})
+    </insert>
+
+
+</mapper>

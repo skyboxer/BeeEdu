@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace(命名空间)：映射文件的唯一标识 -->
+<mapper namespace="com.enablue.mapper.RoleMapper">
+
+    <resultMap id="RoleMap" type="com.enablue.pojo.Role">
+        <id column="role_id" property="roleId"/>
+        <result column="role_name" property="roleName"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+    </resultMap>
+
+    <select id="getRole" resultMap="RoleMap" parameterType="Role">
+        select role_id,role_name,gmt_create,gmt_modified
+        from roles
+        where 1=1
+        <if test="roleId!=null">
+            and role_id = #{roleId}
+        </if>
+        <if test="roleName!=null">
+            and role_name = #{roleName}
+        </if>
+        <if test="page!=null and size!=null">
+            limit #{page},#{size}
+        </if>
+    </select>
+
+    <delete id="delRole" parameterType="Role">
+        delete from roles where role_id = #{roleId}
+    </delete>
+
+    <update id="updateRole" parameterType="Role">
+        update roles
+        set role_name = #{roleName}
+        where role_id = #{roleId}
+    </update>
+
+    <insert id="addRole" parameterType="Role">
+        insert into roles (role_name) value (#{roleName})
+    </insert>
+
+</mapper>

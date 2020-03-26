@@ -1,6 +1,7 @@
 package com.enablue.util;
 
 import java.util.Arrays;
+import java.util.Random;
 
 /**
  * @author cnxjk
@@ -16,6 +17,18 @@ public class RandomNumFactory {
     public static int RandomNumFactory(int[] range) {
         int ran = (int)(Math.random()*(range[1]-range[0])+range[0]);
         return ran;
+    }
+
+    public static String RandomTextFactory(){
+        String s = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        char[] c = s.toCharArray();
+        Random random = new Random();
+        StringBuffer name = new StringBuffer();
+        for( int i = 0; i < 8; i ++) {
+            name.append(c[random.nextInt(c.length)]);
+        }
+        System.out.println(name);
+        return name.toString();
     }
 
     /**

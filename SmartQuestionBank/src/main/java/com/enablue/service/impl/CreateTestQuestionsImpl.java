@@ -2,13 +2,15 @@ package com.enablue.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.enablue.common.BaseController;
+import com.enablue.common.CommonReturnValue;
 import com.enablue.mapper.TPAnswerMapper;
 import com.enablue.mapper.TemplatePoolMapper;
+import com.enablue.mapper.UserFileMapper;
 import com.enablue.mapper.VariablePoolMapper;
-import com.enablue.pojo.TPAnswer;
-import com.enablue.pojo.TemplatePool;
-import com.enablue.pojo.VariablePool;
+import com.enablue.pojo.*;
 import com.enablue.service.CreateTestQuestionsService;
+import com.enablue.service.UserService;
 import com.enablue.util.RandomNumFactory;
 import com.enablue.util.TemplateFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,12 @@ public class CreateTestQuestionsImpl implements CreateTestQuestionsService {
     private VariablePoolMapper variablePoolMapper;
     @Autowired
     private TPAnswerMapper tpAnswerMapper;
+    @Autowired
+    private UserFileMapper userFileMapper;
+    @Autowired
+    private CommonReturnValue commonReturnValue;
+    @Autowired
+    private BaseController baseController;
 
     private TPAnswer tpAnswer;
 
@@ -109,5 +117,26 @@ public class CreateTestQuestionsImpl implements CreateTestQuestionsService {
         }
         return jsonObjects;
     }
+
+    @Override
+    public JSONObject saveTestQuestion(String fileName, String newFileName) {
+        User user= baseController.getSessionUser();
+        int userFileIndex = userFileMapper.addUserFile(new UserFile(user.getUserId(),fileName,newFileName));
+        if(userFileIndex>0){
+            return commonReturnValue.CommonReturnValue(200,"保存成功");
+        }
+        return commonReturnValue.CommonReturnValue(1005,"保存失败");
+    }
+
+    @Override
+    public JSONObject getTestQuestionSaveLog() {
+        User user= baseController.getSessionUser();
+        List<UserFile> userFileList = userFileMapper.getUserFile(new UserFile(user.getUserId()));
+        if(userFileList.size()>=0){
+            return commonReturnValue.CommonReturnValue(200,"成功！",userFileList);
+        }
+        return commonReturnValue.CommonReturnValue(1005,"查询失败");
+    }
+
 
 }

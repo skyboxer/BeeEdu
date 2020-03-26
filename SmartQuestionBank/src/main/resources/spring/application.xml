@@ -7,6 +7,8 @@
         <!--spring扫描service包下的注解-->
        <context:component-scan base-package="com.enablue.service.impl"/>
        <context:component-scan base-package="com.enablue.common"/>
+       <context:component-scan base-package="com.enablue.pojo"/>
+
         <!--引入jdbc资源文件-->
         <context:property-placeholder location="classpath:jdbc.properties"></context:property-placeholder>
         <!--数据源-->
