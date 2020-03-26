@@ -52,7 +52,7 @@
         //主动渲染
         table.render({
             elem: '#test'
-            , url: 'queryPageSubject'
+            , url: '../queryPageSubject'
             , toolbar: '#toolbar' //开启头部工具栏，并为其绑定左侧模板
             , title: '科目表'
             , cols: [[
@@ -90,7 +90,7 @@
                 case 'del':
                     layer.confirm('真的删除行么', function (index) {
                         //发送异步请求
-                        $.post("daleteSubject",{"subjectId":data.subjectId},function (result) {
+                        $.post("../deleteSubject",{"subjectId":data.subjectId},function (result) {
                             if (result != null){
                                 layer.msg(result.msg);
                                 table.reload();
@@ -109,7 +109,7 @@
                             ip: value
                         });
                         data.subjectName=value;
-                        $.post("updataSubject",data,function (result) {
+                        $.post("../updataSubject",data,function (result) {
                             if (result != null){
                                 layer.msg(result.msg);
                                 table.reload();

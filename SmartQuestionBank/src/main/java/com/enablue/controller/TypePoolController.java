@@ -18,23 +18,23 @@ import java.util.HashMap;
 public class TypePoolController {
     @Autowired
     private TypePoolService typePoolService;
-    @RequestMapping("addTypePool")
+    @RequestMapping("/addTypePool")
     public HashMap<String,Object> addTypePool(TypePool typePool){
         return typePoolService.addTypePool(typePool);
     }
-    @RequestMapping("updataTypePool")
+    @RequestMapping("/updataTypePool")
     public HashMap<String,Object> updataTypePool(TypePool typePool){
         return typePoolService.updataTypePool(typePool);
     }
-    @RequestMapping("daleteTypePool")
+    @RequestMapping("/deleteTypePool")
     public HashMap<String,Object> daleteType(int id){
         return typePoolService.daleteTypePool(id);
     }
-    @RequestMapping("queryPageTypePool")
+    @RequestMapping("/queryPageTypePool")
     public HashMap<String,Object> queryAllType(Long page,Long limit){
         return typePoolService.queryAllType(page,limit);
     }
-    @RequestMapping("queryTypePoolBySubject")
+    @RequestMapping("/queryTypePoolBySubject")
     public HashMap<String,Object> queryTypeBySubjectId(Integer subId){
         return typePoolService.queryTypeBySubjectId(subId);
     }
