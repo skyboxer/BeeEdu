@@ -123,7 +123,7 @@ public class CreateTestQuestionsImpl implements CreateTestQuestionsService {
         User user= baseController.getSessionUser();
         int userFileIndex = userFileMapper.addUserFile(new UserFile(user.getUserId(),fileName,newFileName));
         if(userFileIndex>0){
-            return commonReturnValue.CommonReturnValue(200,"保存成功");
+            return commonReturnValue.CommonReturnValue(0,"保存成功");
         }
         return commonReturnValue.CommonReturnValue(1005,"保存失败");
     }
@@ -134,7 +134,7 @@ public class CreateTestQuestionsImpl implements CreateTestQuestionsService {
         List<UserFile> userFileList = userFileMapper.getUserFile(new UserFile(user.getUserId()));
         if(userFileList.size()>0){
             System.out.println(userFileList.size());
-            return commonReturnValue.CommonReturnValue(200,"成功！",userFileList);
+            return commonReturnValue.CommonReturnValue(0,"成功！",userFileList);
         }
         return commonReturnValue.CommonReturnValue(1005,"查询失败");
     }

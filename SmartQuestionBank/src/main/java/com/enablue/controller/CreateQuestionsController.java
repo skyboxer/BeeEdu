@@ -114,7 +114,7 @@ public class CreateQuestionsController {
             e.printStackTrace();
             return commonReturnValue.CommonReturnValue(-1,"创建失败");
         }
-        return commonReturnValue.CommonReturnValue("创建成功",200,newFileName,questionList);
+        return commonReturnValue.CommonReturnValue("创建成功",0,newFileName,questionList);
     }
 
     /**

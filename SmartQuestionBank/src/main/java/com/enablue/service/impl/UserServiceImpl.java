@@ -44,7 +44,7 @@ public class UserServiceImpl extends BaseController implements UserService {
         for(User user1 : userList){
             if(user1.getUserPassword().equals(password)){
                 baseController.setSessionUser(user1);
-                return commonReturnValue.CommonReturnValue(200,"登录成功！",user1);
+                return commonReturnValue.CommonReturnValue(0,"登录成功！",user1);
             }
         }
         return commonReturnValue.CommonReturnValue(1002,"密码错误");
@@ -58,7 +58,7 @@ public class UserServiceImpl extends BaseController implements UserService {
     @Override
     public JSONObject quitLogin() {
         baseController.delSessionUser();
-        return commonReturnValue.CommonReturnValue(200,"已经退出！");
+        return commonReturnValue.CommonReturnValue(0,"已经退出！");
     }
 
     @Override
@@ -77,6 +77,6 @@ public class UserServiceImpl extends BaseController implements UserService {
                 menuList.add(roleMenu1.getMenu());
             }
         }
-        return commonReturnValue.CommonReturnValue(200,"成功",menuList);
+        return commonReturnValue.CommonReturnValue(0,"成功",menuList);
     }
 }
