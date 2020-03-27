@@ -177,12 +177,17 @@ public class MachineTranslationController {
             appDetailMapper.updateAppDetail(appConfig.get(0));
             //调用百度翻译
             TransApi api = new TransApi(appConfig.get(0).getConfig1(),appConfig.get(0).getConfig2() );
-            String resultStr = api.getTransResult(text,"auto",to);
+            String resultStr = api.getTransResult(text,from,to);
             System.out.println("百度翻译api结果"+resultStr);
             if(resultStr!=null){
                 JSONArray resultJson = JSONObject.parseObject(resultStr).getJSONArray("trans_result");
-                jsonObject.put("code", 0);
-                jsonObject.put("data", resultJson.get(0));
+                if(resultJson ==null){
+                    jsonObject.put("code",-1);
+                    jsonObject.put("msg","请求失败！");
+                }else {
+                    jsonObject.put("code", 0);
+                    jsonObject.put("data", resultJson.get(0));
+                }
             }
         } catch (Exception e) {
             jsonObject.put("code", -1);

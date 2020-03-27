@@ -1,9 +1,6 @@
 package com.enablue.controller;
 
-import com.spire.pdf.FileFormat;
-import com.spire.pdf.PdfDocument;
-import com.spire.pdf.PdfPageBase;
-import com.spire.pdf.graphics.PdfMargins;
+
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +22,7 @@ import java.util.zip.ZipOutputStream;
  */
 @RestController
 public class PdfToWordController {
-    @RequestMapping("transcription/toWord")
+    /*@RequestMapping("transcription/toWord")
     public HashMap<String,Object> toWord(String fileName){
         HashMap<String, Object> result = new HashMap<>();
         if (fileName==null ||fileName.equals("null")){
@@ -69,22 +66,22 @@ public class PdfToWordController {
         return result;
     }
 
-    /**
+    *//**
      * 获取PDF文件总页码数
      * @param PDFfile
      * @return
      * @throws IOException
-     */
+     *//*
     public  int getNumberOfPages(File PDFfile) throws Exception {
         return  PDDocument.load(PDFfile).getNumberOfPages();
     }
 
-    /**
+    *//**
      * PDF转换Word
      * @param file
      * @param storagePath
      * @throws IOException
-     */
+     *//*
     public  Boolean PdfToWord(File file, String storagePath){
         //获取文件前缀名
         String fileName = file.getName();
@@ -143,13 +140,13 @@ public class PdfToWordController {
         }
         return true;
     }
-    /**
+    *//**
      * 压缩整个文件夹中的所有文件，生成指定名称的zip压缩包
      * @param filepath 文件所在目录
      * @param zippath 压缩后zip文件名称
      * @param dirFlag zip文件中第一层是否包含一级目录，true包含；false没有
      * 2015年6月9日
-     */
+     *//*
     public static void zipMultiFile(String filepath ,String zippath, boolean dirFlag) {
         try {
             File file = new File(filepath);// 要被压缩的文件夹
@@ -187,5 +184,5 @@ public class PdfToWordController {
             }
             input.close();
         }
-    }
+    }*/
 }
