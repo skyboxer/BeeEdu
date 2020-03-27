@@ -98,7 +98,7 @@
         form.on('submit(formDemo)', function(data){
             $.post("../createQuestionsController/createQuestions",data.field ,function (e) {
                 layer.msg(e.msg)
-                if (e.code==200){
+                if (e.code==0){
                     layer.open({
                         type:2,
                         content: 'http://view.xdocin.com/xdoc?_xdoc=http://www.enablue.com/ROOT1/download/'+e.newFileName+'.doc', //这里content是一个普通的String
