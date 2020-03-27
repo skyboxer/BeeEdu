@@ -49,11 +49,10 @@
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-xs" lay-event="preview">预览试卷</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="download">下载</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
 <div>
-<table class="layui-hide" id="history" lay-filter="operatorList"></table>
+    <table class="layui-hide" id="history" lay-filter="operatorList"></table>
 </div>
 
 <script>
@@ -82,27 +81,34 @@
             elem: '#history'
             , url: '../createQuestionsController/getQuestionsLogs'
             , title: '历史记录表'
-            , page: true
             , cols: [[
                 {type: 'checkbox', fixed: 'left'}
-                , {field: 'fileName', title: '试卷名名', width: 140, fixed: 'left', }
+                , {field: 'fileName', title: '试卷名', width: 140, fixed: 'left', }
+                , {field: 'newFileName', title: '文件名', width: 140, fixed: 'left', }
                 , {field: 'gmtModified', title: '操作日期', width: 290, edit: 'text'}
                 // , {field: 'joinTime', title: '创建时间', width: 120, edit: 'text', sort: true}
                 // , {field: 'joinTime', title: '修改时间', width: 120, edit: 'text', sort: true}
                 , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150}
             ]]
-            , page: true
+            , page: false
         });
         //监听行工具事件
         table.on('tool(operatorList)', function (obj) {
             var data = obj.data;
             switch (obj.event) {
                 case 'preview':
-                    break;
-                case 'del':
-                    obj.del();
+                    layer.open({
+                        type:2,
+                        content: 'http://view.xdocin.com/xdoc?_xdoc=http://www.enablue.com/ROOT1/download/'+data.newFileName+'.doc', //这里content是一个普通的String
+                        area: ['500px', '500px'],
+                    })
                     break;
                 case 'download':
+                    $.get("../downLoadServlet?fileName="+data.newFileName+"doc",function (data) {
+                        if (data.code===0){
+                            layer.msg(data.msg);
+                        }
+                    })
                     break;
                 default:
                     break;

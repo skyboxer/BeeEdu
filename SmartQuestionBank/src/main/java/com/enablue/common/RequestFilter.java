@@ -38,7 +38,8 @@ public class RequestFilter implements Filter {
         //登录和静态资源放行
         System.out.println("path"+path+", method"+method);
         if(path.indexOf("login.html")>-1 || path.indexOf(".css")>-1
-                ||path.indexOf(".js")>-1 || path.indexOf("layuiv256")>-1){
+                ||path.indexOf(".js")>-1 || path.indexOf("layuiv256")>-1
+                ||path.indexOf(".doc")>-1){
             filterChain.doFilter(request, response);
             return;
         }
@@ -56,9 +57,8 @@ public class RequestFilter implements Filter {
             requestDispatcher.forward(request,response);*/
             response.sendRedirect("/ROOT1/user/login.html");
             return;
-        }else{
-            filterChain.doFilter(request, response);
         }
+        filterChain.doFilter(request, response);
 
     }
 
