@@ -1,6 +1,7 @@
 package com.enablue.pojo;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author cnxjk
@@ -13,6 +14,15 @@ public class Menu {
     private String menuUrl;
     private Date gmtCreate;
     private Date gmtModified;
+    private List<Menu> childMenu;
+
+    public List<Menu> getChildMenu() {
+        return childMenu;
+    }
+
+    public void setChildMenu(List<Menu> childMenu) {
+        this.childMenu = childMenu;
+    }
 
     public Integer getParentId() {
         return parentId;

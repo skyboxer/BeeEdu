@@ -11,6 +11,7 @@ import com.enablue.pojo.RoleMenu;
 import com.enablue.pojo.User;
 import com.enablue.pojo.UserRole;
 import com.enablue.service.UserService;
+import com.enablue.util.ListObjectRmRepeat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,14 +70,33 @@ public class UserServiceImpl extends BaseController implements UserService {
         List<UserRole> userRoleList =userRoleMapper.getUserRole(userRole);
         List<Menu> menuList = new ArrayList<>();
         RoleMenu roleMenu;
+        List<RoleMenu> roleMenuList;
+        //查询角色下的菜单
         for(UserRole userRole1 : userRoleList){
             roleMenu = new RoleMenu();
             roleMenu.setRoleId(userRole1.getRoleId());
-            List<RoleMenu> roleMenuList = roleMenuMapper.getRoleMenu(roleMenu);
+            roleMenuList = roleMenuMapper.getRoleMenu(roleMenu);
             for (RoleMenu roleMenu1 :roleMenuList){
                 menuList.add(roleMenu1.getMenu());
             }
         }
-        return commonReturnValue.CommonReturnValue(0,"成功",menuList);
+        List<Menu> treeMenuList = new ArrayList<>();
+        //组装成树
+        for(Menu menu : menuList){
+            if(menu.getParentId()==0){
+                for (Menu childMenu : menuList){
+                    if(childMenu.getParentId()==menu.getMenuId()){
+                        if(menu.getChildMenu()==null){
+                            menu.setChildMenu(new ArrayList<>());
+                        }
+                        menu.getChildMenu().add(childMenu);
+                    }
+                }
+                treeMenuList.add(menu);
+            }
+
+
+        }
+        return commonReturnValue.CommonReturnValue(0,"成功",treeMenuList);
     }
 }

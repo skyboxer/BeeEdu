@@ -29,21 +29,7 @@
     <div class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
-                <li class="layui-nav-item">
-                    <a class="JumpHtml" href="javascript:;"  name ="OutputTemplate/OutputTestQuestions.html">创建试卷</a>
-                </li>
-                <!--<li class="layui-nav-item">
-                    <a class="JumpHtml" href="javascript:;"  name ="OutputTemplate/OutputTestQuestions1.html">创建试卷大题</a>
-                </li>-->
-                <li class="layui-nav-item">
-                    <a href="javascript:;">基础数据操作</a>
-                    <dl class="layui-nav-child">
-                        <dd><a class="JumpHtml" href="javascript:;" name ="subject/subject.html">科目操作</a></dd>
-                        <dd><a class="JumpHtml" href="javascript:;" name ="type/type.html">类型操作</a></dd>
-                        <dd><a class="JumpHtml" href="javascript:;" name ="template/template.html">模板操作</a></dd>
-                    </dl>
-                </li>
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test" id="menuTree">
             </ul>
         </div>
     </div>
@@ -68,11 +54,42 @@
     layui.use(['element','jquery'], function(){
         var element = layui.element,
         $ = layui.jquery;
-        $('.JumpHtml').on('click',function (e) {
+        $.post("userController/userMenu",function (e) {
+            if(e.code ==0){
+                var lis = '';
+                var menuNode = e.data;
+                for(var index1 in menuNode){
+                    if(menuNode[index1].childMenu== undefined){
+                        if(index1==0){
+                            $('#rightContent iframe').attr("src",menuNode[index1].menuUrl);
+                        }
+                        lis += '<li class="layui-nav-item">\n' +
+                            '       <a class="JumpHtml" href="javascript:;"  name ="'+menuNode[index1].menuUrl+'">'+menuNode[index1].menuName+'</a>\n';
+                        lis +=  '</li>';
+                        continue;
+                    }
+                    lis += '<li class="layui-nav-item">\n' +
+                        '       <a href="javascript:;">'+menuNode[index1].menuName+'</a>' +
+                        '       <dl class="layui-nav-child">';
+                        var childNode = menuNode[index1].childMenu;
+                        for(var index2 in childNode){
+                            lis+='<dd><a class="JumpHtml" href="javascript:;" name ="'+childNode[index2].menuUrl+'">'+childNode[index2].menuName+'</a></dd>\n';
+                        }
+                        lis +=  '</dl>';
+                    lis +=  '</li>';
+                }
+                $("#menuTree").append(lis);
+            }else{
+                layer.msg(e.msg);
+            }
+            element.render();
+        })
+        $(document).on('click','.JumpHtml',function (e) {
             $('#rightContent iframe').attr("src",e.target.name);
         })
         var storage = window.sessionStorage;
-        $("#userName").html('<img src="http://t.cn/RCzsdCq" class="layui-nav-img">'+storage.getItem("userName"))
+        $("#userName").html('<img src="http://t.cn/RCzsdCq" class="layui-nav-img">'+storage.getItem("userName"));
+
     });
 </script>
 
