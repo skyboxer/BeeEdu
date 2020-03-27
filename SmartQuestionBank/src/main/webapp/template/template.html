@@ -97,6 +97,11 @@
                         $.post("../deleteTemplatePool",{"id":data.templateId},function (result) {
                             if (result != null){
                                 layer.msg(result.msg);
+                                table.reload('test',{
+                                    page: {
+                                        curr:1
+                                    },
+                                });
                             }
                         },"json");
                         obj.del();

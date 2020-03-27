@@ -95,11 +95,17 @@
                         $.post("../daleteTypePool",{"id":data.plateId},function (result) {
                             if (result != null){
                                 layer.msg(result.msg);
+                                table.reload('test',{
+                                    page: {
+                                        curr:1
+                                    },
+                                });
                             }
                         },"json");
                         obj.del();
                         layer.close(index);
                     });
+
                     break;
                 case 'edit':
                     layer.open({
@@ -108,6 +114,7 @@
                         area: ['500px', '350px'],
                         content: 'type_update_from.html?plateId='+data.plateId //这里content是一个普通的String
                     });
+
                     break;
                 default:
                     break;
