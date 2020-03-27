@@ -93,7 +93,11 @@
                         $.post("../deleteSubject",{"subjectId":data.subjectId},function (result) {
                             if (result != null){
                                 layer.msg(result.msg);
-                                table.reload();
+                                table.reload('test',{
+                                    page: {
+                                        curr:1
+                                    },
+                                });
                             }
                         },"json");
                         obj.del();
@@ -112,7 +116,11 @@
                         $.post("../updataSubject",data,function (result) {
                             if (result != null){
                                 layer.msg(result.msg);
-                                table.reload();
+                                table.reload('test',{
+                                    page: {
+                                         curr:1
+                                    },
+                                });
                             }
                         },"json");
                         layer.close(index);

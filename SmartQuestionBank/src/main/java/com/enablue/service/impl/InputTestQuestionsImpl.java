@@ -1,6 +1,5 @@
 package com.enablue.service.impl;
 
-import com.enablue.common.CommonReturnValue;
 import com.enablue.mapper.TPAnswerMapper;
 import com.enablue.mapper.TemplatePoolMapper;
 import com.enablue.mapper.VariablePoolMapper;
@@ -73,7 +72,7 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
             result.put("msg","修改失败");
             return result;
         }
-        result.put("code",1);
+        result.put("code",0);
         result.put("msg","修改成功");
         return result;
     }
@@ -123,7 +122,7 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
             result.put("msg","删除失败");
             return result;
         }
-        result.put("code",1);
+        result.put("code",0);
         result.put("msg","删除成功");
         return result;
     }

@@ -100,6 +100,8 @@
             form.on('submit(formDemo)', function(data){
                 $.post("../testQuestionsController/addTestQuestions?difficultyGrade="+difficultyGrade ,data.field,function (data) {
                     layer.msg(data.msg)
+                    //修改成功后刷新父界面
+                    window.parent.location.reload();
                 },"json");
                 return false;
             });
