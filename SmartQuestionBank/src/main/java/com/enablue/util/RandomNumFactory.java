@@ -19,12 +19,12 @@ public class RandomNumFactory {
         return ran;
     }
 
-    public static String RandomTextFactory(){
-        String s = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    public static String RandomTextFactory(){//ABCDEFGHIJKLMNOPQRSTUVWXYZ
+        String s = "abcdefghijklmnopqrstuvwxyz1234567890";
         char[] c = s.toCharArray();
         Random random = new Random();
         StringBuffer name = new StringBuffer();
-        for( int i = 0; i < 8; i ++) {
+        for( int i = 0; i < 16; i ++) {
             name.append(c[random.nextInt(c.length)]);
         }
         System.out.println(name);
