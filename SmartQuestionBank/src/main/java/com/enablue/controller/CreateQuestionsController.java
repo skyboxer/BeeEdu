@@ -1,9 +1,11 @@
 package com.enablue.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.enablue.common.BaseController;
 import com.enablue.common.CommonReturnValue;
 import com.enablue.common.RecursiveEquation;
 import com.enablue.pojo.TemplatePool;
+import com.enablue.pojo.User;
 import com.enablue.service.CreateTestQuestionsService;
 import com.enablue.util.Algorithm;
 import com.enablue.util.RandomNumFactory;
@@ -34,11 +36,14 @@ public class CreateQuestionsController {
     private CommonReturnValue commonReturnValue;
     @Autowired
     private CreateTestQuestionsService createTestQuestionsService;
+    @Autowired
+    private BaseController baseController;
 
     @RequestMapping("createQuestions")
     public JSONObject createQuestions(String title, String name, HttpServletRequest request){
         JSONObject resultObject = new JSONObject();
-        String newFileName = RandomNumFactory.RandomTextFactory();
+        User user = baseController.getSessionUser();
+        String newFileName = RandomNumFactory.RandomTextFactory()+user.getUserTel();;
         String [] nameArray1 = new String[]{"${oneone}","${onetwo}",
                 "${onethree}","${onefour}"};
         String [] nameArray2 = new String[]{"${twoone}","${twotwo}",
