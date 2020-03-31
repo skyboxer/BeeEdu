@@ -89,6 +89,9 @@
         })
         var storage = window.sessionStorage;
         $("#userName").html('<img src="layuiv256/img/cweg.jpg" class="layui-nav-img">'+storage.getItem("userName"));
+        if(storage.setItem("userName")==null){
+            window.location.href = "/ROOT1/userController/quitLogin";
+        }
 
     });
 </script>

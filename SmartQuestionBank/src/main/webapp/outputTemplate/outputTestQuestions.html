@@ -56,12 +56,13 @@
 </div>
 
 <script>
-    layui.use(['form','table','rate','jquery','layer','laytpl'], function(){
+    layui.use(['form','table','rate','jquery','layer','laytpl','element'], function(){
         let table=layui.table
         var form = layui.form,
             rate = layui.rate,
             $ = layui.jquery,
             layer = layui.layer,
+            element = layui.element,
             laytpl = layui.laytpl;
 
         $.get("../querySubject",function (e) {
@@ -97,18 +98,14 @@
             var data = obj.data;
             switch (obj.event) {
                 case 'preview':
-                    layer.open({
-                        type:2,
-                        content: 'http://view.xdocin.com/xdoc?_xdoc=http://www.enablue.com/ROOT1/download/'+data.newFileName+'.doc', //这里content是一个普通的String
-                        area: ['500px', '500px'],
-                    })
+                        layer.open({
+                            type: 2,
+                            content: 'https://view.xdocin.com/xdoc?_xdoc=https://www.enablue.com/ROOT1/download/'+data.newFileName+'.doc', //这里content是一个普通的String
+                            area: ['650px', '700px'],
+                        })
                     break;
                 case 'download':
-                    $.get("../downLoadServlet?fileName="+data.newFileName+"doc",function (data) {
-                        if (data.code===0){
-                            layer.msg(data.msg);
-                        }
-                    })
+                        window.open(encodeURI("../downLoadServlet?filename="+data.newFileName+".doc"));
                     break;
                 default:
                     break;
@@ -118,25 +115,60 @@
         //监听提交
         form.on('submit(formDemo)', function(data){
             $.post("../createQuestionsController/createQuestions",data.field ,function (e) {
-                layer.msg(e.msg)
                 if (e.code==0){
-                    layer.open({
-                        type:2,
-                        content: 'http://view.xdocin.com/xdoc?_xdoc=http://www.enablue.com/ROOT1/download/'+e.newFileName+'.doc', //这里content是一个普通的String
-                        area: ['800px', '800px'],
-                        btn:['保存','下载','放弃'],
-                        yes:function (index,layero) {
-                            layer.msg("已将保存")
-                        },
-                        btn2:function (index,layero) {
-                            layer.msg("下载")
-                            window.open(encodeURI("../downLoadServlet?filename="+e.newFileName+".doc"));
-                        },
-                        btn3:function (index,layero) {
-                            layer.msg("放弃")
-                        }
-                    });
+                    $("#ifreamHtml").attr("src","https://view.xdocin.com/xdoc?_xdoc=https://www.enablue.com/ROOT1/download/"+e.newFileName+".doc");
+                    element.render();
+                    layer.confirm('试卷已生成完毕！', {
+                        btn: ['预览', '下载', '保存'] //可以无限个按钮
+                        ,btn3: function(index, layero){
+                            //保存
+                            $.post("../createQuestionsController/saveQuestions",{"fileName":data.field.title,"newFileName":e.newFileName} ,function (e2) {
+                                layer.msg(e2.msg);
+                            });
 
+                        }
+                    }, function(index, layero){
+                        //预览
+                        layer.open({
+                            type: 2,
+                            title: '请稍等,正在打开文件！',
+                            closeBtn: 0, //不显示关闭按钮
+                            shade: [0],
+                            area: ['340px', '215px'],
+                            time: 3000, //2秒后自动关闭
+                            anim: 2,
+                            content: ['https://view.xdocin.com/xdoc?_xdoc=https://www.enablue.com/ROOT1/download/'+e.newFileName+'.doc', 'no'], //iframe的url，no代表不显示滚动条
+                            end: function(){ //此处用于演示
+                                layer.open({
+                                    type: 2,
+                                    title: '如果未显示正确文件,请关闭后再次预览',
+                                    shadeClose: true,
+                                    shade: false,
+                                    maxmin: true, //开启最大化最小化按钮
+                                    area: ['893px', '600px'],
+                                    content: 'https://view.xdocin.com/xdoc?_xdoc=https://www.enablue.com/ROOT1/download/'+e.newFileName+'.doc',
+                                    btn:['保存','下载','放弃'],
+                                    yes:function (index,layero) {
+                                        $.post("../createQuestionsController/saveQuestions",{"fileName":data.field.title,"newFileName":e.newFileName} ,function (e2) {
+                                            layer.msg(e2.msg);
+                                        });
+                                    },
+                                    btn2:function (index,layero) {
+                                        layer.msg("下载")
+                                        window.open(encodeURI("../downLoadServlet?filename="+e.newFileName+".doc"));
+                                    },
+                                    btn3:function (index,layero) {
+                                        layer.msg("放弃")
+                                        layer.close(index);
+                                    }
+                                });
+                            }
+                        });
+                    }, function(index){
+                        //下载
+                        layer.msg("下载")
+                        window.open(encodeURI("../downLoadServlet?filename="+e.newFileName+".doc"));
+                    });
                 }
 
             })
@@ -147,4 +179,8 @@
 </script>
 
 </body>
+<div hidden>
+    <iframe style="width: 100%;height: 100%;" src="" frameborder="1" id="ifreamHtml"></iframe>
+</div>
+
 </html>
