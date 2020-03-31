@@ -19,6 +19,6 @@ public class TimpStampUtil {
         if(tempTime%60<10){
             sec="0"+sec;
         }
-        return hour + ":"+minut+":"+sec+","+time%100;
+        return hour + ":"+minut+":"+sec+","+time%1000;
     }
 }
