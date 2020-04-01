@@ -105,7 +105,8 @@
                         })
                     break;
                 case 'download':
-                        window.open(encodeURI("../downLoadServlet?filename="+data.newFileName+".doc"));
+                        //window.open(encodeURI("../downLoadServlet?filename="+data.newFileName+".doc"));
+                    window.open(encodeURI("/ROOT1/download/"+data.newFileName+".doc"));
                     break;
                 default:
                     break;
@@ -155,7 +156,7 @@
                                     },
                                     btn2:function (index,layero) {
                                         layer.msg("下载")
-                                        window.open(encodeURI("../downLoadServlet?filename="+e.newFileName+".doc"));
+                                        window.open(encodeURI("/ROOT1/download/"+e.newFileName+".doc"));
                                     },
                                     btn3:function (index,layero) {
                                         layer.msg("放弃")
@@ -167,7 +168,7 @@
                     }, function(index){
                         //下载
                         layer.msg("下载")
-                        window.open(encodeURI("../downLoadServlet?filename="+e.newFileName+".doc"));
+                        window.open(encodeURI("/ROOT1/download/"+e.newFileName+".doc"));
                     });
                 }
 

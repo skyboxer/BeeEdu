@@ -43,7 +43,7 @@ public class CreateQuestionsController {
     public JSONObject createQuestions(String title, String name, HttpServletRequest request){
         JSONObject resultObject = new JSONObject();
         User user = baseController.getSessionUser();
-        String newFileName = RandomNumFactory.RandomTextFactory()+user.getUserTel();;
+        String newFileName = RandomNumFactory.RandomTextFactory()+user.getUserTel();
         String [] nameArray1 = new String[]{"${oneone}","${onetwo}",
                 "${onethree}","${onefour}"};
         String [] nameArray2 = new String[]{"${twoone}","${twotwo}",
@@ -101,7 +101,7 @@ public class CreateQuestionsController {
                 System.out.println(range.text());
                 range.replaceText(question.getString("name"),question.getString("value"));
             }
-            String newPath =servletContext.getRealPath("/download/"+newFileName+".doc");
+            /*String newPath =servletContext.getRealPath("/download/"+newFileName+".doc");
             String downloadPath = servletContext.getRealPath("/download");
             File downloadPathFile = new File(downloadPath);
             File newDoc = new File(newPath);
@@ -113,7 +113,14 @@ public class CreateQuestionsController {
                 newDoc.createNewFile();
                 System.out.println("创建文件");
             }
-            outputStream = new FileOutputStream(newPath);
+            outputStream = new FileOutputStream(newPath);*/
+            String newDocPath = "/home/data/ROOT1/download/"+newFileName+".doc";
+            File newDocFile = new File(newDocPath);
+            if(!newDocFile.isFile() && !newDocFile.exists()){
+                newDocFile.createNewFile();
+                System.out.println("创建文件"+newDocFile.getAbsolutePath());
+            }
+            outputStream = new FileOutputStream(newDocPath);
             doc.write(outputStream);
         } catch (IOException e) {
             e.printStackTrace();
