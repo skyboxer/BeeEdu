@@ -251,6 +251,7 @@ public class IfasrServiceImpl implements IfasrService {
                //
                //获取时间
                int beginTime = word.getBg();
+               //每个字符均分字幕显示时间
                int time = (word.getEd() - beginTime) / onebest.length();
                //处理内容
                //按标点符号分割字符串
@@ -272,7 +273,7 @@ public class IfasrServiceImpl implements IfasrService {
                        String ed = TimpStampUtil.processingTimeStamp(beginTime + temp2.length() * time);
                        temp.append(bg + " --> " + ed + "\r\n" + temp2 + "\r\n\r\n");
                        //更新时间坐标
-                       beginTime = beginTime + temp2.length() * time;
+                       beginTime +=  temp2.length() * time;
                        //清楚零时缓存
                        temp2.delete(0, temp2.length());
                    } else {
@@ -283,7 +284,7 @@ public class IfasrServiceImpl implements IfasrService {
                        }
                        temp2.append(s);
                        int start=0;
-                       int end=15;
+                       int end=19;
                        //截取前20个字符作为一段字幕
                        boolean flag=true;
                        while (end!=0){
@@ -298,14 +299,14 @@ public class IfasrServiceImpl implements IfasrService {
                            //截取后面的字符作为一段字幕
                            if (flag){
                                temp.append(count + "\r\n");
+                               count++;
                            }
                            temp2=new StringBuffer(temp2.substring(end));
-                           if (temp2.length() >15){
-                               end=15;
+                           if (temp2.length() >19){
+                               end=19;
                            }else {
                                end=temp2.length();
                            }
-                           count++;
                        }
                        //清楚零时缓存
                        temp2.delete(0, temp2.length());
@@ -350,9 +351,12 @@ public class IfasrServiceImpl implements IfasrService {
         try{
             writer = new FileWriter(realPath + File.separator + taskId + ".txt", true);
             //控制变量
+            //计算句数
             int count = 1;
             String temp = "\t";
+            //开始空格
             writer.write("   ");
+            //存放临时处理的字符
             String onebest = "";
 
             for (Word word : words) {
@@ -372,7 +376,7 @@ public class IfasrServiceImpl implements IfasrService {
                     } else if (s.length() <= 10) {
                         temp2 += s + ",";
                     } else {
-                        temp2 += s + ".";
+                        temp2 += s + "。";
                     }
                 }
 
@@ -386,7 +390,7 @@ public class IfasrServiceImpl implements IfasrService {
                 if (onebest.length() > 10 && (tailed.equals("！") || tailed.equals("。") || tailed.equals("？"))) {
                     count++;
                     //换行
-                    if (count % 6 == 0) {
+                    if (count % 8 == 0) {
                         count = 1;
                         writer.write("\r\n   ");
                         temp += "\r\n\t";
@@ -472,7 +476,7 @@ public class IfasrServiceImpl implements IfasrService {
                         temp2.append(s);
                         String bg = TimpStampUtil.processingTimeStamp(beginTime);
                         String ed = TimpStampUtil.processingTimeStamp(beginTime + temp2.length() * time);
-                        temp.append(bg + " --> " + ed + "\r\n" + temp2 + "\r\n\r\n");
+                        temp.append(bg + " --> " + ed + "\r\n" + temp2 +"." + "\r\n\r\n");
                         //更新时间坐标
                         beginTime = beginTime + temp2.length() * time;
                         //清楚零时缓存
@@ -492,7 +496,6 @@ public class IfasrServiceImpl implements IfasrService {
                                 temp.append(bg + " --> " + ed + "\r\n" + temp2 + "\r\n\r\n");
                                 //更新时间坐标
                                 beginTime = beginTime + s1.length * time * 3;
-                                count++;
                                 //清楚临时缓存
                                 temp2.delete(0, temp2.length());
                             }else if (i%7 == 0 && i != 0){
@@ -501,16 +504,20 @@ public class IfasrServiceImpl implements IfasrService {
                                 temp.append(bg + " --> " + ed + "\r\n" + temp2 + "\r\n\r\n");
                                 //更新时间坐标
                                 beginTime = beginTime + s1.length * time * 3;
-                                count++;
                                 if (i != s1.length - 1) {
                                     //截取后面的字符作为一段字幕
-                                    temp.append(count + "\r\n");
+                                    temp.append(count +"."+ "\r\n");
+                                    count++;
                                 }
                                 //清楚临时缓存
                                 temp2.delete(0, temp2.length());
                             }
                         }
                     }
+                }
+                //换行
+                if (count % 8 == 0) {
+                    temp.append("\r\n\t") ;
                 }
                 //释放临时存储短句
                 tempWord = null;
