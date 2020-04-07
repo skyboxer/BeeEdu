@@ -3,8 +3,7 @@ package com.enablue.service;
 import com.enablue.pojo.TPAnswer;
 import com.enablue.pojo.TemplatePool;
 import com.enablue.pojo.VariablePool;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +17,7 @@ public interface ImpotTestQuestionsService {
      * 添加试题模板
      * @return
      */
-    int addTestQuestions(TemplatePool templatePool, List<VariablePool> variablePoolList, TPAnswer tpAnswer);
+    int addTestQuestions(TemplatePool templatePool, List<VariablePool> variablePoolList, TPAnswer tpAnswer, MultipartFile file);
     /**
      * 修改试题模板
      * @param templatePool

@@ -17,14 +17,19 @@
 <blockquote class="layui-elem-quote">
     录入模板
 </blockquote>
-    <form class="layui-form" action="">
+    <form class="layui-form" id="fm" method="post" action="" enctype="multipart/form-data">
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">试题模板</label>
             <div class="layui-input-block">
                 <textarea placeholder="请输入内容" class="layui-textarea" name="templateContent"></textarea>
             </div>
         </div>
-
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">试题图片</label>
+            <div class="layui-input-block">
+                    <input name="file" type="file"/>
+            </div>
+        </div>
         <div class="layui-form-item">
             <label class="layui-form-label">标识("/"分割)</label>
             <div class="layui-input-block">
@@ -97,12 +102,30 @@
             var element = layui.element;
             var difficultyGrade=-1;
             //监听提交
+
             form.on('submit(formDemo)', function(data){
-                $.post("../testQuestionsController/addTestQuestions?difficultyGrade="+difficultyGrade ,data.field,function (data) {
-                    layer.msg(data.msg)
-                    //修改成功后刷新父界面
-                    window.parent.location.reload();
-                },"json");
+
+                let formData = new FormData($( "#fm" )[0]);
+                $.ajax({
+                    url : '../testQuestionsController/addTestQuestions?difficultyGrade='+difficultyGrade,
+                    type : 'post',
+                    async: false,
+                    data : formData,
+                    cache:false,
+                    contentType: false,
+                    processData: false,
+                    success : function(data) {
+                        layer.msg(data.msg)
+                        //修改成功后刷新父界面
+                        window.parent.location.reload();
+                    }
+                });
+
+                // $.post("../testQuestionsController/addTestQuestions?difficultyGrade="+difficultyGrade+"" ,data.field,function (data) {
+                //     layer.msg(data.msg)
+                //     //修改成功后刷新父界面
+                //     window.parent.location.reload();
+                // },"json");
                 return false;
             });
 

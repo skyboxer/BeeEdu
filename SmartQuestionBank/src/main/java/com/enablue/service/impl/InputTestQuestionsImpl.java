@@ -1,8 +1,10 @@
 package com.enablue.service.impl;
 
+import com.enablue.mapper.ImageMapper;
 import com.enablue.mapper.TPAnswerMapper;
 import com.enablue.mapper.TemplatePoolMapper;
 import com.enablue.mapper.VariablePoolMapper;
+import com.enablue.pojo.Image;
 import com.enablue.pojo.TPAnswer;
 import com.enablue.pojo.TemplatePool;
 import com.enablue.pojo.VariablePool;
@@ -10,7 +12,10 @@ import com.enablue.service.ImpotTestQuestionsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -28,11 +33,12 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
     private VariablePoolMapper variablePoolMapper;
     @Autowired
     private TPAnswerMapper tpAnswerMapper;
-
+    @Autowired
+    private ImageMapper imageMapper;
 
     @Override
     @Transactional
-    public int  addTestQuestions(TemplatePool templatePool, List<VariablePool> variablePoolList, TPAnswer tpAnswer) {
+    public int  addTestQuestions(TemplatePool templatePool, List<VariablePool> variablePoolList, TPAnswer tpAnswer, MultipartFile file){
         //返回的是答案id
         int tpAnswerStatus = tpAnswerMapper.addTPAswer(tpAnswer);
         //设置答案id
@@ -43,12 +49,34 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
             return -1;
         }
         int variableStatus = 0;
+        //添加变量
         for (VariablePool variablePool : variablePoolList) {
             //设置标识变量的模板id
             variablePool.setTemplateId(templatePool.getTemplateId());
             //添加标识变量
             variableStatus = variablePoolMapper.addVariablePool(variablePool);
             if(variableStatus<=0){
+                //添加失败手动回滚
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return -1;
+            }
+        }
+        //添加图片
+        if (file!=null){
+            Image image = new Image();
+            image.setCreatTime(new Date());
+            image.setTemplateId(templatePool.getTemplateId());
+            try {
+                image.setImageData(file.getBytes());
+            }catch (IOException e){
+                e.printStackTrace();
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return -1;
+            }
+            image.setImageName(file.getName());
+            int imageCount = imageMapper.addImage(image);
+            if (imageCount<1){
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 return -1;
             }
         }
