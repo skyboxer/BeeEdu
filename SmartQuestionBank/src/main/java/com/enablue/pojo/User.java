@@ -85,11 +85,36 @@ public class User {
     public User() {
     }
 
+    public User(Integer userId, String userName, String userTel, String userPassword) {
+        this.userId = userId;
+        this.userName = userName;
+        this.userTel = userTel;
+        this.userPassword = userPassword;
+    }
+
+    public User(Integer userId, String userName, String userTel, String userPassword, Integer page, Integer size) {
+        this.userId = userId;
+        this.userName = userName;
+        this.userTel = userTel;
+        this.userPassword = userPassword;
+        this.page = page;
+        Size = size;
+    }
+
     public User(String userTel) {
         this.userTel = userTel;
     }
 
-
+    public User(Integer userId, String userName, String userTel, String userPassword, Date gmtCreate, Date gmtModified, Integer page, Integer size) {
+        this.userId = userId;
+        this.userName = userName;
+        this.userTel = userTel;
+        this.userPassword = userPassword;
+        this.gmtCreate = gmtCreate;
+        this.gmtModified = gmtModified;
+        this.page = page;
+        Size = size;
+    }
 
     public User(Integer userId, String userName, String userTel, Date gmtCreate, Date gmtModified) {
         this.userId = userId;

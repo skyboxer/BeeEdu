@@ -52,11 +52,6 @@ public class UserServiceImpl extends BaseController implements UserService {
     }
 
     @Override
-    public List<User> updateUser(User user) {
-        return null;
-    }
-
-    @Override
     public JSONObject quitLogin() {
         baseController.delSessionUser();
         return commonReturnValue.CommonReturnValue(0,"已经退出！");
@@ -99,4 +94,42 @@ public class UserServiceImpl extends BaseController implements UserService {
         }
         return commonReturnValue.CommonReturnValue(0,"成功",treeMenuList);
     }
+
+    @Override
+    public JSONObject addUser(User user) {
+        int size = userMapper.addUser(user);
+        if(size>0){
+            return commonReturnValue.CommonReturnValue(0,"添加成功");
+        }
+        return commonReturnValue.CommonReturnValue(-1,"添加失败");
+    }
+
+    @Override
+    public JSONObject deleteUser(User user) {
+        int size = userMapper.delUser(user);
+        if(size>0){
+            return commonReturnValue.CommonReturnValue(0,"删除成功");
+        }
+        return commonReturnValue.CommonReturnValue(-1,"删除失败");
+    }
+
+    @Override
+    public JSONObject updateUser(User user) {
+        int size = userMapper.updateUser(user);
+        if(size>0){
+            return commonReturnValue.CommonReturnValue(0,"修改成功");
+        }
+        return commonReturnValue.CommonReturnValue(-1,"修改失败");
+    }
+
+    @Override
+    public JSONObject getUser(User user) {
+        List<User> userList = userMapper.getUser(user);
+        if(userList.size()>=0){
+            return commonReturnValue.CommonReturnValue(0,"查询成功",userList);
+        }
+        return commonReturnValue.CommonReturnValue(-1,"查询失败");
+    }
+
+
 }
