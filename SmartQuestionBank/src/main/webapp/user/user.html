@@ -5,7 +5,8 @@
     <title>用户操作</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="/ROOT1/layuiv256/css/layui.css" media="all">
 </head>
 <body>
@@ -13,15 +14,167 @@
     用户操作
 </blockquote>
 
+<table id="userTableId" lay-filter="userTableFilter"></table>
+
+<!--用户操作-->
+<script type="text/html" id="barUser">
+    <a class="layui-btn layui-btn-xs" lay-event="update">修改</a>
+    <a class="layui-btn layui-btn-xs" lay-event="power">权限操作</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="add">添加</a>
+</script>
 <script src="/ROOT1/layuiv256/layui.js"></script>
 <script>
     //JavaScript代码区域
-    layui.use(['layer','jquery','form'], function(){
+    layui.use(['layer', 'jquery', 'form', 'table'], function () {
         var layer = layui.layer,
             $ = layui.jquery,
-        form = layui.form;
+            table = layui.table,
+            form = layui.form;
+
+        //第一个实例
+        table.render({
+            elem: '#userTableId'
+            , height: 312
+            , url: '/ROOT1/userController/actionUser?actionCode=getUser' //数据接口
+            , page: true //开启分页
+            , toolbar: '#barDemo'
+            , defaultToolbar: ['filter', 'exports', 'print']
+            , cols: [[ //表头
+                {field: 'userId', title: 'id', sort: true, fixed: 'left'}
+                , {field: 'userName', title: '用户名'}
+                , {field: 'userTel', title: '电话', sort: true}
+                , {field: 'userPassword', title: '密码', hide: true}
+                , {field: 'userId', title: '操作', toolbar: '#barUser'}
+            ]]
+            , id: "itTest"
+        });
+
+        //添加
+        table.on('toolbar(userTableFilter)',function (obj) {
+            layer.msg(obj.event);
+            layer.open({
+                type: 1,
+                content: $('#userForm'),
+                area: ['500px', '300px'],
+                success: function (e) {
+                    $("#userForm")[0].reset();
+                    layui.form.render();
+                    form.val('userFormFilter', {actionCode:"add"});
+                }
+            });
+        })
+        //操作功能组
+        table.on('tool(userTableFilter)', function (obj) {
+            layer.msg(obj.event)
+            switch (obj.event) {
+                case "update":
+                    layer.open({
+                        type: 1,
+                        content: $('#userForm'),
+                        area: ['500px', '300px'],
+                        success: function (e) {
+                            $("#userForm")[0].reset();
+                            layui.form.render();
+                            obj.data.actionCode="update"
+                            form.val('userFormFilter', obj.data);
+                        }
+                    });
+                    break;
+                    case "power":
+
+                        break;
+                default:
+                    layer.confirm('确定要删除该项吗?', {icon: 3, title: '提示'}, function (index) {
+                        $.post("/ROOT1/userController/actionUser"
+                            , {
+                                "actionCode": "delete"
+                                , "userName": obj.data.userName
+                                , "userTel": obj.data.userTel
+                                , "userPassword": obj.data.userPassword
+                                , "userId": obj.data.userId
+                            }, function (e) {
+                                layer.msg(e.msg)
+                                table.reload('itTest', {
+                                    page: {
+                                        curr: 1 //重新从第 1 页开始
+                                    }
+                                });
+                            }, "json");
+                        //do something
+                        layer.close(index);
+                    });
+            }
+
+
+        });
+
+        //提交表单
+        form.on('submit(updateUser)', function (data) {
+            //layer.msg(JSON.stringify(data.field));
+            $.post("/ROOT1/userController/actionUser"
+                , {
+                    "actionCode": data.field.actionCode
+                    , "userName": data.field.userName
+                    , "userTel": data.field.userTel
+                    , "userPassword": data.field.userPassword
+                    , "userId": data.field.userId
+                }, function (e) {
+                    layer.msg(e.msg)
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layer.close(index); //再执行关闭
+                    table.reload('itTest', {
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                    });
+                }, "json");
+        });
+
     });
 
 </script>
 </body>
+<form class="layui-form" lay-filter="userFormFilter" action="" style="display: none" id="userForm">
+    <div class="layui-form-item"style="display: none" ><!---->
+        <label class="layui-form-label">actionCode</label>
+        <div class="layui-input-block">
+            <input type="text" name="actionCode" required lay-verify="required" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item" style="display: none">
+        <label class="layui-form-label">id</label>
+        <div class="layui-input-block">
+            <input type="text" name="userId"  autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户名</label>
+        <div class="layui-input-block">
+            <input type="text" name="userName" required lay-verify="required" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">手机号</label>
+        <div class="layui-input-block">
+            <input type="number" name="userTel" required lay-verify="required" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">密码</label>
+        <div class="layui-input-block">
+            <input type="text" name="userPassword" required lay-verify="required" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="updateUser">提交修改</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
 </html>

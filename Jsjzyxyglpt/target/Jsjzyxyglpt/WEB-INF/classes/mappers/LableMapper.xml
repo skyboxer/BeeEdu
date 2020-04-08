@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace(命名空间)：映射文件的唯一标识 -->
+<mapper namespace="doc.LableDoc">
+
+    <select id="getLable" resultType="Lable" parameterType="Lable">
+        SELECT
+        lable.keyName,
+        lable.primaryKey,
+        lable.lableId,
+        lable.employer,
+        lable.contractor,
+        lable.projectName,
+        lable.contractPrice,
+        lable.plannedCommencementDate,
+        lable.plannedCompletionDate,
+        lable.contractFilingCode,
+        lable.projectEncoding,
+        lable.contractCode,
+        lable.projectManager,
+        lable.projectManagerCode,
+        lable.projectSupervisor,
+        lable.technicalDirector,
+        lable.securityOfficer,
+        lable.qualityWorker,
+        lable.constructors,
+        lable.constructionUnit,
+        lable.mediumBidName,
+        lable.mediumBidPrice,
+        lable.winningBidPeriod,
+        lable.bidWinnQualityStandard,
+        lable.website,
+        lable.completionStatus,
+        lable.confirmationDate,
+        lable.personnel,
+        lable.licence
+        FROM
+        lable
+        where 1=1
+        <if test="lableId!=null and lableId!=''">
+            and lableId = #{lableId}
+        </if>
+        <if test='keyName!=null and keyName!=""'>
+            and keyName = #{keyName}
+        </if>
+        <if test='primaryKey!=null and primaryKey!=""'>
+            and primaryKey = #{primaryKey}
+        </if>
+    </select>
+
+    <update id="updateLable" parameterType="Lable">
+        update lable set
+        keyName=#{keyName},
+        primaryKey=#{primaryKey},
+        employer=#{employer,jdbcType=VARCHAR},
+        contractor=#{contractor,jdbcType=VARCHAR},
+        projectName=#{projectName,jdbcType=VARCHAR},
+        contractPrice=#{contractPrice,jdbcType=VARCHAR},
+        plannedCommencementDate=#{plannedCommencementDate,jdbcType=VARCHAR},
+        plannedCompletionDate=#{plannedCompletionDate,jdbcType=VARCHAR},
+        contractFilingCode=#{contractFilingCode,jdbcType=VARCHAR},
+        projectEncoding=#{projectEncoding,jdbcType=VARCHAR},
+        contractCode=#{contractCode,jdbcType=VARCHAR},
+        projectManager=#{projectManager,jdbcType=VARCHAR},
+        projectManagerCode=#{projectManagerCode,jdbcType=VARCHAR},
+        projectSupervisor=#{projectSupervisor,jdbcType=VARCHAR},
+        technicalDirector=#{technicalDirector,jdbcType=VARCHAR},
+        securityOfficer=#{securityOfficer,jdbcType=VARCHAR},
+        qualityWorker=#{qualityWorker,jdbcType=VARCHAR},
+        constructors=#{constructors,jdbcType=VARCHAR},
+        constructionUnit=#{constructionUnit,jdbcType=VARCHAR},
+        mediumBidName= #{mediumBidName,jdbcType=VARCHAR},
+        mediumBidPrice=#{mediumBidPrice,jdbcType=VARCHAR},
+        winningBidPeriod=#{winningBidPeriod,jdbcType=VARCHAR},
+        bidWinnQualityStandard=#{bidWinnQualityStandard,jdbcType=VARCHAR},
+        website=#{website,jdbcType=VARCHAR},
+        completionStatus=#{completionStatus,jdbcType=VARCHAR},
+        confirmationDate=#{confirmationDate,jdbcType=VARCHAR},
+        personnel=#{personnel,jdbcType=VARCHAR},
+        licence =#{licence,jdbcType=VARCHAR}
+        where lableId = #{lableId}
+
+    </update>
+
+    <delete id="delLable" parameterType="Lable">
+        delete from lable where lableId = #{lableId}
+    </delete>
+
+    <insert id="addLable" parameterType="Lable">
+        insert into lable
+        (
+        keyName,
+        primaryKey,
+        employer,
+        contractor,
+        projectName,
+        contractPrice,
+        plannedCommencementDate,
+        plannedCompletionDate,
+        contractFilingCode,
+        projectEncoding,
+        contractCode,
+        projectManager,
+        projectManagerCode,
+        projectSupervisor,
+        technicalDirector,
+        securityOfficer,
+        qualityWorker,
+        constructors,
+        constructionUnit,
+        mediumBidName,
+        mediumBidPrice,
+        winningBidPeriod,
+        bidWinnQualityStandard,
+        website,
+        completionStatus,
+        confirmationDate,
+        personnel,
+        licence
+        ) values (
+        #{keyName},
+        #{primaryKey},
+        #{employer},
+        #{contractor},
+        #{projectName},
+        #{contractPrice},
+        #{plannedCommencementDate},
+        #{plannedCompletionDate},
+        #{contractFilingCode},
+        #{projectEncoding},
+        #{contractCode},
+        #{projectManager},
+        #{projectManagerCode},
+        #{projectSupervisor},
+        #{technicalDirector},
+        #{securityOfficer},
+        #{qualityWorker},
+        #{constructors},
+        #{constructionUnit},
+        #{mediumBidName},
+        #{mediumBidPrice},
+        #{winningBidPeriod},
+        #{bidWinnQualityStandard},
+        #{website},
+        #{completionStatus},
+        #{confirmationDate},
+        #{personnel},
+        #{licence}
+        )
+    </insert>
+
+</mapper>

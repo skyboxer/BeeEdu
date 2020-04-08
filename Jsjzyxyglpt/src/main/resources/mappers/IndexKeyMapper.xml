@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace(命名空间)：映射文件的唯一标识 -->
+<mapper namespace="doc.IndexKeyDoc">
+
+    <select id="getIndexKey" resultType="IndexKey" parameterType="IndexKey">
+        SELECT
+        id,keyName,primaryKey
+        FROM
+        index_key
+        where 1=1
+        <if test="id!=null">
+            and id = #{id}
+        </if>
+    </select>
+
+    <delete id="delIndexKey" parameterType="IndexKey">
+        delete from index_key where id = #{id}
+    </delete>
+
+    <update id="updateIndexKey" parameterType="IndexKey">
+        update index_key
+        set (keyName,primaryKey) value (#{keyName},#{primaryKey})
+        where id = #{id}
+    </update>
+
+    <insert id="addIndexKey" parameterType="IndexKey">
+        insert into index_key (keyName,primaryKey) value (#{keyName},#{primaryKey})
+    </insert>
+
+</mapper>

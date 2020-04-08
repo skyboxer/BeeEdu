@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>操作</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/Jsjzyxyglpt/layuiv256/css/layui.css" media="all">
+</head>
+<body>
+<blockquote class="layui-elem-quote">
+    添加
+</blockquote>
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">请求参数</label>
+            <div class="layui-input-block">
+                <input type="text" name="keyName" required lay-verify="required" placeholder="key" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">primaryKey</label>
+            <div class="layui-input-block">
+                <input type="text" name="primaryKey" required lay-verify="required" placeholder="primaryKey"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">发包人</label>
+            <div class="layui-input-block">
+                <input type="text" name="employer" required lay-verify="required" placeholder="发包人" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">承包人</label>
+            <div class="layui-input-block">
+                <input type="text" name="contractor" required lay-verify="required" placeholder="承包人" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">项目名</label>
+            <div class="layui-input-block">
+                <input type="text" name="projectName" required lay-verify="required" placeholder="项目名"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">合同价</label>
+            <div class="layui-input-block">
+                <input type="text" name="contractPrice" placeholder="元" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">计划开工日期</label>
+            <div class="layui-input-block">
+                <input type="text" name="plannedCommencementDate" placeholder="计划开工日期" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">计划竣工日期</label>
+            <div class="layui-input-block">
+                <input type="text" name="plannedCompletionDate" placeholder="计划竣工日期" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">合同备案码</label>
+        <div class="layui-input-block">
+            <input type="text" name="contractFilingCode" placeholder="合同备案码" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">项目编码</label>
+        <div class="layui-input-block">
+            <input type="text" name="projectEncoding" placeholder="项目编码" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">合同验证码</label>
+        <div class="layui-input-block">
+            <input type="text" name="contractCode" placeholder="合同验证码" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">项目经理</label>
+            <div class="layui-input-block">
+                <input type="text" name="projectManager" required lay-verify="required" placeholder="项目经理"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">项目经理code</label>
+            <div class="layui-input-block">
+                <input type="text" name="projectManagerCode"  placeholder="项目经理code"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">项目主管</label>
+            <div class="layui-input-block">
+                <input type="text" name="projectSupervisor"  placeholder="项目主管"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">技术负责人</label>
+            <div class="layui-input-block">
+                <input type="text" name="technicalDirector" placeholder="技术负责人" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">安全员</label>
+            <div class="layui-input-block">
+                <input type="text" name="securityOfficer" placeholder="安全员" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">质量员</label>
+            <div class="layui-input-block">
+                <input type="text" name="qualityWorker" placeholder="质量员" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">施工员</label>
+            <div class="layui-input-block">
+                <input type="text" name="constructors" placeholder="施工员" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">人员状况</label>
+            <div class="layui-input-block">
+                <input type="text" name="personnel" placeholder="如：人员未变更" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">是否可见许可证</label>
+            <div class="layui-input-block">
+                <input type="text" name="licence" placeholder="如：未见施工许可证" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">建设单位</label>
+            <div class="layui-input-block">
+                <input type="text" name="constructionUnit" placeholder="建设单位" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">中标人名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="mediumBidName" placeholder="中标人名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">中标价</label>
+            <div class="layui-input-block">
+                <input type="text" name="mediumBidPrice" placeholder="元" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">中标工期</label>
+            <div class="layui-input-block">
+                <input type="text" name="winningBidPeriod" placeholder="中标工期" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">中标质量标准</label>
+            <div class="layui-input-block">
+                <input type="text" name="bidWinnQualityStandard" placeholder="中标质量标准" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">网址</label>
+        <div class="layui-input-block">
+            <input type="text" name="website" placeholder="网址" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">竣工情况</label>
+            <div class="layui-input-block">
+                <input type="text" name="completionStatus" placeholder="竣工情况" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label">确认日期</label>
+            <div class="layui-input-block">
+                <input type="text" name="confirmationDate" placeholder="确认日期" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="addIndex">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+
+</form>
+<script src="/Jsjzyxyglpt/layuiv256/layui.js"></script>
+<script>
+    //JavaScript代码区域
+    layui.use(['layer', 'jquery', 'form'], function () {
+        var layer = layui.layer,
+            $ = layui.jquery,
+            form = layui.form;
+
+        //监听提交
+        form.on('submit(addIndex)', function (data) {
+            var index = parent.layer.getFrameIndex(window.name);
+            $.post("/Jsjzyxyglpt/lableController/addLable",data.field,function (e) {
+                layer.msg(e.msg)
+                if(e.code == 0){
+                   parent.layer.close(index);
+                   parent.layer.msg(e.msg);
+                }
+            },"json");
+            return false;
+        });
+    });
+
+</script>
+</body>
+</html>

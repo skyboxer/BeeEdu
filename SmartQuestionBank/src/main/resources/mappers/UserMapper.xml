@@ -34,10 +34,10 @@
     </delete>
     <update id="updateUser" parameterType="User">
         update users
-        set user_name = #{userName},user_tel = #{userTel}
+        set user_name = #{userName},user_tel = #{userTel},user_password = #{userPassword}
         where user_id = #{userId}
     </update>
     <insert id="addUser" parameterType="User">
-        insert into users (user_name,user_tel) value (#{userName},#{userTel})
+        insert into users (user_name,user_tel,user_password) values (#{userName},#{userTel},#{userPassword})
     </insert>
 </mapper>
