@@ -27,7 +27,11 @@
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">试题图片</label>
             <div class="layui-input-block">
-                    <input name="file" type="file"/>
+                    <input id="imgFile"  name="file" type="file"/>
+
+            </div>
+            <div class="layui-input-block">
+                    <img id="imgshow"  src="" >
             </div>
         </div>
         <div class="layui-form-item">
@@ -101,8 +105,24 @@
             $=layui.jquery;
             var element = layui.element;
             var difficultyGrade=-1;
+            //监听文件上传
+            $("#imgFile").on("input",function(e){
+                document.getElementById("imgshow").src="";
+                document.getElementById("imgshow").style="";
+                let ofile = document.getElementById("imgFile").files[0];
+                let index1 = ofile.name.lastIndexOf(".");
+                let suffix =ofile.name.substring(index1);
+                //校验格式
+                if (suffix===".jpg"||suffix===".jpeg"||suffix===".png"||suffix===".bmp"){
+                    let fileReader = new FileReader();
+                    fileReader.readAsDataURL(ofile);
+                    fileReader.onload = function (e) {
+                        document.getElementById("imgshow").src=this.result;
+                        document.getElementById("imgshow").style="width: 100px;height: 100px";
+                    }
+                }
+            });
             //监听提交
-
             form.on('submit(formDemo)', function(data){
 
                 let formData = new FormData($( "#fm" )[0]);
@@ -117,7 +137,7 @@
                     success : function(data) {
                         layer.msg(data.msg)
                         //修改成功后刷新父界面
-                        window.parent.location.reload();
+                        // window.parent.location.reload();
                     }
                 });
 

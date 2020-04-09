@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -63,19 +62,23 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
         }
         //添加图片
         if (file!=null){
+            try {
+            //设置数据
             Image image = new Image();
             image.setCreatTime(new Date());
             image.setTemplateId(templatePool.getTemplateId());
-            try {
-                image.setImageData(file.getBytes());
-            }catch (IOException e){
-                e.printStackTrace();
+            image.setImageData(file.getBytes());
+            image.setImageName(file.getName());
+            String fileName = file.getName();
+            image.setImageFormat(fileName.substring(fileName.lastIndexOf(".") + 1));
+            //添加图片
+            int imageCount = imageMapper.addImage(image);
+            if (imageCount<1){
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 return -1;
             }
-            image.setImageName(file.getName());
-            int imageCount = imageMapper.addImage(image);
-            if (imageCount<1){
+            }catch (Exception e){
+                e.printStackTrace();
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 return -1;
             }

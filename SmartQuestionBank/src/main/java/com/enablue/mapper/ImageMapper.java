@@ -13,4 +13,11 @@ public interface ImageMapper {
      * @param image
      */
     int addImage(@Param("image") Image image);
+
+    /**
+     * 根据id查询图片
+     * @param id
+     * @return
+     */
+    Image queryById(@Param("id")int id);
 }
