@@ -101,6 +101,15 @@ public class UserRole {
 
     }
 
+    public UserRole(Integer userId, Integer roleId) {
+        this.userId = userId;
+        this.roleId = roleId;
+    }
+
+    public UserRole(Integer id) {
+        this.id = id;
+    }
+
     public UserRole(Integer userId, User user, Integer roleId, Role role) {
         this.userId = userId;
         this.user = user;

@@ -3,6 +3,7 @@ package com.enablue.mapper;
 import com.enablue.pojo.UserRole;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author cnxjk
