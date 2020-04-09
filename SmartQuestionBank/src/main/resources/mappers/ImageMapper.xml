@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace(命名空间)：映射文件的唯一标识 -->
+<mapper namespace="com.enablue.mapper.ImageMapper">
+
+    <insert id="addImage">
+    INSERT INTO images (
+        image_name,
+        image_data,
+        creat_time,
+        update_time,
+        template_id
+    )
+    VALUES
+        (
+        #{image.imageName},
+        #{image.imageData},
+        #{image.creatTime},
+        #{image.updateTime},
+        #{image.templateId}
+        );
+    </insert>
+</mapper>

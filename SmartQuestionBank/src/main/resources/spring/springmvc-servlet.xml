@@ -13,5 +13,15 @@
         </bean>
         <!--解决静态资源被拦截-->
         <mvc:default-servlet-handler/>
+        <!-- 文件上传下载配置-->
+        <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+                <!-- 设置最大上传文件大小100MB -->
+                <property name="maxUploadSize">
+                        <value>104857600</value>
+                </property>
+                <property name="maxInMemorySize">
+                        <value>4096</value>
+                </property>
+        </bean>
 
 </beans>
