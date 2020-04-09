@@ -28,11 +28,12 @@
 <script src="/ROOT1/layuiv256/layui.js"></script>
 <script>
     //JavaScript代码区域
-    layui.use(['layer', 'jquery', 'form', 'table'], function () {
+    layui.use(['layer', 'jquery', 'form', 'table','transfer'], function () {
         var layer = layui.layer,
             $ = layui.jquery,
             table = layui.table,
-            form = layui.form;
+            form = layui.form,
+            transfer = layui.transfer;
 
         //第一个实例
         table.render({
@@ -84,7 +85,76 @@
                     });
                     break;
                     case "power":
+                        layer.open({
+                            type:1,
+                            content:$('#userRoleSysId'),
+                            area: ['600px', '500px'],
+                            success:function (layero,index) {
+                                $.post("/ROOT1/userController/updateUserRole"
+                                    , {
+                                        "sysCode": "getAllRoles"
+                                        ,"userId": obj.data.userId
+                                    }, function (e1) {
 
+                                        $.post("/ROOT1/userController/updateUserRole"
+                                            , {
+                                                "sysCode": "getUserRole"
+                                                ,"userId": obj.data.userId
+                                            }, function (e2) {
+                                                const value = [];
+                                                for(const index2 in e2.data){
+                                                for(const index1 in e1.data){
+                                                    if (e1.data[index1].roleId==e2.data[index2].roleId){
+                                                        value[value.length]=e1.data[index1].roleId;
+                                                    }
+                                                }
+                                            }
+                                                transfer.render({
+                                                    elem: '#userRoleSysId'
+                                                    ,data:e1.data
+                                                    ,parseData: function(res){
+                                                        return {
+                                                            "value": res.roleId //数据值
+                                                            ,"title": res.roleName //数据标题
+                                                            ,"disabled":res.disabled
+                                                            ,"checked":res.checked
+                                                        }
+                                                    }
+                                                    ,value:value
+                                                    ,onchange: function(data, index){
+                                                    console.log(data); //得到当前被穿梭的数据
+                                                    console.log(index); //如果数据来自左边，index 为 0，否则为 1
+                                                        if(index == 0){
+                                                            data.forEach(function (element) {
+                                                                $.post("/ROOT1/userController/updateUserRole"
+                                                                    , {
+                                                                        "sysCode": "addUserRole"
+                                                                        ,"userId": obj.data.userId
+                                                                        ,"roleId":element.value
+                                                                    }, function (e3) {
+                                                                    console.count(e3.msg);
+                                                                    });
+                                                            });
+
+                                                        }else{
+                                                            data.forEach(function (element) {
+
+                                                                $.post("/ROOT1/userController/updateUserRole"
+                                                                    , {
+                                                                        "sysCode": "deleteUserRole"
+                                                                        ,"userId": obj.data.userId
+                                                                        ,"roleId":element.value
+                                                                    }, function (e3) {
+                                                                        console.count(e3.msg);
+                                                                    });
+                                                            })
+                                                        }
+                                                }
+                                                });
+                                            }, "json");
+                                    }, "json");
+                            }
+                        })
                         break;
                 default:
                     layer.confirm('确定要删除该项吗?', {icon: 3, title: '提示'}, function (index) {
@@ -177,4 +247,7 @@
         </div>
     </div>
 </form>
+
+<div id="userRoleSysId" class="demo-transfer" style="display: none"></div>
+<div id="userRoleSysIds" class="demo-transfer" style="display: none"></div>
 </html>

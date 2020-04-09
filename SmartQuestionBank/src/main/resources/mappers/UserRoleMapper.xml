@@ -6,17 +6,24 @@
 <mapper namespace="com.enablue.mapper.UserRoleMapper">
 
     <resultMap id="UserRoleMap" type="com.enablue.pojo.UserRole">
-        <id column="id" property="roleId"/>
+        <id column="id" property="id"/>
         <result column="user_id" property="userId"/>
         <result column="role_id" property="roleId"/>
         <result column="gmt_create" property="gmtCreate"/>
         <result column="gmt_modified" property="gmtModified"/>
+        <association column="roleId"  property="role" javaType="role">
+            <id  column="role_id" property="roleId"/>
+            <result column="role_name" property="roleName"/>
+        </association>
     </resultMap>
 
     <select id="getUserRole" resultMap="UserRoleMap" parameterType="UserRole">
-        select id,user_id,role_id,gmt_create,gmt_modified
-        from user_role
+        select ur.id,ur.user_id,ur.role_id,r.role_name,ur.gmt_create,ur.gmt_modified from user_role ur ,roles r
         where 1=1
+        and ur.role_id = r.role_id
+        /*select id,user_id,role_id,gmt_create,gmt_modified
+        from user_role
+        where 1=1*/
         <if test="roleId!=null">
             and role_id = #{roleId}
         </if>
@@ -29,7 +36,7 @@
     </select>
 
     <delete id="delUserRole" parameterType="UserRole">
-        delete from user_role where id = #{id}
+        delete from user_role where role_id = #{roleId} and user_id = #{userId}
     </delete>
 
     <update id="updateUserRole" parameterType="UserRole">
@@ -39,7 +46,7 @@
     </update>
 
     <insert id="addUserRole" parameterType="UserRole">
-        insert into user_role (user_id,role_id) value (#{userId},#{roleId})
+        insert into user_role (user_id,role_id) values (#{userId},#{roleId})
     </insert>
 
 </mapper>

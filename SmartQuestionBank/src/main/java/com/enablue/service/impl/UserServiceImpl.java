@@ -3,13 +3,11 @@ package com.enablue.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.enablue.common.BaseController;
 import com.enablue.common.CommonReturnValue;
+import com.enablue.mapper.RoleMapper;
 import com.enablue.mapper.RoleMenuMapper;
 import com.enablue.mapper.UserMapper;
 import com.enablue.mapper.UserRoleMapper;
-import com.enablue.pojo.Menu;
-import com.enablue.pojo.RoleMenu;
-import com.enablue.pojo.User;
-import com.enablue.pojo.UserRole;
+import com.enablue.pojo.*;
 import com.enablue.service.UserService;
 import com.enablue.util.ListObjectRmRepeat;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author cnxjk
@@ -34,6 +33,8 @@ public class UserServiceImpl extends BaseController implements UserService {
     private UserRoleMapper userRoleMapper;
     @Autowired
     private RoleMenuMapper roleMenuMapper;
+    @Autowired
+    private  RoleMapper roleMapper;
 
     @Override
     public JSONObject userLogin(String tel, String password) {
@@ -127,6 +128,42 @@ public class UserServiceImpl extends BaseController implements UserService {
         List<User> userList = userMapper.getUser(user);
         if(userList.size()>=0){
             return commonReturnValue.CommonReturnValue(0,"查询成功",userList);
+        }
+        return commonReturnValue.CommonReturnValue(-1,"查询失败");
+    }
+
+    @Override
+    public JSONObject addUserRole(UserRole userRole) {
+        int rowNum = userRoleMapper.addUserRole(userRole);
+        if(rowNum>0){
+            return commonReturnValue.CommonReturnValue(0,"添加成功");
+        }
+        return commonReturnValue.CommonReturnValue(-1,"添加失败");
+    }
+
+    @Override
+    public JSONObject deleteUserRole(UserRole userRole) {
+        int rowNum = userRoleMapper.delUserRole(userRole);
+        if(rowNum>0){
+            return commonReturnValue.CommonReturnValue(0,"删除成功");
+        }
+        return commonReturnValue.CommonReturnValue(-1,"删除失败");
+    }
+
+    @Override
+    public JSONObject getUserRole(UserRole userRole) {
+        List<UserRole> list = userRoleMapper.getUserRole(userRole);
+        if(list.size()>0){
+            return commonReturnValue.CommonReturnValue(0,"查询成功",list);
+        }
+        return commonReturnValue.CommonReturnValue(-1,"查询失败");
+    }
+
+    @Override
+    public JSONObject getRoles(Role role) {
+        List<Role> list = roleMapper.getRole(role);
+        if(list.size()>0){
+            return commonReturnValue.CommonReturnValue(0,"查询成功",list);
         }
         return commonReturnValue.CommonReturnValue(-1,"查询失败");
     }

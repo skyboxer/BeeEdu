@@ -2,7 +2,9 @@ package com.enablue.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.enablue.common.CommonReturnValue;
+import com.enablue.pojo.Role;
 import com.enablue.pojo.User;
+import com.enablue.pojo.UserRole;
 import com.enablue.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,6 +95,36 @@ public class UserController {
                 jsonObject = userService.getUser(user);
                 break;
 
+        }
+        return jsonObject;
+    }
+
+    /**
+     * 修改用户角色
+     * @return
+     */
+    @RequestMapping("/updateUserRole")
+    public JSONObject updateUserRole(String sysCode,Integer userId,Integer roleId,Integer userRoleId){
+        JSONObject jsonObject;
+        UserRole userRole = new UserRole();
+        switch (sysCode){
+            case "addUserRole":
+                userRole.setUserId(userId);
+                userRole.setRoleId(roleId);
+                jsonObject = userService.addUserRole(userRole);
+                break;
+            case "deleteUserRole":
+                userRole.setUserId(userId);
+                userRole.setRoleId(roleId);
+                jsonObject = userService.deleteUserRole(userRole);
+                break;
+            case "getUserRole":
+                userRole.setUserId(userId);
+                jsonObject = userService.getUserRole(userRole);
+                break;
+            default:
+
+                jsonObject = userService.getRoles(new Role());
         }
         return jsonObject;
     }
