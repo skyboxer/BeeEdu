@@ -38,7 +38,7 @@
     </update>
 
     <insert id="addRole" parameterType="Role">
-        insert into roles (role_name) value (#{roleName})
+        insert into roles (role_name) values (#{roleName})
     </insert>
 
 </mapper>
