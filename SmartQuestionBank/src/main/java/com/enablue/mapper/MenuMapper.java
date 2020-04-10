@@ -16,4 +16,6 @@ public interface MenuMapper {
     int updateMenu(Menu menu);
 
     int addMenu(Menu menu);
+
+    int addMenuId(Menu menu);
 }

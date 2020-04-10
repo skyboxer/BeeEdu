@@ -15,6 +15,27 @@ public class Menu {
     private Date gmtCreate;
     private Date gmtModified;
     private List<Menu> childMenu;
+    private Integer page;
+    private Integer limit;
+
+    public Menu(Integer menuId) {
+    }
+
+    public Integer getPage() {
+        return page;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
+    }
+
+    public Integer getLimit() {
+        return limit;
+    }
+
+    public void setLimit(Integer limit) {
+        this.limit = limit;
+    }
 
     public List<Menu> getChildMenu() {
         return childMenu;
@@ -103,4 +124,12 @@ public class Menu {
                 ", gmtModified=" + gmtModified +
                 '}';
     }
+
+    public Menu(Integer menuId, String menuName, String menuUrl) {
+        this.menuId = menuId;
+        this.menuName = menuName;
+        this.menuUrl = menuUrl;
+    }
+
+
 }

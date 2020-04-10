@@ -41,4 +41,5 @@
         insert into roles (role_name) values (#{roleName})
     </insert>
 
+
 </mapper>

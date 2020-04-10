@@ -46,7 +46,14 @@
     </select>
 
     <delete id="delRoleMenu" parameterType="RoleMenu">
-        delete from role_menu where id = #{id}
+        delete from role_menu where 1=1
+        <if test="id!=null">
+            and id = #{id}
+        </if>
+        <if test="roleId!=null and menuId!= null">
+            and role_id = #{roleId}
+            and menu_id = #{menuId}
+        </if>
     </delete>
 
     <update id="updateRoleMenu" parameterType="RoleMenu">
@@ -56,7 +63,7 @@
     </update>
 
     <insert id="addRoleMenu" parameterType="RoleMenu">
-        insert into role_menu (menu_id,role_id) value (#{menuId},#{roleId})
+        insert into role_menu (menu_id,role_id) values (#{menuId},#{roleId})
     </insert>
 
 </mapper>
