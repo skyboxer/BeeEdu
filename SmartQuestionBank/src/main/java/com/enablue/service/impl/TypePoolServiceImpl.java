@@ -113,7 +113,7 @@ public class TypePoolServiceImpl implements TypePoolService {
             result.put("msg","查询失败");
             return result;
         }
-        result.put("code", 1);
+        result.put("code", 0);
         result.put("data", typePoolList);
         result.put("count",typePools.size());
         return result;
@@ -133,7 +133,7 @@ public class TypePoolServiceImpl implements TypePoolService {
             result.put("msg","查询失败");
             return result;
         }
-        result.put("code", 1);
+        result.put("code", 0);
         result.put("data", typePools);
         result.put("msg","查询成功");
         return result;
