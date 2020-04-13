@@ -109,8 +109,10 @@
                     break;
                 case 'edit':
                     layer.prompt({
-                        formType: 2
-                        , value: data.ip
+                        formType: 1,
+                        placeholder: '请输入科目名',
+                        title: '请输入科目名',
+                        value: data.ip
                     }, function (value, index) {
                         obj.update({
                             ip: value

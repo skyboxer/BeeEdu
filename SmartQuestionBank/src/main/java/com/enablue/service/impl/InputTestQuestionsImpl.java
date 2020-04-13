@@ -62,6 +62,11 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
         }
         //添加图片
         if (file!=null){
+            if (file.getSize()/1024>100){
+                //添加失败手动回滚
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return -1;
+            }
             try {
             //设置数据
             Image image = new Image();
@@ -135,7 +140,7 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
             }
         }
 
-        result.put("code",1);
+        result.put("code",0);
         result.put("msg","修改成功");
         return result;
     }

@@ -31,7 +31,7 @@
 </script>
 <!--这里是右侧表格数据操作-->
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="edit">修改类型名</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">修改类型</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
@@ -59,8 +59,8 @@
                 {type: 'checkbox', fixed: 'left'}
                 , {field: 'plateId', title: '类型ID', width: 200, fixed: 'left',align: 'center' , unresize: true, sort: true}
                 , {field: 'subjectId', title: '科目ID', width: 280, fixed: 'left',align: 'center' , unresize: true, sort: true}
-                , {field: 'plateName', title: '类型名', width: 280,align: 'center' , edit: 'text'}
-                , {field: 'amount', title: '题目数量', width: 280,align: 'center' , edit: 'text'}
+                , {field: 'plateName', title: '类型名', width: 280,align: 'center' }
+                , {field: 'amount', title: '题目数量', width: 280,align: 'center' }
                 // , {field: 'joinTime', title: '创建时间', width: 120, edit: 'text', sort: true}
                 // , {field: 'joinTime', title: '修改时间', width: 120, edit: 'text', sort: true}
                 , {fixed: 'right', title: '操作', toolbar: '#barDemo',align: 'center' , width: 450}
@@ -92,7 +92,7 @@
                 case 'del':
                     layer.confirm('真的删除行么', function (index) {
                         //发送异步请求
-                        $.post("../daleteTypePool",{"id":data.plateId},function (result) {
+                        $.post("../deleteTypePool",{"id":data.plateId},function (result) {
                             if (result != null){
                                 layer.msg(result.msg);
                                 if(result.code===1){

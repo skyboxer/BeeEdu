@@ -121,7 +121,7 @@ public class SubjectPoolServiceImpl implements SubjectPoolService {
             result.put("msg","查询失败");
             return result;
         }
-        result.put("code", 1);
+        result.put("code", 0);
         result.put("data", subjectPoolList);
         result.put("count",subjectPools.size());
         return result;
@@ -140,7 +140,7 @@ public class SubjectPoolServiceImpl implements SubjectPoolService {
             result.put("msg","查询失败");
             return result;
         }
-        result.put("code", 1);
+        result.put("code", 0);
         result.put("data", subjectPools);
         result.put("msg","查询成功");
         return result;
