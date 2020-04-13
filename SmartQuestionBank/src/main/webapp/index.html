@@ -60,9 +60,6 @@
                 var menuNode = e.data;
                 for(var index1 in menuNode){
                     if(menuNode[index1].childMenu== undefined){
-                        if(index1==0){
-                            $('#rightContent iframe').attr("src",menuNode[index1].menuUrl);
-                        }
                         lis += '<li class="layui-nav-item">\n' +
                             '       <a class="JumpHtml" href="javascript:;"  name ="'+menuNode[index1].menuUrl+'">'+menuNode[index1].menuName+'</a>\n';
                         lis +=  '</li>';
@@ -73,6 +70,9 @@
                         '       <dl class="layui-nav-child">';
                         var childNode = menuNode[index1].childMenu;
                         for(var index2 in childNode){
+                            if(index1==="0" && index2==="0"){
+                                $('#rightContent iframe').attr("src",childNode[index2].menuUrl);
+                            }
                             lis+='<dd><a class="JumpHtml" href="javascript:;" name ="'+childNode[index2].menuUrl+'">'+childNode[index2].menuName+'</a></dd>\n';
                         }
                         lis +=  '</dl>';
