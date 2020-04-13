@@ -45,7 +45,7 @@ public class SubjectPoolServiceImpl implements SubjectPoolService {
             result.put("msg","添加失败");
             return result;
         }
-        result.put("code",0);
+        result.put("code",1);
         result.put("msg","添加成功");
         return result;
     }
@@ -71,7 +71,7 @@ public class SubjectPoolServiceImpl implements SubjectPoolService {
             result.put("msg","修改失败");
             return result;
         }
-        result.put("code",0);
+        result.put("code",1);
         result.put("msg","修改成功");
         return result;
     }
@@ -92,7 +92,7 @@ public class SubjectPoolServiceImpl implements SubjectPoolService {
             result.put("msg","删除失败");
             return result;
         }
-        result.put("code",0);
+        result.put("code",1);
         result.put("msg","删除成功");
         return result;
     }
@@ -121,7 +121,7 @@ public class SubjectPoolServiceImpl implements SubjectPoolService {
             result.put("msg","查询失败");
             return result;
         }
-        result.put("code", 0);
+        result.put("code", 1);
         result.put("data", subjectPoolList);
         result.put("count",subjectPools.size());
         return result;
@@ -140,7 +140,7 @@ public class SubjectPoolServiceImpl implements SubjectPoolService {
             result.put("msg","查询失败");
             return result;
         }
-        result.put("code", 0);
+        result.put("code", 1);
         result.put("data", subjectPools);
         result.put("msg","查询成功");
         return result;

@@ -24,19 +24,19 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">科目id</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="subjectId" required  lay-verify="required"  placeholder="科目id" autocomplete="off" class="layui-input">
+                    <input type="text" id="subjectId" name="subjectId" required  lay-verify="required"  placeholder="科目id" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">题目类型名</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="plateName" required  lay-verify="required"  placeholder="题型名" autocomplete="off" class="layui-input">
+                    <input type="text" id="plateName" name="plateName" required  lay-verify="required"  placeholder="题型名" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">题目数量</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="amount" required  lay-verify="required"  placeholder="题型量" autocomplete="off" class="layui-input">
+                    <input type="text" id="amount" name="amount" required  lay-verify="required"  placeholder="题型量" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
@@ -49,16 +49,23 @@
     </div>
 </div>
 <script src="../layuiv256/layui.js" charset="utf-8"></script>
+<script src="../js/getValueFromURL.js" charset="utf-8"></script>
 
 <script>
+
     //Demo
     layui.use(['form','layer'], function(){
         var form = layui.form;
         var layer = layui.layer,
         $=layui.jquery;
-        var search = window.location.search;
-        let plateId = decodeURI(search.substring(search.indexOf("=")+1));
+        let plateId = getQueryString("plateId");
+        let subjectId = getQueryString("subjectId");
+        let plateName = getQueryString("plateName");
+        let amount = getQueryString("amount");
         $("#plateId").val(plateId)
+        $("#subjectId").val(subjectId)
+        $("#plateName").val(plateName)
+        $("#amount").val(amount)
         //监听提交
         form.on('submit(formDemo)', function(data){
             layer.msg(JSON.stringify(data.field));
@@ -69,7 +76,9 @@
                     if (result != null){
                         parent.layer.msg(result.msg);
                         //修改成功后刷新父界面
-                        window.parent.location.reload();
+                        if (result.code===1){
+                            window.parent.location.reload();
+                        }
                     }
             },"json")
             parent.layer.close(index); //再执行关闭

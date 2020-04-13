@@ -9,18 +9,12 @@ import java.util.Date;
 public class Image {
     Integer imageId;
     Integer templateId;
+    String imageFormat;
     String imageName;
     byte[] imageData;
     Date creatTime;
     Date updateTime;
 
-    public Integer getId() {
-        return imageId;
-    }
-
-    public void setId(Integer imageId) {
-        this.imageId = imageId;
-    }
 
     public Integer getTemplateId() {
         return templateId;
@@ -28,6 +22,22 @@ public class Image {
 
     public void setTemplateId(Integer templateId) {
         this.templateId = templateId;
+    }
+
+    public Integer getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(Integer imageId) {
+        this.imageId = imageId;
+    }
+
+    public String getImageFormat() {
+        return imageFormat;
+    }
+
+    public void setImageFormat(String imageFormat) {
+        this.imageFormat = imageFormat;
     }
 
     public String getImageName() {

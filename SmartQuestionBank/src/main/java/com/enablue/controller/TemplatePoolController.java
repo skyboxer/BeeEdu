@@ -2,10 +2,10 @@ package com.enablue.controller;
 
 import com.enablue.pojo.TemplatePool;
 import com.enablue.service.ImpotTestQuestionsService;
-import com.enablue.service.TemplatePoolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 
@@ -48,7 +48,7 @@ public class TemplatePoolController {
      * 王成
      */
     @RequestMapping("/updataTemplatePool")
-    public HashMap<String,Object>  updataTemplatePool(TemplatePool templatePool){
-        return  impotTestQuestionsService.updataTemplate(templatePool);
+    public HashMap<String,Object>  updataTemplatePool(TemplatePool templatePool, MultipartFile file){
+        return  impotTestQuestionsService.updataTemplate(templatePool,file);
     }
 }

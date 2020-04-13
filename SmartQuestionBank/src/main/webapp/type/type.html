@@ -57,13 +57,13 @@
             , title: '类型表'
             , cols: [[
                 {type: 'checkbox', fixed: 'left'}
-                , {field: 'plateId', title: '类型ID', width: 180, fixed: 'left', unresize: true, sort: true}
-                , {field: 'subjectId', title: '科目ID', width: 180, fixed: 'left', unresize: true, sort: true}
-                , {field: 'plateName', title: '类型名', width: 130, edit: 'text'}
-                , {field: 'amount', title: '题目数量', width: 130, edit: 'text'}
+                , {field: 'plateId', title: '类型ID', width: 200, fixed: 'left',align: 'center' , unresize: true, sort: true}
+                , {field: 'subjectId', title: '科目ID', width: 280, fixed: 'left',align: 'center' , unresize: true, sort: true}
+                , {field: 'plateName', title: '类型名', width: 280,align: 'center' , edit: 'text'}
+                , {field: 'amount', title: '题目数量', width: 280,align: 'center' , edit: 'text'}
                 // , {field: 'joinTime', title: '创建时间', width: 120, edit: 'text', sort: true}
                 // , {field: 'joinTime', title: '修改时间', width: 120, edit: 'text', sort: true}
-                , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150}
+                , {fixed: 'right', title: '操作', toolbar: '#barDemo',align: 'center' , width: 450}
             ]]
             , page: true
         });
@@ -95,11 +95,14 @@
                         $.post("../daleteTypePool",{"id":data.plateId},function (result) {
                             if (result != null){
                                 layer.msg(result.msg);
-                                table.reload('test',{
-                                    page: {
-                                        curr:1
-                                    },
-                                });
+                                if(result.code===1){
+                                    table.reload('test',{
+                                        page: {
+                                            curr:1
+                                        },
+                                    });
+                                }
+
                             }
                         },"json");
                         obj.del();
@@ -112,7 +115,7 @@
                         type: 2,
                         shade: [0.8, '#393D49'],
                         area: ['500px', '350px'],
-                        content: 'type_update_from.html?plateId='+data.plateId //这里content是一个普通的String
+                        content: 'type_update_from.html?plateId='+data.plateId+'&subjectId='+data.subjectId+'&plateName='+data.plateName+'&amount='+data.amount //这里content是一个普通的String
                     });
 
                     break;

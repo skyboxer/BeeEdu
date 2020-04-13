@@ -3,7 +3,6 @@ package com.enablue.mapper;
 import com.enablue.pojo.TemplatePool;
 import org.apache.ibatis.annotations.Param;
 
-import javax.management.StandardEmitterMBean;
 import java.util.List;
 
 /**
@@ -48,7 +47,7 @@ public interface TemplatePoolMapper {
 
     /**
      * 分页查询模板
-     * @param page
+     * @param page 开始页
      * @param limit
      * @return
      */
@@ -56,7 +55,7 @@ public interface TemplatePoolMapper {
 
     /**
      * 删除模板
-     * @param id
+     * @param id 模板id
      * @return
      * 王成
      */
