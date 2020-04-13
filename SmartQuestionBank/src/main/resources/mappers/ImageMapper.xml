@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace(命名空间)：映射文件的唯一标识 -->
 <mapper namespace="com.enablue.mapper.ImageMapper">
-
+<!--    添加图片-->
     <insert id="addImage">
     INSERT INTO images (
         image_name,
@@ -24,7 +24,19 @@
         #{image.templateId}
         );
     </insert>
-    <select id="queryById" resultType="Image">
+<!--    修改图片根据模板id-->
+    <update id="updateImg">
+        UPDATE images
+        SET
+         image_format=#{image.imageFormat},
+         image_name =#{image.imageName},
+         image_data =#{image.imageData},
+         update_time=#{image.updateTime}
+        WHERE
+            template_id=#{image.templateId}
+    </update>
+<!--    根据模板id查询图片数据-->
+    <select id="queryTemplateById" resultType="Image">
         SELECT
         image_id,
         image_format,
@@ -34,6 +46,6 @@
         FROM
             images
         WHERE
-            image_id = #{id}
+            template_id = #{id}
     </select>
 </mapper>

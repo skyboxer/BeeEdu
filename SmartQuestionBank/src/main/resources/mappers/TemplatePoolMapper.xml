@@ -79,7 +79,7 @@
         FROM
             template_pool
     </select>
-    <!--分页查询模板-->
+    <!--分页查询模板 王成-->
     <select id="queryPageTemplatePool" resultType="TemplatePool">
         SELECT
             template_id,
@@ -94,7 +94,7 @@
             template_pool
         LIMIT #{page},#{limit}
     </select>
-    <!--修改模板-->
+    <!--修改模板 王成-->
     <update id="updataTemplate">
         UPDATE template_pool
         SET 

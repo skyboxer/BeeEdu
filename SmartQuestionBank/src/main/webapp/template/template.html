@@ -112,8 +112,8 @@
                     layer.open({
                         type: 2,
                         shade: [0.8, '#393D49'],
-                        area: ['500px', '350px'],
-                        content: 'template_update_from.html?templateId='+data.templateId //这里content是一个普通的String
+                        area: ['700px', '600px'],
+                        content: 'template_update_from.html?templateId='+data.templateId +'&templateContent='+data.templateContent+'&subjectId='+data.subjectId+'&typeId='+data.typeId+'&difficultyGrade='+data.difficultyGrade+'&answerId='+data.answerId //这里content是一个普通的String
                     });
                     break;
                 default:

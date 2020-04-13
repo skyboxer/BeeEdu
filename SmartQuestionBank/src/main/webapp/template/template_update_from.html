@@ -14,36 +14,52 @@
 <div class="layui-card">
     <!--<div class="layui-card-header"></div>-->
     <div class="layui-card-body">
-        <form id="form" class="layui-form" action="">
-
+        <form id="form" class="layui-form" enctype="multipart/form-data" action="">
+            <div class="layui-form-item">
+                <label class="layui-form-label">模板ID</label>
+                <div class="layui-input-block">
+                    <input type="text" id="templateId" readonly="readonly" name="templateId" required  lay-verify="required"  placeholder="模板内容" autocomplete="off" class="layui-input">
+                </div>
+            </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">模板内容</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="subjectId" required  lay-verify="required"  placeholder="模板内容" autocomplete="off" class="layui-input">
+                <div class="layui-input-block">
+                    <input type="text" id="templateContent" name="templateContent" required  lay-verify="required"  placeholder="模板内容" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">科目ID</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="subjectId" required  lay-verify="required"  placeholder="科目ID" autocomplete="off" class="layui-input">
+                <div class="layui-input-block">
+                    <input type="text" id="subjectId" name="subjectId" required  lay-verify="required"  placeholder="科目ID" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">试题图片</label>
+                <div class="layui-input-block">
+                    <input id="imgFile"  name="file" type="file"/>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <img id="imgshow"  src="" >
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">类型ID</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="typeId" required  lay-verify="required"  placeholder="类型ID" autocomplete="off" class="layui-input">
+                <div class="layui-input-block">
+                    <input type="text" id="typeId" name="typeId" required  lay-verify="required"  placeholder="类型ID" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">难度等级</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="difficultyGrade" required  lay-verify="required"  placeholder="难度等级" autocomplete="off" class="layui-input">
+                <div class="layui-input-block">
+                    <input type="text" id="difficultyGrade" name="difficultyGrade" required  lay-verify="required"  placeholder="难度等级" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">答案ID</label>
-                <div class="layui-input-inline">
-                    <input type="text" name="answerId" required  lay-verify="required"  placeholder="答案ID" autocomplete="off" class="layui-input">
+                <div class="layui-input-block">
+                    <input type="text" id="answerId" name="answerId" required  lay-verify="required"  placeholder="答案ID" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
@@ -56,29 +72,84 @@
     </div>
 </div>
 <script src="../layuiv256/layui.js" charset="utf-8"></script>
-
+<script src="../js/getValueFromURL.js" charset="utf-8"></script>
 <script>
     //Demo
     layui.use(['form','layer'], function(){
         var form = layui.form;
         var layer = layui.layer,
         $=layui.jquery;
-        var search = window.location.search;
-        let templateId = decodeURI(search.substring(search.indexOf("=")+1));
+        //获取url中参数
+        let templateId = getQueryString("templateId");
+        let templateContent = getQueryString("templateContent");
+        let subjectId = getQueryString("subjectId");
+        let typeId = getQueryString("typeId");
+        let difficultyGrade = getQueryString("difficultyGrade");
+        let answerId = getQueryString("answerId");
+        //设置默认参数
         $("#templateId").val(templateId)
+        $("#templateContent").val(templateContent)
+        $("#subjectId").val(subjectId)
+        $("#typeId").val(typeId)
+        $("#difficultyGrade").val(difficultyGrade)
+        $("#answerId").val(answerId)
+        //拿到图片数据
+        $.get("../queryById?id="+templateId,function (data) {
+            if (data.code===1){
+                document.getElementById("imgshow").style="width: 100px;height: 100px";
+                $('#imgshow').attr("src","data:image/"+data.format+";base64,"+data.data);//这里是对传到页面的base64操作
+            }
+        },"json");
+
+        //监听文件上传
+        $("#imgFile").on("input",function(e){
+            document.getElementById("imgshow").src="";
+            document.getElementById("imgshow").style="";
+            let ofile = document.getElementById("imgFile").files[0];
+            let index1 = ofile.name.lastIndexOf(".");
+            let suffix =ofile.name.substring(index1);
+            //校验格式
+            if (suffix===".jpg"||suffix===".jpeg"||suffix===".png"||suffix===".bmp"){
+                let fileReader = new FileReader();
+                fileReader.readAsDataURL(ofile);
+                fileReader.onload = function (e) {
+                    document.getElementById("imgshow").src=this.result;
+                    document.getElementById("imgshow").style="width: 100px;height: 100px";
+                }
+            }
+        });
+
         //监听提交
         form.on('submit(formDemo)', function(data){
             layer.msg(JSON.stringify(data.field));
             //表单序列化
-            var fromData=$("#form").serialize();
+            let formData = new FormData($( "#form" )[0]);
             var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-            $.post("../updataTemplatePool",fromData,function (result) {
-                    if (result != null){
-                        parent.layer.msg(result.msg);
-                        //修改成功后刷新父界面
+            $.ajax({
+                url : '../updataTemplatePool',
+                type : 'post',
+                async: false,
+                data : formData,
+                cache:false,
+                contentType: false,
+                processData: false,
+                success : function(data) {
+                    parent.layer.msg(data.msg)
+                    //修改成功后刷新父界面
+                    if (data.code===1){
                         window.parent.location.reload();
                     }
-            },"json")
+
+                }
+            });
+
+            // $.post("../updataTemplatePool",fromData,function (result) {
+            //         if (result != null){
+            //             parent.layer.msg(result.msg);
+            //             //修改成功后刷新父界面
+            //             // window.parent.location.reload();
+            //         }
+            // },"json")
             parent.layer.close(index); //再执行关闭
             return false;
         });

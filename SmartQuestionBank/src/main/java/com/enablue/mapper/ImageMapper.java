@@ -19,5 +19,12 @@ public interface ImageMapper {
      * @param id
      * @return
      */
-    Image queryById(@Param("id")int id);
+    Image queryTemplateById(@Param("id")int id);
+
+    /**
+     * 修改图片
+     * @param image
+     * @return
+     */
+    int updateImg(@Param("image") Image image);
 }

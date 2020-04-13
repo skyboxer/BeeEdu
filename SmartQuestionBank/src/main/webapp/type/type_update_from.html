@@ -76,7 +76,9 @@
                     if (result != null){
                         parent.layer.msg(result.msg);
                         //修改成功后刷新父界面
-                        window.parent.location.reload();
+                        if (result.code===1){
+                            window.parent.location.reload();
+                        }
                     }
             },"json")
             parent.layer.close(index); //再执行关闭

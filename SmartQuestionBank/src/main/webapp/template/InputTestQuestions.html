@@ -137,7 +137,9 @@
                     success : function(data) {
                         layer.msg(data.msg)
                         //修改成功后刷新父界面
-                        // window.parent.location.reload();
+                        if (data.code===1){
+                            window.parent.location.reload();
+                        }
                     }
                 });
 
@@ -151,7 +153,7 @@
 
             //异步查询科目表
             $.get("../querySubject",function (result) {
-                if (result.code!==-1){
+                if (result.code===1){
                     let Subjects = result.data;
                     let subjectHtml='<option value="" selected>请选择科目</option>\n';
                     for (let i=0;i<Subjects.length;i++){
@@ -177,7 +179,7 @@
                if (subId!=="" &&subId!=null ){
                     //发送请求查询题目类型表
                     $.get("../queryTypePoolBySubject",{"subId":subId},function (result) {
-                        if (result.code===0){
+                        if (result.code===1){
                             var plates = result.data;
                             let plateHtml="<option value=\"\">请选择板块</option>\n"
                             for (let i=0;i<plates.length;i++){

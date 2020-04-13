@@ -68,8 +68,8 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
             image.setCreatTime(new Date());
             image.setTemplateId(templatePool.getTemplateId());
             image.setImageData(file.getBytes());
-            image.setImageName(file.getName());
-            String fileName = file.getName();
+            image.setImageName(file.getOriginalFilename());
+            String fileName = file.getOriginalFilename();
             image.setImageFormat(fileName.substring(fileName.lastIndexOf(".") + 1));
             //添加图片
             int imageCount = imageMapper.addImage(image);
@@ -91,10 +91,11 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
      * 修改试题模板
      * @param templatePool
      * 王成
+     * @param file
      * @return
      */
     @Override
-    public HashMap<String, Object> updataTemplate(TemplatePool templatePool) {
+    public HashMap<String, Object> updataTemplate(TemplatePool templatePool, MultipartFile file) {
         HashMap<String, Object> result = new HashMap<>();
         templatePool.setGetModified(new Date());
         int count=templatePoolMapper.updataTemplate(templatePool);
@@ -103,7 +104,38 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
             result.put("msg","修改失败");
             return result;
         }
-        result.put("code",0);
+        //修改图片
+        if (file!=null){
+            if (file.getSize()/1024>100){
+                result.put("code",-1);
+                result.put("msg","文件过大");
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return result;
+            }
+            try {
+                //设置数据
+                Image image = new Image();
+                image.setUpdateTime(new Date());
+                image.setTemplateId(templatePool.getTemplateId());
+                image.setImageData(file.getBytes());
+                image.setImageName(file.getOriginalFilename());
+                String fileName = file.getOriginalFilename();
+                image.setImageFormat(fileName.substring(fileName.lastIndexOf(".") + 1));
+                //修改图片
+                int imageCount = imageMapper.updateImg(image);
+                if (imageCount<1){
+                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                    result.put("code",-1);
+                    result.put("msg","修改失败");
+                    return result;
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            }
+        }
+
+        result.put("code",1);
         result.put("msg","修改成功");
         return result;
     }
