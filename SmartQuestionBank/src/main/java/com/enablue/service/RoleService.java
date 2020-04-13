@@ -3,6 +3,7 @@ package com.enablue.service;
 import com.alibaba.fastjson.JSONObject;
 import com.enablue.pojo.Role;
 import com.enablue.pojo.RoleMenu;
+import com.google.gson.annotations.JsonAdapter;
 
 /**
  * @author cnxjk
@@ -25,4 +26,10 @@ public interface RoleService {
     JSONObject delRoleMenu(Integer roleId,Integer menuId);
 
     JSONObject addMenu(Integer roleId,Integer menuId);
+
+    JSONObject updateRoleMenu(Integer roleId);
+
+    JSONObject addRoleMenu(RoleMenu roleMenu);
+
+    JSONObject deleteRoleMenu(RoleMenu roleMenu);
 }

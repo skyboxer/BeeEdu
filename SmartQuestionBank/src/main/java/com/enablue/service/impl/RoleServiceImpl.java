@@ -1,22 +1,22 @@
 package com.enablue.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.enablue.common.BaseController;
 import com.enablue.common.CommonReturnValue;
 import com.enablue.mapper.MenuMapper;
 import com.enablue.mapper.RoleMapper;
 import com.enablue.mapper.RoleMenuMapper;
 import com.enablue.mapper.UserRoleMapper;
-import com.enablue.pojo.Menu;
-import com.enablue.pojo.Role;
-import com.enablue.pojo.RoleMenu;
-import com.enablue.pojo.UserRole;
+import com.enablue.pojo.*;
 import com.enablue.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author cnxjk
@@ -35,6 +35,8 @@ public class RoleServiceImpl implements RoleService {
     private MenuMapper menuMapper;
     @Autowired
     private CommonReturnValue commonReturnValue;
+    @Autowired
+    private BaseController baseController;
 
     @Override
     public JSONObject getRoleList(Integer page, Integer limit) {
@@ -62,8 +64,15 @@ public class RoleServiceImpl implements RoleService {
         if(userRoleList.size()>0){
             return commonReturnValue.CommonReturnValue(-1,"请移除用户后再删除！");
         }
+        RoleMenu roleMenu =new RoleMenu();
+        roleMenu.setRoleId(roleId);
+        List<RoleMenu> roleMenuSize = roleMenuMapper.getRoleMenu(roleMenu);
+        int index1 =1;
+        if(roleMenuSize.size()>0){
+            index1 = roleMenuMapper.delRoleMenu(roleMenu);
+        }
         int index = roleMapper.delRole(new Role(roleId));
-        if(index>0){
+        if(index>0 && index1>0){
             return commonReturnValue.CommonReturnValue(0,"删除成功");
         }
         return commonReturnValue.CommonReturnValue(-1,"删除失败");
@@ -172,5 +181,59 @@ public class RoleServiceImpl implements RoleService {
             }
         }
         return commonReturnValue.CommonReturnValue(-1,"添加失败");
+    }
+
+    @Override
+    public JSONObject updateRoleMenu(Integer roleId) {
+        JSONObject returnJSONObject = new JSONObject();
+        if(roleId!=null){
+            RoleMenu roleMenu = new RoleMenu();
+            roleMenu.setRoleId(roleId);
+            List<RoleMenu> roleMenuList = roleMenuMapper.getRoleMenu(roleMenu);
+            List<Menu> menuList = menuMapper.getMenu(new Menu());
+            List<JSONObject> jsonObjectList = new ArrayList<>();
+            Set<String> valueRight = new HashSet<>();
+            JSONObject jsonObject;
+            for(Menu menu : menuList){
+                jsonObject = new JSONObject();
+                jsonObject.put("title",menu.getMenuName());
+                jsonObject.put("value",menu.getMenuId());
+                jsonObject.put("disabled","");
+                jsonObject.put("checked","");
+                if(menu.getParentId() == 0){
+                    valueRight.add(String.valueOf(menu.getMenuId()));
+                    jsonObject.put("disabled","true");
+                }
+                for(RoleMenu roleMenu1 : roleMenuList){
+                    if(menu.getMenuId()==roleMenu1.getMenuId()){
+                        valueRight.add(String.valueOf(menu.getMenuId()));
+                    }
+                }
+                jsonObjectList.add(jsonObject);
+            }
+            returnJSONObject.put("code",0);
+            returnJSONObject.put("data",jsonObjectList);
+            returnJSONObject.put("values",valueRight);
+            return returnJSONObject;
+        }
+        return commonReturnValue.CommonReturnValue(-1,"查询错误");
+    }
+
+    @Override
+    public JSONObject addRoleMenu(RoleMenu roleMenu) {
+        int index= roleMenuMapper.addRoleMenu(roleMenu);
+        if(index>0){
+            return commonReturnValue.CommonReturnValue(0,"成功");
+        }
+        return commonReturnValue.CommonReturnValue(-1,"失败！");
+    }
+
+    @Override
+    public JSONObject deleteRoleMenu(RoleMenu roleMenu) {
+        int index= roleMenuMapper.delRoleMenu(roleMenu);
+        if(index>0){
+            return commonReturnValue.CommonReturnValue(0,"成功");
+        }
+        return commonReturnValue.CommonReturnValue(-1,"失败！");
     }
 }
