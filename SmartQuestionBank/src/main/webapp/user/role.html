@@ -63,7 +63,7 @@
                 layer.open({
                     type: 1,
                     content: $('#roleForm'),
-                    area: ['600px', '400px'],
+                    area: ['400px', '200px'],
                     success: function (e) {
                         $("#roleForm")[0].reset();
                         layui.form.render();
@@ -78,7 +78,17 @@
             layui.form.render();
             switch (obj.event) {
                 case "update":
-                    form.val('roleFormFilter', {sysCode:"updateRole",roleName: obj.data.roleName,roleId:obj.data.roleId});
+                    layer.open({
+                        type: 1,
+                        content: $('#roleForm'),
+                        area: ['400px', '200px'],
+                        success: function (e) {
+                            $("#roleForm")[0].reset();
+                            layui.form.render();
+                            form.val('roleFormFilter', {sysCode:"updateRole",roleName: obj.data.roleName,roleId:obj.data.roleId});
+                        }
+                    });
+
                     break;
                 case "power":
                     layer.open({
@@ -157,6 +167,7 @@
                                     //渲染
                                     transfer.render({
                                         elem: '#menuList'  //绑定元素
+                                        ,title:['未拥有','拥有']
                                         ,data: e.data
                                         ,id: 'roleMenuId' //定义索引
                                         ,value:e.values
@@ -224,19 +235,19 @@
 <form class="layui-form" lay-filter="roleFormFilter" action="" style="display: none" id="roleForm">
     <div class="layui-form-item" style="display: none"><!--style="display: none"-->
         <label class="layui-form-label">sysCode</label>
-        <div class="layui-input-block">
+        <div class="layui-input-inline">
             <input type="text" name="sysCode" required lay-verify="required" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item" style="display: none"><!--style="display: none"-->
         <label class="layui-form-label">roleId</label>
-        <div class="layui-input-block">
+        <div class="layui-input-inline">
             <input type="number" name="roleId"  autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">角色名</label>
-        <div class="layui-input-block">
+        <div class="layui-input-inline">
             <input type="text" name="roleName" required lay-verify="required" autocomplete="off" class="layui-input">
         </div>
     </div>
@@ -248,11 +259,11 @@
         </div>
     </div>
 </form>
-<div id="powerSysId" class="demo-transfer" style="display: none">
+<div id="powerSysId" class="demo-transfer" style="display: none;margin-left: 5%;margin-top: 3%">
     <p style="color: #FD482C">节点名和节点路径请以英文,隔开</p>
     <div id="treeJSON"></div>
 </div>
-<div id="addRoleWin" class="demo-transfer" style="display: none">
+<div id="addRoleWin" class="demo-transfer" style="display: none;margin-left: 5%;margin-top: 3%">
     <div id="menuList"></div>
 </div>
 </html>

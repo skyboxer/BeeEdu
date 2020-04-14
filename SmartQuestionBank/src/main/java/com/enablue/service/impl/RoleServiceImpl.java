@@ -58,6 +58,9 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public JSONObject deleteRole(Integer roleId) {
+        if(roleId==2){
+            return commonReturnValue.CommonReturnValue(-1,"管理员不能被删除");
+        }
         UserRole userRole = new UserRole();
         userRole.setRoleId(roleId);
         List<UserRole> userRoleList = userRoleMapper.getUserRole(userRole);
@@ -152,6 +155,9 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public JSONObject delRoleMenu(Integer roleId, Integer menuId) {
+        if(roleId==2){
+            return commonReturnValue.CommonReturnValue(-1,"管理员不能被删除");
+        }
         RoleMenu menu = new RoleMenu();
         menu.setMenuId(menuId);
         menu.setRoleId(roleId);
@@ -230,6 +236,9 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public JSONObject deleteRoleMenu(RoleMenu roleMenu) {
+        if(roleMenu.getRoleId()==2){
+            return commonReturnValue.CommonReturnValue(-1,"管理员不能被删除");
+        }
         int index= roleMenuMapper.delRoleMenu(roleMenu);
         if(index>0){
             return commonReturnValue.CommonReturnValue(0,"成功");
