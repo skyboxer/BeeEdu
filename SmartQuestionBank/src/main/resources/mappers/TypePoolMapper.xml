@@ -49,7 +49,7 @@
             subject_id = #{id}
     </delete>
     <!--查询所有类型-->
-    <select id="queryAllTypet" resultType="TypePool">
+    <select id="queryAllType" resultType="TypePool">
         SELECT
             plate_id,
             subject_id,
@@ -63,8 +63,8 @@
         SELECT
             plate_id,
             subject_id,
-            plate_name,
-            amount
+            amount,
+            plate_name
         FROM
             type_pool
         LIMIT #{page},#{limit}
@@ -74,10 +74,23 @@
         SELECT
             plate_id,
             subject_id,
+            amount,
             plate_name
         FROM
             type_pool
         WHERE
             subject_id=#{subId}
+    </select>
+<!--    根据类型id查询类型数据-->
+    <select id="queryTypeById" resultType="TypePool">
+            SELECT
+            plate_id,
+            subject_id,
+            amount,
+            plate_name
+        FROM
+            type_pool
+        WHERE
+            plate_id=#{typeId}
     </select>
 </mapper>

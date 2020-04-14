@@ -39,4 +39,6 @@ public interface SubjectPoolMapper {
      * @return
      */
     List<SubjectPool> queryPageSubject(@Param("page") Long page, @Param("limit") Long limit);
+
+    SubjectPool querySubjectById(@Param("subjectId") Integer subjectId);
 }
