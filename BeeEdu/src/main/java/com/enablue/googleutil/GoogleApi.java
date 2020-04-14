@@ -116,7 +116,7 @@ public class GoogleApi {
             e.printStackTrace();
         }
 
-        StringBuffer buffer = new StringBuffer("https://translate.google.cn/translate_a/single?client=t");
+        StringBuffer buffer = new StringBuffer("https://translate.google.cn/translate_a/single?client=webapp");
 
         if (StringUtils.isBlank(from)) {
             from = "auto";
@@ -124,7 +124,8 @@ public class GoogleApi {
 
         buffer.append("&sl=" + from);
         buffer.append("&tl=" + to);
-        buffer.append("&hl=zh-CN&dt=at&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&ie=UTF-8&oe=UTF-8&source=btn&kc=0");
+        buffer.append("&hl=zh-CN&dt=t&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&ie=UTF-8&oe=UTF-8&source=btn&kc=0");
+        //buffer.append("&dt=t&dj=1&ie=UTF-8");
         buffer.append("&tk=" + tk);
         buffer.append("&q=" + word);
         browser.setUrl(buffer.toString());
@@ -158,6 +159,7 @@ public class GoogleApi {
      * @throws Exception
      */
     public String translate(String word, String to) throws Exception {
+        System.out.println("@param word 要翻译的词"+word);
         return translate(word, "auto", to);
     }
 }
