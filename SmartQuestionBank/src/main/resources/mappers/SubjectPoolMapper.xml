@@ -26,6 +26,7 @@
           WHERE
             subject_id = #{subjectPool.subjectId};
     </update>
+<!--根据科目id删除科目-->
     <delete id="daleteSubject">
         DELETE
         FROM
@@ -33,11 +34,18 @@
         WHERE
             subject_id = #{id}
     </delete>
+<!--    查询所有科目数据-->
     <select id="queryAllSubject" resultType="SubjectPool">
         SELECT subject_id,subject_name FROM subject_pool
     </select>
+<!--分页查询科目数据-->
     <select id="queryPageSubject" resultType="SubjectPool">
         SELECT subject_id,subject_name FROM subject_pool
         LIMIT #{page},#{limit}
+    </select>
+<!--  根据科目id查询科目数据-->
+    <select id="querySubjectById" resultType="SubjectPool">
+        SELECT subject_id,subject_name FROM subject_pool
+        WHERE subject_id=#{subjectId}
     </select>
 </mapper>

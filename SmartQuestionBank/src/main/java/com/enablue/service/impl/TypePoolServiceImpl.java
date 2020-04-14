@@ -106,7 +106,7 @@ public class TypePoolServiceImpl implements TypePoolService {
             limit=10L;
         }
         page=(page-1)*limit;
-        List<TypePool> typePools=typePoolMapper.queryAllTypet();
+        List<TypePool> typePools=typePoolMapper.queryAllType();
         List<TypePool> typePoolList=typePoolMapper.queryType(page,limit);
         if (typePools.size()<1){
             result.put("code",-1);
