@@ -14,6 +14,14 @@ public class Role {
     private Integer page;
     private Integer Size;
 
+    public Role(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public Role(Integer roleId) {
+        this.roleId = roleId;
+    }
+
     public Integer getRoleId() {
         return roleId;
     }
@@ -62,5 +70,15 @@ public class Role {
         Size = size;
     }
 
+    public Role(Integer page, Integer size) {
+        this.page = page;
+        Size = size;
+    }
 
+    public Role(Integer roleId, String roleName) {
+        this.roleId = roleId;
+        this.roleName = roleName;
+    }
+
+    public Role(){}
 }

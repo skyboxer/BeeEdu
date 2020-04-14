@@ -107,6 +107,9 @@ public class UserServiceImpl extends BaseController implements UserService {
 
     @Override
     public JSONObject deleteUser(User user) {
+        if(user.getUserId()==2){
+            return commonReturnValue.CommonReturnValue(-1,"管理员不能被删除");
+        }
         int size = userMapper.delUser(user);
         if(size>0){
             return commonReturnValue.CommonReturnValue(0,"删除成功");
@@ -143,6 +146,9 @@ public class UserServiceImpl extends BaseController implements UserService {
 
     @Override
     public JSONObject deleteUserRole(UserRole userRole) {
+        if(userRole.getRoleId()==2){
+            return commonReturnValue.CommonReturnValue(-1,"管理员不能被删除");
+        }
         int rowNum = userRoleMapper.delUserRole(userRole);
         if(rowNum>0){
             return commonReturnValue.CommonReturnValue(0,"删除成功");

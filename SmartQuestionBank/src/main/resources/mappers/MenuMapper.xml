@@ -41,12 +41,15 @@
 
     <update id="updateMenu" parameterType="Menu">
         update menus
-        set menu_name = #{menuName},menu_url = #{menuUrl},parent_id = #{parentId}
+        set menu_name = #{menuName},menu_url = #{menuUrl}
         where menu_id = #{menuId}
     </update>
 
     <insert id="addMenu" parameterType="Menu">
-        insert into menus (menu_name,menu_url,parent_id) value (#{menuName},#{menuUrl},#{parentId})
+        insert into menus (menu_name,menu_url,parent_id) values (#{menuName},#{menuUrl},#{parentId})
+    </insert>
+    <insert id="addMenuId" parameterType="Menu" useGeneratedKeys="true" keyProperty="menuId">
+        insert into menus (menu_name,menu_url,parent_id) values (#{menuName},#{menuUrl},#{parentId})
     </insert>
 
 </mapper>

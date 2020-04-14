@@ -9,6 +9,7 @@ import com.enablue.pojo.User;
 import com.enablue.service.CreateTestQuestionsService;
 import com.enablue.util.Algorithm;
 import com.enablue.util.RandomNumFactory;
+import com.enablue.util.WordToHtml;
 import org.apache.http.HttpRequest;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.usermodel.*;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -115,6 +118,7 @@ public class CreateQuestionsController {
             }
             outputStream = new FileOutputStream(newPath);*/
             String newDocPath = "/home/data/ROOT1/download/"+newFileName+".doc";
+            //String newDocPath = "/home/cnxjk/图片/"+newFileName+".doc";
             File newDocFile = new File(newDocPath);
             if(!newDocFile.isFile() && !newDocFile.exists()){
                 newDocFile.createNewFile();
@@ -122,9 +126,15 @@ public class CreateQuestionsController {
             }
             outputStream = new FileOutputStream(newDocPath);
             doc.write(outputStream);
+            String htmlPath = WordToHtml.Word2003ToHtml("/home/data/ROOT1/download/",newFileName,".doc","/home/data/ROOT1/download/");
+            System.out.println(htmlPath);
         } catch (IOException e) {
             e.printStackTrace();
             return commonReturnValue.CommonReturnValue(-1,"创建失败");
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
         }
         return commonReturnValue.CommonReturnValue("创建成功",0,newFileName,questionList);
     }

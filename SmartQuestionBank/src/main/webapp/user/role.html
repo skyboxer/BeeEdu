@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>用户操作</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/ROOT1/layuiv256/css/layui.css" media="all">
+</head>
+<body>
+<blockquote class="layui-elem-quote">
+    角色操作
+</blockquote>
+
+<!--用户操作-->
+<script type="text/html" id="barUser">
+    <a class="layui-btn layui-btn-xs" lay-event="update">修改</a>
+    <a class="layui-btn layui-btn-xs" lay-event="addMenu">添加功能</a>
+    <a class="layui-btn layui-btn-xs" lay-event="power">权限操作</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="add">添加</a>
+</script>
+
+
+<table id="roleTableId" lay-filter="roleTableFilter"></table>
+
+<script src="/ROOT1/layuiv256/layui.js"></script>
+<script>
+    //JavaScript代码区域
+    layui.use(['layer', 'jquery', 'form', 'table','transfer','tree'], function () {
+        var layer = layui.layer,
+            $ = layui.jquery,
+            table = layui.table,
+            tree = layui.tree,
+            form = layui.form,
+            transfer = layui.transfer;
+
+        //第一个实例
+        table.render({
+            elem: '#roleTableId'
+            , height: 312
+            , url: '/ROOT1/roleController/updateRole?sysCode=getRoleList' //数据接口
+            , page: true //开启分页
+            , toolbar: '#barDemo'
+            , defaultToolbar: ['filter', 'exports', 'print']
+            , cols: [[ //表头
+                {field: 'roleId', title: 'id', sort: true, fixed: 'left'}
+                , {field: 'roleName', title: '名称'}
+                , {field: 'gmtCreate', title: '创建时间'}
+                , {field: 'roleId', title: '操作', toolbar: '#barUser'}
+            ]]
+            , id: "itTests"
+        });
+
+        //添加
+        table.on('toolbar(roleTableFilter)',function (obj) {
+            layer.msg(obj.event);
+            if (obj.event ==="add") {
+                layer.open({
+                    type: 1,
+                    content: $('#roleForm'),
+                    area: ['400px', '200px'],
+                    success: function (e) {
+                        $("#roleForm")[0].reset();
+                        layui.form.render();
+                        form.val('roleFormFilter', {sysCode:"addRole"});
+                    }
+                });
+            }
+
+        })
+        table.on('tool(roleTableFilter)',function (obj) {
+            $("#roleForm")[0].reset();
+            layui.form.render();
+            switch (obj.event) {
+                case "update":
+                    layer.open({
+                        type: 1,
+                        content: $('#roleForm'),
+                        area: ['400px', '200px'],
+                        success: function (e) {
+                            $("#roleForm")[0].reset();
+                            layui.form.render();
+                            form.val('roleFormFilter', {sysCode:"updateRole",roleName: obj.data.roleName,roleId:obj.data.roleId});
+                        }
+                    });
+
+                    break;
+                case "power":
+                    layer.open({
+                        type:1,
+                        content:$('#powerSysId'),
+                        area: ['600px', '500px'],
+                        success:function (layero,index) {
+                            $.post("/ROOT1/roleController/updateRole"
+                                , {
+                                    "sysCode": "powerRole"
+                                    ,"roleId":obj.data.roleId
+                                }, function (e) {
+                                    layer.msg(e.msg)
+                                    var inst1 = tree.render({
+                                        elem: '#treeJSON'  //绑定元素
+                                        ,data: e.data,
+                                        edit: ['add', 'update', 'del'],
+                                        id:"demoId",
+                                        operate: function(obj1){
+                                            var type = obj1.type; //得到操作类型：add、edit、del
+                                            var data = obj1.data; //得到当前节点的数据
+                                            var elem = obj1.elem; //得到当前节点元素
+                                            $.post("/ROOT1/roleController/sysMenu"
+                                                , {
+                                                    "type": type
+                                                    ,"roleId":obj.data.roleId
+                                                    ,"menuName":data.title
+                                                    ,"menuId":data.id
+                                                }, function (e) {
+                                                    layer.msg(e.msg)
+                                                    if(type !="add"){
+                                                        //可以重载所有基础参数
+                                                        tree.reload('demoId', {});
+                                                    }
+                                                }, "json");
+                                        }
+                                    });
+                                }, "json");
+                            table.reload('itTests', {
+                                page: {
+                                    curr: 1 //重新从第 1 页开始
+                                }
+                            });
+                        }
+                    })
+                    break;
+                case "del":
+                    layer.confirm('确定要删除该项吗?', {icon: 3, title: '提示'}, function (index) {
+                        $.post("/ROOT1/roleController/updateRole"
+                            , {
+                                "sysCode": "deleteRole"
+                                ,"roleId":obj.data.roleId
+                            }, function (e) {
+                                layer.msg(e.msg)
+                                table.reload('itTests', {
+                                    page: {
+                                        curr: 1 //重新从第 1 页开始
+                                    }
+                                });
+                            }, "json");
+                        //do something
+                        layer.close(index);
+                    });
+                    break;
+                case "addMenu":
+                    layer.open({
+                        type:1,
+                        content:$('#addRoleWin'),
+                        area: ['600px', '500px'],
+                        success:function (layero,index) {
+                            $.post("/ROOT1/roleController/updateRoleMenu"
+                                , {
+                                    "sysCode": "getMenus"
+                                    ,"roleId":obj.data.roleId
+                                }, function (e) {
+                                    //渲染
+                                    transfer.render({
+                                        elem: '#menuList'  //绑定元素
+                                        ,title:['未拥有','拥有']
+                                        ,data: e.data
+                                        ,id: 'roleMenuId' //定义索引
+                                        ,value:e.values
+                                        ,onchange: function(data, index){
+                                        console.log(data); //得到当前被穿梭的数据
+                                        console.log(index); //如果数据来自左边，index 为 0，否则为 1
+                                        if(index == 0){
+                                            data.forEach(function (element) {
+                                                $.post("/ROOT1/roleController/updateRoleMenu"
+                                                    , {
+                                                        "sysCode": "addRoleMenu"
+                                                        ,"menuId": element.value
+                                                        ,"roleId":obj.data.roleId
+                                                    }, function (e3) {
+                                                        console.count(e3.msg);
+                                                    });
+                                            });
+
+                                        }else{
+                                            data.forEach(function (element) {
+
+                                                $.post("/ROOT1/roleController/updateRoleMenu"
+                                                    , {
+                                                        "sysCode": "deleteRoleMenu"
+                                                        ,"menuId": element.value
+                                                        ,"roleId":obj.data.roleId
+                                                    }, function (e3) {
+                                                        console.count(e3.msg);
+                                                    });
+                                            })
+                                        }
+                                    }
+                                    });
+                                }, "json");
+                        }
+                    });
+                    break;
+            }
+        })
+        //提交表单
+        form.on('submit(updateRoleSubmit)', function (data) {
+            $.post("/ROOT1/roleController/updateRole"
+                , {
+                    "sysCode": data.field.sysCode
+                    ,"roleId":data.field.roleId
+                    ,"roleName":data.field.roleName
+                }, function (e) {
+                    layer.msg(e.msg)
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layer.close(index); //再执行关闭
+                    table.reload('itTests', {
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                    });
+                }, "json");
+        });
+
+        });
+
+
+
+</script>
+</body>
+<form class="layui-form" lay-filter="roleFormFilter" action="" style="display: none" id="roleForm">
+    <div class="layui-form-item" style="display: none"><!--style="display: none"-->
+        <label class="layui-form-label">sysCode</label>
+        <div class="layui-input-inline">
+            <input type="text" name="sysCode" required lay-verify="required" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item" style="display: none"><!--style="display: none"-->
+        <label class="layui-form-label">roleId</label>
+        <div class="layui-input-inline">
+            <input type="number" name="roleId"  autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">角色名</label>
+        <div class="layui-input-inline">
+            <input type="text" name="roleName" required lay-verify="required" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="updateRoleSubmit">提交修改</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<div id="powerSysId" class="demo-transfer" style="display: none;margin-left: 5%;margin-top: 3%">
+    <p style="color: #FD482C">节点名和节点路径请以英文,隔开</p>
+    <div id="treeJSON"></div>
+</div>
+<div id="addRoleWin" class="demo-transfer" style="display: none;margin-left: 5%;margin-top: 3%">
+    <div id="menuList"></div>
+</div>
+</html>

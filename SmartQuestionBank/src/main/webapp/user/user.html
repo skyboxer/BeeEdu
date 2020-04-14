@@ -28,7 +28,7 @@
 <script src="/ROOT1/layuiv256/layui.js"></script>
 <script>
     //JavaScript代码区域
-    layui.use(['layer', 'jquery', 'form', 'table','transfer'], function () {
+    layui.use(['layer', 'jquery', 'form', 'table', 'transfer'], function () {
         var layer = layui.layer,
             $ = layui.jquery,
             table = layui.table,
@@ -54,18 +54,20 @@
         });
 
         //添加
-        table.on('toolbar(userTableFilter)',function (obj) {
+        table.on('toolbar(userTableFilter)', function (obj) {
             layer.msg(obj.event);
-            layer.open({
-                type: 1,
-                content: $('#userForm'),
-                area: ['500px', '300px'],
-                success: function (e) {
-                    $("#userForm")[0].reset();
-                    layui.form.render();
-                    form.val('userFormFilter', {actionCode:"add"});
-                }
-            });
+            if (obj.event === "add") {
+                layer.open({
+                    type: 1,
+                    content: $('#userForm'),
+                    area: ['500px', '300px'],
+                    success: function (e) {
+                        $("#userForm")[0].reset();
+                        layui.form.render();
+                        form.val('userFormFilter', {actionCode: "add"});
+                    }
+                });
+            }
         })
         //操作功能组
         table.on('tool(userTableFilter)', function (obj) {
@@ -79,83 +81,84 @@
                         success: function (e) {
                             $("#userForm")[0].reset();
                             layui.form.render();
-                            obj.data.actionCode="update"
+                            obj.data.actionCode = "update"
                             form.val('userFormFilter', obj.data);
                         }
                     });
                     break;
-                    case "power":
-                        layer.open({
-                            type:1,
-                            content:$('#userRoleSysId'),
-                            area: ['600px', '500px'],
-                            success:function (layero,index) {
-                                $.post("/ROOT1/userController/updateUserRole"
-                                    , {
-                                        "sysCode": "getAllRoles"
-                                        ,"userId": obj.data.userId
-                                    }, function (e1) {
+                case "power":
+                    layer.open({
+                        type: 1,
+                        content: $('#userRoleSysId'),
+                        area: ['600px', '500px'],
+                        success: function (layero, index) {
+                            $.post("/ROOT1/userController/updateUserRole"
+                                , {
+                                    "sysCode": "getAllRoles"
+                                    , "userId": obj.data.userId
+                                }, function (e1) {
 
-                                        $.post("/ROOT1/userController/updateUserRole"
-                                            , {
-                                                "sysCode": "getUserRole"
-                                                ,"userId": obj.data.userId
-                                            }, function (e2) {
-                                                const value = [];
-                                                for(const index2 in e2.data){
-                                                for(const index1 in e1.data){
-                                                    if (e1.data[index1].roleId==e2.data[index2].roleId){
-                                                        value[value.length]=e1.data[index1].roleId;
+                                    $.post("/ROOT1/userController/updateUserRole"
+                                        , {
+                                            "sysCode": "getUserRole"
+                                            , "userId": obj.data.userId
+                                        }, function (e2) {
+                                            const value = [];
+                                            for (const index2 in e2.data) {
+                                                for (const index1 in e1.data) {
+                                                    if (e1.data[index1].roleId == e2.data[index2].roleId) {
+                                                        value[value.length] = e1.data[index1].roleId;
                                                     }
                                                 }
                                             }
-                                                transfer.render({
-                                                    elem: '#userRoleSysId'
-                                                    ,data:e1.data
-                                                    ,parseData: function(res){
-                                                        return {
-                                                            "value": res.roleId //数据值
-                                                            ,"title": res.roleName //数据标题
-                                                            ,"disabled":res.disabled
-                                                            ,"checked":res.checked
-                                                        }
+                                            transfer.render({
+                                                elem: '#userRoleSysId'
+                                                ,title:['未拥有','拥有']
+                                                , data: e1.data
+                                                , parseData: function (res) {
+                                                    return {
+                                                        "value": res.roleId //数据值
+                                                        , "title": res.roleName //数据标题
+                                                        , "disabled": res.disabled
+                                                        , "checked": res.checked
                                                     }
-                                                    ,value:value
-                                                    ,onchange: function(data, index){
+                                                }
+                                                , value: value
+                                                , onchange: function (data, index) {
                                                     console.log(data); //得到当前被穿梭的数据
                                                     console.log(index); //如果数据来自左边，index 为 0，否则为 1
-                                                        if(index == 0){
-                                                            data.forEach(function (element) {
-                                                                $.post("/ROOT1/userController/updateUserRole"
-                                                                    , {
-                                                                        "sysCode": "addUserRole"
-                                                                        ,"userId": obj.data.userId
-                                                                        ,"roleId":element.value
-                                                                    }, function (e3) {
+                                                    if (index == 0) {
+                                                        data.forEach(function (element) {
+                                                            $.post("/ROOT1/userController/updateUserRole"
+                                                                , {
+                                                                    "sysCode": "addUserRole"
+                                                                    , "userId": obj.data.userId
+                                                                    , "roleId": element.value
+                                                                }, function (e3) {
                                                                     console.count(e3.msg);
-                                                                    });
-                                                            });
+                                                                });
+                                                        });
 
-                                                        }else{
-                                                            data.forEach(function (element) {
+                                                    } else {
+                                                        data.forEach(function (element) {
 
-                                                                $.post("/ROOT1/userController/updateUserRole"
-                                                                    , {
-                                                                        "sysCode": "deleteUserRole"
-                                                                        ,"userId": obj.data.userId
-                                                                        ,"roleId":element.value
-                                                                    }, function (e3) {
-                                                                        console.count(e3.msg);
-                                                                    });
-                                                            })
-                                                        }
+                                                            $.post("/ROOT1/userController/updateUserRole"
+                                                                , {
+                                                                    "sysCode": "deleteUserRole"
+                                                                    , "userId": obj.data.userId
+                                                                    , "roleId": element.value
+                                                                }, function (e3) {
+                                                                    console.count(e3.msg);
+                                                                });
+                                                        })
+                                                    }
                                                 }
-                                                });
-                                            }, "json");
-                                    }, "json");
-                            }
-                        })
-                        break;
+                                            });
+                                        }, "json");
+                                }, "json");
+                        }
+                    })
+                    break;
                 default:
                     layer.confirm('确定要删除该项吗?', {icon: 3, title: '提示'}, function (index) {
                         $.post("/ROOT1/userController/actionUser"
@@ -173,7 +176,6 @@
                                     }
                                 });
                             }, "json");
-                        //do something
                         layer.close(index);
                     });
             }
@@ -208,46 +210,46 @@
 </script>
 </body>
 <form class="layui-form" lay-filter="userFormFilter" action="" style="display: none" id="userForm">
-    <div class="layui-form-item"style="display: none" ><!---->
+    <div class="layui-form-item" style="display: none"><!---->
         <label class="layui-form-label">actionCode</label>
-        <div class="layui-input-block">
+        <div class="layui-input-inline">
             <input type="text" name="actionCode" required lay-verify="required" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item" style="display: none">
         <label class="layui-form-label">id</label>
-        <div class="layui-input-block">
-            <input type="text" name="userId"  autocomplete="off" class="layui-input">
+        <div class="layui-input-inline">
+            <input type="text" name="userId" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">用户名</label>
-        <div class="layui-input-block">
+        <div class="layui-input-inline">
             <input type="text" name="userName" required lay-verify="required" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">手机号</label>
-        <div class="layui-input-block">
+        <div class="layui-input-inline">
             <input type="number" name="userTel" required lay-verify="required" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">密码</label>
-        <div class="layui-input-block">
-            <input type="text" name="userPassword" required lay-verify="required" autocomplete="off"
+        <div class="layui-input-inline">
+            <input type="password" name="userPassword" required lay-verify="required" autocomplete="off"
                    class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <button class="layui-btn" lay-submit lay-filter="updateUser">提交修改</button>
+            <button class="layui-btn" lay-submit lay-filter="updateUser">提交</button>
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
         </div>
     </div>
 </form>
 
-<div id="userRoleSysId" class="demo-transfer" style="display: none"></div>
-<div id="userRoleSysIds" class="demo-transfer" style="display: none"></div>
+<div id="userRoleSysId" class="demo-transfer" style="display: none;margin-left: 5%;margin-top: 3%"></div>
+<!--<div id="userRoleSysIds" class="demo-transfer" style="display: none;margin-left: 5px"></div>-->
 </html>
