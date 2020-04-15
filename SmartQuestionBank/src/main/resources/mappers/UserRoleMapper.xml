@@ -25,10 +25,10 @@
         from user_role
         where 1=1*/
         <if test="roleId!=null">
-            and role_id = #{roleId}
+            and ur.role_id = #{roleId}
         </if>
         <if test="userId!=null">
-            and user_id = #{userId}
+            and ur.user_id = #{userId}
         </if>
         <if test="page!=null and size!=null">
             limit #{page},#{size}

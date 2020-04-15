@@ -293,7 +293,7 @@ public class MachineTranslationController {
         try {
             //调用google翻译
             GoogleApi googleApi = new GoogleApi();
-            String resultStr = googleApi.translate(text,  to);
+            String resultStr = googleApi.translate(text,from,to);
             //获取用户ID
             Account account = (Account) sessionCommon.getSession().getAttribute("account");
             //添加操作日志
@@ -345,7 +345,7 @@ public class MachineTranslationController {
                 if (count.length() >= 1500 && countChar == sign) {
                     //调用google翻译
                      googleApi = new GoogleApi();
-                     resultStr = googleApi.translate(count.toString(),  to);
+                     resultStr = googleApi.translate(count.toString(), from,to);
                     data = new JSONObject();
                     data.put("src",count.toString());
                     data.put("dst",resultStr);

@@ -59,7 +59,6 @@ public class RequestFilter implements Filter {
             return;
         }
         filterChain.doFilter(request, response);
-
     }
 
     @Override
