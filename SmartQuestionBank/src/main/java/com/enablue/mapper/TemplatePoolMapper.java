@@ -60,4 +60,13 @@ public interface TemplatePoolMapper {
      * 王成
      */
     int deleteTemplatePool(@Param("id") int id);
+
+    /**
+     * 根据模板id查询
+     * @param templateId
+     * @return
+     */
+    TemplatePool queryTemplateById(@Param("templateId") Integer templateId);
+
+
 }

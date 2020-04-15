@@ -1,5 +1,6 @@
 package com.enablue.controller;
 
+import com.enablue.pojo.TPAnswer;
 import com.enablue.pojo.TemplatePool;
 import com.enablue.service.ImpotTestQuestionsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,7 @@ public class TemplatePoolController {
      * 王成
      */
     @RequestMapping("/updataTemplatePool")
-    public HashMap<String,Object>  updataTemplatePool(TemplatePool templatePool, MultipartFile file){
-        return  impotTestQuestionsService.updataTemplate(templatePool,file);
+    public HashMap<String,Object>  updataTemplatePool(TemplatePool templatePool, TPAnswer tpAnswer, MultipartFile file){
+        return  impotTestQuestionsService.updataTemplate(templatePool,tpAnswer,file);
     }
 }

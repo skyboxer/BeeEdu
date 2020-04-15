@@ -1,7 +1,6 @@
 package com.enablue.mapper;
 
 import com.enablue.pojo.TPAnswer;
-import com.enablue.pojo.TemplatePool;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -23,4 +22,6 @@ public interface TPAnswerMapper {
      * @return
      */
     TPAnswer getTPAswer(Integer answerId);
+
+    int updateAnswer(@Param("aswer") TPAnswer aswer);
 }

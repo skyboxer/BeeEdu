@@ -20,6 +20,16 @@
                 #{tpAnswer.gmtModified}
             );
     </insert>
+<!--    修改答案 王成-->
+    <update id="updateAnswer">
+        UPDATE tp_answer
+        SET 
+         answer_content = #{aswer.answerContent},
+         gmt_modified = #{aswer.gmtModified}
+        WHERE
+            answer_id = #{aswer.answerId}
+    </update>
+
     <select id="getTPAswer" parameterType="Integer" resultType="com.enablue.pojo.TPAnswer">
         select answer_id,
         answer_content,

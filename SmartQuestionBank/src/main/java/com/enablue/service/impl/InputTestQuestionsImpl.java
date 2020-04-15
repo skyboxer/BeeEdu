@@ -96,21 +96,32 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
      * 修改试题模板
      * @param templatePool 试题模板
      * 王成
+     * @param tpAnswer 答案
      * @param file 图片文件
      * @return
      */
     @Override
-    public HashMap<String, Object> updataTemplate(TemplatePool templatePool, MultipartFile file) {
+    @Transactional
+    public HashMap<String, Object> updataTemplate(TemplatePool templatePool, TPAnswer tpAnswer, MultipartFile file) {
         HashMap<String, Object> result = new HashMap<>();
         templatePool.setGetModified(new Date());
         int count=templatePoolMapper.updataTemplate(templatePool);
-        if (count<1){
+        //根据模板id查询数据
+        TemplatePool template = templatePoolMapper.queryTemplateById(templatePool.getTemplateId());
+        //根据答案id查询
+        TPAnswer aswer = tpAnswerMapper.getTPAswer(template.getAnswerId());
+        //修改答案
+        aswer.setAnswerContent(tpAnswer.getAnswerContent());
+        int i = tpAnswerMapper.updateAnswer(aswer);
+
+        if (count<1 || i<1){
             result.put("code",-1);
             result.put("msg","修改失败");
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return result;
         }
         //修改图片
-        if (file!=null){
+        if (file!=null&&file.getSize()>0){
             if (file.getSize()/1024>100){
                 result.put("code",-1);
                 result.put("msg","文件过大");
