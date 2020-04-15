@@ -137,7 +137,7 @@
                     success : function(data) {
                         layer.msg(data.msg)
                         //修改成功后刷新父界面
-                        if (data.code===1){
+                        if (data.code===200){
                             window.parent.location.reload();
                         }
                     }
