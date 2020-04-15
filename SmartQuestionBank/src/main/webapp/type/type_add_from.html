@@ -15,24 +15,30 @@
     <!--<div class="layui-card-header"></div>-->
     <div class="layui-card-body">
         <form id="form" class="layui-form" action="">
+
             <div class="layui-form-item">
-                <label class="layui-form-label">科目id</label>
+                <label class="layui-form-label">科目</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="subjectId" required  lay-verify="required"  placeholder="科目id" autocomplete="off" class="layui-input">
+                    <select name="subjectId" lay-verify="required" lay-filter="subjectlist" id="subjectlist">
+                        <option value="" selected>请选择科目</option>
+                    </select>
                 </div>
             </div>
+
             <div class="layui-form-item">
                 <label class="layui-form-label">题目类型名</label>
                 <div class="layui-input-inline">
                     <input type="text" name="plateName" required  lay-verify="required"  placeholder="题型名" autocomplete="off" class="layui-input">
                 </div>
             </div>
+
             <div class="layui-form-item">
                 <label class="layui-form-label">题目数量</label>
                 <div class="layui-input-inline">
                     <input type="text" name="amount" required  lay-verify="required"  placeholder="题型量" autocomplete="off" class="layui-input">
                 </div>
             </div>
+
             <div class="layui-form-item">
                 <div class="layui-input-block">
                     <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
@@ -50,6 +56,21 @@
         var form = layui.form;
         var layer = layui.layer,
         $=layui.jquery;
+        //异步查询科目表
+        $.get("../querySubject",function (result) {
+            if (result.code===0){
+                let Subjects = result.data;
+                let subjectHtml='<option value="" selected>请选择科目</option>\n';
+                for (let i=0;i<Subjects.length;i++){
+                    subjectHtml+='<option value="'+Subjects[i].subjectId+'">'+Subjects[i].subjectName+'</option>\n'
+                }
+                $("#subjectlist").html(subjectHtml);
+                //重新加载当前页面
+                form.render();
+            }else {
+                layer.msg(result.msg)
+            }
+        },"json");
         //监听提交
         form.on('submit(formDemo)', function(data){
             layer.msg(JSON.stringify(data.field));

@@ -21,7 +21,7 @@
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">试题模板</label>
             <div class="layui-input-block">
-                <textarea placeholder="请输入内容" class="layui-textarea" name="templateContent"></textarea>
+                <textarea placeholder="请输入内容" lay-verify="required" class="layui-textarea" name="templateContent"></textarea>
             </div>
         </div>
         <div class="layui-form-item layui-form-text">
@@ -44,7 +44,7 @@
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">模板答案</label>
             <div class="layui-input-block">
-                <textarea placeholder="请输入内容" class="layui-textarea" name="answerContent"></textarea>
+                <textarea placeholder="请输入内容" class="layui-textarea" lay-verify="required" name="answerContent"></textarea>
             </div>
         </div>
 
@@ -52,13 +52,13 @@
             <label class="layui-form-label">科目/板块</label>
 
             <div class="layui-input-inline">
-                <select name="subjectId" lay-filter="subjectlist" id="subjectlist">
+                <select name="subjectId" lay-verify="required" lay-filter="subjectlist" id="subjectlist">
                     <option value="" selected>请选择科目</option>
                 </select>
             </div>
 
             <div class="layui-input-inline">
-                <select name="typeId" id="typeList">
+                <select name="typeId" lay-verify="required" id="typeList">
                     <option value="">请选择板块</option>
                 </select>
             </div>
@@ -73,7 +73,7 @@
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">难度等级</label>
             <div class="layui-input-block">
-                <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                <fieldset class="layui-elem-field layui-field-title"  style="margin-top: 30px;">
                     <legend></legend>
                 </fieldset>
                 <div id="test5"></div>

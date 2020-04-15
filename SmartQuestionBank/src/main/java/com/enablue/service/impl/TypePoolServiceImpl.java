@@ -1,10 +1,15 @@
 package com.enablue.service.impl;
 
+import com.enablue.dto.TypeDTO;
+import com.enablue.mapper.SubjectPoolMapper;
+import com.enablue.mapper.TypePoolMapper;
+import com.enablue.pojo.SubjectPool;
 import com.enablue.pojo.TypePool;
 import com.enablue.service.TypePoolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +21,9 @@ import java.util.List;
 @Service
 public class TypePoolServiceImpl implements TypePoolService {
     @Autowired
-    private com.enablue.mapper.TypePoolMapper typePoolMapper;
+    private TypePoolMapper typePoolMapper;
+    @Autowired
+    private SubjectPoolMapper subjectPoolMapper;
 
     /**
      * 增加题目类型
@@ -105,7 +112,9 @@ public class TypePoolServiceImpl implements TypePoolService {
         if (limit==null){
             limit=10L;
         }
+        //分页处理
         page=(page-1)*limit;
+        //类型查询
         List<TypePool> typePools=typePoolMapper.queryAllType();
         List<TypePool> typePoolList=typePoolMapper.queryType(page,limit);
         if (typePools.size()<1){
@@ -113,8 +122,23 @@ public class TypePoolServiceImpl implements TypePoolService {
             result.put("msg","查询失败");
             return result;
         }
+        //准备封装变量
+        List<TypeDTO> typeDTOList = new ArrayList<>();
+        TypeDTO typeDTO;
+        for (TypePool typePool:typePoolList) {
+            typeDTO=new TypeDTO();
+            SubjectPool subjectPool = subjectPoolMapper.querySubjectById(typePool.getSubjectId());
+            //设置封装数据
+            typeDTO.setSubjectName(subjectPool.getSubjectName());
+            typeDTO.setPlateName(typePool.getPlateName());
+            typeDTO.setPlateId(typePool.getPlateId());
+            typeDTO.setAmount(typePool.getAmount());
+            //添加到集合中
+            typeDTOList.add(typeDTO);
+        }
+        //处理返回结果集
         result.put("code", 0);
-        result.put("data", typePoolList);
+        result.put("data", typeDTOList);
         result.put("count",typePools.size());
         return result;
     }

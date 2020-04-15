@@ -26,13 +26,13 @@
                 <label class="layui-form-label">科目/板块</label>
 
                 <div class="layui-input-inline">
-                    <select name="subjectId" lay-filter="subjectlist" id="subjectlist">
+                    <select name="subjectId" lay-verify="required" lay-filter="subjectlist" id="subjectlist">
                         <option value="" selected>请选择科目</option>
                     </select>
                 </div>
 
                 <div class="layui-input-inline">
-                    <select name="typeId" id="typeList">
+                    <select name="typeId"  lay-verify="required" id="typeList">
                         <option value="">请选择板块</option>
                     </select>
                 </div>
