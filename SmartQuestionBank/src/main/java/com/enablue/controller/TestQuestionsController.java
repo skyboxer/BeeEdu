@@ -50,7 +50,7 @@ public class TestQuestionsController {
         tpAnswer.setGmtModified(new Date());
         //分离出试题中的标识变量放入list集合中
         List<VariablePool> variablePoolList = new ArrayList<VariablePool>();
-        String[] strings = variableQuantity.split("/");
+        String[] strings = variableQuantity.split("&");
         for (int i = 0; i < strings.length; i++) {
             VariablePool variablePool = new VariablePool();
             variablePool.setGmtCreate(new Date());
