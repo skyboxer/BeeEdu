@@ -24,7 +24,7 @@ public interface SubjectPoolMapper {
      * 删除科目
      * @param id
      */
-    int daleteSubject(@Param("id") int id);
+    int deleteSubject(@Param("id") int id);
 
     /**
      * 查询所有科目

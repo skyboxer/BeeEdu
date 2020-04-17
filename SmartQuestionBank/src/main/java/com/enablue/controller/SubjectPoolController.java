@@ -33,8 +33,8 @@ public class SubjectPoolController {
      * @return
      */
     @RequestMapping("updataSubject")
-    public HashMap<String,Object> updataSubject(SubjectPool subjectPool){
-        return subjectPoolService.updataSubject(subjectPool);
+    public HashMap<String,Object> updateSubject(SubjectPool subjectPool){
+        return subjectPoolService.updateSubject(subjectPool);
     }
 
     /**
@@ -43,8 +43,8 @@ public class SubjectPoolController {
      * @return
      */
     @RequestMapping("deleteSubject")
-    public HashMap<String,Object> daleteSubject(int subjectId){
-        return subjectPoolService.daleteSubject(subjectId);
+    public HashMap<String,Object> deleteSubject(int subjectId){
+        return subjectPoolService.deleteSubject(subjectId);
     }
 
     /**

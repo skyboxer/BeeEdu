@@ -22,7 +22,7 @@
        #{typePool.gmtModified}
     );
     </insert>
-    <update id="updataTypePool">
+    <update id="updateTypePool">
         UPDATE type_pool
         SET
          subject_id = #{typePool.subjectId},
@@ -33,7 +33,7 @@
         plate_id=#{typePool.plateId}
     </update>
     <!--根据id删除类型-->
-    <delete id="daleteTypePool">
+    <delete id="deleteTypePool">
         DELETE
         FROM
             type_pool
@@ -42,7 +42,7 @@
     </delete>
     <!--根据科目删除类型-->
     <delete id="daleteTypePoolBySubjectId">
-           DELETE
+        DELETE
         FROM
             type_pool
         WHERE

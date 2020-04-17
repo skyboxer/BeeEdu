@@ -27,7 +27,7 @@
             subject_id = #{subjectPool.subjectId};
     </update>
 <!--根据科目id删除科目-->
-    <delete id="daleteSubject">
+    <delete id="deleteSubject">
         DELETE
         FROM
             subject_pool
