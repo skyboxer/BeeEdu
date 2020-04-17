@@ -107,4 +107,13 @@ public class CommonReturnValue {
         jsonObject.put("data",user);
         return jsonObject;
     }
+
+    public JSONObject CommonReturnValue(int code, List list, int count){
+        this.jsonObject = jsonObject;
+        jsonObject = new JSONObject();
+        jsonObject.put("code",code);
+        jsonObject.put("count",count);
+        jsonObject.put("data",list);
+        return jsonObject;
+    }
 }

@@ -39,12 +39,12 @@ public class RequestFilter implements Filter {
         System.out.println("path"+path+", method"+method);
         if(path.indexOf("login.html")>-1 || path.indexOf(".css")>-1
                 ||path.indexOf(".js")>-1 || path.indexOf("layuiv256")>-1
-                ||path.indexOf(".doc")>-1){
+                ||path.indexOf(".doc")>-1 ||path.indexOf(".htm")>-1){
             filterChain.doFilter(request, response);
             return;
         }
         //登录请求放行
-        if(path.indexOf("userController")>-1){
+        if(path.indexOf("userLogin")>-1){
             response.setContentType("charset=utf-8");
             filterChain.doFilter(request, response);
             return;

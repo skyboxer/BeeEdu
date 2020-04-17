@@ -21,9 +21,15 @@
     <div class="layui-form-item">
         <label class="layui-form-label">年级/科目</label>
         <div class="layui-input-inline">
-            <select name="subjectSelect" id="subjectSelect" lay-filter="subjectSelect" class="layui-select">
+            <select name="subjectSelect" id="subjectSelect" required  lay-verify="required" lay-filter="subjectSelect" class="layui-select">
 
             </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">选择模板</label>
+        <div class="layui-input-block" id="modelDiv">
+
         </div>
     </div>
 
@@ -76,6 +82,46 @@
                 form.render();
             }
         });
+        var getModeList = function(subjectId){
+            var data ={}
+            if(subjectId != null){
+                data["subject"] = subjectId
+            }
+            $.post("../createQuestionsController/getModelList",data,function (e) {
+                if(e.code ==0){
+                    var html = ""
+                    for(var index in e.data){
+                        if(index == 0){
+                            html +='<input type="radio" name="modelFnName" value="'+e.data[index]+'" title="'+e.data[index].modelName+'" checked>';
+                        }
+                        html +='<input type="radio" name="modelFnName" value="'+e.data[index]+'" title="'+e.data[index].modelName+'">';
+                    }
+                    html +='<button type="button" class="layui-btn layui-btn-xs layui-btn-normal viewModel">预览</button>';
+                    $('#modelDiv').html(html)
+                }else{
+                    layer.msg(e.msg);
+                }
+                form.render();
+            })
+
+        }
+
+        getModeList(null);
+        form.on('select(subjectSelect)',function (data) {
+            console.log(data)
+            getModeList(data.value);
+        })
+
+        $(document).on('click',".viewModel",function (e) {
+            var data1 = form.val("formDemo1");
+            const a = JSON.parse(data1.get("modelFnName"));
+            layer.open({
+                type: 2,
+                area: ['893px', '600px'],
+                content: a.modelUrl
+            });
+        })
+
 
         //主动渲染
         table.render({
@@ -178,6 +224,7 @@
         });
 
     });
+
 </script>
 
 </body>

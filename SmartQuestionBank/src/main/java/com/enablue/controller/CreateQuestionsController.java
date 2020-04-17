@@ -1,9 +1,11 @@
 package com.enablue.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.enablue.common.BaseController;
 import com.enablue.common.CommonReturnValue;
 import com.enablue.common.RecursiveEquation;
+import com.enablue.pojo.Model;
 import com.enablue.pojo.TemplatePool;
 import com.enablue.pojo.User;
 import com.enablue.service.CreateTestQuestionsService;
@@ -163,6 +165,12 @@ public class CreateQuestionsController {
     public JSONObject getQuestionsLogs(){
         return createTestQuestionsService.getTestQuestionSaveLog();
     }
+
+    @RequestMapping("getModelList")
+    public JSONObject getModelList(Integer page,Integer limit,Integer subjectId){
+        return createTestQuestionsService.getModelList(new Model(subjectId,page,limit));
+    }
+
 }
 
 
