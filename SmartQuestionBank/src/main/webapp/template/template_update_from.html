@@ -48,7 +48,12 @@
                     <img id="imgshow"  src="" >
                 </div>
             </div>
-
+            <div class="layui-form-item">
+                <label class="layui-form-label">变量(多个变量按"&"分割)</label>
+                <div class="layui-input-block">
+                    <input type="text" name="variableQuantity" lay-verify="required" lay-reqtext="标识是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
+                </div>
+            </div>
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">难度等级</label>
                 <div class="layui-input-block">
@@ -135,7 +140,7 @@
         })
         //拿到图片数据
         $.get("../queryById?id="+templateId,function (data) {
-            if (data.code===1){
+            if (data.code===0){
                 document.getElementById("imgshow").style="width: 100px;height: 100px";
                 $('#imgshow').attr("src","data:image/"+data.format+";base64,"+data.data);//这里是对传到页面的base64操作
             }

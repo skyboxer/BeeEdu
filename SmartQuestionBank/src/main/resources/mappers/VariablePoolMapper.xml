@@ -22,6 +22,15 @@
                 #{gmtModified}
             );
     </insert>
+<!--删除变量 王成-->
+    <delete id="deleteByTemplateId">
+        DELETE
+        FROM
+            variable_pool
+        WHERE
+            template_id =#{templateId}
+
+    </delete>
     <select id="getVariablePoolList" parameterType="Integer" resultType="com.enablue.pojo.VariablePool">
         select variable_id,template_id,variable_content,gmt_create,gmt_modified
         from variable_pool

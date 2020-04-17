@@ -21,12 +21,13 @@ public interface ImpotTestQuestionsService {
     /**
      * 修改试题模板
      * @param templatePool
+     * @param variableQuantity
      * @param tpAnswer
      * @param file
      * @return
      * 王成
      */
-    HashMap<String,Object> updataTemplate(TemplatePool templatePool, TPAnswer tpAnswer, MultipartFile file);
+    HashMap<String,Object> updataTemplate(TemplatePool templatePool, String variableQuantity, TPAnswer tpAnswer, MultipartFile file);
 
     /**
      * 分页查询试题模板

@@ -88,7 +88,7 @@ public class SubjectPoolServiceImpl implements SubjectPoolService {
     public HashMap<String, Object> deleteSubject(int id) {
         HashMap<String, Object> result = new HashMap<>();
         List<TemplatePool> templatePools = templatePoolMapper.queryTemplateBySubjectId(id);
-        if (templatePools!=null||templatePools.size()>0){
+        if (templatePools.size()>0){
             result.put("code",-1);
             result.put("msg","该条数据还有其他关联数据不能删除");
             return result;

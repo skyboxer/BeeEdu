@@ -93,7 +93,7 @@ public class TypePoolServiceImpl implements TypePoolService {
         HashMap<String, Object> result = new HashMap<>();
         List<TemplatePool> templatePools = templatePoolMapper.queryTemplateByTypeId(id);
 
-        if (templatePools!=null||templatePools.size()>0){
+        if (templatePools.size()>0){
             result.put("code",-1);
             result.put("msg","该条数据还有其他关联数据不能删除");
             return result;
