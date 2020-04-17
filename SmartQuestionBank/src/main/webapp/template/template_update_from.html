@@ -49,10 +49,14 @@
                 </div>
             </div>
 
-            <div class="layui-form-item">
+            <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">难度等级</label>
                 <div class="layui-input-block">
-                    <input type="text" id="difficultyGrade" name="difficultyGrade" required  lay-verify="required"  placeholder="难度等级" autocomplete="off" class="layui-input">
+                    <fieldset class="layui-elem-field layui-field-title"  style="margin-top: 30px;">
+                        <legend></legend>
+                    </fieldset>
+                    <div id="test5"></div>
+
                 </div>
             </div>
             <div class="layui-form-item">
@@ -74,18 +78,18 @@
 <script src="../js/getValueFromURL.js" charset="utf-8"></script>
 <script>
     //Demo
-    layui.use(['form','layer'], function(){
+    layui.use(['form','rate','layer'], function(){
         var form = layui.form;
+        rate = layui.rate;
         var layer = layui.layer,
         $=layui.jquery;
         //获取url中参数
         let templateId = getQueryString("templateId");
         let templateContent = getQueryString("templateContent");
-        let difficultyGrade = getQueryString("difficultyGrade");
+        var difficultyGrade = getQueryString("difficultyGrade");
         let answer = getQueryString("answer");
         //设置默认参数
         $("#templateContent").val(templateContent)
-        $("#difficultyGrade").val(difficultyGrade)
         $("#answer").val(answer)
 
         //异步查询科目表
@@ -162,7 +166,7 @@
             let formData = new FormData($( "#form" )[0]);
             var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
             $.ajax({
-                url : '../updataTemplatePool?templateId='+templateId,
+                url : '../updataTemplatePool?templateId='+templateId+"&difficultyGrade="+difficultyGrade,
                 type : 'post',
                 async: false,
                 data : formData,
@@ -189,6 +193,23 @@
             parent.layer.close(index); //再执行关闭
             return false;
         });
+        //自定义文本
+        rate.render({
+            elem: '#test5'
+            ,value: 3
+            ,text: true
+            ,setText: function(value){ //自定义文本的回调
+                var arrs = {
+                    '1': '简单'
+                    ,'2': '一般'
+                    ,'3': '中等'
+                    ,'4': '困难'
+                    ,'5': '拓展'
+                };
+                this.span.text(value + "星");
+                difficultyGrade=value;
+            }
+        })
     });
 </script>
 </body>
