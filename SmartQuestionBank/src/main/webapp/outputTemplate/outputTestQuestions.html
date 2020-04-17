@@ -38,7 +38,7 @@
 
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <button class="layui-btn" lay-submit lay-filter="formDemo">创建试卷</button>
+            <button class="layui-btn" lay-submit lay-filter="formDemo1">创建试卷</button>
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
         </div>
     </div>
@@ -115,8 +115,9 @@
         });
 
         //监听提交
-        form.on('submit(formDemo)', function(data){
+        form.on('submit(formDemo1)', function(data){
             $.post("../createQuestionsController/createQuestions",data.field ,function (e) {
+                layer.msg(e.msg)
                 if (e.code==0){
                     $("#ifreamHtml").attr("src","https://www.enablue.com/ROOT1/download/"+e.newFileName+".html");
                     element.render();
@@ -153,17 +154,14 @@
                                         $.post("../createQuestionsController/saveQuestions",{"fileName":data.field.title,"newFileName":e.newFileName} ,function (e2) {
                                             layer.msg(e2.msg);
                                         });
-                                        return false;
                                     },
                                     btn2:function (index,layero) {
                                         layer.msg("下载")
                                         window.open(encodeURI("/ROOT1/download/"+e.newFileName+".doc"));
-                                        return false;
                                     },
                                     btn3:function (index,layero) {
                                         layer.msg("放弃")
                                         layer.close(index);
-                                        return false;
                                     }
                                 });
                             }
@@ -175,8 +173,8 @@
                         return false;
                     });
                 }
-
-            })
+            },"json")
+            return false;
         });
 
     });

@@ -118,4 +118,20 @@ public class RandomNumFactory {
         }
         return x;
     }
+
+    /**
+     * 获取随即下标
+     * @param max 不包含max
+     * @param num 个数
+     * @return 返回0到max以内的数字
+     */
+    public static int[] RandomNumIndex(int max,int num){
+        int[] indexList = new int[num];
+        for(int i = 0;i<num;i++){
+            indexList[i] = (int)(Math.random()*(max));
+        }
+        return indexList;
+    }
+
+
 }
