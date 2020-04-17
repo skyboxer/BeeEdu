@@ -92,6 +92,7 @@
             gmt_modified
         FROM
             template_pool
+        ORDER BY gmt_create DESC
         LIMIT #{page},#{limit}
     </select>
     <!--    根据模板id查询模板数据 王成-->
