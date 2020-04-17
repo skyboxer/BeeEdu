@@ -29,4 +29,12 @@ public interface CreateTestQuestionsService {
      */
     JSONObject getTestQuestionSaveLog();
 
+    /**
+     * 随即获取题
+     * @param templatePool
+     * @param nameArray
+     * @return
+     */
+    List<JSONObject> templatePoolFactoryFour(TemplatePool templatePool,String[] nameArray);
+
 }

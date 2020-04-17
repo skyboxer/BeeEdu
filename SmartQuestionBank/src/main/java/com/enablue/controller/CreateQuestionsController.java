@@ -52,6 +52,8 @@ public class CreateQuestionsController {
         String [] nameArray2 = new String[]{"${twoone}","${twotwo}",
                 "${twothree}","${twofour}","${twofive}","${twosix}"};
         String [] nameArray3 = new String[]{"${threeone}","${threetwo}","${threethree}"};
+
+        String [] nameArray4 = new String[]{"${fourone}","${fourtwo}","${fourthree}","${fourfour}","${fourfive}"};
         List<JSONObject> questionList = new ArrayList<>();
         JSONObject titleObject = new JSONObject();
         titleObject.put("name","${title}");
@@ -72,6 +74,12 @@ public class CreateQuestionsController {
         templatePoolList.add(new TemplatePool(13));
         templatePoolList.add(new TemplatePool(14));
         questionList.addAll(createTestQuestionsService.templatePoolFactoryTwo(templatePoolList,nameArray3));
+
+        //应用题
+        TemplatePool templatePool = new TemplatePool();
+        templatePool.setSubjectId(1);
+        templatePool.setTypeId(5);
+        questionList.addAll(createTestQuestionsService.templatePoolFactoryFour(templatePool,nameArray4));
 
 
         String templatePath = "/TemplateDoc/title.doc";
@@ -101,7 +109,7 @@ public class CreateQuestionsController {
                 }
             }*/
             for(JSONObject question : questionList){
-                System.out.println(range.text());
+                System.out.println(question.getString("name")+"  <><> "+question.getString("value"));
                 range.replaceText(question.getString("name"),question.getString("value"));
             }
             /*String newPath =servletContext.getRealPath("/download/"+newFileName+".doc");
@@ -127,11 +135,12 @@ public class CreateQuestionsController {
             outputStream = new FileOutputStream(newDocPath);
             doc.write(outputStream);
             String htmlPath = WordToHtml.Word2003ToHtml("/home/data/ROOT1/download/",newFileName,".doc","/home/data/ROOT1/download/");
+            //String htmlPath = WordToHtml.Word2003ToHtml("/home/data/ROOT1/download/",newFileName,".doc","/home/data/ROOT1/download/");
             System.out.println(htmlPath);
         } catch (IOException e) {
             e.printStackTrace();
             return commonReturnValue.CommonReturnValue(-1,"创建失败");
-        } catch (TransformerException e) {
+       } catch (TransformerException e) {
             e.printStackTrace();
         } catch (ParserConfigurationException e) {
             e.printStackTrace();

@@ -138,6 +138,28 @@ public class CreateTestQuestionsImpl implements CreateTestQuestionsService {
         }
         return commonReturnValue.CommonReturnValue(1005,"查询失败");
     }
-
+    /**
+     * 应用题工厂函数
+     * @param templatePool  id 集合
+     * @param nameArray 占位符
+     * @return
+     */
+    public List<JSONObject> templatePoolFactoryFour(TemplatePool templatePool,String[] nameArray){
+        List<JSONObject> jsonObjects = new ArrayList<>();
+        List<TemplatePool> templatePoolList = templatePoolMapper.getTemplatePooList(templatePool);
+        JSONObject jsonObject;
+        int [] indexList = RandomNumFactory.RandomNumIndex(templatePoolList.size(),nameArray.length);
+        int nums = nameArray.length;
+        if(templatePoolList.size()<nameArray.length){
+            nums = templatePoolList.size();
+        }
+        for(int i = 0;i<nums;i++){
+            jsonObject = new JSONObject();
+            jsonObject.put("name",nameArray[i]);
+            jsonObject.put("value",templatePoolList.get(indexList[i]).getTemplateContent());
+            jsonObjects.add(jsonObject);
+        }
+        return jsonObjects;
+    }
 
 }
