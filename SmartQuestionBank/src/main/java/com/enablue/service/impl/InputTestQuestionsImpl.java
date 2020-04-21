@@ -96,15 +96,31 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
      * 修改试题模板
      * @param templatePool 试题模板
      * 王成
+     * @param variableQuantity
      * @param tpAnswer 答案
      * @param file 图片文件
      * @return
      */
     @Override
     @Transactional
-    public HashMap<String, Object> updataTemplate(TemplatePool templatePool, TPAnswer tpAnswer, MultipartFile file) {
+    public HashMap<String, Object> updataTemplate(TemplatePool templatePool, String variableQuantity, TPAnswer tpAnswer, MultipartFile file) {
         HashMap<String, Object> result = new HashMap<>();
         templatePool.setGetModified(new Date());
+        //删除原来的参数
+        int i1 = variablePoolMapper.deleteByTemplateId(templatePool.getTemplateId());
+        if(variableQuantity!=null){
+            //分离出试题中的标识变量添加到变量表中
+            String[] strings = variableQuantity.split("&");
+            for (int i = 0; i < strings.length; i++) {
+                VariablePool variablePool = new VariablePool();
+                variablePool.setGmtCreate(new Date());
+                variablePool.setGmtModified(new Date());
+                variablePool.setVariableContent(strings[i]);
+                variablePool.setTemplateId(templatePool.getTemplateId());
+                variablePoolMapper.addVariablePool(variablePool);
+            }
+
+        }
         int count=templatePoolMapper.updataTemplate(templatePool);
         //根据模板id查询数据
         TemplatePool template = templatePoolMapper.queryTemplateById(templatePool.getTemplateId());

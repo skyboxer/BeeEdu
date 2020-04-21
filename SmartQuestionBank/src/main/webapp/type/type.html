@@ -95,14 +95,11 @@
                         $.post("../deleteTypePool",{"id":data.plateId},function (result) {
                             if (result != null){
                                 layer.msg(result.msg);
-                                if(result.code===1){
-                                    table.reload('test',{
-                                        page: {
-                                            curr:1
-                                        },
-                                    });
-                                }
-
+                                table.reload('test',{
+                                    page: {
+                                        curr:1
+                                    },
+                                });
                             }
                         },"json");
                         obj.del();

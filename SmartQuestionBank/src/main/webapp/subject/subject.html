@@ -93,14 +93,11 @@
                         $.post("../deleteSubject",{"subjectId":data.subjectId},function (result) {
                             if (result != null){
                                 layer.msg(result.msg);
-
-                                if(result.code===1){
-                                    table.reload('test',{
+                                table.reload('test',{
                                         page: {
                                             curr:1
                                         },
-                                    });
-                                }
+                                });
                             }
                         },"json");
                         obj.del();
@@ -109,7 +106,7 @@
                     break;
                 case 'edit':
                     layer.prompt({
-                        formType: 1,
+                        formType: 3,
                         placeholder: '请输入科目名',
                         title: '请输入科目名',
                         value: data.ip

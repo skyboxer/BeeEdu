@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface TypePoolMapper {
     int addTypePool(@Param("typePool") TypePool typePool);
-    int updataTypePool(@Param("typePool") TypePool typePool);
-    int daleteTypePool(@Param("id") int id);
+    int updateTypePool(@Param("typePool") TypePool typePool);
+    int deleteTypePool(@Param("id") int id);
     List<TypePool> queryAllType();
 
     List<TypePool> queryType(@Param("page") Long page, @Param("limit") Long limit);

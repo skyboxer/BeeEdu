@@ -92,6 +92,7 @@
             gmt_modified
         FROM
             template_pool
+        ORDER BY gmt_create DESC
         LIMIT #{page},#{limit}
     </select>
     <!--    根据模板id查询模板数据 王成-->
@@ -108,6 +109,36 @@
         WHERE
             template_id=#{templateId}
     </select>
+
+<!--    根据科目id查询模板-->
+    <select id="queryTemplateBySubjectId" resultType="TemplatePool">
+        SELECT
+        template_id,
+        template_content,
+        subject_id,
+        type_id,
+        answer_id,
+        difficulty_grade
+        FROM
+            template_pool
+        WHERE
+            subject_id=#{id}
+    </select>
+    <!--    根据类型id查询模板-->
+    <select id="queryTemplateByTypeId" resultType="TemplatePool">
+        SELECT
+        template_id,
+        template_content,
+        subject_id,
+        type_id,
+        answer_id,
+        difficulty_grade
+        FROM
+            template_pool
+        WHERE
+            type_id=#{id}
+    </select>
+
     <!--修改模板 王成-->
     <update id="updataTemplate">
         UPDATE template_pool

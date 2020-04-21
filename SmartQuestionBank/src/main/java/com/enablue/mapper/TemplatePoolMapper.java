@@ -68,5 +68,14 @@ public interface TemplatePoolMapper {
      */
     TemplatePool queryTemplateById(@Param("templateId") Integer templateId);
 
-
+    /**
+     * 根据科目id查询模板
+     * @param id 科目id
+     */
+    List<TemplatePool> queryTemplateBySubjectId(@Param("id") int id);
+    /**
+     * 根据类型id查询模板
+     * @param id 类型id
+     */
+    List<TemplatePool> queryTemplateByTypeId(@Param("id")int id);
 }

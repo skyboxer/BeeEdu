@@ -2,12 +2,15 @@ package com.enablue.service.impl;
 
 import com.enablue.dto.TypeDTO;
 import com.enablue.mapper.SubjectPoolMapper;
+import com.enablue.mapper.TemplatePoolMapper;
 import com.enablue.mapper.TypePoolMapper;
 import com.enablue.pojo.SubjectPool;
+import com.enablue.pojo.TemplatePool;
 import com.enablue.pojo.TypePool;
 import com.enablue.service.TypePoolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,6 +27,8 @@ public class TypePoolServiceImpl implements TypePoolService {
     private TypePoolMapper typePoolMapper;
     @Autowired
     private SubjectPoolMapper subjectPoolMapper;
+    @Autowired
+    private TemplatePoolMapper templatePoolMapper;
 
     /**
      * 增加题目类型
@@ -58,7 +63,7 @@ public class TypePoolServiceImpl implements TypePoolService {
      * @return
      */
     @Override
-    public HashMap<String, Object> updataTypePool(TypePool typePool) {
+    public HashMap<String, Object> updateTypePool(TypePool typePool) {
         //设置当前时间为修改时间
         typePool.setGmtModified(new Date());
         HashMap<String, Object> result = new HashMap<>();
@@ -67,7 +72,7 @@ public class TypePoolServiceImpl implements TypePoolService {
             result.put("msg","科目不能为空");
             return result;
         }
-        int count =typePoolMapper.updataTypePool(typePool);
+        int count =typePoolMapper.updateTypePool(typePool);
         if (count < 1){
             result.put("code",-1);
             result.put("msg","修改失败");
@@ -84,15 +89,22 @@ public class TypePoolServiceImpl implements TypePoolService {
      * @return
      */
     @Override
-    public HashMap<String, Object> daleteTypePool(int id) {
+    public HashMap<String, Object> deleteTypePool(int id) {
         HashMap<String, Object> result = new HashMap<>();
-        int count=typePoolMapper.daleteTypePool(id);
+        List<TemplatePool> templatePools = templatePoolMapper.queryTemplateByTypeId(id);
+
+        if (templatePools.size()>0){
+            result.put("code",-1);
+            result.put("msg","该条数据还有其他关联数据不能删除");
+            return result;
+        }
+        int count=typePoolMapper.deleteTypePool(id);
         if (count < 1){
             result.put("code",-1);
             result.put("msg","删除失败");
             return result;
         }
-        result.put("code",1);
+        result.put("code",0);
         result.put("msg","删除成功");
         return result;
     }
@@ -104,6 +116,7 @@ public class TypePoolServiceImpl implements TypePoolService {
      * @return
      */
     @Override
+    @Transactional
     public HashMap<String, Object> queryAllType(Long page, Long limit) {
         HashMap<String, Object> result = new HashMap<>();
         if (page==null || page<1){

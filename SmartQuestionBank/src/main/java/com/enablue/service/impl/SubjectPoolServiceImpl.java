@@ -1,8 +1,9 @@
 package com.enablue.service.impl;
 
 import com.enablue.mapper.SubjectPoolMapper;
-import com.enablue.mapper.TypePoolMapper;
+import com.enablue.mapper.TemplatePoolMapper;
 import com.enablue.pojo.SubjectPool;
+import com.enablue.pojo.TemplatePool;
 import com.enablue.service.SubjectPoolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,8 @@ public class SubjectPoolServiceImpl implements SubjectPoolService {
     @Autowired
     private SubjectPoolMapper subjectPoolMapper;
     @Autowired
-    private TypePoolMapper typePoolMapper;
+    private TemplatePoolMapper templatePoolMapper;
+
     /**
      * 添加科目
      * @param subjectPool
@@ -56,7 +58,7 @@ public class SubjectPoolServiceImpl implements SubjectPoolService {
      * @return
      */
     @Override
-    public HashMap<String, Object> updataSubject(SubjectPool subjectPool) {
+    public HashMap<String, Object> updateSubject(SubjectPool subjectPool) {
         //设置当前时间为修改时间
         subjectPool.setGmtModified(new Date());
         HashMap<String, Object> result = new HashMap<>();
@@ -83,11 +85,16 @@ public class SubjectPoolServiceImpl implements SubjectPoolService {
      */
     @Override
     @Transactional
-    public HashMap<String, Object> daleteSubject(int id) {
+    public HashMap<String, Object> deleteSubject(int id) {
         HashMap<String, Object> result = new HashMap<>();
-        int count=subjectPoolMapper.daleteSubject(id);
-        int count2=typePoolMapper.daleteTypePoolBySubjectId(id);
-        if (count < 1 && count2 <1){
+        List<TemplatePool> templatePools = templatePoolMapper.queryTemplateBySubjectId(id);
+        if (templatePools.size()>0){
+            result.put("code",-1);
+            result.put("msg","该条数据还有其他关联数据不能删除");
+            return result;
+        }
+        int count=subjectPoolMapper.deleteSubject(id);
+        if (count < 1){
             result.put("code",-1);
             result.put("msg","删除失败");
             return result;

@@ -10,9 +10,9 @@ import java.util.HashMap;
  *
  */
 public interface SubjectPoolService {
-    HashMap<String,Object> addSubject(SubjectPool subjectPool);
-    HashMap<String,Object> updataSubject(SubjectPool subjectPool);
-    HashMap<String,Object> daleteSubject(int id);
+    HashMap<String,Object>  addSubject(SubjectPool subjectPool);
+    HashMap<String,Object>  updateSubject(SubjectPool subjectPool);
+    HashMap<String,Object>  deleteSubject(int id);
     HashMap<String, Object> queryAllSubject(Long page, Long limit);
     HashMap<String, Object> querySubject();
 }

@@ -24,4 +24,6 @@ public interface VariablePoolMapper {
      * @return
      */
     List<VariablePool> getVariablePoolList(Integer templateId);
+
+    int  deleteByTemplateId(@Param("templateId") Integer templateId);
 }

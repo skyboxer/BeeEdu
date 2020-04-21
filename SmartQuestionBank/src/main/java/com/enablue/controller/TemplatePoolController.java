@@ -44,12 +44,15 @@ public class TemplatePoolController {
 
     /**
      * 修改模板
-     * @param templatePool
+     * @param templatePool 试题模板
+     * @param variableQuantity  试题变量
+     * @param tpAnswer  试题答案
+     * @param file  试题图片文件
      * @return
      * 王成
      */
     @RequestMapping("/updataTemplatePool")
-    public HashMap<String,Object>  updataTemplatePool(TemplatePool templatePool, TPAnswer tpAnswer, MultipartFile file){
-        return  impotTestQuestionsService.updataTemplate(templatePool,tpAnswer,file);
+    public HashMap<String,Object>  updataTemplatePool(TemplatePool templatePool,String variableQuantity ,TPAnswer tpAnswer, MultipartFile file){
+        return  impotTestQuestionsService.updataTemplate(templatePool,variableQuantity,tpAnswer,file);
     }
 }

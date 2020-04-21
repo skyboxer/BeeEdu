@@ -23,12 +23,12 @@ public class TypePoolController {
         return typePoolService.addTypePool(typePool);
     }
     @RequestMapping("/updataTypePool")
-    public HashMap<String,Object> updataTypePool(TypePool typePool){
-        return typePoolService.updataTypePool(typePool);
+    public HashMap<String,Object> updateTypePool(TypePool typePool){
+        return typePoolService.updateTypePool(typePool);
     }
     @RequestMapping("/deleteTypePool")
-    public HashMap<String,Object> daleteType(int id){
-        return typePoolService.daleteTypePool(id);
+    public HashMap<String,Object> deleteType(int id){
+        return typePoolService.deleteTypePool(id);
     }
     @RequestMapping("/queryPageTypePool")
     public HashMap<String,Object> queryAllType(Long page,Long limit){
