@@ -2,6 +2,7 @@ package com.enablue.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.enablue.pojo.Model;
 import com.enablue.pojo.TemplatePool;
 
 import java.util.List;
@@ -36,5 +37,13 @@ public interface CreateTestQuestionsService {
      * @return
      */
     List<JSONObject> templatePoolFactoryFour(TemplatePool templatePool,String[] nameArray);
+
+    /**
+     * @cnxjk
+     * 获取试卷模板集合
+     * @param model
+     * @return
+     */
+    JSONObject getModelList(Model model);
 
 }

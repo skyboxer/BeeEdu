@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.enablue.common.BaseController;
 import com.enablue.common.CommonReturnValue;
-import com.enablue.mapper.TPAnswerMapper;
-import com.enablue.mapper.TemplatePoolMapper;
-import com.enablue.mapper.UserFileMapper;
-import com.enablue.mapper.VariablePoolMapper;
+import com.enablue.mapper.*;
 import com.enablue.pojo.*;
 import com.enablue.service.CreateTestQuestionsService;
 import com.enablue.service.UserService;
@@ -38,6 +35,8 @@ public class CreateTestQuestionsImpl implements CreateTestQuestionsService {
     private CommonReturnValue commonReturnValue;
     @Autowired
     private BaseController baseController;
+    @Autowired
+    private ModelMapper modelMapper;
 
     private TPAnswer tpAnswer;
 
@@ -160,6 +159,16 @@ public class CreateTestQuestionsImpl implements CreateTestQuestionsService {
             jsonObjects.add(jsonObject);
         }
         return jsonObjects;
+    }
+
+    @Override
+    public JSONObject getModelList(Model model) {
+        List<Model> modelList = modelMapper.getModelList(model);
+        /*int count = modelMapper.getModelCount(model);*/
+        if(modelList.size()>=0){
+            return commonReturnValue.CommonReturnValue(0,modelList,0);
+        }
+        return commonReturnValue.CommonReturnValue(-1,"失败");
     }
 
 }

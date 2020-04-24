@@ -16,14 +16,20 @@
 <blockquote class="layui-elem-quote">
     创建试卷
 </blockquote>
-<form class="layui-form" action="">
+<form class="layui-form" action="" lay-filter="createFromElement">
 
     <div class="layui-form-item">
         <label class="layui-form-label">年级/科目</label>
         <div class="layui-input-inline">
-            <select name="subjectSelect" id="subjectSelect" lay-filter="subjectSelect" class="layui-select">
+            <select name="subjectSelect" id="subjectSelect" required  lay-verify="required" lay-filter="subjectSelect" class="layui-select">
 
             </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">选择模板</label>
+        <div class="layui-input-block" id="modelDiv">
+
         </div>
     </div>
 
@@ -76,6 +82,49 @@
                 form.render();
             }
         });
+        var getModeList = function(subjectId){
+            var data ={}
+            if(subjectId != null){
+                data["subject"] = subjectId
+            }
+            $.post("../createQuestionsController/getModelList",data,function (e) {
+                if(e.code ==0){
+                    var html = ""
+                    for(const index in e.data){
+                        const value = e.data[index].modelUrl+","+e.data[index].modelFnName;
+                        if(index == 0){
+                            html +='<input type="radio" name="modelFnName" value="'+value+'" title="'+e.data[index].modelName+'" checked>';
+                        }else{
+                            html +='<input type="radio" name="modelFnName" value="'+value+'" title="'+e.data[index].modelName+'">';
+                        }
+                    }
+                    html +='<button type="button" class="layui-btn layui-btn-xs layui-btn-normal viewModel">预览</button>';
+                    $('#modelDiv').html(html)
+                }else{
+                    layer.msg(e.msg);
+                }
+                form.render();
+            })
+
+        }
+
+        getModeList(null);
+        form.on('select(subjectSelect)',function (data) {
+            console.log(data)
+            getModeList(data.value);
+        })
+
+        $(document).on('click',".viewModel",function (e) {
+            var data = form.val("createFromElement");
+            var value = data.modelFnName;
+            var dataArray = value.split(",");
+            layer.open({
+                type: 2,
+                area: ['600px', '500px'],
+                content: 'https://www.enablue.com/ROOT1/download/'+dataArray[0]
+            });
+        })
+
 
         //主动渲染
         table.render({
@@ -116,7 +165,10 @@
 
         //监听提交
         form.on('submit(formDemo1)', function(data){
-            $.post("../createQuestionsController/createQuestions",data.field ,function (e) {
+            var modelData = data.field.modelFnName;
+            var modelDataArray = modelData.split(",");
+            var url = "../createQuestionsController/"+modelDataArray[1];
+            $.post(url,data.field ,function (e) {
                 layer.msg(e.msg)
                 if (e.code==0){
                     $("#ifreamHtml").attr("src","https://www.enablue.com/ROOT1/download/"+e.newFileName+".html");
@@ -147,7 +199,7 @@
                                     shadeClose: true,
                                     shade: false,
                                     maxmin: true, //开启最大化最小化按钮
-                                    area: ['893px', '600px'],
+                                    area: ['600px', '500px'],
                                     content: 'https://www.enablue.com/ROOT1/download/'+e.newFileName+'.html',
                                     btn:['保存','下载','放弃'],
                                     yes:function (index,layero) {
@@ -178,6 +230,7 @@
         });
 
     });
+
 </script>
 
 </body>
