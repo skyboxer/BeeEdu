@@ -7,10 +7,10 @@ import java.util.Date;
  * 王成
  */
 public class SubjectPool {
-    Integer subjectId;
-    String  subjectName;
-    Date    gmtCreate;
-    Date    gmtModified;
+    private  Integer subjectId;
+    private  String  subjectName;
+    private  Date    gmtCreate;
+    private  Date    gmtModified;
 
     public Integer getSubjectId() {
         return subjectId;
