@@ -71,11 +71,13 @@
     </select>
     <!--根据科目id查询-->
     <select id="queryTypeBySubjectId" resultType="TypePool">
+        /*需要最大题数量*/
         SELECT
             plate_id,
-            subject_id,
-            amount,
-            plate_name
+	        subject_id,
+	        plate_name,
+	        /*amount,*/
+	        (SELECT COUNT(template_id) FROM template_pool WHERE subject_id = 1 AND type_id = plate_id ) amount
         FROM
             type_pool
         WHERE

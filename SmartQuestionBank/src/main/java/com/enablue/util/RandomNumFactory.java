@@ -1,7 +1,9 @@
 package com.enablue.util;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * @author cnxjk
@@ -131,6 +133,17 @@ public class RandomNumFactory {
             indexList[i] = (int)(Math.random()*(max));
         }
         return indexList;
+        /*Set<Integer> set = new HashSet<>();
+        int a;
+        int i = 0;
+        do {
+            a = (int)(Math.random()*(max));
+            if(set.add(a)){
+                indexList[i] = a;
+            }
+            i++;
+        }while (set.size()==num);
+        return indexList;*/
     }
 
 
