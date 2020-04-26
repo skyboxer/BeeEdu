@@ -4,10 +4,12 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.enablue.common.BaseController;
 import com.enablue.common.CommonReturnValue;
+import com.enablue.common.RecursiveEquation;
 import com.enablue.mapper.*;
 import com.enablue.pojo.*;
 import com.enablue.service.CreateTestQuestionsService;
 import com.enablue.service.UserService;
+import com.enablue.util.Algorithm;
 import com.enablue.util.RandomNumFactory;
 import com.enablue.util.TemplateFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,8 @@ public class CreateTestQuestionsImpl implements CreateTestQuestionsService {
     private BaseController baseController;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private TypePoolMapper typePoolMapper;
 
     private TPAnswer tpAnswer;
 
@@ -170,5 +174,62 @@ public class CreateTestQuestionsImpl implements CreateTestQuestionsService {
         }
         return commonReturnValue.CommonReturnValue(-1,"失败");
     }
+
+    @Override
+    public List<TemplatePool> templatePoolFactoryFour(TemplatePool templatePool,Integer size) {
+        List<TemplatePool> newTemplatePool = new ArrayList<>();
+        String [] arrayName = new String[size];
+        for(int i = 0; i< size; i++){
+            arrayName[i] = String.valueOf(i);
+        }
+        switch (templatePool.getTypeId()){
+            case 16:
+                TemplatePool templatePool16;
+                //创建竖式运算对象
+                RecursiveEquation recursiveEquation = new RecursiveEquation();
+                List<JSONObject> templatePool16List = recursiveEquation.generativeExpression(arrayName);
+                for(JSONObject jsonObject : templatePool16List){
+                    /*templatePool16 = new TemplatePool();*/
+                    templatePool16 = templatePool;
+                    templatePool16.setTypePool(typePoolMapper.queryTypeById(templatePool.getTypeId()));
+                    templatePool16.setTemplateContent(jsonObject.getString("value"));
+                    newTemplatePool.add(templatePool16);
+                }
+                break;
+            case 17:
+                TemplatePool templatePool17;
+                //创建竖式运算对象
+                //递等式计算
+                Algorithm algorithm = new Algorithm();
+                List<JSONObject> templatePool17List = algorithm.recursiveComputation(arrayName);
+                for(JSONObject jsonObject : templatePool17List){
+                    /*templatePool17 = new TemplatePool();*/
+                    templatePool17 = templatePool;
+                    templatePool17.setTypePool(typePoolMapper.queryTypeById(templatePool.getTypeId()));
+                    templatePool17.setTemplateContent(jsonObject.getString("value"));
+                    newTemplatePool.add(templatePool17);
+                }
+                break;
+            default:
+                List<TemplatePool> templatePoolList = templatePoolMapper.getTemplatePooList(templatePool);
+                int [] indexList = RandomNumFactory.RandomNumIndex(templatePoolList.size(),size);
+                for(int i = 0;i<size;i++){
+                    TemplatePool templatePool1 = templatePoolList.get(indexList[i]);
+                    if(templatePool1.getTemplateId()==12
+                            || templatePool1.getTemplateId()==13
+                            || templatePool1.getTemplateId()==14){
+                        List<VariablePool> tpVariableList = variablePoolMapper.getVariablePoolList(templatePool1.getTemplateId());
+                        templatePool1.setVariablePoolList(tpVariableList);
+                        JSONObject newTemplatePool1 = TemplateFactory.templateJSONObjectFactory(templatePool1,arrayName[i]);
+                        templatePoolList.get(indexList[i]).setTemplateContent(newTemplatePool1.getString("value"));
+                    }
+                    templatePoolList.get(indexList[i]).setTypePool(typePoolMapper.queryTypeById(templatePool.getTypeId()));
+                    newTemplatePool.add(templatePoolList.get(indexList[i]));
+                }
+        }
+
+        return newTemplatePool;
+    }
+
 
 }

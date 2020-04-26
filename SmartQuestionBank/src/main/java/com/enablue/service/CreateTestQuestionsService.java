@@ -46,4 +46,10 @@ public interface CreateTestQuestionsService {
      */
     JSONObject getModelList(Model model);
 
+    /**
+     * 随即获取题
+     * @param templatePool
+     * @return
+     */
+    List<TemplatePool> templatePoolFactoryFour(TemplatePool templatePool,Integer size);
 }

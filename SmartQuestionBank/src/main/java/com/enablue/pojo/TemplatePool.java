@@ -22,6 +22,15 @@ public class TemplatePool {
     private Integer templateNum;
     private List<VariablePool> variablePoolList;
     private TPAnswer tpAnswer;
+    private TypePool typePool;
+
+    public TypePool getTypePool() {
+        return typePool;
+    }
+
+    public void setTypePool(TypePool typePool) {
+        this.typePool = typePool;
+    }
 
     public TemplatePool() {
     }
