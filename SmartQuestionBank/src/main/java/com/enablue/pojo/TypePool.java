@@ -9,12 +9,12 @@ import java.util.Date;
  */
 public class TypePool {
 
-    Integer plateId;
-    Integer subjectId;
-    String  plateName;
-    Integer amount;
-    Date    gmtCreate;
-    Date    gmtModified;
+    private   Integer plateId;
+    private   Integer subjectId;
+    private   String  plateName;
+    private   Integer amount;
+    private   Date    gmtCreate;
+    private   Date    gmtModified;
 
 
     public Integer getSubjectId() {

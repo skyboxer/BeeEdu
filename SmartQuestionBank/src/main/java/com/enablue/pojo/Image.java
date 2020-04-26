@@ -7,13 +7,13 @@ import java.util.Date;
  * 王成
  */
 public class Image {
-    Integer imageId;
-    Integer templateId;
-    String imageFormat;
-    String imageName;
-    byte[] imageData;
-    Date creatTime;
-    Date updateTime;
+    private Integer imageId;
+    private  Integer templateId;
+    private String imageFormat;
+    private String imageName;
+    private byte[] imageData;
+    private  Date creatTime;
+    private Date updateTime;
 
 
     public Integer getTemplateId() {
