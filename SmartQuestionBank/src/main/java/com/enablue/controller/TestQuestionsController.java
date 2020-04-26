@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -96,6 +97,9 @@ public class TestQuestionsController {
         return commonReturnValue.CommonReturnValue(-1,"试卷创建失败");
     }
 
-
+    @RequestMapping("/readDocument")
+    public HashMap<String,Object> readDocument(MultipartFile file){
+       return impotTestQuestionsService.readDocument(file);
+    }
 }
 

@@ -78,4 +78,11 @@ public interface TemplatePoolMapper {
      * @param id 类型id
      */
     List<TemplatePool> queryTemplateByTypeId(@Param("id")int id);
+
+    /**
+     *
+     * @param templatePoolList
+     * @return
+     */
+    int addListTemplate(@Param("list") List<TemplatePool> templatePoolList);
 }

@@ -1,5 +1,6 @@
 package com.enablue.service.impl;
 
+import com.enablue.common.PoiUtil;
 import com.enablue.dto.TemplateDTO;
 import com.enablue.mapper.*;
 import com.enablue.pojo.*;
@@ -8,8 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletContext;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -251,6 +257,69 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
         }
         result.put("code",0);
         result.put("msg","删除成功");
+        return result;
+    }
+
+    /**
+     * 批量插入试题模板
+     * @param fileName
+     * @return
+     */
+    @Override
+    public HashMap<String, Object> addListTemplate(String fileName ) {
+//        HashMap<String, Object> result = new HashMap<>();
+//        PoiUtil poiUtil = new PoiUtil();
+//        String word = poiUtil.readWord(fileName);
+//        List<TemplatePool> templatePoolList = poiUtil.f(word);
+//        int count = templatePoolMapper.addListTemplate(templatePoolList);
+//        if (count<1){
+//            result.put("code",-1);
+//            result.put("msg","添加失败");
+//            return result;
+//        }
+//        result.put("code",1);
+//        result.put("msg","添加成功");
+//        return result;
+        return null;
+    }
+
+    /**
+     * 读取文档
+     * @param file
+     * @return
+     */
+    @Override
+    public HashMap<String, Object> readDocument(MultipartFile file) {
+        //获取文件全名
+        String fileName = file.getOriginalFilename();
+        //获取文件格式
+        String format = fileName.substring(fileName.lastIndexOf(".") + 1);
+        //准备结果集
+        HashMap<String, Object> result = new HashMap<>();
+        if ("doc".equals(format)||"docx".equals(format)){
+            try {
+                //获取服务器中的路径
+                WebApplicationContext webApplicationContext = ContextLoader
+                        .getCurrentWebApplicationContext();
+                ServletContext servletContext = webApplicationContext
+                        .getServletContext();
+                String realPath = servletContext.getRealPath("/download");
+                //上传文件到realPath目录
+                file.transferTo(new File(realPath,file.getOriginalFilename()));
+                //准备读取文档内容
+                PoiUtil poiUtil = new PoiUtil();
+                //读取文本内容
+                String word = poiUtil.readWord(realPath + File.separator + file.getOriginalFilename());
+                //分离试题模板
+
+                return result;
+            } catch (IOException e) {
+                e.printStackTrace();
+
+            }
+        }
+        result.put("code",-1);
+        result.put("msg","读取失败");
         return result;
     }
 

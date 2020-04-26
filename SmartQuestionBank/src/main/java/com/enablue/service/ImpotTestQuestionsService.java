@@ -42,4 +42,19 @@ public interface ImpotTestQuestionsService {
      * @return
      */
     HashMap<String, Object> deleteTemplatePool(int id);
+
+    /**
+     * 批量插入试题模板
+     * @param fileName
+     * @return
+     *
+     */
+    HashMap<String, Object> addListTemplate(String fileName);
+
+    /**
+     * 读取文档
+     * @param file
+     * @return
+     */
+    HashMap<String, Object> readDocument(MultipartFile file);
 }
