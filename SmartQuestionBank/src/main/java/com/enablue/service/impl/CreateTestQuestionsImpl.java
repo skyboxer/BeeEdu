@@ -189,8 +189,9 @@ public class CreateTestQuestionsImpl implements CreateTestQuestionsService {
                 RecursiveEquation recursiveEquation = new RecursiveEquation();
                 List<JSONObject> templatePool16List = recursiveEquation.generativeExpression(arrayName);
                 for(JSONObject jsonObject : templatePool16List){
-                    /*templatePool16 = new TemplatePool();*/
-                    templatePool16 = templatePool;
+                    templatePool16 = new TemplatePool();
+                    //templatePool16 = templatePool;
+                    templatePool16.setTypeId(templatePool.getTypeId());
                     templatePool16.setTypePool(typePoolMapper.queryTypeById(templatePool.getTypeId()));
                     templatePool16.setTemplateContent(jsonObject.getString("value"));
                     newTemplatePool.add(templatePool16);
@@ -198,13 +199,13 @@ public class CreateTestQuestionsImpl implements CreateTestQuestionsService {
                 break;
             case 17:
                 TemplatePool templatePool17;
-                //创建竖式运算对象
                 //递等式计算
                 Algorithm algorithm = new Algorithm();
                 List<JSONObject> templatePool17List = algorithm.recursiveComputation(arrayName);
                 for(JSONObject jsonObject : templatePool17List){
-                    /*templatePool17 = new TemplatePool();*/
-                    templatePool17 = templatePool;
+                    templatePool17 = new TemplatePool();
+                   // templatePool17 = templatePool;
+                    templatePool17.setTypeId(templatePool.getTypeId());
                     templatePool17.setTypePool(typePoolMapper.queryTypeById(templatePool.getTypeId()));
                     templatePool17.setTemplateContent(jsonObject.getString("value"));
                     newTemplatePool.add(templatePool17);
@@ -221,6 +222,7 @@ public class CreateTestQuestionsImpl implements CreateTestQuestionsService {
                         List<VariablePool> tpVariableList = variablePoolMapper.getVariablePoolList(templatePool1.getTemplateId());
                         templatePool1.setVariablePoolList(tpVariableList);
                         JSONObject newTemplatePool1 = TemplateFactory.templateJSONObjectFactory(templatePool1,arrayName[i]);
+                        templatePoolList.get(indexList[i]).setTypeId(templatePool.getTypeId());
                         templatePoolList.get(indexList[i]).setTemplateContent(newTemplatePool1.getString("value"));
                     }
                     templatePoolList.get(indexList[i]).setTypePool(typePoolMapper.queryTypeById(templatePool.getTypeId()));

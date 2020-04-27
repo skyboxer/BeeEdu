@@ -46,11 +46,12 @@
     </form>
 </div>
 <script>
-    layui.use(['form', 'jquery', 'layer', 'laytpl'], function () {
+    layui.use(['form', 'jquery', 'layer', 'laytpl','element'], function () {
         var form = layui.form,
             $ = layui.jquery,
             layer = layui.layer,
-            laytpl = layui.laytpl;
+            laytpl = layui.laytpl,
+            element = layui.element;
         /*科目数据*/
         $.get("../querySubject", function (e) {
             var subjectList = e.data;
