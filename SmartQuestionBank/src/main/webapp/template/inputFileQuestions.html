@@ -20,35 +20,35 @@
 <form class="layui-form" id="fm" method="post" action="" enctype="multipart/form-data">
 
     <div class="layui-form-item layui-form-text">
-        <label class="layui-form-label">word文件</label>
-        <div class="layui-input-block">
-            <input id="imgFile"  name="file" type="file"/>
+        <label class="layui-form-label">上传文件:</label>
+        <div class="layui-input-inline">
+            <input id="imgFile" lay-verify="required"  name="file" type="file"/>
         </div>
-    </div>
-
-    <div class="layui-form-item">
-        <label class="layui-form-label">科目</label>
+        <label class="layui-form-label">科目:</label>
         <div class="layui-input-inline">
             <select name="subjectId" lay-verify="required" lay-filter="subjectlist" id="subjectlist">
                 <option value="" selected>请选择科目</option>
             </select>
         </div>
-    </div>
-
-    <div class="layui-form-item">
-        <div class="layui-input-block">
+        <div class="layui-input-inline">
             <button class="layui-btn" lay-submit lay-filter="formDemo">上传</button>
         </div>
     </div>
-
 </form>
+<table class="layui-hide" id="demo" lay-filter="demo" ></table>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">提交选中行数据</button>
+    </div>
+</script>
 
 <script>
 
-    layui.use(['form','rate','jquery','element'], function(){
+    layui.use(['form','rate','table','jquery','element'], function(){
         var form = layui.form,
-            rate = layui.rate;
+        rate = layui.rate;
         $=layui.jquery;
+        var table = layui.table;
         var element = layui.element;
         //异步查询科目表
         $.get("../querySubject",function (result) {
@@ -65,7 +65,25 @@
                 layer.msg(result.msg)
             }
         },"json");
-
+        //展示已知数据
+        table.render({
+            elem: '#demo'
+            ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+            ,cols: [[ //标题栏
+                {type: 'checkbox', fixed: 'left'}
+                ,{field: 'templateContent', title: '模板内容',align: 'center' ,edit: 'text', width: 1150}
+                ,{field: 'subjectId', title: '科目id', minWidth: 80}
+                ,{field: 'typeId', title: '类型id', minWidth: 80}
+                ,{field: 'difficultyGrade', title: '难度等级',edit: 'text', width: 100}
+                ,{field: 'answerContent', title: '答案',edit: 'text', width: 80}
+            ]]
+            ,data: []
+            //,skin: 'line' //表格风格
+            ,even: true
+            //,page: true //是否显示分页
+            //,limits: [5, 7, 10]
+            //,limit: 5 //每页默认显示的数量
+        });
         //监听提交
         form.on('submit(formDemo)', function(data){
             let formData = new FormData($( "#fm" )[0]);
@@ -81,20 +99,45 @@
                     layer.msg(data.msg)
                     //上传成功后
                     if (data.code===1){
-                        let templateList=data.data;
-
+                        //展示已知数据
+                        table.render({
+                            elem: '#demo'
+                            ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+                            ,cols: [[ //标题栏
+                                {type: 'checkbox', fixed: 'left'}
+                                ,{field: 'templateContent', title: '模板内容',align: 'center', edit: 'text', width: 1150}
+                                ,{field: 'subjectId', title: '科目id', minWidth: 80}
+                                ,{field: 'typeId', title: '类型id', minWidth: 80}
+                                ,{field: 'difficultyGrade', title: '难度等级',edit: 'text', width: 100}
+                                ,{field: 'answerContent', title: '答案',edit: 'text',width: 80}
+                            ]]
+                            ,data: data.data
+                            //,skin: 'line' //表格风格
+                            ,even: true
+                            //,page: true //是否显示分页
+                            //,limits: [5, 7, 10]
+                            //,limit: 5 //每页默认显示的数量
+                        });
                     }
                 }
             });
 
-            // $.post("../testQuestionsController/addTestQuestions?difficultyGrade="+difficultyGrade+"" ,data.field,function (data) {
-            //     layer.msg(data.msg)
-            //     //修改成功后刷新父界面
-            //     window.parent.location.reload();
-            // },"json");
             return false;
         });
-
+        //头工具栏事件
+        table.on('toolbar(demo)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch(obj.event){
+                case 'getCheckData':
+                    var data = checkStatus.data;
+                    layer.alert(JSON.stringify(data));
+                    break;
+                //自定义头工具栏右侧图标 - 提示
+                case 'LAYTABLE_TIPS':
+                    layer.alert('这是工具栏右侧自定义的一个图标按钮');
+                    break;
+            };
+        });
 
     });
 

@@ -1,5 +1,6 @@
 package com.enablue.service;
 
+import com.enablue.pojo.SubjectPool;
 import com.enablue.pojo.TPAnswer;
 import com.enablue.pojo.TemplatePool;
 import com.enablue.pojo.VariablePool;
@@ -53,8 +54,10 @@ public interface ImpotTestQuestionsService {
 
     /**
      * 读取文档
+     *
+     * @param subjectPool
      * @param file
      * @return
      */
-    HashMap<String, Object> readDocument(MultipartFile file);
+    HashMap<String, Object> readDocument(SubjectPool subjectPool, MultipartFile file);
 }

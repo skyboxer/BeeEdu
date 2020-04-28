@@ -16,10 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author cnxjk
@@ -216,12 +213,17 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
             templateDTO.setSubject(subjectPool.getSubjectName());
             //根据模板数据查询到对应的类型数据
             TypePool typePool = typePoolMapper.queryTypeById(templatePool.getTypeId());
-            //设置类型名
-            templateDTO.setType(typePool.getPlateName());
+            if (typePool!=null){
+                //设置类型名
+                templateDTO.setType(typePool.getPlateName());
+            }
+
             //根据答案id查询到对应答案
             TPAnswer tpAswer = tpAnswerMapper.getTPAswer(templatePool.getAnswerId());
-            //设置答案
-            templateDTO.setAnswer(tpAswer.getAnswerContent());
+            if(tpAswer!=null){
+                //设置答案
+                templateDTO.setAnswer(tpAswer.getAnswerContent());
+            }
             //设置其他数据
             templateDTO.setDifficultyGrade(templatePool.getDifficultyGrade());
             templateDTO.setTemplateContent(templatePool.getTemplateContent());
@@ -285,17 +287,21 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
 
     /**
      * 读取文档
+     *
+     * @param subjectPool
      * @param file
      * @return
      */
     @Override
-    public HashMap<String, Object> readDocument(MultipartFile file) {
+    @Transactional
+    public HashMap<String, Object> readDocument(SubjectPool subjectPool, MultipartFile file) {
         //获取文件全名
         String fileName = file.getOriginalFilename();
         //获取文件格式
         String format = fileName.substring(fileName.lastIndexOf(".") + 1);
         //准备结果集
         HashMap<String, Object> result = new HashMap<>();
+        //判断上传文件是否是word文档格式
         if ("doc".equals(format)||"docx".equals(format)){
             try {
                 //获取服务器中的路径
@@ -310,8 +316,43 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
                 PoiUtil poiUtil = new PoiUtil();
                 //读取文本内容
                 String word = poiUtil.readWord(realPath + File.separator + file.getOriginalFilename());
-                //分离试题模板
+                //分离内容
+                HashMap<String, Object> map = poiUtil.plateFormat(word);
+                //准备容器
+                List<TemplatePool> list=new ArrayList<>();
+                //遍历map集合
+                for (Map.Entry<String,Object> entry: map.entrySet()){
+                    //拿到题目类型
+                     String key = entry.getKey();
+                     //判断该类型是否存在
+                    List<TypePool> typePools = typePoolMapper.queryByNameAndSubjectId(key,subjectPool.getSubjectId());
+                    TypePool typePool;
+                    //不存在则创建
+                    if (typePools.size()<1){
+                        typePool = new TypePool();
+                        typePool.setSubjectId(subjectPool.getSubjectId());
+                        typePool.setPlateName(key);
+                        typePool.setGmtCreate(new Date());
+                        typePool.setGmtModified(new Date());
+                        typePool.setAmount(5);
+                        int i = typePoolMapper.addTypePool(typePool);
+                        if (i<1){
+                            result.put("code",-1);
+                            result.put("msg","创建类型失败");
+                            return result;
+                        }
+                    }else {
+                        //存在则获取到类型的数据
+                        typePool=typePools.get(0);
+                    }
+                    //获取该类型下试题内容
+                    String  value = (String) entry.getValue();
+                    list.addAll(poiUtil.templateFormat(value, subjectPool.getSubjectId(), typePool.getPlateId()));
 
+                }
+                result.put("code",1);
+                result.put("msg","读取成功");
+                result.put("data",list);
                 return result;
             } catch (IOException e) {
                 e.printStackTrace();

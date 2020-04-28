@@ -3,6 +3,7 @@ package com.enablue.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.enablue.common.CommonReturnValue;
+import com.enablue.pojo.SubjectPool;
 import com.enablue.pojo.TPAnswer;
 import com.enablue.pojo.TemplatePool;
 import com.enablue.pojo.VariablePool;
@@ -98,8 +99,8 @@ public class TestQuestionsController {
     }
 
     @RequestMapping("/readDocument")
-    public HashMap<String,Object> readDocument(MultipartFile file){
-       return impotTestQuestionsService.readDocument(file);
+    public HashMap<String,Object> readDocument(SubjectPool subjectPool, MultipartFile file){
+       return impotTestQuestionsService.readDocument(subjectPool,file);
     }
 }
 
