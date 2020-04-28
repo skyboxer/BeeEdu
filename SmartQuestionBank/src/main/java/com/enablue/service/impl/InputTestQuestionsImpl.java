@@ -38,6 +38,7 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
     @Autowired
     private TypePoolMapper typePoolMapper;
 
+
     @Override
     @Transactional
     public int  addTestQuestions(TemplatePool templatePool, List<VariablePool> variablePoolList, TPAnswer tpAnswer, MultipartFile file){
@@ -264,25 +265,26 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
 
     /**
      * 批量插入试题模板
-     * @param fileName
+     * @param templatePoolList
      * @return
      */
     @Override
-    public HashMap<String, Object> addListTemplate(String fileName ) {
-//        HashMap<String, Object> result = new HashMap<>();
-//        PoiUtil poiUtil = new PoiUtil();
-//        String word = poiUtil.readWord(fileName);
-//        List<TemplatePool> templatePoolList = poiUtil.f(word);
-//        int count = templatePoolMapper.addListTemplate(templatePoolList);
-//        if (count<1){
-//            result.put("code",-1);
-//            result.put("msg","添加失败");
-//            return result;
-//        }
-//        result.put("code",1);
-//        result.put("msg","添加成功");
-//        return result;
-        return null;
+    @Transactional
+    public HashMap<String, Object> addListTemplate(TemplatePool[] templatePoolList) {
+        HashMap<String, Object> result = new HashMap<>();
+        //遍历数据
+        for (TemplatePool templatePool:templatePoolList) {
+            //插入试题
+            int count = templatePoolMapper.addTemplatePool(templatePool);
+            if (count<1){
+                result.put("code",-1);
+                result.put("msg","添加失败");
+                return result;
+            }
+        }
+        result.put("code",1);
+        result.put("msg","添加成功");
+        return result;
     }
 
     /**

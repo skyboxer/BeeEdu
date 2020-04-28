@@ -36,6 +36,8 @@
     </div>
 </form>
 <table class="layui-hide" id="demo" lay-filter="demo" ></table>
+<!--引入头工具栏工具-->
+<script src="../js/toolUtils.js"></script>
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="getCheckData">提交选中行数据</button>
@@ -75,7 +77,6 @@
                 ,{field: 'subjectId', title: '科目id', minWidth: 80}
                 ,{field: 'typeId', title: '类型id', minWidth: 80}
                 ,{field: 'difficultyGrade', title: '难度等级',edit: 'text', width: 100}
-                ,{field: 'answerContent', title: '答案',edit: 'text', width: 80}
             ]]
             ,data: []
             //,skin: 'line' //表格风格
@@ -109,7 +110,6 @@
                                 ,{field: 'subjectId', title: '科目id', minWidth: 80}
                                 ,{field: 'typeId', title: '类型id', minWidth: 80}
                                 ,{field: 'difficultyGrade', title: '难度等级',edit: 'text', width: 100}
-                                ,{field: 'answerContent', title: '答案',edit: 'text',width: 80}
                             ]]
                             ,data: data.data
                             //,skin: 'line' //表格风格
@@ -130,7 +130,30 @@
             switch(obj.event){
                 case 'getCheckData':
                     var data = checkStatus.data;
-                    layer.alert(JSON.stringify(data));
+                    var params = JSON.stringify(data);
+
+                    $.ajax({
+                        url : '../testQuestionsController/addListTemplate',
+                        type : 'post',
+                        data : params,
+                        dataType : "json",
+                        contentType: "application/json",
+                        processData: false,
+                        success : function(data) {
+                            layer.msg(data.msg)
+                            //提交成功则删除选中数据
+                            if (data.code===1){
+                                layer.msg(data.msg);
+                                //获取到选中行的对象
+                                var trObjs=getChecked(obj);//直接返回数组，也可以用obj.trObjs 获取。
+                                //删除选中行
+                                for (var i=0;i<trObjs.length;i++){
+                                    trObjs[i].del();
+                                }
+                            }
+
+                        }
+                    });
                     break;
                 //自定义头工具栏右侧图标 - 提示
                 case 'LAYTABLE_TIPS':
@@ -138,6 +161,56 @@
                     break;
             };
         });
+
+        //获取所有选中行对象 obj=头工具栏对象
+        function getChecked(obj){
+            obj.trObjs=[];
+            var that={};
+            that.elem=obj.config.elem.next();
+            that.layBody = that.elem.find('.layui-table-body');
+            that.key=obj.config.id;
+            that.layBody.find('.layui-form-checked').each(function(){
+                obj.trObjs.push(commonMember(that,$(this)));
+            })
+            return obj.trObjs;
+        }
+        //数据行中的事件监听返回的公共对象成员
+        var commonMember = function(that,othis,sets){
+            var ELEM_CELL = '.layui-table-cell';
+            var index = othis.parents('tr').eq(0).data('index')
+                ,tr = that.layBody.find('tr[data-index="'+ index +'"]')
+                ,data = table.cache[that.key][index];
+            return $.extend({
+                tr: tr //行元素
+                ,data: table.clearCacheKey(data) //当前行数据
+                ,del: function(){ //删除行数据
+                    table.cache[that.key][index] = [];
+                    tr.remove();
+                }
+                ,update: function(fields){ //修改行数据
+                    fields = fields || {};
+                    layui.each(fields, function(key, value){
+                        if(key in data){
+                            var templet, td = tr.children('td[data-field="'+ key +'"]');
+                            data[key] = value;
+                            table.eachCols(function(i, item2){
+                                if(item2.field == key && item2.templet){
+                                    templet = item2.templet;
+                                }
+                            });
+                            td.children(ELEM_CELL).html(function(){
+                                return templet ? function(){
+                                    return typeof templet === 'function'
+                                        ? templet(data)
+                                        : laytpl($(templet).html() || value).render(data)
+                                }() : value;
+                            }());
+                            td.data('content', value);
+                        }
+                    });
+                }
+            }, sets);
+        };
 
     });
 

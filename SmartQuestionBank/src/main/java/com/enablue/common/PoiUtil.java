@@ -70,7 +70,7 @@ public class PoiUtil {
 				templatePool.setTypeId(typeId);
 				templatePool.setDifficultyGrade(0);
 				templatePool.setGmtCreate(new Date());
-				templatePool.setGmtModified(new Date());
+				templatePool.setGetModified(new Date());
 				templatePool.setTemplateContent(split[i]);
 				list.add(templatePool);
 			}

@@ -46,11 +46,12 @@ public interface ImpotTestQuestionsService {
 
     /**
      * 批量插入试题模板
-     * @param fileName
+     * @param templatePoolList
+     * @param
      * @return
      *
      */
-    HashMap<String, Object> addListTemplate(String fileName);
+    HashMap<String, Object> addListTemplate(TemplatePool[] templatePoolList);
 
     /**
      * 读取文档

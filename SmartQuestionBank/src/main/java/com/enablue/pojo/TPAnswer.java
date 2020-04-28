@@ -1,7 +1,5 @@
 package com.enablue.pojo;
 
-import org.springframework.stereotype.Component;
-
 import java.util.Date;
 
 /**
@@ -13,6 +11,12 @@ public class TPAnswer {
     private String answerContent;
     private Date gmtCreate;
     private Date gmtModified;
+
+    public TPAnswer() {
+    }
+    public TPAnswer(String answerContent) {
+        this.answerContent=answerContent;
+    }
 
     public Integer getAnswerId() {
         return answerId;

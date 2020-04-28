@@ -37,6 +37,7 @@
             gmt_create,
             gmt_modified
             )
+        VALUES
         <foreach collection="list" item="item" index="index" separator=",">
             #{item.templateContent},
             #{item.subjectId},
