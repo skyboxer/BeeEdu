@@ -27,22 +27,31 @@ import java.util.List;
 public class UploadFileController{
     @Autowired
     private CommonReturnValue commonReturnValue;
+
     @RequestMapping("uploadFileImg")
-    public void uploadFileImg(MultipartHttpServletRequest request) {
+    public JSONObject uploadFileImg(MultipartFile file,HttpServletRequest request) {
         //String savePath = "/home/data/ROOT1/image";
-        String savePath = "E://image";
-        File file = new File(savePath);
-        if (!file.exists() && !file.isDirectory()) {
-            System.out.println("创建目录或文件");
-            file.mkdir();
+        String path = "E:\\image";
+        int code = -1;
+        String msg = "上传出错";
+        if(file.isEmpty()){
+            return commonReturnValue.CommonReturnValue(code,msg);
         }
-        MultipartFile multipartFile = request.getFile("file");
-        String fileName = multipartFile.getName()+new Date().toString();
-        file.renameTo(new File(savePath + "/" + fileName));
+        String fileName = file.getOriginalFilename();
+        File filePath = new File(path, fileName);
+        // 如果文件目录不存在，创建目录
+        if (!filePath.getParentFile().exists()) {
+            filePath.getParentFile().mkdirs();
+            System.out.println("创建目录" + filePath);
+        }
+        // 写入文件
         try {
-         multipartFile.transferTo(file);
+            file.transferTo(filePath);
+            code = 0;
+            msg = "上传成功";
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return commonReturnValue.CommonReturnValue(code,msg,fileName);
     }
 }
