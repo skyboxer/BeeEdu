@@ -18,9 +18,28 @@
         图像识别录入
     </blockquote>
 
+
     <div class="layui-upload">
-        <button class="layui-btn layui-btn-normal" id="testList" type="button"><i class="layui-icon">&#xe67c;</i>选择多文件
-        </button>
+
+        <form class="layui-form layui-form-pane" action="" lay-filter="sourceWhere">
+            <div class="layui-form-item">
+                <div class="layui-input-inline">
+                    <button class="layui-btn layui-btn-normal" id="testList" type="button"><i class="layui-icon">&#xe67c;</i>选择多文件
+                    </button>
+                </div>
+                <label class="layui-form-label">图片来源</label>
+                <div class="layui-input-inline">
+                    <select name="imgSource" lay-verify="">
+                        <option value="000">通用</option>
+                        <option value="001">网络图片(类似word)</option>
+                        <option value="002">公式图片</option>
+                        <option value="003">手写识别</option>
+                    </select>
+                </div>
+
+            </div>
+
+        </form>
         <div class="layui-upload-list">
             <table class="layui-table">
                 <thead>
@@ -35,17 +54,20 @@
                 <tbody id="demoList"></tbody>
             </table>
         </div>
-        <button class="layui-btn" id="testListAction" type="button">开始上传</button>
+        <button class="layui-btn" id="testListAction" type="button">开始上传识别</button>
     </div>
 </div>
 </body>
 <script>
-    layui.use(['jquery', 'upload', 'layer'], function () {
+    layui.use(['jquery', 'upload', 'layer', 'table','form'], function () {
         var upload = layui.upload,
             layer = layui.layer,
+            form = layui.form,
+            table = layui.table,
             $ = layui.jquery;
         /*多文件*/
         //多文件列表示例
+        var moreImgText = new Array();
         var demoListView = $('#demoList')
             , uploadListIns = upload.render({
             elem: '#testList'
@@ -91,10 +113,30 @@
                     tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
                     tds.eq(3).html(''); //清空操作
                     var indexLoad = layer.load(2, {time: 60 * 1000}); //设定最长等待10秒
-                    $.post("../", {}, function (e) {
+                    var sourceWhere = form.val("sourceWhere");
+                    $.post("../baiduImgRecognitionController/generalBasic",
+                        {"fileName": res.newFileName,"imgSource":sourceWhere.imgSource},
+                        function (e) {
                         if (e.code == 0) {
                             layer.close(indexLoad);
-                            console.log(e.data)
+                            let dataList = e.data;
+                            for(let index in dataList){
+                                moreImgText.push(dataList[index])
+                            }
+                            table.render({
+                                elem: '#imgTextTable'
+                                ,limit:100
+                                , cols: [[
+                                    {type:'checkbox'},
+                                    {field: "id", title: '编号', width: 80},
+                                    {field: "value", title: '识别内容',edit:'text'},
+                                    {field: "subjectName", title: '科目类型'},
+                                    {field: "typeName", title: '板块类型'},
+                                    {fixed: 'right', width:178, align:'center', toolbar: '#barDemo'}
+                                    ]]
+                                , data: moreImgText
+                                ,id:"imgTable"
+                            });
                         }
                     })
                     return delete this.files[index]; //删除文件队列已经上传成功的文件
@@ -106,10 +148,181 @@
                     , tds = tr.children();
                 tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
                 tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+                moreImgText.length = 0
             }
         });
 
-        /*多文件*/
+        //监听工具条
+        table.on('tool(demo)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'del'){
+                layer.confirm('真的删除行么', function(index){
+                    let ids = data.id;
+                    for(let j in moreImgText){
+                        if(moreImgText[j].id == ids){
+                            moreImgText.splice(j,1);
+                            table.reload('imgTable', {
+                                data:moreImgText
+                            });
+                        }
+                    }
+                    layer.close(index);
+                });
+            } else if(obj.event === 'merge'){
+                layer.confirm('真的要合并么', function(index){
+                    let ids = data.id;
+                    if(ids==0){
+                        layer.msg("无法向上合并")
+                        return;
+                    }
+                    for(let j in moreImgText){
+                        if(moreImgText[j].id == ids){
+                            moreImgText[j-1].value += data.value;
+                            moreImgText.splice(j,1);
+                            table.reload('imgTable', {
+                                data:moreImgText
+                            });
+                        }
+                    }
+                    layer.close(index);
+                });
+
+            }
+        });
+        var Subject;
+        var type;
+        /*>>>>>>>>>>*/
+        //异步查询科目表
+        $.get("../querySubject",function (result) {
+            if (result.code===0){
+                Subject = result.data
+                let Subjects = result.data;
+                let subjectHtml='<option value="" selected>请选择科目</option>\n';
+                for (let i=0;i<Subjects.length;i++){
+                    subjectHtml+='<option value="'+Subjects[i].subjectId+'">'+Subjects[i].subjectName+'</option>\n'
+                }
+                $("#subjectlist").html(subjectHtml);
+                //重新加载当前页面
+                form.render();
+            }else {
+                layer.msg(result.msg)
+            }
+        },"json");
+
+        //监听下拉菜单
+        form.on('select(subjectlist)', function(data){
+            //清除原来的联动下拉框
+            $("#typeList").html("<option value=\"\">请选择板块</option>")
+            form.render();
+            let subId=data.value;
+            if (subId!=="" &&subId!=null ){
+                //发送请求查询题目类型表
+                $.get("../queryTypePoolBySubject",{"subId":subId},function (result) {
+                    if (result.code===0){
+                        type = result.data;
+                        var plates = result.data;
+                        let plateHtml="<option value=\"\">请选择板块</option>\n"
+                        for (let i=0;i<plates.length;i++){
+                            plateHtml+='<option value="'+plates[i].plateId+'">'+plates[i].plateName+'</option>\n'
+                        }
+                        $("#typeList").html(plateHtml)
+                        form.render();
+                    }
+
+                },"json")
+            }
+        })
+        /*<<<<<<<<<<*/
+        /*>>>>>>>>>>*/
+        $("#updateListType").on('click',function () {
+            var checkStatus = table.checkStatus('imgTable');
+            console.log(checkStatus.data) //获取选中行的数据
+            console.log(checkStatus.data.length) //获取选中行数量，可作为是否有选中行的条件
+            console.log(checkStatus.isAll ) //表格是否全选
+            if(checkStatus.data.length<=0){
+                layer.msg("未检测到选中数据")
+                return;
+            }
+            var typeObj = form.val("suType");
+            let tableData = checkStatus.data;
+            for(let j in moreImgText){
+                for(let i in tableData){
+                    if(moreImgText[j].id == tableData[i].id){
+                        for(let k in type){
+                            if(type[k].plateId == typeObj.typeId){
+                                moreImgText[j].typeName = type[k].plateName;
+                                moreImgText[j].typeId = type[k].plateId;
+                                moreImgText[j].subjectId = type[k].subjectId
+                            }
+                        }
+
+                    }
+                }
+            }
+            table.reload('imgTable', {
+                data:moreImgText
+            });
+        })
+        /*<<<<<<<<<<*/
+        /*>>>>>>>>>>*/
+        $("#delListType").on('click',function () {
+            var checkStatus = table.checkStatus('imgTable');
+            console.log(checkStatus.data) //获取选中行的数据
+            console.log(checkStatus.data.length) //获取选中行数量，可作为是否有选中行的条件
+            console.log(checkStatus.isAll ) //表格是否全选
+            if(checkStatus.data.length<=0){
+                layer.msg("未检测到选中数据")
+                return;
+            }
+            let tableData = checkStatus.data;
+            for(let j in moreImgText){
+                for(let i in tableData){
+                    if(moreImgText[j].id == tableData[i].id){
+                        moreImgText.splice(j,1);
+                    }
+                }
+            }
+            table.reload('imgTable', {
+                data:moreImgText
+            });
+        })
+        /*<<<<<<<<<<*/
+
     });
 </script>
+<script id="barDemo" type="text/html">
+    <a class="layui-btn layui-btn-xs" lay-event="merge">向上合并</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<br>
+
+<div style="padding: 20px;">
+    <form class="layui-form layui-form-pane" action="" lay-filter="suType">
+        <div class="layui-form-item">
+            <label class="layui-form-label">科目/板块</label>
+
+            <div class="layui-input-inline">
+                <select name="subjectId" lay-verify="required" lay-filter="subjectlist" id="subjectlist">
+                    <option value="" selected>请选择科目</option>
+                </select>
+            </div>
+
+            <div class="layui-input-inline">
+                <select name="typeId" lay-verify="required" id="typeList">
+                    <option value="">请选择板块</option>
+                </select>
+            </div>
+            <div class="layui-input-inline">
+                <button class="layui-btn layui-btn-primary" type="button" id="updateListType"><i class="layui-icon">&#xe642;</i>批量归类</button>
+            </div>
+            <div class="layui-input-inline">
+                <button class="layui-btn layui-btn-danger" type="button" id="delListType"><i class="layui-icon">&#xe640;</i>批量删除</button>
+            </div>
+            <div class="layui-input-inline">
+                <button class="layui-btn layui-btn-normal" type="button" id="addTemplate"><i class="layui-icon">&#x1005;</i>提交录入</button>
+            </div>
+        </div>
+    </form>
+    <table id="imgTextTable" lay-filter="demo"></table>
+</div>
 </html>

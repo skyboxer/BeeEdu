@@ -37,7 +37,8 @@ public class UploadFileController{
         if(file.isEmpty()){
             return commonReturnValue.CommonReturnValue(code,msg);
         }
-        String fileName = file.getOriginalFilename();
+        String dataTime = String.valueOf(System.currentTimeMillis());
+        String fileName = dataTime+file.getOriginalFilename();
         File filePath = new File(path, fileName);
         // 如果文件目录不存在，创建目录
         if (!filePath.getParentFile().exists()) {
@@ -53,5 +54,10 @@ public class UploadFileController{
             e.printStackTrace();
         }
         return commonReturnValue.CommonReturnValue(code,msg,fileName);
+    }
+
+    public static void main(String[] args) {
+        String s = String.valueOf(System.currentTimeMillis());
+        System.out.println(s);
     }
 }
