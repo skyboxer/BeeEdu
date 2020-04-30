@@ -1,31 +1,30 @@
 package com.enablue.test;
 
 import com.enablue.common.PoiUtil;
-import com.enablue.pojo.TemplatePool;
+import com.enablue.dto.TemplateDTO;
+import com.enablue.pojo.SubjectPool;
+import com.enablue.pojo.TypePool;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class Demo {
     public static void main(String[] args) {
         PoiUtil poiUtil = new PoiUtil();
-        String buffer = poiUtil.readWord("C:\\Users\\Administrator\\Desktop\\1.docx");
-        TemplatePool templatePool;
-        String[] split = buffer.split("[1-99]\\、 ");
-        List<TemplatePool> list=new ArrayList<>();
-        for (int i=1;i<split.length;i++) {
-            templatePool=new TemplatePool();
-            if (i==1){
-                String[] strings = split[i].split("[\\u4e00-\\u9fa5]\\、");
-                templatePool.setTemplateContent(strings[0]);
-                list.add(templatePool);
-                continue;
-            }
-            templatePool.setTemplateContent(split[i]);
-            list.add(templatePool);
+        String buffer = poiUtil.readWord("C:\\Users\\Administrator\\Documents\\WeChat Files\\wc15250138779\\FileStorage\\File\\2020-04\\57kcpi5ucklbrvh715585209630.doc");
+        HashMap<String, Object> map = poiUtil.plateFormat(buffer);
+        for (Map.Entry<String,Object> entry:map.entrySet()) {
+            SubjectPool subjectPool = new SubjectPool();
+            subjectPool.setSubjectId(1);
+            subjectPool.setSubjectName("三年级数学");
+            TypePool typePool = new TypePool();
+            typePool.setPlateId(1);
+            typePool.setPlateName("应用题");
+            List<TemplateDTO> list = poiUtil.templateFormat(entry.getValue().toString(),subjectPool,typePool);
+            
         }
-        System.out.println("list = " + list);
-
+        
     }
 }

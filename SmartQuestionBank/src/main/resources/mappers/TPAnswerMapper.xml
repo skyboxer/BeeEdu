@@ -5,16 +5,14 @@
 <!-- namespace(命名空间)：映射文件的唯一标识 -->
 <mapper namespace="com.enablue.mapper.TPAnswerMapper">
     <!--添加-->
-    <insert id="addTPAswer" parameterType="TPAnswer" useGeneratedKeys="true" keyProperty="answerId" >
+    <insert id="addTPAswer" parameterType="TPAnswer" useGeneratedKeys="true" keyProperty="answerId" keyColumn="answer_id" >
         INSERT INTO tp_answer  (
-        answer_id,
         answer_content,
         gmt_create,
         gmt_modified
         )
         VALUES
             (
-                #{tpAnswer.answerId},
                 #{tpAnswer.answerContent},
                 #{tpAnswer.gmtCreate},
                 #{tpAnswer.gmtModified}

@@ -1,8 +1,5 @@
 package com.enablue.pojo;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
-
 import java.util.Date;
 import java.util.List;
 
@@ -24,15 +21,11 @@ public class TemplatePool {
     private TPAnswer tpAnswer;
     private TypePool typePool;
 
-    public TypePool getTypePool() {
-        return typePool;
-    }
-
-    public void setTypePool(TypePool typePool) {
-        this.typePool = typePool;
-    }
-
+    //构造方法
     public TemplatePool() {
+    }
+    public TemplatePool(Integer templateId) {
+        this.templateId = templateId;
     }
 
     public TemplatePool(Integer templateId, String templateContent, Integer subjectId, Integer typeId, Integer difficultyGrade, Date gmtCreate, Date getModified) {
@@ -142,6 +135,14 @@ public class TemplatePool {
         this.tpAnswer = tpAnswer;
     }
 
+    public TypePool getTypePool() {
+        return typePool;
+    }
+
+    public void setTypePool(TypePool typePool) {
+        this.typePool = typePool;
+    }
+
     @Override
     public String toString() {
         return "TemplatePool{" +
@@ -159,10 +160,6 @@ public class TemplatePool {
                 '}';
     }
 
-    public void setGmtModified(Date date) {
-    }
 
-    public TemplatePool(Integer templateId) {
-        this.templateId = templateId;
-    }
+
 }

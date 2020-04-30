@@ -16,6 +16,7 @@
             <url>http://repo.e-iceblue.com/nexus/content/groups/public/</url>
         </repository>
     </repositories>
+
     <dependencies>
         <!--e-iceblue-->
         <dependency>

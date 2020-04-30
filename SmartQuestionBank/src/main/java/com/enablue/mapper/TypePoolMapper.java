@@ -18,4 +18,11 @@ public interface TypePoolMapper {
     int daleteTypePoolBySubjectId(@Param("id") int id);
 
     TypePool queryTypeById(@Param("typeId") Integer typeId);
+
+    /**
+     * 根据题型名和科目查询题型数据
+     * @param key
+     * @param subjectId
+     */
+    List<TypePool> queryByNameAndSubjectId(@Param("name") String key, @Param("subjectId") Integer subjectId);
 }

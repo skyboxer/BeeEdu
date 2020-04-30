@@ -26,6 +26,28 @@
                 #{templatePool.getModified}
             )
     </insert>
+<!--批量插入模板-->
+    <insert id="addListTemplate">
+      INSERT INTO template_pool  (
+            template_content,
+            subject_id,
+            type_id,
+            answer_id,
+            difficulty_grade,
+            gmt_create,
+            gmt_modified
+            )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            #{item.templateContent},
+            #{item.subjectId},
+            #{item.typeId},
+            #{item.answerId},
+            #{item.difficultyGrade},
+            #{item.gmtCreate},
+            #{item.getModified}
+        </foreach>
+    </insert>
     <!--删除模板-->
     <delete id="deleteTemplatePool">
         DELETE FROM template_pool WHERE template_id=#{id}
@@ -147,6 +169,7 @@
          subject_id = #{templatePool.subjectId},
          type_id = #{templatePool.typeId},
          difficulty_grade = #{templatePool.difficultyGrade},
+         answer_id = #{templatePool.answerId},
          gmt_modified = #{templatePool.getModified}
         WHERE
             (template_id = #{templatePool.templateId});

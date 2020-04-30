@@ -5,7 +5,7 @@
 <!-- namespace(命名空间)：映射文件的唯一标识 -->
 <mapper namespace="com.enablue.mapper.TypePoolMapper">
 
-    <insert id="addTypePool">
+    <insert id="addTypePool" useGeneratedKeys="true" keyColumn="plate_id" keyProperty="plateId">
      INSERT INTO type_pool (
         subject_id,
         plate_name,
@@ -94,5 +94,18 @@
             type_pool
         WHERE
             plate_id=#{typeId}
+    </select>
+<!--根据题型名和科目查询题型数据-->
+    <select id="queryByNameAndSubjectId" resultType="TypePool">
+        SELECT
+            plate_id,
+            subject_id,
+            amount,
+            plate_name
+        FROM
+            type_pool
+        WHERE
+            plate_name like #{name}
+        AND subject_id = #{subjectId}
     </select>
 </mapper>

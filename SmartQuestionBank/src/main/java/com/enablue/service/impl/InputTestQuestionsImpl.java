@@ -1,5 +1,6 @@
 package com.enablue.service.impl;
 
+import com.enablue.common.PoiUtil;
 import com.enablue.dto.TemplateDTO;
 import com.enablue.mapper.*;
 import com.enablue.pojo.*;
@@ -8,12 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import javax.servlet.ServletContext;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * @author cnxjk
@@ -34,6 +37,7 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
     private ImageMapper imageMapper;
     @Autowired
     private TypePoolMapper typePoolMapper;
+
 
     @Override
     @Transactional
@@ -91,7 +95,6 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
         return 1;
     }
 
-
     /**
      * 修改试题模板
      * @param templatePool 试题模板
@@ -106,8 +109,43 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
     public HashMap<String, Object> updataTemplate(TemplatePool templatePool, String variableQuantity, TPAnswer tpAnswer, MultipartFile file) {
         HashMap<String, Object> result = new HashMap<>();
         templatePool.setGetModified(new Date());
+        //根据模板id查询数据主要目的是拿到答案id
+        TemplatePool template = templatePoolMapper.queryTemplateById(templatePool.getTemplateId());
+        //根据拿到的答案id查询答案
+        TPAnswer aswer = tpAnswerMapper.getTPAswer(template.getAnswerId());
+
+        //如果未查询到答案就新建答案
+        if (aswer==null){
+            aswer=new TPAnswer();
+            aswer.setAnswerContent(tpAnswer.getAnswerContent());
+            aswer.setGmtModified(new Date());
+            aswer.setGmtCreate(new Date());
+            int count = tpAnswerMapper.addTPAswer(aswer);
+            if (count<1 ){
+                result.put("code",-1);
+                result.put("msg","答案修改失败");
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return result;
+            }
+            //创建答案成功修改模板的答案id
+            templatePool.setAnswerId(aswer.getAnswerId());
+        }else {
+            //如果查询到答案就修改答案
+            aswer.setAnswerContent(tpAnswer.getAnswerContent());
+            int count = tpAnswerMapper.updateAnswer(aswer);
+            if (count<1 ){
+                result.put("code",-1);
+                result.put("msg","答案修改失败");
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return result;
+            }
+            //修改完成设置好模板的答案id
+            templatePool.setAnswerId(aswer.getAnswerId());
+        }
+
         //删除原来的参数
-        int i1 = variablePoolMapper.deleteByTemplateId(templatePool.getTemplateId());
+        variablePoolMapper.deleteByTemplateId(templatePool.getTemplateId());
+        //创建新的参数
         if(variableQuantity!=null){
             //分离出试题中的标识变量添加到变量表中
             String[] strings = variableQuantity.split("&");
@@ -121,18 +159,11 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
             }
 
         }
+        //修改模板
         int count=templatePoolMapper.updataTemplate(templatePool);
-        //根据模板id查询数据
-        TemplatePool template = templatePoolMapper.queryTemplateById(templatePool.getTemplateId());
-        //根据答案id查询
-        TPAnswer aswer = tpAnswerMapper.getTPAswer(template.getAnswerId());
-        //修改答案
-        aswer.setAnswerContent(tpAnswer.getAnswerContent());
-        int i = tpAnswerMapper.updateAnswer(aswer);
-
-        if (count<1 || i<1){
+        if (count<1 ){
             result.put("code",-1);
-            result.put("msg","修改失败");
+            result.put("msg","模板修改失败");
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return result;
         }
@@ -158,7 +189,7 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
                 if (imageCount<1){
                     TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                     result.put("code",-1);
-                    result.put("msg","修改失败");
+                    result.put("msg","图片修改失败");
                     return result;
                 }
             }catch (Exception e){
@@ -168,7 +199,7 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
         }
 
         result.put("code",0);
-        result.put("msg","修改成功");
+        result.put("msg","模板修改成功");
         return result;
     }
 
@@ -210,12 +241,19 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
             templateDTO.setSubject(subjectPool.getSubjectName());
             //根据模板数据查询到对应的类型数据
             TypePool typePool = typePoolMapper.queryTypeById(templatePool.getTypeId());
-            //设置类型名
-            templateDTO.setType(typePool.getPlateName());
+            if (typePool!=null){
+                //设置类型名
+                templateDTO.setType(typePool.getPlateName());
+            }
+
             //根据答案id查询到对应答案
             TPAnswer tpAswer = tpAnswerMapper.getTPAswer(templatePool.getAnswerId());
-            //设置答案
-            templateDTO.setAnswer(tpAswer.getAnswerContent());
+            if(tpAswer!=null){
+                //设置答案
+                templateDTO.setAnswer(tpAswer.getAnswerContent());
+            }else {
+                templateDTO.setAnswer("");
+            }
             //设置其他数据
             templateDTO.setDifficultyGrade(templatePool.getDifficultyGrade());
             templateDTO.setTemplateContent(templatePool.getTemplateContent());
@@ -251,6 +289,113 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
         }
         result.put("code",0);
         result.put("msg","删除成功");
+        return result;
+    }
+
+
+    /**
+     * 批量插入试题模板
+     * @param templatePoolList
+     * @return
+     */
+    @Override
+    @Transactional
+    public HashMap<String, Object> addListTemplate(TemplatePool[] templatePoolList) {
+        HashMap<String, Object> result = new HashMap<>();
+        //遍历数据
+        for (TemplatePool templatePool:templatePoolList) {
+            templatePool.setGetModified(new Date());
+            templatePool.setGmtCreate(new Date());
+            templatePool.setAnswerId(-1);
+            //插入试题
+            int count = templatePoolMapper.addTemplatePool(templatePool);
+            if (count<1){
+                result.put("code",-1);
+                result.put("msg","添加失败");
+                return result;
+            }
+        }
+        result.put("code",1);
+        result.put("msg","添加成功");
+        return result;
+    }
+
+    /**
+     * 读取文档
+     *
+     * @param subjectPool
+     * @param file
+     * @return
+     */
+    @Override
+    @Transactional
+    public HashMap<String, Object> readDocument(SubjectPool subjectPool, MultipartFile file) {
+        //获取文件全名
+        String fileName = file.getOriginalFilename();
+        //获取文件格式
+        String format = fileName.substring(fileName.lastIndexOf(".") + 1);
+        //准备结果集
+        HashMap<String, Object> result = new HashMap<>();
+        //判断上传文件是否是word文档格式
+        if ("doc".equals(format)||"docx".equals(format)){
+            try {
+                //获取服务器中的路径
+                WebApplicationContext webApplicationContext = ContextLoader
+                        .getCurrentWebApplicationContext();
+                ServletContext servletContext = webApplicationContext
+                        .getServletContext();
+                String realPath = servletContext.getRealPath("/download");
+                //上传文件到realPath目录
+                file.transferTo(new File(realPath,file.getOriginalFilename()));
+                //准备读取文档内容
+                PoiUtil poiUtil = new PoiUtil();
+                //读取文本内容
+                String word = poiUtil.readWord(realPath + File.separator + file.getOriginalFilename());
+                //分离内容
+                HashMap<String, Object> map = poiUtil.plateFormat(word);
+                //准备容器
+                List<TemplateDTO> list=new ArrayList<>();
+                //遍历map集合
+                for (Map.Entry<String,Object> entry: map.entrySet()){
+                    //拿到题目类型
+                     String key = entry.getKey();
+                     //判断该类型是否存在
+                    List<TypePool> typePools = typePoolMapper.queryByNameAndSubjectId(key,subjectPool.getSubjectId());
+                    TypePool typePool;
+                    //不存在则创建
+                    if (typePools.size()<1){
+                        typePool = new TypePool();
+                        typePool.setSubjectId(subjectPool.getSubjectId());
+                        typePool.setPlateName(key);
+                        typePool.setGmtCreate(new Date());
+                        typePool.setGmtModified(new Date());
+                        typePool.setAmount(5);
+                        int i = typePoolMapper.addTypePool(typePool);
+                        if (i<1){
+                            result.put("code",-1);
+                            result.put("msg","创建类型失败");
+                            return result;
+                        }
+                    }else {
+                        //存在则获取到类型的数据
+                        typePool=typePools.get(0);
+                    }
+                    //获取该类型下试题内容
+                    String  value = (String) entry.getValue();
+                    list.addAll(poiUtil.templateFormat(value, subjectPool, typePool));
+
+                }
+                result.put("code",1);
+                result.put("msg","读取成功");
+                result.put("data",list);
+                return result;
+            } catch (IOException e) {
+                e.printStackTrace();
+
+            }
+        }
+        result.put("code",-1);
+        result.put("msg","读取失败");
         return result;
     }
 

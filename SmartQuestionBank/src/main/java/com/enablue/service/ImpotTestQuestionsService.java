@@ -1,5 +1,6 @@
 package com.enablue.service;
 
+import com.enablue.pojo.SubjectPool;
 import com.enablue.pojo.TPAnswer;
 import com.enablue.pojo.TemplatePool;
 import com.enablue.pojo.VariablePool;
@@ -42,4 +43,24 @@ public interface ImpotTestQuestionsService {
      * @return
      */
     HashMap<String, Object> deleteTemplatePool(int id);
+
+
+    /**
+     * 读取文档
+     *
+     * @param subjectPool
+     * @param file
+     * @return
+     */
+    HashMap<String, Object> readDocument(SubjectPool subjectPool, MultipartFile file);
+
+/**
+ * 批量插入试题模板
+ * @param
+ * @param templatePoolList
+ * @return
+ *
+ *
+ */
+    HashMap<String, Object> addListTemplate(TemplatePool[] templatePoolList);
 }

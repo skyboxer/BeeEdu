@@ -3,19 +3,19 @@ package com.enablue.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.enablue.common.CommonReturnValue;
+import com.enablue.pojo.SubjectPool;
 import com.enablue.pojo.TPAnswer;
 import com.enablue.pojo.TemplatePool;
 import com.enablue.pojo.VariablePool;
 import com.enablue.service.CreateTestQuestionsService;
 import com.enablue.service.ImpotTestQuestionsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -96,6 +96,25 @@ public class TestQuestionsController {
         return commonReturnValue.CommonReturnValue(-1,"试卷创建失败");
     }
 
+    /**
+     * 读取上传文档获取试题内容
+     * @param subjectPool
+     * @param file
+     * @return
+     */
+    @RequestMapping("/readDocument")
+    public HashMap<String,Object> readDocument(SubjectPool subjectPool, MultipartFile file){
+       return impotTestQuestionsService.readDocument(subjectPool,file);
+    }
 
+    /**
+     * 批量长穿
+     * @param templatePoolList
+     * @return
+     */
+    @RequestMapping("/addListTemplate")
+    public HashMap<String,Object> addListTemplate(@RequestBody TemplatePool [] templatePoolList){
+        return impotTestQuestionsService.addListTemplate(templatePoolList);
+    }
 }
 

@@ -9,6 +9,8 @@ public class TemplateDTO {
     private String templateContent;
     private String subject;
     private String type;
+    private Integer subjectId;
+    private Integer typeId;
     private Integer difficultyGrade;
     private String answer;
     private Integer templateNum;
@@ -43,6 +45,22 @@ public class TemplateDTO {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Integer getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(Integer subjectId) {
+        this.subjectId = subjectId;
+    }
+
+    public Integer getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(Integer typeId) {
+        this.typeId = typeId;
     }
 
     public Integer getDifficultyGrade() {

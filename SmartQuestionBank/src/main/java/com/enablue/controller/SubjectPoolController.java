@@ -66,4 +66,12 @@ public class SubjectPoolController {
     public HashMap<String,Object> querySubject(){
         return subjectPoolService.querySubject();
     }
+    /**
+     * 根据id查询科目
+     * @return
+     */
+    @RequestMapping("/querySubjectById")
+    public HashMap<String,Object> querySubjectById(int subjectId){
+        return subjectPoolService.querySubjectById(subjectId);
+    }
 }
