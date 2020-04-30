@@ -109,8 +109,43 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
     public HashMap<String, Object> updataTemplate(TemplatePool templatePool, String variableQuantity, TPAnswer tpAnswer, MultipartFile file) {
         HashMap<String, Object> result = new HashMap<>();
         templatePool.setGetModified(new Date());
+        //根据模板id查询数据主要目的是拿到答案id
+        TemplatePool template = templatePoolMapper.queryTemplateById(templatePool.getTemplateId());
+        //根据拿到的答案id查询答案
+        TPAnswer aswer = tpAnswerMapper.getTPAswer(template.getAnswerId());
+
+        //如果未查询到答案就新建答案
+        if (aswer==null){
+            aswer=new TPAnswer();
+            aswer.setAnswerContent(tpAnswer.getAnswerContent());
+            aswer.setGmtModified(new Date());
+            aswer.setGmtCreate(new Date());
+            int count = tpAnswerMapper.addTPAswer(aswer);
+            if (count<1 ){
+                result.put("code",-1);
+                result.put("msg","答案修改失败");
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return result;
+            }
+            //创建答案成功修改模板的答案id
+            templatePool.setAnswerId(aswer.getAnswerId());
+        }else {
+            //如果查询到答案就修改答案
+            aswer.setAnswerContent(tpAnswer.getAnswerContent());
+            int count = tpAnswerMapper.updateAnswer(aswer);
+            if (count<1 ){
+                result.put("code",-1);
+                result.put("msg","答案修改失败");
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return result;
+            }
+            //修改完成设置好模板的答案id
+            templatePool.setAnswerId(aswer.getAnswerId());
+        }
+
         //删除原来的参数
-        int i1 = variablePoolMapper.deleteByTemplateId(templatePool.getTemplateId());
+        variablePoolMapper.deleteByTemplateId(templatePool.getTemplateId());
+        //创建新的参数
         if(variableQuantity!=null){
             //分离出试题中的标识变量添加到变量表中
             String[] strings = variableQuantity.split("&");
@@ -124,18 +159,11 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
             }
 
         }
+        //修改模板
         int count=templatePoolMapper.updataTemplate(templatePool);
-        //根据模板id查询数据
-        TemplatePool template = templatePoolMapper.queryTemplateById(templatePool.getTemplateId());
-        //根据答案id查询
-        TPAnswer aswer = tpAnswerMapper.getTPAswer(template.getAnswerId());
-        //修改答案
-        aswer.setAnswerContent(tpAnswer.getAnswerContent());
-        int i = tpAnswerMapper.updateAnswer(aswer);
-
-        if (count<1 || i<1){
+        if (count<1 ){
             result.put("code",-1);
-            result.put("msg","修改失败");
+            result.put("msg","模板修改失败");
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return result;
         }
@@ -161,7 +189,7 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
                 if (imageCount<1){
                     TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                     result.put("code",-1);
-                    result.put("msg","修改失败");
+                    result.put("msg","图片修改失败");
                     return result;
                 }
             }catch (Exception e){
@@ -171,7 +199,7 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
         }
 
         result.put("code",0);
-        result.put("msg","修改成功");
+        result.put("msg","模板修改成功");
         return result;
     }
 
@@ -223,6 +251,8 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
             if(tpAswer!=null){
                 //设置答案
                 templateDTO.setAnswer(tpAswer.getAnswerContent());
+            }else {
+                templateDTO.setAnswer("");
             }
             //设置其他数据
             templateDTO.setDifficultyGrade(templatePool.getDifficultyGrade());

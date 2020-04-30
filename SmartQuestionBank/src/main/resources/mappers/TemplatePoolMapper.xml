@@ -169,6 +169,7 @@
          subject_id = #{templatePool.subjectId},
          type_id = #{templatePool.typeId},
          difficulty_grade = #{templatePool.difficultyGrade},
+         answer_id = #{templatePool.answerId},
          gmt_modified = #{templatePool.getModified}
         WHERE
             (template_id = #{templatePool.templateId});
