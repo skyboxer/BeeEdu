@@ -97,7 +97,7 @@
     </select>
 <!--根据题型名和科目查询题型数据-->
     <select id="queryByNameAndSubjectId" resultType="TypePool">
-                    SELECT
+        SELECT
             plate_id,
             subject_id,
             amount,

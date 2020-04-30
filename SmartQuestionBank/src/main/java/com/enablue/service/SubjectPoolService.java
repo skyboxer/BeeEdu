@@ -15,4 +15,6 @@ public interface SubjectPoolService {
     HashMap<String,Object>  deleteSubject(int id);
     HashMap<String, Object> queryAllSubject(Long page, Long limit);
     HashMap<String, Object> querySubject();
+
+    HashMap<String, Object> querySubjectById(int subjectId);
 }

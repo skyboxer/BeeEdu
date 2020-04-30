@@ -36,8 +36,6 @@
     </div>
 </form>
 <table class="layui-hide" id="demo" lay-filter="demo" ></table>
-<!--引入头工具栏工具-->
-<script src="../js/toolUtils.js"></script>
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="getCheckData">提交选中行数据</button>
@@ -48,17 +46,16 @@
 
     layui.use(['form','rate','table','jquery','element'], function(){
         var form = layui.form,
-        rate = layui.rate;
         $=layui.jquery;
         var table = layui.table;
-        var element = layui.element;
+        var subjects;
         //异步查询科目表
         $.get("../querySubject",function (result) {
             if (result.code===0){
-                let Subjects = result.data;
+                subjects = result.data;
                 let subjectHtml='<option value="" selected>请选择科目</option>\n';
-                for (let i=0;i<Subjects.length;i++){
-                    subjectHtml+='<option value="'+Subjects[i].subjectId+'">'+Subjects[i].subjectName+'</option>\n'
+                for (let i=0;i<subjects.length;i++){
+                    subjectHtml+='<option value="'+subjects[i].subjectId+'">'+subjects[i].subjectName+'</option>\n'
                 }
                 $("#subjectlist").html(subjectHtml);
                 //重新加载当前页面
@@ -73,9 +70,9 @@
             ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
             ,cols: [[ //标题栏
                 {type: 'checkbox', fixed: 'left'}
-                ,{field: 'templateContent', title: '模板内容',align: 'center' ,edit: 'text', width: 1150}
-                ,{field: 'subjectId', title: '科目id', minWidth: 80}
-                ,{field: 'typeId', title: '类型id', minWidth: 80}
+                ,{field: 'templateContent', title: '模板内容',align: 'center' ,edit: 'text', width: 950}
+                ,{field: 'subject', title: '科目',align: 'center', minWidth: 180}
+                ,{field: 'type', title: '类型',align: 'center', minWidth: 180}
                 ,{field: 'difficultyGrade', title: '难度等级',edit: 'text', width: 100}
             ]]
             ,data: []
@@ -88,8 +85,16 @@
         //监听提交
         form.on('submit(formDemo)', function(data){
             let formData = new FormData($( "#fm" )[0]);
+            let subjectId=$("#subjectlist").val();
+            let subjectName="";
+            for (let i=0;i<subjects.length;i++){
+                if (subjectId==subjects[i].subjectId){
+                    subjectName=subjects[i].subjectName;
+                    break;
+                }
+            }
             $.ajax({
-                url : '../testQuestionsController/readDocument',
+                url : '../testQuestionsController/readDocument?subjectName='+subjectName,
                 type : 'post',
                 async: false,
                 data : formData,
@@ -106,9 +111,9 @@
                             ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
                             ,cols: [[ //标题栏
                                 {type: 'checkbox', fixed: 'left'}
-                                ,{field: 'templateContent', title: '模板内容',align: 'center', edit: 'text', width: 1150}
-                                ,{field: 'subjectId', title: '科目id', minWidth: 80}
-                                ,{field: 'typeId', title: '类型id', minWidth: 80}
+                                ,{field: 'templateContent', title: '模板内容',align: 'center', edit: 'text', width: 950}
+                                ,{field: 'subject', title: '科目',align: 'center', minWidth: 180}
+                                ,{field: 'type', title: '类型',align: 'center', minWidth: 180}
                                 ,{field: 'difficultyGrade', title: '难度等级',edit: 'text', width: 100}
                             ]]
                             ,data: data.data
@@ -131,7 +136,7 @@
                 case 'getCheckData':
                     var data = checkStatus.data;
                     var params = JSON.stringify(data);
-
+                    console.log(data)
                     $.ajax({
                         url : '../testQuestionsController/addListTemplate',
                         type : 'post',

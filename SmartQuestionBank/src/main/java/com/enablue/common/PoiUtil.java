@@ -1,10 +1,11 @@
 package com.enablue.common;
 
-import com.enablue.pojo.TemplatePool;
+import com.enablue.dto.TemplateDTO;
+import com.enablue.pojo.SubjectPool;
+import com.enablue.pojo.TypePool;
 import com.spire.doc.Document;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -56,23 +57,24 @@ public class PoiUtil {
 	 * @param text
 	 * @return
 	 */
-	public List<TemplatePool> templateFormat(String text,Integer subjectId,Integer typeId){
-		TemplatePool templatePool;
+	public List<TemplateDTO> templateFormat(String text, SubjectPool subject, TypePool type){
+		TemplateDTO templateDTO;
 
-		String[] split = text.split("[1-99](\\、|\\.) ");
-		List<TemplatePool> list=new ArrayList<>();
+		String[] split = text.split("[1-99]\\)\\、");
+		List<TemplateDTO> list=new ArrayList<>();
 		for (int i=0;i<split.length;i++) {
 			if (!"".equals(split[i])) {
 				System.out.println("split = " + split[i]);
-				templatePool = new TemplatePool();
-				templatePool.setAnswerId(-1);
-				templatePool.setSubjectId(subjectId);
-				templatePool.setTypeId(typeId);
-				templatePool.setDifficultyGrade(0);
-				templatePool.setGmtCreate(new Date());
-				templatePool.setGetModified(new Date());
-				templatePool.setTemplateContent(split[i]);
-				list.add(templatePool);
+				templateDTO = new TemplateDTO();
+				//显示在页面上的内容
+				templateDTO.setSubject(subject.getSubjectName());
+				templateDTO.setType(type.getPlateName());
+				//要携带的数据
+				templateDTO.setSubjectId(subject.getSubjectId());
+				templateDTO.setTypeId(type.getPlateId());
+				templateDTO.setDifficultyGrade(0);
+				templateDTO.setTemplateContent(split[i]);
+				list.add(templateDTO);
 			}
 		}
 		return list;

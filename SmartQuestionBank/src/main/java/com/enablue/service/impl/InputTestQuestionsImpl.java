@@ -95,7 +95,6 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
         return 1;
     }
 
-
     /**
      * 修改试题模板
      * @param templatePool 试题模板
@@ -263,6 +262,7 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
         return result;
     }
 
+
     /**
      * 批量插入试题模板
      * @param templatePoolList
@@ -274,6 +274,9 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
         HashMap<String, Object> result = new HashMap<>();
         //遍历数据
         for (TemplatePool templatePool:templatePoolList) {
+            templatePool.setGetModified(new Date());
+            templatePool.setGmtCreate(new Date());
+            templatePool.setAnswerId(-1);
             //插入试题
             int count = templatePoolMapper.addTemplatePool(templatePool);
             if (count<1){
@@ -321,7 +324,7 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
                 //分离内容
                 HashMap<String, Object> map = poiUtil.plateFormat(word);
                 //准备容器
-                List<TemplatePool> list=new ArrayList<>();
+                List<TemplateDTO> list=new ArrayList<>();
                 //遍历map集合
                 for (Map.Entry<String,Object> entry: map.entrySet()){
                     //拿到题目类型
@@ -349,7 +352,7 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
                     }
                     //获取该类型下试题内容
                     String  value = (String) entry.getValue();
-                    list.addAll(poiUtil.templateFormat(value, subjectPool.getSubjectId(), typePool.getPlateId()));
+                    list.addAll(poiUtil.templateFormat(value, subjectPool, typePool));
 
                 }
                 result.put("code",1);

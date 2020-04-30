@@ -153,4 +153,19 @@ public class SubjectPoolServiceImpl implements SubjectPoolService {
         return result;
 
     }
+
+    @Override
+    public HashMap<String, Object> querySubjectById(int subjectId) {
+        HashMap<String, Object> result = new HashMap<>();
+        SubjectPool subjectPool = subjectPoolMapper.querySubjectById(subjectId);
+        if (subjectPool==null){
+            result.put("code",-1);
+            result.put("msg","查询失败");
+            return result;
+        }
+        result.put("code", 0);
+        result.put("data", subjectPool);
+        result.put("msg","查询成功");
+        return result;
+    }
 }

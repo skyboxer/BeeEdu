@@ -44,14 +44,6 @@ public interface ImpotTestQuestionsService {
      */
     HashMap<String, Object> deleteTemplatePool(int id);
 
-    /**
-     * 批量插入试题模板
-     * @param templatePoolList
-     * @param
-     * @return
-     *
-     */
-    HashMap<String, Object> addListTemplate(TemplatePool[] templatePoolList);
 
     /**
      * 读取文档
@@ -61,4 +53,14 @@ public interface ImpotTestQuestionsService {
      * @return
      */
     HashMap<String, Object> readDocument(SubjectPool subjectPool, MultipartFile file);
+
+/**
+ * 批量插入试题模板
+ * @param
+ * @param templatePoolList
+ * @return
+ *
+ *
+ */
+    HashMap<String, Object> addListTemplate(TemplatePool[] templatePoolList);
 }
