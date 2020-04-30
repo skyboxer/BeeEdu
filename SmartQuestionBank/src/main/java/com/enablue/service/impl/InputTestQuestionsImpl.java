@@ -300,20 +300,14 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
      */
     @Override
     @Transactional
-    public HashMap<String, Object> addListTemplate(TemplatePool[] templatePoolList) {
+    public HashMap<String, Object> addListTemplate(List<TemplatePool> templatePoolList) {
         HashMap<String, Object> result = new HashMap<>();
         //遍历数据
-        for (TemplatePool templatePool:templatePoolList) {
-            templatePool.setGetModified(new Date());
-            templatePool.setGmtCreate(new Date());
-            templatePool.setAnswerId(-1);
-            //插入试题
-            int count = templatePoolMapper.addTemplatePool(templatePool);
-            if (count<1){
-                result.put("code",-1);
-                result.put("msg","添加失败");
-                return result;
-            }
+        int i = templatePoolMapper.addListTemplate(templatePoolList);
+        if (i<1){
+            result.put("code",-1);
+            result.put("msg","添加失败");
+            return result;
         }
         result.put("code",1);
         result.put("msg","添加成功");

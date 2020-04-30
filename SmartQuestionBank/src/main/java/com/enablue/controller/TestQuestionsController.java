@@ -113,7 +113,7 @@ public class TestQuestionsController {
      * @return
      */
     @RequestMapping("/addListTemplate")
-    public HashMap<String,Object> addListTemplate(@RequestBody TemplatePool [] templatePoolList){
+    public HashMap<String,Object> addListTemplate(@RequestBody List<TemplatePool> templatePoolList){
         return impotTestQuestionsService.addListTemplate(templatePoolList);
     }
 }

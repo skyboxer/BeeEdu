@@ -62,5 +62,5 @@ public interface ImpotTestQuestionsService {
  *
  *
  */
-    HashMap<String, Object> addListTemplate(TemplatePool[] templatePoolList);
+    HashMap<String, Object> addListTemplate(List<TemplatePool> templatePoolList);
 }
