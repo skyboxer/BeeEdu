@@ -68,6 +68,7 @@
         /*多文件*/
         //多文件列表示例
         var moreImgText = new Array();
+        let initMoreImgTextData = new Array();
         var demoListView = $('#demoList')
             , uploadListIns = upload.render({
             elem: '#testList'
@@ -123,15 +124,17 @@
                             for(let index in dataList){
                                 moreImgText.push(dataList[index])
                             }
+                            let moreImgTextStr = JSON.stringify(moreImgText);
+                            initMoreImgTextData = JSON.parse(moreImgTextStr);
                             table.render({
                                 elem: '#imgTextTable'
                                 ,limit:100
                                 , cols: [[
                                     {type:'checkbox'},
-                                    {field: "id", title: '编号', width: 80},
+                                    {field: "id", title: '编号', width: 60},
                                     {field: "value", title: '识别内容',edit:'text'},
-                                    {field: "subjectName", title: '科目类型'},
-                                    {field: "typeName", title: '板块类型'},
+                                    {field: "subjectName", title: '科目类型',width: 100},
+                                    {field: "typeName", title: '板块类型',width: 90},
                                     {fixed: 'right', width:178, align:'center', toolbar: '#barDemo'}
                                     ]]
                                 , data: moreImgText
@@ -236,9 +239,6 @@
         /*>>>>>>>>>>*/
         $("#updateListType").on('click',function () {
             var checkStatus = table.checkStatus('imgTable');
-            console.log(checkStatus.data) //获取选中行的数据
-            console.log(checkStatus.data.length) //获取选中行数量，可作为是否有选中行的条件
-            console.log(checkStatus.isAll ) //表格是否全选
             if(checkStatus.data.length<=0){
                 layer.msg("未检测到选中数据")
                 return;
@@ -267,9 +267,6 @@
         /*>>>>>>>>>>*/
         $("#delListType").on('click',function () {
             var checkStatus = table.checkStatus('imgTable');
-            console.log(checkStatus.data) //获取选中行的数据
-            console.log(checkStatus.data.length) //获取选中行数量，可作为是否有选中行的条件
-            console.log(checkStatus.isAll ) //表格是否全选
             if(checkStatus.data.length<=0){
                 layer.msg("未检测到选中数据")
                 return;
@@ -287,7 +284,18 @@
             });
         })
         /*<<<<<<<<<<*/
-
+        /*>>>>>>>>>>*/
+        $("#backOutData").on('click',function () {
+            layer.confirm('确定要撤回所有操作么', function(index){
+                let jo = JSON.stringify(initMoreImgTextData);
+                moreImgText = JSON.parse(jo)
+                table.reload('imgTable', {
+                    data:moreImgText
+                });
+                layer.close(index)
+            })
+        })
+        /*<<<<<<<<<<*/
     });
 </script>
 <script id="barDemo" type="text/html">
@@ -316,6 +324,7 @@
                 <button class="layui-btn layui-btn-primary" type="button" id="updateListType"><i class="layui-icon">&#xe642;</i>批量归类</button>
             </div>
             <div class="layui-input-inline">
+                <button class="layui-btn layui-bg-orange" type="button" id="backOutData"><i class="layui-icon">&#xe666;</i></button>
                 <button class="layui-btn layui-btn-danger" type="button" id="delListType"><i class="layui-icon">&#xe640;</i>批量删除</button>
             </div>
             <div class="layui-input-inline">

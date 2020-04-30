@@ -58,7 +58,7 @@ public class RequestFilter implements Filter {
             response.sendRedirect("/ROOT1/user/login.html");
             return;
         }
-        filterChain.doFilter(request, response);
+        filterChain. doFilter(request, response);
     }
 
     @Override
