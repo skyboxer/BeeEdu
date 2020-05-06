@@ -68,16 +68,21 @@ public class BaiduImgRecognitionController {
             List<Map<String,String>> list = new ArrayList<>();
             Map<String,String> map;
             JSONObject jsonObject1;
-            int i= 0;
+            int i= 1;
             for(Object object : jsonArray){
                 jsonObject1 = (JSONObject)object;
                 map = new HashMap<>();
                 map.put("id",String.valueOf(i));
-                map.put("value",jsonObject1.getString("words"));
+                if(imgSource.equals("002")){
+                    map.put("templateContent","$$"+jsonObject1.getString("words")+"$$");
+                }else {
+                    map.put("templateContent",jsonObject1.getString("words"));
+                }
                 map.put("subjectId","0");
                 map.put("typeId","0");
-                map.put("subjectName","默认");
-                map.put("typeIdName","请选择");
+                map.put("subject","默认");
+                map.put("type","请选择");
+                map.put("difficultyGrade","3");
                 list.add(map);
                 i++;
             }

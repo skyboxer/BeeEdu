@@ -11,6 +11,9 @@
 
     <script src="../layuiv256/layui.js" charset="utf-8"></script>
     <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+    <script type="text/javascript" async
+            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
 </head>
 <body>
 <div style="padding: 10px 10px 0px 10px">
@@ -56,7 +59,44 @@
         </div>
         <button class="layui-btn" id="testListAction" type="button">开始上传识别</button>
     </div>
+<br>
+    <div style="padding: 20px;">
+        <form class="layui-form layui-form-pane" action="" lay-filter="suType">
+            <div class="layui-form-item">
+                <label class="layui-form-label">科目/板块</label>
+
+                <div class="layui-input-inline">
+                    <select name="subjectId" lay-verify="required" lay-filter="subjectlist" id="subjectlist">
+                        <option value="" selected>请选择科目</option>
+                    </select>
+                </div>
+
+                <div class="layui-input-inline">
+                    <select name="typeId" lay-verify="required" id="typeList">
+                        <option value="">请选择板块</option>
+                    </select>
+                </div>
+                <div class="layui-input-inline">
+                    <button class="layui-btn layui-btn-primary" type="button" id="updateListType"><i class="layui-icon">&#xe642;</i>批量归类</button>
+                </div>
+                <div class="layui-input-inline">
+                    <button class="layui-btn layui-bg-orange" type="button" id="backOutData"><i class="layui-icon">&#xe666;</i></button>
+                    <button class="layui-btn layui-btn-danger" type="button" id="delListType"><i class="layui-icon">&#xe640;</i>批量删除</button>
+                </div>
+                <div class="layui-input-inline">
+                    <button class="layui-btn layui-btn-normal" type="button" id="addTemplate"><i class="layui-icon">&#x1005;</i>提交录入</button>
+                </div>
+            </div>
+        </form>
+        <table id="imgTextTable" lay-filter="demo"></table>
+    </div>
+
 </div>
+
+
+
+
+
 </body>
 <script>
     layui.use(['jquery', 'upload', 'layer', 'table','form'], function () {
@@ -132,9 +172,10 @@
                                 , cols: [[
                                     {type:'checkbox'},
                                     {field: "id", title: '编号', width: 60},
-                                    {field: "value", title: '识别内容',edit:'text'},
-                                    {field: "subjectName", title: '科目类型',width: 100},
-                                    {field: "typeName", title: '板块类型',width: 90},
+                                    {field: "templateContent", title: '识别内容',edit:'text'},
+                                    {field: "subject", title: '科目类型',width: 100},
+                                    {field: "type", title: '板块类型',width: 100},
+                                    {field: "difficultyGrade", title:"难度等级",width:100},
                                     {fixed: 'right', width:178, align:'center', toolbar: '#barDemo'}
                                     ]]
                                 , data: moreImgText
@@ -180,7 +221,7 @@
                     }
                     for(let j in moreImgText){
                         if(moreImgText[j].id == ids){
-                            moreImgText[j-1].value += data.value;
+                            moreImgText[j-1].templateContent += data.templateContent;
                             moreImgText.splice(j,1);
                             table.reload('imgTable', {
                                 data:moreImgText
@@ -250,7 +291,7 @@
                     if(moreImgText[j].id == tableData[i].id){
                         for(let k in type){
                             if(type[k].plateId == typeObj.typeId){
-                                moreImgText[j].typeName = type[k].plateName;
+                                moreImgText[j].type = type[k].plateName;
                                 moreImgText[j].typeId = type[k].plateId;
                                 moreImgText[j].subjectId = type[k].subjectId
                             }
@@ -296,42 +337,49 @@
             })
         })
         /*<<<<<<<<<<*/
+        /*>>>>>>>>>>*/
+        $("#addTemplate").on('click',function () {
+            layer.confirm('确定要提交数据么', function(index){
+                let params = JSON.stringify(moreImgText);
+                $.ajax({
+                    url : '../testQuestionsController/addListTemplate',
+                    type : 'post',
+                    data : params,
+                    dataType : "json",
+                    contentType: "application/json",
+                    processData: false,
+                    success : function(data) {
+                        layer.msg(data.msg)
+                        //提交成功则删除选中数据
+                        if (data.code===1){
+                            layer.msg(data.msg);
+                        }
+
+                    }
+                });
+                layer.close(index)
+            })
+        })
+        /*<<<<<<<<<<*/
     });
 </script>
 <script id="barDemo" type="text/html">
     <a class="layui-btn layui-btn-xs" lay-event="merge">向上合并</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
+<script type="text/javascript">
+    MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX", "output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [["\\(", "\\)"]],
+            displayMath: [["$$", "$$"],["\\[", "\\]"]],
+            processEscapes: true
+        },
+        "HTML-CSS": { availableFonts: ["TeX"] }
+    });
+    MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+</script>
+
 <br>
-
-<div style="padding: 20px;">
-    <form class="layui-form layui-form-pane" action="" lay-filter="suType">
-        <div class="layui-form-item">
-            <label class="layui-form-label">科目/板块</label>
-
-            <div class="layui-input-inline">
-                <select name="subjectId" lay-verify="required" lay-filter="subjectlist" id="subjectlist">
-                    <option value="" selected>请选择科目</option>
-                </select>
-            </div>
-
-            <div class="layui-input-inline">
-                <select name="typeId" lay-verify="required" id="typeList">
-                    <option value="">请选择板块</option>
-                </select>
-            </div>
-            <div class="layui-input-inline">
-                <button class="layui-btn layui-btn-primary" type="button" id="updateListType"><i class="layui-icon">&#xe642;</i>批量归类</button>
-            </div>
-            <div class="layui-input-inline">
-                <button class="layui-btn layui-bg-orange" type="button" id="backOutData"><i class="layui-icon">&#xe666;</i></button>
-                <button class="layui-btn layui-btn-danger" type="button" id="delListType"><i class="layui-icon">&#xe640;</i>批量删除</button>
-            </div>
-            <div class="layui-input-inline">
-                <button class="layui-btn layui-btn-normal" type="button" id="addTemplate"><i class="layui-icon">&#x1005;</i>提交录入</button>
-            </div>
-        </div>
-    </form>
-    <table id="imgTextTable" lay-filter="demo"></table>
-</div>
 </html>
