@@ -2,6 +2,7 @@ package com.enablue.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.enablue.common.CommonReturnValue;
+import com.enablue.util.IfOs;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -30,8 +31,7 @@ public class UploadFileController{
 
     @RequestMapping("uploadFileImg")
     public JSONObject uploadFileImg(MultipartFile file,HttpServletRequest request) {
-        //String savePath = "/home/data/ROOT1/image";
-        String path = "E:\\image";
+        String path = IfOs.ifOsPath("E:\\image","/home/data/ROOT1/image") ;
         int code = -1;
         String msg = "上传出错";
         if(file.isEmpty()){

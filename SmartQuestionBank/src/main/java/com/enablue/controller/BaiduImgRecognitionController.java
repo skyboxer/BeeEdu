@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.enablue.common.CommonReturnValue;
+import com.enablue.util.IfOs;
 import com.enablue.util.baidu.Base64Util;
 import com.enablue.util.baidu.FileUtil;
 import com.enablue.util.baidu.HttpUtil;
@@ -55,7 +56,7 @@ public class BaiduImgRecognitionController {
         System.out.println("url>>>>>>>>>>>>"+url);
         try {
             // 本地文件路径
-            String filePath = "E:\\image\\"+fileName;
+            String filePath = IfOs.ifOsPath("E:\\image\\"+fileName,"/home/data/ROOT1/image/"+fileName) ;
             byte[] imgData = FileUtil.readFileByBytes(filePath);
             String imgStr = Base64Util.encode(imgData);
             String imgParam = URLEncoder.encode(imgStr, "UTF-8");
@@ -73,11 +74,7 @@ public class BaiduImgRecognitionController {
                 jsonObject1 = (JSONObject)object;
                 map = new HashMap<>();
                 map.put("id",String.valueOf(i));
-                if(imgSource.equals("002")){
-                    map.put("templateContent","$$"+jsonObject1.getString("words")+"$$");
-                }else {
-                    map.put("templateContent",jsonObject1.getString("words"));
-                }
+                map.put("templateContent",jsonObject1.getString("words"));
                 map.put("subjectId","0");
                 map.put("typeId","0");
                 map.put("subject","默认");
