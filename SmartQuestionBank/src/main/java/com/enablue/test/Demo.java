@@ -13,7 +13,7 @@ import java.util.Map;
 public class Demo {
     public static void main(String[] args) {
         PoiUtil poiUtil = new PoiUtil();
-        String buffer = poiUtil.readWord("C:\\Users\\Administrator\\Documents\\WeChat Files\\wc15250138779\\FileStorage\\File\\2020-04\\57kcpi5ucklbrvh715585209630.doc");
+        String buffer = poiUtil.readWord("C:\\Users\\Administrator\\Desktop\\高二数学下学期期末复习题5(www.diyifanwen.com).doc");
         HashMap<String, Object> map = poiUtil.plateFormat(buffer);
         for (Map.Entry<String,Object> entry:map.entrySet()) {
             SubjectPool subjectPool = new SubjectPool();
