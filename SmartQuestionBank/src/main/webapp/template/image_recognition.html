@@ -248,7 +248,11 @@
                     });
                     break;
                 case 'update':
-                    let cont = data.templateContent
+                    layer.open({
+                        type:2,
+                        maxmin: true,
+                        content:'http://latex.codecogs.com/eqneditor/editor.php'
+                    })
                     break;
             }
         });
@@ -397,7 +401,7 @@
     });
 </script>
 <script id="barDemo" type="text/html">
-    <a class="layui-btn layui-btn-xs layui-hide" lay-event="update">编辑公式</a>
+    <a class="layui-btn layui-btn-xs" lay-event="update">编辑公式</a>
     <a class="layui-btn layui-btn-xs" lay-event="merge">向上合并</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
