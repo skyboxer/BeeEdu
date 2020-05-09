@@ -247,12 +247,13 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
             }
 
             //根据答案id查询到对应答案
-            TPAnswer tpAswer = tpAnswerMapper.getTPAswer(templatePool.getAnswerId());
-            if(tpAswer!=null){
-                //设置答案
-                templateDTO.setAnswer(tpAswer.getAnswerContent());
-            }else {
+            if (templatePool.getAnswerId()!=null){
+                TPAnswer tpAswer = tpAnswerMapper.getTPAswer(templatePool.getAnswerId());
                 templateDTO.setAnswer("");
+                if(tpAswer!=null){
+                    //设置答案
+                    templateDTO.setAnswer(tpAswer.getAnswerContent());
+                }
             }
             //设置其他数据
             templateDTO.setDifficultyGrade(templatePool.getDifficultyGrade());
