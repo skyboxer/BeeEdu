@@ -4,14 +4,20 @@ import com.enablue.common.PoiUtil;
 import com.enablue.dto.TemplateDTO;
 import com.enablue.pojo.SubjectPool;
 import com.enablue.pojo.TypePool;
+import com.latextoword.Latex_Word;
 import com.spire.doc.Document;
+import com.spire.doc.HtmlExportOptions;
 import com.spire.doc.Section;
 import com.spire.doc.collections.SectionCollection;
+import com.spire.doc.documents.DocumentObjectType;
 import com.spire.doc.documents.Paragraph;
+import com.spire.doc.fields.DocPicture;
+import com.spire.doc.interfaces.ICompositeObject;
+import com.spire.doc.interfaces.IDocumentObject;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.util.*;
 
 
 public class Demo {
@@ -37,6 +43,24 @@ public class Demo {
         officeMath.FromLatexMathCode("x^{2}+\\sqrt{x^{2}+1}=2");
         doc.SaveToFile("latexToDoc.docx", FileFormat.Docx);*/
 
+        /*late转换word mate*/
+        /*String latexStr="\\(\\sqrt[3]{2+x}\\)";
+        String bu= Latex_Word.latexToWord(latexStr);
+        System.out.println(bu);*/
 
+
+        //加载Word文档
+        /*Document document = new Document();
+        document.loadFromFile("C:\\Users\\cn_xj\\Desktop\\公式测试.docx");
+
+        //获取文档中的文本保存为String
+        String text=document.getText();
+        System.out.println(text);
+        System.out.println(document.getHTMLCustomComment());
+        List list = document.getHTMLIdentifierPunctuations();
+        for(Object a : list){
+            System.out.println(a.toString());
+        }
+*/
     }
 }

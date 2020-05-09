@@ -44,7 +44,7 @@ public class TestQuestionsController {
 
         //设置试题创建日期
         templatePool.setGmtCreate(new Date());
-        templatePool.setGetModified(new Date());
+        templatePool.setGmtModified(new Date());
         //设置模板答案创建日期
         tpAnswer.setGmtCreate(new Date());
         tpAnswer.setGmtModified(new Date());

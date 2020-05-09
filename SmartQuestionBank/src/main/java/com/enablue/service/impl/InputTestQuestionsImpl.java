@@ -108,7 +108,7 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
     @Transactional
     public HashMap<String, Object> updataTemplate(TemplatePool templatePool, String variableQuantity, TPAnswer tpAnswer, MultipartFile file) {
         HashMap<String, Object> result = new HashMap<>();
-        templatePool.setGetModified(new Date());
+        templatePool.setGmtModified(new Date());
         //根据模板id查询数据主要目的是拿到答案id
         TemplatePool template = templatePoolMapper.queryTemplateById(templatePool.getTemplateId());
         //根据拿到的答案id查询答案
