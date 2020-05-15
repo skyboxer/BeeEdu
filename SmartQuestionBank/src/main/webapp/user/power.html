@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>用户操作</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/ROOT1/layuiv256/css/layui.css" media="all">
+</head>
+<body>
+<blockquote class="layui-elem-quote">
+    权限操作
+</blockquote>
+<div id="treeJSON"></div>
+<script src="/ROOT1/layuiv256/layui.js"></script>
+<script>
+    //JavaScript代码区域
+    layui.use(['layer', 'jquery', 'form', 'table', 'transfer', 'tree'], function () {
+        var layer = layui.layer,
+            $ = layui.jquery,
+            table = layui.table,
+            tree = layui.tree,
+            form = layui.form,
+            transfer = layui.transfer;
+        let getTree = function(){
+            $.get("/ROOT1/menuController/getMenuTree", function (e) {
+                layer.msg(e.msg)
+                if (e.code == 0) {
+                    treeList(e.data)
+                }
+
+            }, "json");
+        }
+        getTree();
+        let treeList = function (data) {
+            tree.render({
+                elem: '#treeJSON',
+                data: data,
+                edit: ['add', 'update', 'del'],
+                operate: function (obj) {
+                    var type = obj.type; //得到操作类型：add、edit、del
+                    var data = obj.data; //得到当前节点的数据
+                    var elem = obj.elem; //得到当前节点元素
+                    let param = {}
+                    //Ajax 操作
+                    var id = data.id; //得到节点索引
+                    if (type === 'add') { //增加节点
+                        param = {
+                            "title": "功能名称,url",
+                            "id": "null",
+                            "parentId": id,
+                            "field": "menu",
+                            "children": [],
+                            "href": "null",
+                            "spread": true,
+                            "checked": false,
+                            "disable": false
+                        }
+                    } else if (type === 'update') { //修改节点
+                        //console.log(elem.find('.layui-tree-txt').html()); //得到修改后的内容
+                        param = data
+                    } else if (type === 'del') { //删除节点
+                        param = data
+                    }
+                    $.ajax({
+                        url: "/ROOT1/menuController/menuTreeSys",
+                        type: "POST",
+                        contentType : 'application/json;charset=utf-8', //设置请求头信息
+                        dataType:"json",
+                        data: JSON.stringify({"menuTree":param, "sysType": type}),
+                        success: function(e){
+                            layer.msg(e.msg);
+                            if(e.code == 0){
+                                window.location.reload();
+                            }
+                        }
+                    });
+                    
+                }
+            })
+        }
+    });
+
+
+</script>
+</body>
+</html>
