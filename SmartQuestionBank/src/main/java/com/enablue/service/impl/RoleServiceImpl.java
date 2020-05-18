@@ -226,6 +226,10 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public JSONObject addRoleMenu(RoleMenu roleMenu) {
+        List<RoleMenu> roleMenuList = roleMenuMapper.getRoleMenu(roleMenu);
+        if(roleMenuList.size()>0){
+            return commonReturnValue.CommonReturnValue(0,"已经有该权限！");
+        }
         int index= roleMenuMapper.addRoleMenu(roleMenu);
         if(index>0){
             return commonReturnValue.CommonReturnValue(0,"成功");
@@ -235,6 +239,12 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public JSONObject deleteRoleMenu(RoleMenu roleMenu) {
+        List<RoleMenu> roleMenuList = roleMenuMapper.getRoleMenu(roleMenu);
+        if(roleMenuList.size()>1){
+            for(int i = 1; i<roleMenuList.size();i++){
+                roleMenuMapper.delRoleMenu(roleMenuList.get(i));
+            }
+        }
         if(roleMenu.getRoleId()==2){
             return commonReturnValue.CommonReturnValue(-1,"管理员不能被删除");
         }

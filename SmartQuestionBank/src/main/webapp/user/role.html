@@ -17,8 +17,8 @@
 <!--用户操作-->
 <script type="text/html" id="barUser">
     <a class="layui-btn layui-btn-xs" lay-event="update">修改</a>
-    <a class="layui-btn layui-btn-xs" lay-event="addMenu">添加功能</a>
-    <!--<a class="layui-btn layui-btn-xs" lay-event="power">权限操作</a>-->
+    <a class="layui-btn layui-btn-xs" lay-event="addMenu">权限操作</a>
+    <!--<a class="layui-btn layui-btn-xs" lay-event="power"></a>-->
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script type="text/html" id="barDemo">
@@ -93,51 +93,6 @@
                         }
                     });
 
-                    break;
-                case "power":
-                    layer.open({
-                        type: 1,
-                        content: $('#powerSysId'),
-                        area: ['600px', '500px'],
-                        success: function (layero, index) {
-                            $.post("/ROOT1/roleController/updateRole"
-                                , {
-                                    "sysCode": "powerRole"
-                                    , "roleId": obj.data.roleId
-                                }, function (e) {
-                                    layer.msg(e.msg)
-                                    var inst1 = tree.render({
-                                        elem: '#treeJSON'  //绑定元素
-                                        , data: e.data,
-                                        edit: ['add', 'update', 'del'],
-                                        id: "demoId",
-                                        operate: function (obj1) {
-                                            var type = obj1.type; //得到操作类型：add、edit、del
-                                            var data = obj1.data; //得到当前节点的数据
-                                            var elem = obj1.elem; //得到当前节点元素
-                                            $.post("/ROOT1/roleController/sysMenu"
-                                                , {
-                                                    "type": type
-                                                    , "roleId": obj.data.roleId
-                                                    , "menuName": data.title
-                                                    , "menuId": data.id
-                                                }, function (e) {
-                                                    layer.msg(e.msg)
-                                                    if (type != "add") {
-                                                        //可以重载所有基础参数
-                                                        tree.reload('demoId', {});
-                                                    }
-                                                }, "json");
-                                        }
-                                    });
-                                }, "json");
-                            table.reload('itTests', {
-                                page: {
-                                    curr: 1 //重新从第 1 页开始
-                                }
-                            });
-                        }
-                    })
                     break;
                 case "del":
                     layer.confirm('确定要删除该项吗?', {icon: 3, title: '提示'}, function (index) {
