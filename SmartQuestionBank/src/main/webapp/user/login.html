@@ -8,34 +8,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="/ROOT1/layuiv256/css/layui.css" media="all">
 </head>
-<body>
-<div class="layui-container">
-    <div class="layui-row" style="margin-top: 100px">
-        <div class="layui-col-md4 layui-col-md-offset4">
-            <blockquote class="layui-elem-quote">用户登录</blockquote>
-            <hr class="layui-bg-green">
+<body style="background-color: #f2f2f2;">
+<div class="layui-container ">
+    <div class="layui-row" style="margin-top: 15%">
+        <div class="layui-col-md5 layui-col-md-offset4">
+            <fieldset class="layui-elem-field">
+                <legend><h3>智能题库</h3></legend>
+                <div class="layui-field-box">
+                    <form class="layui-form layui-form-pane" action="">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-icon layui-icon-username"></label>
+                            <div class="layui-input-block">
+                                <input type="tel" name="tel" required  lay-verify="required" placeholder="手机号" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-icon layui-icon-password"></label>
+                            <div class="layui-input-block">
+                                <input type="password" name="password" required  lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item" style="margin-bottom: 30px;">
+                            <p style="color: #9F9F9F">密码忘记，请联系管理员</p>
+                        </div>
+                        <div class="layui-form-item">
+                            <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="formDemo">登入</button>
+                        </div>
+                    </form>
 
-            <form class="layui-form layui-form-pane" action="">
-                <div class="layui-form-item">
-                    <label class="layui-form-label layui-icon layui-icon-username"></label>
-                    <div class="layui-input-block">
-                        <input type="tel" name="tel" required  lay-verify="required" placeholder="手机号" autocomplete="off" class="layui-input">
-                    </div>
                 </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label layui-icon layui-icon-password"></label>
-                    <div class="layui-input-block">
-                        <input type="password" name="password" required  lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-
-                <div class="layui-form-item">
-                    <div class="layui-input-block">
-                        <button class="layui-btn" lay-submit lay-filter="formDemo">登录</button>
-                    </div>
-                </div>
-            </form>
-
+            </fieldset>
         </div>
     </div>
 </div>
@@ -49,14 +51,18 @@
 
         form.on('submit(formDemo)', function(data){
             $.post("/ROOT1/userController/userLogin",data.field ,function (e) {
-                if(e.code ==0){
-                    window.location.href="/ROOT1/index.html"
-                    var storage = window.sessionStorage;
-                    storage.setItem("userName",e.data.userName);
-                    storage.setItem("user",e.data.userTel);
-                }else{
-                    layer.msg(e.msg);
-                }
+                layer.msg(e.msg
+                ,{
+                        offset: 't'
+                    }
+                ,function () {
+                        if(e.code ==0){
+                            window.location.href="/ROOT1/index.html"
+                            var storage = window.sessionStorage;
+                            storage.setItem("userName",e.data.userName);
+                            storage.setItem("user",e.data.userTel);
+                        }
+                    })
             })
             return false;
         });

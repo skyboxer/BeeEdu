@@ -12,6 +12,7 @@ import com.enablue.pojo.User;
 import com.enablue.service.CreateTestQuestionsService;
 import com.enablue.service.TypePoolService;
 import com.enablue.util.Algorithm;
+import com.enablue.util.IfOs;
 import com.enablue.util.RandomNumFactory;
 import com.enablue.util.WordToHtml;
 import com.spire.doc.Section;
@@ -106,7 +107,8 @@ public class CreateQuestionsController {
                 System.out.println(question.getString("name")+"  <><> "+question.getString("value"));
                 range.replaceText(question.getString("name"),question.getString("value"));
             }
-            String newDocPath = "/home/data/ROOT1/download/"+newFileName+".doc";
+            String osPath = IfOs.ifOsPath("E:\\","/home/data/ROOT1/download/");
+            String newDocPath = osPath+newFileName+".doc";
             File newDocFile = new File(newDocPath);
             if(!newDocFile.isFile() && !newDocFile.exists()){
                 newDocFile.createNewFile();
@@ -114,7 +116,7 @@ public class CreateQuestionsController {
             }
             outputStream = new FileOutputStream(newDocPath);
             doc.write(outputStream);
-            String htmlPath = WordToHtml.Word2003ToHtml("/home/data/ROOT1/download/",newFileName,".doc","/home/data/ROOT1/download/");
+            String htmlPath = WordToHtml.Word2003ToHtml(osPath,newFileName,".doc",osPath);
             System.out.println(htmlPath);
         } catch (IOException e) {
             e.printStackTrace();
@@ -221,6 +223,7 @@ public class CreateQuestionsController {
             }
             para = section.addParagraph();
             para.appendText(index+". "+templatePool.getTemplateContent());
+            //para.appendHTML("<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>x</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&#xB1;</mo><msqrt><msup><mi>b</mi><mn>2</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math>");
             System.out.println("题目类型："+templatePool.getTypeId());
             switch (templatePool.getTypeId()){
                 case 5:
@@ -242,14 +245,12 @@ public class CreateQuestionsController {
         style2.getCharacterFormat().setFontSize(10.5f);
         document.getStyles().add(style2);
         para.applyStyle("paraStyle");
-
+        String osPath = IfOs.ifOsPath("E:\\","/home/data/ROOT1/download/");
         //保存文档
-        document.saveToFile("/home/data/ROOT1/download/"+newFileName+".docx", FileFormat.Docx);
-        //document.saveToFile("E:\\"+newFileName+".docx", FileFormat.Docx);
+        document.saveToFile(osPath+newFileName+".docx", FileFormat.Docx);
         String htmlPath = null;
         try {
-            htmlPath = WordToHtml.Word2007ToHtml("/home/data/ROOT1/download/",newFileName,".docx","/home/data/ROOT1/download/");
-            //htmlPath = WordToHtml.Word2007ToHtml("E:\\",newFileName,".docx","E:\\");
+            htmlPath = WordToHtml.Word2007ToHtml(osPath,newFileName,".docx",osPath);
         } catch (IOException e) {
             e.printStackTrace();
         }

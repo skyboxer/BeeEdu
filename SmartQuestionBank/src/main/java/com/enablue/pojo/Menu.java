@@ -21,6 +21,21 @@ public class Menu {
     public Menu(Integer menuId) {
     }
 
+    @Override
+    public String toString() {
+        return "Menu{" +
+                "menuId=" + menuId +
+                ", parentId=" + parentId +
+                ", menuName='" + menuName + '\'' +
+                ", menuUrl='" + menuUrl + '\'' +
+                ", gmtCreate=" + gmtCreate +
+                ", gmtModified=" + gmtModified +
+                ", childMenu=" + childMenu +
+                ", page=" + page +
+                ", limit=" + limit +
+                '}';
+    }
+
     public Integer getPage() {
         return page;
     }
@@ -113,17 +128,6 @@ public class Menu {
         this.menuUrl = menuUrl;
     }
     public Menu(){}
-    @Override
-    public String toString() {
-        return "Menu{" +
-                "menuId=" + menuId +
-                ", parentId=" + parentId +
-                ", menuName='" + menuName + '\'' +
-                ", menuUrl='" + menuUrl + '\'' +
-                ", gmtCreate=" + gmtCreate +
-                ", gmtModified=" + gmtModified +
-                '}';
-    }
 
     public Menu(Integer menuId, String menuName, String menuUrl) {
         this.menuId = menuId;

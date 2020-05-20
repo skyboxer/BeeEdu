@@ -36,7 +36,7 @@ public class RoleController {
                 break;
             case "powerRole":
                 RoleMenu roleMenu = new RoleMenu();
-                roleMenu.setRoleId(roleId);
+                //roleMenu.setRoleId(roleId);
                 jsonObject = roleService.getRoleMenuTree(roleMenu);
                 break;
             default:
