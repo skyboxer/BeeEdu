@@ -1,6 +1,6 @@
 package com.enablue.service.impl;
 
-import com.enablue.common.PoiUtil;
+import com.enablue.common.SpireUtil;
 import com.enablue.dto.TemplateDTO;
 import com.enablue.mapper.*;
 import com.enablue.pojo.*;
@@ -43,27 +43,36 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
     @Transactional
     public int  addTestQuestions(TemplatePool templatePool, List<VariablePool> variablePoolList, TPAnswer tpAnswer, MultipartFile file){
         //返回的是答案id
-        int tpAnswerStatus = tpAnswerMapper.addTPAswer(tpAnswer);
-        //设置答案id
-        templatePool.setAnswerId(tpAnswer.getAnswerId());
-        //添加模板
-        int tempStatus =templatePoolMapper.addTemplatePool(templatePool);
-        if(tempStatus<=0 || tpAnswerStatus<=0){
-            return -1;
-        }
-        int variableStatus = 0;
-        //添加变量
-        for (VariablePool variablePool : variablePoolList) {
-            //设置标识变量的模板id
-            variablePool.setTemplateId(templatePool.getTemplateId());
-            //添加标识变量
-            variableStatus = variablePoolMapper.addVariablePool(variablePool);
-            if(variableStatus<=0){
-                //添加失败手动回滚
-                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        if (tpAnswer!=null){
+            int tpAnswerStatus = tpAnswerMapper.addTPAswer(tpAnswer);
+            if(tpAnswerStatus<=0){
                 return -1;
             }
+            //设置答案id
+            templatePool.setAnswerId(tpAnswer.getAnswerId());
         }
+
+        //添加模板
+        int tempStatus =templatePoolMapper.addTemplatePool(templatePool);
+        if(tempStatus<=0){
+            return -1;
+        }
+        int variableStatus = -1;
+        if (variablePoolList!=null){
+            //添加变量
+            for (VariablePool variablePool : variablePoolList) {
+                //设置标识变量的模板id
+                variablePool.setTemplateId(templatePool.getTemplateId());
+                //添加标识变量
+                variableStatus = variablePoolMapper.addVariablePool(variablePool);
+                if(variableStatus<=0){
+                    //添加失败手动回滚
+                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                    return -1;
+                }
+            }
+        }
+
         //添加图片
         if (file!=null){
             if (file.getSize()/1024>100){
@@ -343,11 +352,12 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
                 //上传文件到realPath目录
                 file.transferTo(new File(realPath,file.getOriginalFilename()));
                 //准备读取文档内容
-                PoiUtil poiUtil = new PoiUtil();
+                SpireUtil spireUtil = new SpireUtil();
                 //读取文本内容
-                String word = poiUtil.readWord(realPath + File.separator + file.getOriginalFilename());
+                String word = spireUtil.readDoc(realPath + File.separator + file.getOriginalFilename(),"C:\\Users\\Administrator\\Desktop\\images\\");
+                System.out.println("word = " + word);
                 //分离内容
-                HashMap<String, Object> map = poiUtil.plateFormat(word);
+                HashMap<String, Object> map = spireUtil.plateFormat(word);
                 //准备容器
                 List<TemplateDTO> list=new ArrayList<>();
                 //遍历map集合
@@ -377,7 +387,7 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
                     }
                     //获取该类型下试题内容
                     String  value = (String) entry.getValue();
-                    list.addAll(poiUtil.templateFormat(value, subjectPool, typePool));
+                    list.addAll(spireUtil.templateFormat(value, subjectPool, typePool));
 
                 }
                 result.put("code",1);

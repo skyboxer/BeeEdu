@@ -21,7 +21,7 @@
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">试题模板</label>
             <div class="layui-input-block">
-                <textarea placeholder="请输入内容" lay-verify="required" class="layui-textarea" name="templateContent"></textarea>
+                <textarea placeholder="请输入内容" lay-verify="required" class="layui-textarea" id="templateContent" name="templateContent"></textarea>
             </div>
         </div>
         <div class="layui-form-item layui-form-text">
@@ -37,14 +37,14 @@
         <div class="layui-form-item">
             <label class="layui-form-label">变量(多个变量按"&"分割)</label>
             <div class="layui-input-block">
-                <input type="text" name="variableQuantity" lay-verify="required" lay-reqtext="标识是必填项，岂能为空？" placeholder="请输入" autocomplete="off" class="layui-input">
+                <input type="text" name="variableQuantity" placeholder="请输入" autocomplete="off" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">模板答案</label>
             <div class="layui-input-block">
-                <textarea placeholder="请输入内容" class="layui-textarea" lay-verify="required" name="answerContent"></textarea>
+                <textarea placeholder="请输入内容" class="layui-textarea" name="answerContent"></textarea>
             </div>
         </div>
 
@@ -88,7 +88,7 @@
             </div>
         </div>
     </form>
-
+    <script src="../js/getValueFromURL.js"></script>
     <script>
 
         // //计数
@@ -104,7 +104,11 @@
             rate = layui.rate;
             $=layui.jquery;
             var element = layui.element;
-            var difficultyGrade=-1;
+            var difficultyGrade=getQueryString("difficultyGrade");
+            var subjectId=getQueryString("subjectId");
+            var typeId=getQueryString("typeId");
+            console.log(subjectId)
+            console.log(typeId)
             //监听文件上传
             $("#imgFile").on("input",function(e){
                 document.getElementById("imgshow").src="";
@@ -157,7 +161,29 @@
                     let Subjects = result.data;
                     let subjectHtml='<option value="" selected>请选择科目</option>\n';
                     for (let i=0;i<Subjects.length;i++){
+                        if (Subjects[i].subjectId==subjectId){
+                            subjectHtml+='<option value="'+Subjects[i].subjectId+'"selected>'+Subjects[i].subjectName+'</option>\n'
+                            //发送请求查询题目类型表
+                            $.get("../queryTypePoolBySubject",{"subId":subjectId},function (result) {
+                                if (result.code===0){
+                                    var plates = result.data;
+                                    let plateHtml="<option value=\"\">请选择板块</option>\n"
+                                    for (let i=0;i<plates.length;i++){
+                                        if (plates[i].plateId==typeId){
+                                            plateHtml+='<option value="'+plates[i].plateId+'"selected>'+plates[i].plateName+'</option>\n';
+                                            continue;
+                                        }
+                                        plateHtml+='<option value="'+plates[i].plateId+'">'+plates[i].plateName+'</option>\n'
+                                    }
+                                    $("#typeList").html(plateHtml)
+                                    form.render();
+                                }
+
+                            },"json")
+                            continue;
+                        }
                         subjectHtml+='<option value="'+Subjects[i].subjectId+'">'+Subjects[i].subjectName+'</option>\n'
+
                     }
                     $("#subjectlist").html(subjectHtml);
                     //重新加载当前页面
@@ -183,6 +209,10 @@
                             var plates = result.data;
                             let plateHtml="<option value=\"\">请选择板块</option>\n"
                             for (let i=0;i<plates.length;i++){
+                                if (plates[i].plateId==typeId){
+                                    plateHtml+='<option value="'+plates[i].plateId+'"selected>'+plates[i].plateName+'</option>\n';
+                                    continue;
+                                }
                                 plateHtml+='<option value="'+plates[i].plateId+'">'+plates[i].plateName+'</option>\n'
                             }
                             $("#typeList").html(plateHtml)

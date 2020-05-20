@@ -8,6 +8,7 @@ import org.apache.poi.hwpf.usermodel.Picture;
 import org.apache.poi.hwpf.usermodel.Range;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFPictureData;
 
 import java.io.*;
@@ -87,10 +88,11 @@ public class DocUtil {
         // 得到文档的数据流
         byte[] dataStream = doc.getDataStream();
         int numChar = range.numCharacterRuns();
- 
+
         PicturesTable pTable = new PicturesTable(doc, dataStream, new byte[1024]);
         for (int j = 0; j < numChar; ++j) {
             CharacterRun cRun = range.getCharacterRun(j);
+            System.out.println("cRun = " + cRun);
             // 是否有图片
             boolean has = pTable.hasPicture(cRun);
             if (has) {
@@ -145,22 +147,21 @@ public class DocUtil {
     // 读取srcFile源word文件docx文字
     // 读取srcFile源word文件docx中的image图片并且存放在文件夹imageFile中
     private static String readDocxImage(String srcFile, String imageFile) {
-        String path = srcFile;
-        File file = new File(path);
+        File file = new File(srcFile);
         try {
             // 用XWPFWordExtractor来获取文字
             FileInputStream fis = new FileInputStream(file);
             XWPFDocument document = new XWPFDocument(fis);
             XWPFWordExtractor xwpfWordExtractor = new XWPFWordExtractor(document);
+            List<XWPFParagraph> paragraphs = document.getParagraphs();
             String text = xwpfWordExtractor.getText();
- 
             System.out.println(text);
             // 用XWPFDocument的getAllPictures来获取所有的图片
             List<XWPFPictureData> picList = document.getAllPictures();
             for (XWPFPictureData pic : picList) {
                 byte[] bytev = pic.getData();
                 // 大于300bites的图片我们才弄下来，消除word中莫名的小图片的影响
-                if (bytev.length > 300) {
+                if (bytev.length > 0) {
                     FileOutputStream fos = new FileOutputStream(imageFile + "/" + pic.getFileName());
                     fos.write(bytev);
                 }
@@ -199,9 +200,9 @@ public class DocUtil {
             return;
         }
     }
- 
+
     public static void main(String[] args) {
-        readWordImage("C:\\Users\\Administrator\\Desktop\\高二数学下学期期末复习题5(www.diyifanwen.com).doc", "C:\\Users\\Administrator\\Desktop\\images");
+        readWordImage("C:\\Users\\Administrator\\Desktop\\公式测试.docx", "C:\\Users\\Administrator\\Desktop\\images");
     }
  
 }

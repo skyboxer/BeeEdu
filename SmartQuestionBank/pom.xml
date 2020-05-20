@@ -21,8 +21,8 @@
         <!--e-iceblue-->
         <dependency>
             <groupId> e-iceblue </groupId>
-            <artifactId>spire.doc</artifactId>
-            <version>2.2.0</version>
+            <artifactId>spire.doc.free</artifactId>
+            <version>2.7.3</version>
             <!--<version>7.6.5</version>-->
         </dependency>
 
@@ -126,13 +126,7 @@
             <version>RELEASE</version>
             <scope>compile</scope>
         </dependency>
-        <!--Poi-->
-        <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>4.1.2</version>
-        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
         <dependency>
             <groupId>org.apache.poi</groupId>
@@ -163,11 +157,24 @@
             <artifactId>poi-scratchpad</artifactId>
             <version>4.1.2</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.poi/ooxml-schemas -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>ooxml-schemas</artifactId>
+            <version>1.4</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.apache.xmlbeans/xmlbeans -->
         <dependency>
             <groupId>org.apache.xmlbeans</groupId>
             <artifactId>xmlbeans</artifactId>
-            <version>2.6.0</version>
+            <version>3.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.6</version>
         </dependency>
 
         <dependency>

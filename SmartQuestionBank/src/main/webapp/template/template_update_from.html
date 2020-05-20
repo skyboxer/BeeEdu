@@ -95,7 +95,10 @@
         let answer = getQueryString("answer");
         //设置默认参数
         $("#templateContent").val(templateContent)
-        $("#answer").val(answer)
+        if (answer!="undefined"){
+            $("#answer").val(answer)
+        }
+
 
         //异步查询科目表
         $.get("../querySubject",function (result) {
