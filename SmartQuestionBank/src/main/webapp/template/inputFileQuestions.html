@@ -219,6 +219,7 @@
                             var body = layer.getChildFrame('body', index);  //巧妙的地方在这里哦
                             //为子窗口元素赋值
                             body.contents().find("#templateContent").val(data.templateContent);
+                            body.contents().find("#template").html(katex.renderToString(data.templateContent.replace(/_/g,' '), {throwOnError: false}));
                         }
 
                     });
