@@ -1,5 +1,8 @@
 package com.enablue.pojo;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.Date;
 
 /**
@@ -12,6 +15,7 @@ public class Model {
     private String modelUrl;
     private String modelFnName;
     private Integer subjectId;
+    private JSONArray dataLayout;
     private Date gmtCreate;
     private Date gmtModified;
     private Integer page;
@@ -71,6 +75,40 @@ public class Model {
 
     public void setSubjectId(Integer subjectId) {
         this.subjectId = subjectId;
+    }
+
+    public JSONArray getDataLayout() {
+        return dataLayout;
+    }
+
+    public Model(Integer modelId, String modelName, String modelUrl, String modelFnName, Integer subjectId, JSONArray dataLayout, Date gmtCreate, Date gmtModified) {
+        this.modelId = modelId;
+        this.modelName = modelName;
+        this.modelUrl = modelUrl;
+        this.modelFnName = modelFnName;
+        this.subjectId = subjectId;
+        this.dataLayout = dataLayout;
+        this.gmtCreate = gmtCreate;
+        this.gmtModified = gmtModified;
+        this.page = page;
+        this.limit = limit;
+    }
+
+    public Model(Integer modelId, String modelName, String modelUrl, String modelFnName, Integer subjectId, String dataLayout, Date gmtCreate, Date gmtModified) {
+        this.modelId = modelId;
+        this.modelName = modelName;
+        this.modelUrl = modelUrl;
+        this.modelFnName = modelFnName;
+        this.subjectId = subjectId;
+        this.dataLayout = JSONArray.parseArray(dataLayout);
+        this.gmtCreate = gmtCreate;
+        this.gmtModified = gmtModified;
+        this.page = page;
+        this.limit = limit;
+    }
+
+    public void setDataLayout(JSONArray dataLayout) {
+        this.dataLayout = dataLayout;
     }
 
     public Date getGmtCreate() {

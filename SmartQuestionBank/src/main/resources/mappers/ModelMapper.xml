@@ -6,11 +6,14 @@
 <mapper namespace="com.enablue.mapper.ModelMapper">
     <select id="getModelList" parameterType="Model" resultType="com.enablue.pojo.Model">
         select
-        model_id,model_name,model_url,model_fn_name,subject_id,gmt_create,gmt_modified
+        model_id,model_name,model_url,model_fn_name,subject_id,data_layout,gmt_create,gmt_modified
         from model
         where 1=1
         <if test="subjectId != null">
             and subject_id = #{subjectId}
+        </if>
+        <if test="modelId != null">
+            and model_id = #{modelId}
         </if>
         <if test="page != null and limit!=null">
             and limit #{page},#{limit}
