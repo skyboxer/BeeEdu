@@ -15,4 +15,10 @@ public class IfOs {
         return officialPath;
     }
 
+    public static String ifOsResourceValue(String exploitKey,String serverKey,String resourcePath){
+        String exploitValue = ReadResourceFiles.ReadResourceFiles(resourcePath,exploitKey);
+        String serverValue = ReadResourceFiles.ReadResourceFiles(resourcePath,exploitKey);
+        return ifOsPath(exploitValue,serverValue);
+    }
+
 }

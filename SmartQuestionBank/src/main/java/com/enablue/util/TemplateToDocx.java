@@ -42,9 +42,7 @@ public class TemplateToDocx {
                 System.out.println(question.getString("name")+"  <><> "+question.getString("value"));
                 range.replaceText(question.getString("name"),question.getString("value"));
             }
-            String serverDownloadPath = ReadResourceFiles.ReadResourceFiles("config/global","server.download.path");
-            String exploitDownloadPath = ReadResourceFiles.ReadResourceFiles("config/global","exploit.download.path");
-            String osPath = IfOs.ifOsPath(exploitDownloadPath,serverDownloadPath);
+            String osPath = IfOs.ifOsResourceValue("exploit.download.path","server.download.path","config/global");
             String newDocPath = osPath+newFileName+".docx";
             File newDocFile = new File(newDocPath);
             if(!newDocFile.isFile() && !newDocFile.exists()){
