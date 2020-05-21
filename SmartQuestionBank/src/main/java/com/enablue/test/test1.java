@@ -7,7 +7,7 @@ import java.io.IOException;
 public class test1 {
     public static void main(String[] args) throws IOException {
         SpireUtil spireUtil = new SpireUtil();
-        String s = spireUtil.readDoc("C:\\Users\\Administrator\\Desktop\\高二数学.doc", "C:\\Users\\Administrator\\Desktop\\images");
+        String s = spireUtil.readDoc("C:\\Users\\Administrator\\Desktop\\高二数学.doc");
 //        HashMap<String, Object> map = spireUtil.plateFormat(s);
 //        Set<Map.Entry<String, Object>> entries = map.entrySet();
 //        for (Map.Entry<String,Object> entry: map.entrySet()){

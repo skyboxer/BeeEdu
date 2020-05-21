@@ -105,12 +105,11 @@ public class SpireUtil {
     /**
      *
      * @param file 读取的word路径
-     * @param storageDirectory 图片保存路径
      * @return
      * @throws IOException
      */
     //读取doc
-    public String readDoc(String file,String storageDirectory) throws IOException {
+    public String readDoc(String file) throws IOException {
         //初始化一个Document实例并加载Word文档
         Document doc = new Document();
         doc.loadFromFile(file);
@@ -161,13 +160,14 @@ public class SpireUtil {
                     if (next2.getDocumentObjectType() == DocumentObjectType.Picture){
                         if (flag&&flag1){
                             DocPicture picture= (DocPicture) next2;
+                            String storageDirectory=IfOs.ifOsResourceValue("exploit.download.path","server.download.path","config/global");
                             //设置图片路径和格式
                             String imageName=System.currentTimeMillis()+".jpg";
-                            ImageIO.write(picture.getImage(),"JPG",new File(storageDirectory+File.separator+imageName));
+                            String filePath=storageDirectory+File.separator+imageName;
+                            ImageIO.write(picture.getImage(),"JPG",new File(filePath));
                             //获取图片识别后字符串
-                            String recognition = recognition(imageName);
+                            String recognition = recognition(filePath);
                             temp.append(recognition);
-
                         }
                         flag1=false;
                     }
@@ -185,13 +185,11 @@ public class SpireUtil {
 
     /**
      * 识别公式
-     * @param fileName
+     * @param filePath
      * @return
      */
-    public String  recognition(String fileName){
+    public String  recognition(String filePath){
         try{
-            // 本地文件路径
-            String filePath = IfOs.ifOsPath("C:\\Users\\Administrator\\Desktop\\images\\"+fileName,"/home/data/ROOT1/image/"+fileName) ;
             byte[] imgData = FileUtil.readFileByBytes(filePath);
             String imgStr = Base64Util.encode(imgData);
             String imgParam = URLEncoder.encode(imgStr, "UTF-8");

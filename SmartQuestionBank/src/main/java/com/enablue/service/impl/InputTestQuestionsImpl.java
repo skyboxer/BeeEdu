@@ -354,7 +354,7 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
                 //准备读取文档内容
                 SpireUtil spireUtil = new SpireUtil();
                 //读取文本内容
-                String word = spireUtil.readDoc(realPath + File.separator + file.getOriginalFilename(),"C:\\Users\\Administrator\\Desktop\\images\\");
+                String word = spireUtil.readDoc(realPath + File.separator + file.getOriginalFilename());
                 System.out.println("word = " + word);
                 //分离内容
                 HashMap<String, Object> map = spireUtil.plateFormat(word);
