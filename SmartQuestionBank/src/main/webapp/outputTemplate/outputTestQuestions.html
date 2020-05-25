@@ -121,7 +121,7 @@
             layer.open({
                 type: 2,
                 area: ['600px', '500px'],
-                content: 'https://www.enablue.com/ROOT1/download/'+dataArray[0]
+                content: '../download/'+dataArray[0]
             });
         })
 
@@ -150,13 +150,13 @@
                         layer.open({
                             type: 2,
                             //content: 'https://view.xdocin.com/xdoc?_xdoc=https://www.enablue.com/ROOT1/download/'+data.newFileName+'.doc', //这里content是一个普通的String
-                            content: 'https://www.enablue.com/ROOT1/download/'+data.newFileName+'.html', //这里content是一个普通的String
+                            content: '../download/'+data.newFileName+'.html', //这里content是一个普通的String
                             area: ['650px', '700px'],
                         })
                     break;
                 case 'download':
                         //window.open(encodeURI("../downLoadServlet?filename="+data.newFileName+".doc"));
-                    window.open(encodeURI("/ROOT1/download/"+data.newFileName+".doc"));
+                    window.open(encodeURI("../download/"+data.newFileName+".doc"));
                     break;
                 default:
                     break;
@@ -171,7 +171,7 @@
             $.post(url,{"parameterJS":JSON.stringify(data.field)} ,function (e) {
                 layer.msg(e.msg)
                 if (e.code==0){
-                    $("#ifreamHtml").attr("src","https://www.enablue.com/ROOT1/download/"+e.newFileName+".html");
+                    $("#ifreamHtml").attr("src","../download/"+e.newFileName+".html");
                     element.render();
                     layer.confirm('试卷已生成完毕！', {
                         btn: ['预览', '下载', '保存'] //可以无限个按钮
@@ -191,7 +191,7 @@
                             area: ['340px', '215px'],
                             time: 3000, //2秒后自动关闭
                             anim: 2,
-                            content: ['https://www.enablue.com/ROOT1/download/'+e.newFileName+'.html', 'no'], //iframe的url，no代表不显示滚动条
+                            content: ['../download/'+e.newFileName+'.html', 'no'], //iframe的url，no代表不显示滚动条
                             end: function(){ //此处用于演示
                                 layer.open({
                                     type: 2,
@@ -200,7 +200,7 @@
                                     shade: false,
                                     maxmin: true, //开启最大化最小化按钮
                                     area: ['600px', '500px'],
-                                    content: 'https://www.enablue.com/ROOT1/download/'+e.newFileName+'.html',
+                                    content: '../download/'+e.newFileName+'.html',
                                     btn:['保存','下载','放弃'],
                                     yes:function (index,layero) {
                                         $.post("../createQuestionsController/saveQuestions",{"fileName":data.field.title,"newFileName":e.newFileName} ,function (e2) {
@@ -209,7 +209,7 @@
                                     },
                                     btn2:function (index,layero) {
                                         layer.msg("下载")
-                                        window.open(encodeURI("/ROOT1/download/"+e.newFileName+".doc"));
+                                        window.open(encodeURI("../download/"+e.newFileName+".doc"));
                                     },
                                     btn3:function (index,layero) {
                                         layer.msg("放弃")
@@ -221,7 +221,7 @@
                     }, function(index){
                         //下载
                         layer.msg("下载")
-                        window.open(encodeURI("/ROOT1/download/"+e.newFileName+".doc"));
+                        window.open(encodeURI("../download/"+e.newFileName+".doc"));
                         return false;
                     });
                 }

@@ -7,14 +7,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link rel="stylesheet" href="/ROOT1/layuiv256/css/layui.css" media="all">
+    <link rel="stylesheet" href="../layuiv256/css/layui.css" media="all">
 </head>
 <body>
 <blockquote class="layui-elem-quote">
     权限操作
 </blockquote>
 <div id="treeJSON"></div>
-<script src="/ROOT1/layuiv256/layui.js"></script>
+<script src="../layuiv256/layui.js"></script>
 <script>
     //JavaScript代码区域
     layui.use(['layer', 'jquery', 'form', 'table', 'transfer', 'tree'], function () {
@@ -25,7 +25,7 @@
             form = layui.form,
             transfer = layui.transfer;
         let getTree = function(){
-            $.get("/ROOT1/menuController/getMenuTree", function (e) {
+            $.get("../menuController/getMenuTree", function (e) {
                 layer.msg(e.msg)
                 if (e.code == 0) {
                     treeList(e.data)
@@ -65,7 +65,7 @@
                         param = data
                     }
                     $.ajax({
-                        url: "/ROOT1/menuController/menuTreeSys",
+                        url: "../menuController/menuTreeSys",
                         type: "POST",
                         contentType : 'application/json;charset=utf-8', //设置请求头信息
                         dataType:"json",
