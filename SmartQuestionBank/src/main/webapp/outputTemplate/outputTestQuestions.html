@@ -168,7 +168,7 @@
             var modelData = data.field.modelFnName;
             var modelDataArray = modelData.split(",");
             var url = "../createQuestionsController/"+modelDataArray[1];
-            $.post(url,data.field ,function (e) {
+            $.post(url,{"parameterJS":JSON.stringify(data.field)} ,function (e) {
                 layer.msg(e.msg)
                 if (e.code==0){
                     $("#ifreamHtml").attr("src","https://www.enablue.com/ROOT1/download/"+e.newFileName+".html");

@@ -1,31 +1,24 @@
 package com.enablue.controller;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.enablue.common.BaseController;
 import com.enablue.common.CommonReturnValue;
-import com.enablue.common.RecursiveEquation;
+import com.enablue.dto.DataLayout;
 import com.enablue.pojo.Model;
 import com.enablue.pojo.TemplatePool;
 import com.enablue.pojo.TypePool;
 import com.enablue.pojo.User;
 import com.enablue.service.CreateTestQuestionsService;
 import com.enablue.service.TypePoolService;
-import com.enablue.util.Algorithm;
-import com.enablue.util.IfOs;
-import com.enablue.util.RandomNumFactory;
-import com.enablue.util.WordToHtml;
+import com.enablue.util.*;
+import com.enablue.util.suanfa.RecursionEquation;
+import com.enablue.util.suanfa.VerticalCalculation;
 import com.spire.doc.Section;
-import org.apache.poi.hwpf.HWPFDocument;
-import org.apache.poi.hwpf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -54,79 +47,64 @@ public class CreateQuestionsController {
     @Autowired
     private TypePoolService typePoolService;
 
+    /**
+     * 模板
+     * @param parameterJS 参数jsonString字符串
+     * @param request
+     * @return
+     */
     @RequestMapping("model1")
-    public JSONObject createQuestions(String title, String name, HttpServletRequest request){
+    public JSONObject createQuestions(String parameterJS, HttpServletRequest request){
         JSONObject resultObject = new JSONObject();
         User user = baseController.getSessionUser();
         String newFileName = RandomNumFactory.RandomTextFactory()+user.getUserTel();
-        String [] nameArray1 = new String[]{"${oneone}","${onetwo}",
-                "${onethree}","${onefour}"};
-        String [] nameArray2 = new String[]{"${twoone}","${twotwo}",
-                "${twothree}","${twofour}","${twofive}","${twosix}"};
-        String [] nameArray3 = new String[]{"${threeone}","${threetwo}","${threethree}"};
-
-        String [] nameArray4 = new String[]{"${fourone}","${fourtwo}","${fourthree}","${fourfour}","${fourfive}"};
-        List<JSONObject> questionList = new ArrayList<>();
-        JSONObject titleObject = new JSONObject();
-        titleObject.put("name","${title}");
-        titleObject.put("value",title);
-        questionList.add(titleObject);
-        //创建竖式运算对象
-        RecursiveEquation recursiveEquation = new RecursiveEquation();
-        //生成竖式运算
-        questionList.addAll(recursiveEquation.generativeExpression(nameArray1));
-
-        //递等式计算
-        Algorithm algorithm = new Algorithm();
-        questionList.addAll(algorithm.recursiveComputation(nameArray2));
-
-        //填空题
-        List<TemplatePool> templatePoolList = new ArrayList<>();
-        templatePoolList.add(new TemplatePool(12));
-        templatePoolList.add(new TemplatePool(13));
-        templatePoolList.add(new TemplatePool(14));
-        questionList.addAll(createTestQuestionsService.templatePoolFactoryTwo(templatePoolList,nameArray3));
-
-        //应用题
-        TemplatePool templatePool = new TemplatePool();
-        templatePool.setSubjectId(1);
-        templatePool.setTypeId(5);
-        questionList.addAll(createTestQuestionsService.templatePoolFactoryFour(templatePool,nameArray4));
-
-
-        String templatePath = "/TemplateDoc/title.doc";
-        OutputStream outputStream;
-        HWPFDocument doc;
-        try {
-            ServletContext servletContext = request.getSession().getServletContext();
-            System.out.println(servletContext.getRealPath(templatePath));
-            InputStream is = new FileInputStream(servletContext.getRealPath(templatePath));
-            doc= new HWPFDocument(is);
-            Range range = doc.getRange();
-            for(JSONObject question : questionList){
-                System.out.println(question.getString("name")+"  <><> "+question.getString("value"));
-                range.replaceText(question.getString("name"),question.getString("value"));
+        JSONObject parameterJO = JSONObject.parseObject(parameterJS);
+        String modelName = parameterJO.getString("modelFnName").split(",")[1];
+        String titleValue = parameterJO.getString("title");
+        String modelStr = ReadResourceFiles.ReadResourceFiles("config/models",modelName);
+        List<DataLayout> dataLayoutList = JSONObject.parseArray(modelStr,DataLayout.class);
+        String key;
+        VerticalCalculation verticalCalculation = new VerticalCalculation();
+        RecursionEquation recursionEquation = new RecursionEquation();
+        for(DataLayout dataLayout : dataLayoutList){
+            key = dataLayout.getKey();
+            if(key.isEmpty()){
+                continue;
             }
-            String osPath = IfOs.ifOsPath("E:\\","/home/data/ROOT1/download/");
-            String newDocPath = osPath+newFileName+".doc";
-            File newDocFile = new File(newDocPath);
-            if(!newDocFile.isFile() && !newDocFile.exists()){
-                newDocFile.createNewFile();
-                System.out.println("创建文件"+newDocFile.getAbsolutePath());
+            switch (key){
+                case "${one}":
+                    //生成竖式运算
+                    verticalCalculation.generativeExpression(dataLayout.getChild());
+                    break;
+                case "${two}":
+                    recursionEquation.recursiveComputation(dataLayout.getChild());
+                    break;
+                case "${three}":
+                    //填空题
+                    List<TemplatePool> templatePoolList = new ArrayList<>();
+                    templatePoolList.add(new TemplatePool(12));
+                    templatePoolList.add(new TemplatePool(13));
+                    templatePoolList.add(new TemplatePool(14));
+                    createTestQuestionsService.templatePoolFactoryTwo(templatePoolList,dataLayout.getChild());
+                    break;
+                case "${four}":
+                    //应用题
+                    TemplatePool templatePool = new TemplatePool();
+                    templatePool.setSubjectId(1);
+                    templatePool.setTypeId(5);
+                    createTestQuestionsService.templatePoolFactoryFour(templatePool,dataLayout.getChild());
+                    break;
+                default:
+                    //试卷标题
+                    dataLayout.setValue(titleValue);
             }
-            outputStream = new FileOutputStream(newDocPath);
-            doc.write(outputStream);
-            String htmlPath = WordToHtml.Word2003ToHtml(osPath,newFileName,".doc",osPath);
-            System.out.println(htmlPath);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return commonReturnValue.CommonReturnValue(-1,"创建失败");
-       } catch (TransformerException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
+
         }
-        return commonReturnValue.CommonReturnValue("创建成功",0,newFileName,questionList);
+        String newTemplatePath = TemplateToDocx.modelToDocx(dataLayoutList,modelName,newFileName,request);
+        if(newTemplatePath==null || newTemplatePath.isEmpty()){
+            return commonReturnValue.CommonReturnValue(-1,"失败");
+        }
+        return commonReturnValue.CommonReturnValue(0,"成功",newFileName,dataLayoutList);
     }
 
     /**
@@ -223,7 +201,6 @@ public class CreateQuestionsController {
             }
             para = section.addParagraph();
             para.appendText(index+". "+templatePool.getTemplateContent());
-            //para.appendHTML("<math xmlns=\"http://www.w3.org/1998/Math/MathML\"><mi>x</mi><mo>=</mo><mfrac><mrow><mo>-</mo><mi>b</mi><mo>&#xB1;</mo><msqrt><msup><mi>b</mi><mn>2</mn></msup><mo>-</mo><mn>4</mn><mi>a</mi><mi>c</mi></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math>");
             System.out.println("题目类型："+templatePool.getTypeId());
             switch (templatePool.getTypeId()){
                 case 5:

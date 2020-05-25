@@ -1,6 +1,8 @@
-package com.enablue.util;
+package com.enablue.util.suanfa;
 
 import com.alibaba.fastjson.JSONObject;
+import com.enablue.dto.DataLayout;
+import com.enablue.util.RandomNumFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,76 +12,7 @@ import java.util.List;
  * @author cnxjk
  * 算法库
  */
-public class Algorithm {
-
-    /*public static void main(String[] args) {
-        int remainder1 =0;
-        int remainder2 =0;
-        int remainder3 = 0;
-        int variable1 = 0;//五位数
-        int variable2 =0;//三位数
-        int variable3 =0;//两位数
-        int variable4 = 0;//一位数
-        int variable5 = 0;
-        int variable6 = 0;
-        String value =null;
-        int answer = 0;
-        *//*do {
-            variable2=RandomNumFactory.RandomNumFactory(new int[]{100,1000});
-            variable3=RandomNumFactory.RandomNumFactory(new int[]{10,100});
-            variable1 = variable2*variable3;
-        }while (variable1<10000);
-        do {
-            variable4 = RandomNumFactory.RandomNumFactory(new int[]{1,10});
-            remainder1 = variable3%variable4;
-        }while (remainder1!=0);
-        int answer =variable1/variable2/variable4;
-        String value = variable1+" ÷ "+variable2+" ÷ "+variable4;*//*
-
-        *//*do {
-            variable2= RandomNumFactory.RandomNumFactory(new int[]{100,1000});
-            variable4 = RandomNumFactory.RandomNumFactory(new int[]{1,10});
-            remainder1 = variable2%variable4;
-        }while (remainder1!=0);
-        do {
-            variable5= RandomNumFactory.RandomNumFactory(new int[]{100,1000});
-            remainder2=variable5%(variable2/variable4);
-        }while (remainder2!=0);
-        value = variable5+" ÷ ("+variable2+" ÷ "+variable4+")";
-        answer = variable5/(variable2/variable4);
-        System.out.println(value+"="+answer);*//*
-
-        *//*do {
-            variable1= RandomNumFactory.RandomNumFactory(new int[]{10000,100000});
-            variable3 = RandomNumFactory.RandomNumFactory(new int[]{10,100});
-            remainder1 = variable1%variable3;
-        }while (remainder1!=0);
-        do {
-            variable6= RandomNumFactory.RandomNumFactory(new int[]{10,100});
-            remainder2=(variable1/variable3)%variable6;
-        }while (remainder2!=0);
-        do {
-            variable4= RandomNumFactory.RandomNumFactory(new int[]{1,10});
-            remainder3=(variable1/variable3/variable6)%variable4;
-        }while (remainder3!=0);
-        value = variable1+" ÷ "+variable3+" ÷ "+variable6+" ÷ " +variable4;
-        answer = variable1/variable3/variable6/variable4;
-        System.out.println(value+"="+answer);*//*
-
-        do {
-            variable1= RandomNumFactory.RandomNumFactory(new int[]{10000,100000});
-            variable2 = RandomNumFactory.RandomNumFactory(new int[]{100,1000});
-            remainder1 = variable1%variable2;
-        }while (remainder1!=0);
-        do {
-            variable3= RandomNumFactory.RandomNumFactory(new int[]{10,100});
-            variable4= RandomNumFactory.RandomNumFactory(new int[]{1,10});
-            remainder2=(variable1/variable2)%(variable3/variable4);
-        }while (remainder2!=0);
-        value = variable1+" ÷ "+variable2+" ÷ ("+variable3+" ÷ " +variable4+")";
-        answer = variable1/variable2/(variable3/variable4);
-        System.out.println(value+"="+answer);
-    }*/
+public class RecursionEquation {
 
     /**
      * 递等计算(连加、连减、连乘、连除、混合算式)
@@ -120,6 +53,47 @@ public class Algorithm {
 
         }
         return jsonObjects;
+    }
+
+    /**
+     * 递等计算(连加、连减、连乘、连除、混合算式)
+     * @param childArray 题数
+     * @param
+     * @return
+     */
+    public  List<DataLayout>  recursiveComputation(List<DataLayout> childArray){
+
+        //定义题型 连加、连减、连乘、连除、混合算式
+        JSONObject jsonObject = null;
+        for(DataLayout dataLayout : childArray){
+            int addSize = RandomNumFactory.RandomNumFactory(new int[]{0,5});
+            System.out.println("循环"+addSize);
+            switch (addSize){
+                case 0:
+                    System.out.println("循环hybridAlgorithm");
+                    jsonObject = hybridAlgorithm(dataLayout.getKey());
+                    break;
+                case 1:
+                    System.out.println("循环seriesAddition");
+                    jsonObject = seriesAddition(dataLayout.getKey());
+                    break;
+                case 2:
+                    System.out.println("循环seriesSubtraction");
+                    jsonObject = seriesSubtraction(dataLayout.getKey());
+                    break;
+                case 3:
+                    System.out.println("循环seriesMultiplicationm");
+                    jsonObject = seriesMultiplication(dataLayout.getKey());
+                    break;
+                default:
+                    System.out.println("循环seriesDivision");
+                    jsonObject = seriesDivision(dataLayout.getKey());
+                    break;
+            }
+            dataLayout.setValue(jsonObject.getString("value"));
+
+        }
+        return childArray;
     }
 
     /**
