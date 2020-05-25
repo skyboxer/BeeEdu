@@ -167,7 +167,6 @@
                         {"fileName": res.newFileName, "imgSource": sourceWhere.imgSource},
                         function (e) {
                             if (e.code == 0) {
-                                layer.close(indexLoad);
                                 let dataList = e.data;
                                 for (let index in dataList) {
                                     moreImgText.push(dataList[index])
@@ -195,7 +194,13 @@
                                     , data: moreImgText
                                     , id: "imgTable"
                                 });
+                            }else{
+                                layer.open({
+                                    title: '错误'
+                                    ,content: e.msg
+                                });
                             }
+                            layer.close(indexLoad);
                         })
                     return delete this.files[index]; //删除文件队列已经上传成功的文件
                 }

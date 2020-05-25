@@ -53,7 +53,7 @@ public class RequestFilter implements Filter {
         HttpSession session = request.getSession();
         Object object = session.getAttribute("ACCOUNT");
         if(object == null){
-            request.getRequestDispatcher("/user/login.html").forward(request,response);
+            request.getRequestDispatcher("/login.html").forward(request,response);
             return;
         }
         filterChain. doFilter(request, response);

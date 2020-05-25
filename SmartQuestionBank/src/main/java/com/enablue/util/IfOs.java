@@ -17,7 +17,7 @@ public class IfOs {
 
     public static String ifOsResourceValue(String exploitKey,String serverKey,String resourcePath){
         String exploitValue = ReadResourceFiles.ReadResourceFiles(resourcePath,exploitKey);
-        String serverValue = ReadResourceFiles.ReadResourceFiles(resourcePath,exploitKey);
+        String serverValue = ReadResourceFiles.ReadResourceFiles(resourcePath,serverKey);
         return ifOsPath(exploitValue,serverValue);
     }
 

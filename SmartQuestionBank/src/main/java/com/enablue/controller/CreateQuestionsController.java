@@ -222,7 +222,8 @@ public class CreateQuestionsController {
         style2.getCharacterFormat().setFontSize(10.5f);
         document.getStyles().add(style2);
         para.applyStyle("paraStyle");
-        String osPath = IfOs.ifOsPath("E:\\","/home/data/ROOT1/download/");
+        //String osPath = IfOs.ifOsPath("E:\\","/home/data/ROOT1/download/");
+        String osPath = IfOs.ifOsResourceValue("exploit.download.path","server.download.path","config/global");
         //保存文档
         document.saveToFile(osPath+newFileName+".docx", FileFormat.Docx);
         String htmlPath = null;

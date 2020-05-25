@@ -31,7 +31,8 @@ public class UploadFileController{
 
     @RequestMapping("uploadFileImg")
     public JSONObject uploadFileImg(MultipartFile file,HttpServletRequest request) {
-        String path = IfOs.ifOsPath("E:\\image","/home/data/ROOT1/image") ;
+        //String path = IfOs.ifOsPath("E:\\image","/home/data/ROOT1/image") ;
+        String path = IfOs.ifOsResourceValue("exploit.download.img.path","server.download.img.path","config/global");
         int code = -1;
         String msg = "上传出错";
         if(file.isEmpty()){
