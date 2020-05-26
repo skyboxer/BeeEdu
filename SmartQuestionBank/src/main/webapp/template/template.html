@@ -10,6 +10,9 @@
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
 </head>
 <body>
+    <!--渲染内容-->
+    <div id="templateHtml"></div>
+    <div id="demo7"></div>
 
 <table class="layui-hide" id="test" lay-filter="operatorList"></table>
 
@@ -27,7 +30,6 @@
     </div>
 </script>
 <script type="text/html">
-
 </script>
 <!--这里是右侧表格数据操作-->
 <script type="text/html" id="barDemo">
@@ -44,32 +46,137 @@
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 
 <script>
-    layui.use(['form','table', 'layer', 'jquery'], function () {
+    layui.use(['form','laypage','table', 'layer', 'jquery'], function () {
         var table = layui.table,
             layer = layui.layer,
             $ = layui.jquery,
             form = layui.form;
-        //主动渲染
-        table.render({
-            elem: '#test'
-            , url: '../queryPageTemplatePool'
-            , toolbar: '#toolbar' //开启头部工具栏，并为其绑定左侧模板
-            , title: '模板表'
-            , cols: [[
-                {type: 'checkbox', fixed: 'left'}
-                , {field: 'templateId', title: '模板ID', width: 90, fixed: 'left',align: 'center' , unresize: true, sort: true}
-                , {field: 'templateContent', title: '模板内容', width: 640, fixed: 'left',align: 'center' , unresize: true,}
-                , {field: 'subject', title: '科目', width: 120,align: 'center' , edit: 'text'}
-                , {field: 'type', title: '类型', width: 120,align: 'center' , edit: 'text'}
-                , {field: 'difficultyGrade', title: '难度等级', width: 100,align: 'center' , edit: 'text'}
-                , {field: 'answer', title: '答案', width: 160,align: 'center' , edit: 'text'}
-                , {field: 'templateNum', title: '题目数量', width: 100,align: 'center' , edit: 'text'}
-                // , {field: 'joinTime', title: '创建时间', width: 120, edit: 'text', sort: true}
-                // , {field: 'joinTime', title: '修改时间', width: 120, edit: 'text', sort: true}
-                , {fixed: 'right', title: '操作', toolbar: '#barDemo',align: 'center' , width: 130}
-            ]]
-            , page: true
+        var laypage = layui.laypage;
+        var tempData;
+        // //主动渲染
+        // table.render({
+        //     elem: '#test'
+        //     , url: '../queryPageTemplatePool'
+        //     , toolbar: '#toolbar' //开启头部工具栏，并为其绑定左侧模板
+        //     , title: '模板表'
+        //     , cols: [[
+        //         {type: 'checkbox', fixed: 'left'}
+        //         , {field: 'templateId', title: '模板ID', width: 90, fixed: 'left',align: 'center' , unresize: true, sort: true}
+        //         , {field: 'templateContent', title: '模板内容', width: 640, fixed: 'left',align: 'center' , unresize: true,}
+        //         , {field: 'subject', title: '科目', width: 120,align: 'center' , edit: 'text'}
+        //         , {field: 'type', title: '类型', width: 120,align: 'center' , edit: 'text'}
+        //         , {field: 'difficultyGrade', title: '难度等级', width: 100,align: 'center' , edit: 'text'}
+        //         , {field: 'answer', title: '答案', width: 160,align: 'center' , edit: 'text'}
+        //         , {field: 'templateNum', title: '题目数量', width: 100,align: 'center' , edit: 'text'}
+        //         // , {field: 'joinTime', title: '创建时间', width: 120, edit: 'text', sort: true}
+        //         // , {field: 'joinTime', title: '修改时间', width: 120, edit: 'text', sort: true}
+        //         , {fixed: 'right', title: '操作', toolbar: '#barDemo',align: 'center' , width: 130}
+        //     ]]
+        //     , page: true
+        // });
+        //分页查询
+        $.get("../queryPageTemplatePool",function (result){
+              let html="";
+              let data=result.data;
+              tempData=data;
+              for (let i=0;i<data.length;i++){
+                  html+='  <fieldset class="layui-elem-field site-demo-button" style="margin-top: 30px;">\n' +
+                      '<legend>试题'+(i+1)+'</legend>'+
+                      '            <div class="layui-field-box">\n' +
+                      '                '+data[i].templateContent+'\n' +
+                      '                <br>\n' +
+                      '                <br>\n' +
+                      '                <br>\n' +
+                      '            </div>\n' +
+                        '<hr class="layui-bg-gray">'+
+                      '            <div class="layui-row">\n' +
+                      '                <div class="layui-col-xs10">\n' +
+                      '                    <span style="margin-right:24px;">科目：'+data[i].subject+'</span>\n' +
+                      '                    <span style="margin-right:24px;">题型：'+data[i].type+'</span>\n' +
+                      '                    <span style="margin-right:24px;">难度：'+data[i].difficultyGrade+'</span>\n' +
+                      '                </div>\n' +
+                      '                <div class="layui-col-xs2" align="right">\n' +
+                      '                    <button name="edit" index="'+i+'"  type="button" class="layui-btn layui-btn-xs edit">编辑</button>\n' +
+                      '                    <button name="del"  index="'+i+'" type="button" class="layui-btn layui-btn-danger layui-btn-xs del">删除</button>\n' +
+                      '                </div>\n' +
+                      '            </div>\n' +
+                      '    </fieldset>'
+              }
+              $("#templateHtml").html(html);
+            
+            //分页完整功能
+            laypage.render({
+                elem: 'demo7'
+                ,count: result.count
+                ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+                ,jump: function(obj){
+                    let curr = obj.curr;
+                    let limit=obj.limit;
+                    //分页查询
+                    $.get("../queryPageTemplatePool?page="+curr+"&limit="+limit,function (result){
+                        let html="";
+                        let data=result.data;
+                        tempData=data;
+                        for (let i=0;i<data.length;i++){
+                            html+='  <fieldset class="layui-elem-field site-demo-button" style="margin-top: 30px;">\n' +
+                                '<legend>试题'+(i+1)+'</legend>'+
+                                '            <div class="layui-field-box">\n' +
+                                '                '+data[i].templateContent+'\n' +
+                                '                <br>\n' +
+                                '                <br>\n' +
+                                '                <br>\n' +
+                                '            </div>\n' +
+                                '<hr class="layui-bg-gray">'+
+                                '            <div class="layui-row">\n' +
+                                '                <div class="layui-col-xs10">\n' +
+                                '                    <span style="margin-right:24px;">科目：'+data[i].subject+'</span>\n' +
+                                '                    <span style="margin-right:24px;">题型：'+data[i].type+'</span>\n' +
+                                '                    <span style="margin-right:24px;">难度：'+data[i].difficultyGrade+'</span>\n' +
+                                '                </div>\n' +
+                                '                <div class="layui-col-xs2" align="right">\n' +
+                                '                    <button name="edit" index="'+i+'"  type="button" class="layui-btn layui-btn-xs edit">编辑</button>\n' +
+                                '                    <button name="del"  index="'+i+'" type="button" class="layui-btn layui-btn-danger layui-btn-xs del">删除</button>\n' +
+                                '                </div>\n' +
+                                '            </div>\n' +
+                                '    </fieldset>'
+                        }
+                        $("#templateHtml").html(html);
+                    }, "json")
+                }
+            });
+        }, "json")
+
+        //监听编辑事件
+        $(document).on('click','button.edit',function(){
+            let editIndex=this.getAttribute("index");
+            layer.open({
+                type: 2,
+                shade: [0.8, '#393D49'],
+                area: ['700px', '600px'],
+                content: 'template_update_from.html?templateId='+tempData[editIndex].templateId +'&difficultyGrade='+tempData[editIndex].difficultyGrade+'&answer='+tempData[editIndex].answer+"&subjectId="+tempData[editIndex].subjectId+"&typeId="+tempData[editIndex].typeId,
+                success: function (layero, index) {
+                    //找到它的子窗口的body
+                    var body = layer.getChildFrame('body', index);  //巧妙的地方在这里哦
+                    //为子窗口元素赋值
+                    body.contents().find("#templateContent").val(tempData[editIndex].templateContent);
+                }
+            });
         });
+        //监听删除事件
+        $(document).on('click','button.del',function(){
+            let delIndex=this.getAttribute("index");
+            layer.confirm('真的删除么', function (index) {
+                //发送异步请求
+                $.post("../deleteTemplatePool",{"id":tempData[delIndex].templateId},function (result) {
+                    if (result != null){
+                        layer.msg(result.msg);
+                        window.location.reload();
+                    }
+                },"json");
+                layer.close(index);
+            });
+        });
+
 
         //头工具栏事件
         table.on('toolbar(operatorList)', function (obj) {

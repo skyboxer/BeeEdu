@@ -90,9 +90,10 @@
         $=layui.jquery;
         //获取url中参数
         let templateId = getQueryString("templateId");
-        let templateContent = getQueryString("templateContent");
         var difficultyGrade = getQueryString("difficultyGrade");
         let answer = getQueryString("answer");
+        var subjectId=getQueryString("subjectId");
+        var typeId=getQueryString("typeId");
         //设置默认参数
         $("#templateContent").val(templateContent)
         if (answer!="undefined"){
@@ -106,7 +107,29 @@
                 let Subjects = result.data;
                 let subjectHtml='<option value="" selected>请选择科目</option>\n';
                 for (let i=0;i<Subjects.length;i++){
+                    if (Subjects[i].subjectId==subjectId){
+                        subjectHtml+='<option value="'+Subjects[i].subjectId+'"selected>'+Subjects[i].subjectName+'</option>\n'
+                        //发送请求查询题目类型表
+                        $.get("../queryTypePoolBySubject",{"subId":subjectId},function (result) {
+                            if (result.code===0){
+                                var plates = result.data;
+                                let plateHtml="<option value=\"\">请选择板块</option>\n"
+                                for (let i=0;i<plates.length;i++){
+                                    if (plates[i].plateId==typeId){
+                                        plateHtml+='<option value="'+plates[i].plateId+'"selected>'+plates[i].plateName+'</option>\n';
+                                        continue;
+                                    }
+                                    plateHtml+='<option value="'+plates[i].plateId+'">'+plates[i].plateName+'</option>\n'
+                                }
+                                $("#typeList").html(plateHtml)
+                                form.render();
+                            }
+
+                        },"json")
+                        continue;
+                    }
                     subjectHtml+='<option value="'+Subjects[i].subjectId+'">'+Subjects[i].subjectName+'</option>\n'
+
                 }
                 $("#subjectlist").html(subjectHtml);
                 //重新加载当前页面
@@ -132,6 +155,10 @@
                         var plates = result.data;
                         let plateHtml="<option value=\"\">请选择板块</option>\n"
                         for (let i=0;i<plates.length;i++){
+                            if (plates[i].plateId==typeId){
+                                plateHtml+='<option value="'+plates[i].plateId+'"selected>'+plates[i].plateName+'</option>\n';
+                                continue;
+                            }
                             plateHtml+='<option value="'+plates[i].plateId+'">'+plates[i].plateName+'</option>\n'
                         }
                         $("#typeList").html(plateHtml)

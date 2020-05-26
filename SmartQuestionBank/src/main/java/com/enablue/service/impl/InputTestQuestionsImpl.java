@@ -248,11 +248,13 @@ public class InputTestQuestionsImpl implements ImpotTestQuestionsService {
             SubjectPool subjectPool = subjectPoolMapper.querySubjectById(templatePool.getSubjectId());
             //设置科目名
             templateDTO.setSubject(subjectPool.getSubjectName());
+            templateDTO.setSubjectId(templatePool.getSubjectId());
             //根据模板数据查询到对应的类型数据
             TypePool typePool = typePoolMapper.queryTypeById(templatePool.getTypeId());
             if (typePool!=null){
                 //设置类型名
                 templateDTO.setType(typePool.getPlateName());
+                templateDTO.setTypeId(templatePool.getTypeId());
             }
 
             //根据答案id查询到对应答案
