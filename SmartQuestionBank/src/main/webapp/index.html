@@ -22,7 +22,7 @@
                     游客
                 </a>
             </li>
-            <li class="layui-nav-item"><a href="/ROOT1/userController/quitLogin">退了</a></li>
+            <li class="layui-nav-item"><a href="userController/quitLogin">退了</a></li>
         </ul>
     </div>
 
@@ -83,7 +83,7 @@
                 }
                 $("#menuTree").append(lis);
             }else {
-                window.location.href = "/ROOT1/userController/quitLogin";
+                window.location.href = "userController/quitLogin";
             }
             element.render();
         })
@@ -93,7 +93,7 @@
         var storage = window.sessionStorage;
         $("#userName").html('<img src="layuiv256/img/cweg.jpg" class="layui-nav-img">'+storage.getItem("userName"));
         if(storage.getItem("userName")==null){
-            window.location.href = "/ROOT1/userController/quitLogin";
+            window.location.href = "userController/quitLogin";
         }
 
     });

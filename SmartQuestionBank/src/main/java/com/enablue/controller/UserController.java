@@ -49,7 +49,7 @@ public class UserController {
     public JSONObject quitLogin(HttpServletResponse response){
 
         try {
-            response.sendRedirect("/ROOT1/user/login.html");
+            response.sendRedirect("../login.html");
         } catch (IOException e) {
             e.printStackTrace();
         }

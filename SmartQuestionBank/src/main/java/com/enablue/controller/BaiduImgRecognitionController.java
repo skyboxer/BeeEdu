@@ -56,8 +56,9 @@ public class BaiduImgRecognitionController {
         System.out.println("url>>>>>>>>>>>>"+url);
         try {
             // 本地文件路径
-            String filePath = IfOs.ifOsPath("E:\\image\\"+fileName,"/home/data/ROOT1/image/"+fileName) ;
-            byte[] imgData = FileUtil.readFileByBytes(filePath);
+            //String filePath = IfOs.ifOsPath("E:\\image\\"+fileName,"/home/data/ROOT1/image/"+fileName) ;
+            String filePath = IfOs.ifOsResourceValue("exploit.download.img.path","server.download.img.path","config/global");
+            byte[] imgData = FileUtil.readFileByBytes(filePath+"\\"+fileName);
             String imgStr = Base64Util.encode(imgData);
             String imgParam = URLEncoder.encode(imgStr, "UTF-8");
             String param = "image=" + imgParam;
@@ -65,6 +66,9 @@ public class BaiduImgRecognitionController {
             String accessToken =AuthService.getAuth();
             String result = HttpUtil.post(url, accessToken, param);
             JSONObject jsonObject = JSON.parseObject(result);
+            if(jsonObject.getInteger("error_code")>=1){
+                return commonReturnValue.CommonReturnValue(-1,"识别失败,"+jsonObject.getString("error_msg"));
+            }
             JSONArray jsonArray = jsonObject.getJSONArray("words_result");
             List<Map<String,String>> list = new ArrayList<>();
             Map<String,String> map;

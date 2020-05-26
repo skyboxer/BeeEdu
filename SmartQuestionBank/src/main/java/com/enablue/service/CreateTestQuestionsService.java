@@ -2,6 +2,7 @@ package com.enablue.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.enablue.dto.DataLayoutDTO;
 import com.enablue.pojo.Model;
 import com.enablue.pojo.TemplatePool;
 
@@ -16,6 +17,7 @@ public interface CreateTestQuestionsService {
     JSONArray createTestQuestion(List<TemplatePool> templatePoolList);
 
     List<JSONObject> templatePoolFactoryTwo(List<TemplatePool> typeTemplatePoolList,String[] nameArray);
+    List<DataLayoutDTO> templatePoolFactoryTwo(List<TemplatePool> typeTemplatePoolList, List<DataLayoutDTO> dataLayoutDTOList);
 
     /**
      * 保存试卷
@@ -37,6 +39,9 @@ public interface CreateTestQuestionsService {
      * @return
      */
     List<JSONObject> templatePoolFactoryFour(TemplatePool templatePool,String[] nameArray);
+
+    List<DataLayoutDTO> templatePoolFactoryFour(TemplatePool templatePool, List<DataLayoutDTO> dataLayoutDTOList);
+
 
     /**
      * @cnxjk

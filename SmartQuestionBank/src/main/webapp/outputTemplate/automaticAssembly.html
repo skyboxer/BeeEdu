@@ -88,7 +88,7 @@
             $.post("../createQuestionsController/autoMaticCreateQuestion", {"requestData": JSON.stringify(data.field)}, function (e) {
                 layer.msg(e.msg)
                 if (e.code==0) {
-                    $("#ifreamHtml").attr("src", "https://www.enablue.com/ROOT1/download/" + e.newFileName + ".html");
+                    $("#ifreamHtml").attr("src", "../download/" + e.newFileName + ".html");
                     element.render();
                     layer.confirm('试卷已生成完毕！', {
                         btn: ['预览', '下载', '保存'] //可以无限个按钮
@@ -109,7 +109,7 @@
                             shade: false,
                             maxmin: true, //开启最大化最小化按钮
                             area: ['600px', '500px'],
-                            content: 'https://www.enablue.com/ROOT1/download/'+e.newFileName+'.html',
+                            content: '../download/'+e.newFileName+'.html',
                             btn:['保存','下载','放弃'],
                             yes:function (index,layero) {
                                 $.post("../createQuestionsController/saveQuestions",{"fileName":data.field.title,"newFileName":e.newFileName} ,function (e2) {
@@ -118,7 +118,7 @@
                             },
                             btn2:function (index,layero) {
                                 layer.msg("下载")
-                                window.open(encodeURI("/ROOT1/download/"+e.newFileName+".docx"));
+                                window.open(encodeURI("../download/"+e.newFileName+".docx"));
                             },
                             btn3:function (index,layero) {
                                 layer.msg("放弃")
@@ -128,7 +128,7 @@
                     },function (index,layero) {
                         //下载
                         layer.msg("下载")
-                        window.open(encodeURI("/ROOT1/download/"+e.newFileName+".docx"));
+                        window.open(encodeURI("../download/"+e.newFileName+".docx"));
                         return false;
                     });
                 }

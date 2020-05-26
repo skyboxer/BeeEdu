@@ -1,6 +1,8 @@
-package com.enablue.common;
+package com.enablue.util.suanfa;
 
 import com.alibaba.fastjson.JSONObject;
+import com.enablue.dto.DataLayoutDTO;
+import com.enablue.util.RandomNumFactory;
 
 import java.util.*;
 
@@ -8,7 +10,7 @@ import java.util.*;
  * 递等式运算
  * 王成
  */
-public class RecursiveEquation {
+public class VerticalCalculation {
     public List<JSONObject>  generativeExpression(String[] nameArray1){
         JSONObject jsonObject=null;
         ArrayList<JSONObject> list = new ArrayList<>();
@@ -42,6 +44,40 @@ public class RecursiveEquation {
         }
 
         return list;
+    }
+
+    /**
+     * @cnxjk
+     * @param childArray
+     * @return
+     */
+    public List<DataLayoutDTO>  generativeExpression(List<DataLayoutDTO> childArray){
+        //第一题
+        for(DataLayoutDTO dataLayoutDTO : childArray){
+            Map<String, Object> result = null;
+            //生成随机加减乘除算式
+            int addSize = RandomNumFactory.RandomNumFactory(new int[]{0,4});
+            switch (addSize){
+                case 0:
+                    result = addition();
+                    break;
+                case 1:
+                    result = Subtraction();
+                    break;
+                case 2:
+                    result = multiplication();
+                    break;
+                case 3:
+                    result = division();
+                    break;
+            }
+
+            result.get("expression");//这里是自动生成
+            result.get("answer");//这里是自动生成
+            dataLayoutDTO.setValue((String) result.get("expression"));
+        }
+
+        return childArray;
     }
 
     /**
