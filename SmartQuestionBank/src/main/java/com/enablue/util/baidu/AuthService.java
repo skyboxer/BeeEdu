@@ -1,5 +1,6 @@
 package com.enablue.util.baidu;
 
+import com.enablue.util.ReadResourceFiles;
 import fr.opensagres.xdocreport.document.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -24,9 +25,11 @@ public class AuthService {
      */
     public static String getAuth() {
         // 官网获取的 API Key 更新为你注册的
-        String clientId = "f579V37NaMKpZ5vwvhirqw4G";
+        //String clientId = "f579V37NaMKpZ5vwvhirqw4G";
+        String clientId = ReadResourceFiles.ReadResourceFiles("config/global","baidu.client.id");
         // 官网获取的 Secret Key 更新为你注册的
-        String clientSecret = "GAIZHFzCIfGYNEqvtRuj7DrRpcsvRbj7";
+        //String clientSecret = "GAIZHFzCIfGYNEqvtRuj7DrRpcsvRbj7";
+        String clientSecret = ReadResourceFiles.ReadResourceFiles("config/global","baidu.client.secret");
         return getAuth(clientId, clientSecret);
     }
 

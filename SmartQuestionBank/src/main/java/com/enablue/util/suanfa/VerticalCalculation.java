@@ -1,7 +1,7 @@
 package com.enablue.util.suanfa;
 
 import com.alibaba.fastjson.JSONObject;
-import com.enablue.dto.DataLayout;
+import com.enablue.dto.DataLayoutDTO;
 import com.enablue.util.RandomNumFactory;
 
 import java.util.*;
@@ -51,9 +51,9 @@ public class VerticalCalculation {
      * @param childArray
      * @return
      */
-    public List<DataLayout>  generativeExpression(List<DataLayout> childArray){
+    public List<DataLayoutDTO>  generativeExpression(List<DataLayoutDTO> childArray){
         //第一题
-        for(DataLayout dataLayout : childArray){
+        for(DataLayoutDTO dataLayoutDTO : childArray){
             Map<String, Object> result = null;
             //生成随机加减乘除算式
             int addSize = RandomNumFactory.RandomNumFactory(new int[]{0,4});
@@ -74,7 +74,7 @@ public class VerticalCalculation {
 
             result.get("expression");//这里是自动生成
             result.get("answer");//这里是自动生成
-            dataLayout.setValue((String) result.get("expression"));
+            dataLayoutDTO.setValue((String) result.get("expression"));
         }
 
         return childArray;

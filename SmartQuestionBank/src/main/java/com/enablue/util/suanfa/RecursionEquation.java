@@ -1,11 +1,10 @@
 package com.enablue.util.suanfa;
 
 import com.alibaba.fastjson.JSONObject;
-import com.enablue.dto.DataLayout;
+import com.enablue.dto.DataLayoutDTO;
 import com.enablue.util.RandomNumFactory;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -61,36 +60,36 @@ public class RecursionEquation {
      * @param
      * @return
      */
-    public  List<DataLayout>  recursiveComputation(List<DataLayout> childArray){
+    public  List<DataLayoutDTO>  recursiveComputation(List<DataLayoutDTO> childArray){
 
         //定义题型 连加、连减、连乘、连除、混合算式
         JSONObject jsonObject = null;
-        for(DataLayout dataLayout : childArray){
+        for(DataLayoutDTO dataLayoutDTO : childArray){
             int addSize = RandomNumFactory.RandomNumFactory(new int[]{0,5});
             System.out.println("循环"+addSize);
             switch (addSize){
                 case 0:
                     System.out.println("循环hybridAlgorithm");
-                    jsonObject = hybridAlgorithm(dataLayout.getKey());
+                    jsonObject = hybridAlgorithm(dataLayoutDTO.getKey());
                     break;
                 case 1:
                     System.out.println("循环seriesAddition");
-                    jsonObject = seriesAddition(dataLayout.getKey());
+                    jsonObject = seriesAddition(dataLayoutDTO.getKey());
                     break;
                 case 2:
                     System.out.println("循环seriesSubtraction");
-                    jsonObject = seriesSubtraction(dataLayout.getKey());
+                    jsonObject = seriesSubtraction(dataLayoutDTO.getKey());
                     break;
                 case 3:
                     System.out.println("循环seriesMultiplicationm");
-                    jsonObject = seriesMultiplication(dataLayout.getKey());
+                    jsonObject = seriesMultiplication(dataLayoutDTO.getKey());
                     break;
                 default:
                     System.out.println("循环seriesDivision");
-                    jsonObject = seriesDivision(dataLayout.getKey());
+                    jsonObject = seriesDivision(dataLayoutDTO.getKey());
                     break;
             }
-            dataLayout.setValue(jsonObject.getString("value"));
+            dataLayoutDTO.setValue(jsonObject.getString("value"));
 
         }
         return childArray;

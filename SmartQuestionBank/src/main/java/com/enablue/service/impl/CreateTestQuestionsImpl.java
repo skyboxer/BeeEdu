@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.enablue.common.BaseController;
 import com.enablue.common.CommonReturnValue;
-import com.enablue.dto.DataLayout;
+import com.enablue.dto.DataLayoutDTO;
 import com.enablue.util.suanfa.VerticalCalculation;
 import com.enablue.mapper.*;
 import com.enablue.pojo.*;
@@ -126,10 +126,10 @@ public class CreateTestQuestionsImpl implements CreateTestQuestionsService {
      * 填空题工厂函数
      *
      * @param typeTemplatePoolList id 集合
-     * @param dataLayoutList       占位符
+     * @param dataLayoutDTOList       占位符
      * @return
      */
-    public List<DataLayout> templatePoolFactoryTwo(List<TemplatePool> typeTemplatePoolList, List<DataLayout> dataLayoutList) {
+    public List<DataLayoutDTO> templatePoolFactoryTwo(List<TemplatePool> typeTemplatePoolList, List<DataLayoutDTO> dataLayoutDTOList) {
         int index = 0;
         for (TemplatePool templatePoolWhere : typeTemplatePoolList) {
             List<TemplatePool> templatePoolList = templatePoolMapper.getTemplatePooList(templatePoolWhere);
@@ -139,11 +139,11 @@ public class CreateTestQuestionsImpl implements CreateTestQuestionsService {
                    /* tpAnswerPool = tpAnswerMapper.getTPAswer(templatePool.getAnswerId());
                     templatePool.setTpAnswer(tpAnswerPool);*/
             }
-            JSONObject jsonObject = TemplateFactory.templateJSONObjectFactory(templatePoolList.get(0), dataLayoutList.get(index).getKey());
-            dataLayoutList.get(index).setValue(jsonObject.getString("value"));
+            JSONObject jsonObject = TemplateFactory.templateJSONObjectFactory(templatePoolList.get(0), dataLayoutDTOList.get(index).getKey());
+            dataLayoutDTOList.get(index).setValue(jsonObject.getString("value"));
             index++;
         }
-        return dataLayoutList;
+        return dataLayoutDTOList;
     }
 
     @Override
@@ -196,22 +196,22 @@ public class CreateTestQuestionsImpl implements CreateTestQuestionsService {
      * 应用题工厂函数
      *
      * @param templatePool   id 集合
-     * @param dataLayoutList 占位符
+     * @param dataLayoutDTOList 占位符
      * @return
      */
-    public List<DataLayout> templatePoolFactoryFour(TemplatePool templatePool, List<DataLayout> dataLayoutList) {
+    public List<DataLayoutDTO> templatePoolFactoryFour(TemplatePool templatePool, List<DataLayoutDTO> dataLayoutDTOList) {
         List<TemplatePool> templatePoolList = templatePoolMapper.getTemplatePooList(templatePool);
         JSONObject jsonObject;
-        int[] indexList = RandomNumFactory.RandomNumIndex(templatePoolList.size(), dataLayoutList.size());
-        int nums = dataLayoutList.size();
-        if (templatePoolList.size() < dataLayoutList.size()) {
+        int[] indexList = RandomNumFactory.RandomNumIndex(templatePoolList.size(), dataLayoutDTOList.size());
+        int nums = dataLayoutDTOList.size();
+        if (templatePoolList.size() < dataLayoutDTOList.size()) {
             nums = templatePoolList.size();
         }
         for (int j = 0; j < nums ; j++) {
-            dataLayoutList.get(j).setValue(templatePoolList.get(indexList[j]).getTemplateContent());
+            dataLayoutDTOList.get(j).setValue(templatePoolList.get(indexList[j]).getTemplateContent());
             System.out.println("应用题工厂函数"+templatePoolList.get(indexList[j]).getTemplateContent());
         }
-        return dataLayoutList;
+        return dataLayoutDTOList;
     }
 
     @Override

@@ -1,23 +1,12 @@
 package com.enablue.util;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.enablue.dto.DataLayout;
-import com.enablue.pojo.TemplatePool;
-import com.enablue.pojo.User;
-import org.apache.poi.hwpf.HWPFDocument;
-import org.apache.poi.hwpf.usermodel.Paragraph;
-import org.apache.poi.hwpf.usermodel.Range;
-import org.apache.poi.xwpf.usermodel.IRunElement;
+import com.enablue.dto.DataLayoutDTO;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
-import org.jsoup.helper.StringUtil;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 import java.io.*;
 import java.util.*;
 
@@ -30,13 +19,13 @@ public class TemplateToDocx {
     /**
      * 数据对象模板生成试卷
      *
-     * @param dataLayoutList
+     * @param dataLayoutDTOList
      * @param templateName
      * @param newFileName
      * @param request
      * @return
      */
-    public static String modelToDocx(List<DataLayout> dataLayoutList, String templateName, String newFileName, HttpServletRequest request) {
+    public static String modelToDocx(List<DataLayoutDTO> dataLayoutDTOList, String templateName, String newFileName, HttpServletRequest request) {
         String templatePath = "/TemplateDoc/" + templateName + ".docx";
         System.out.println(">>>>>>>>>>>>>>>>>" + templatePath);
         OutputStream outputStream;
@@ -46,13 +35,13 @@ public class TemplateToDocx {
             System.out.println(servletContext.getRealPath(templatePath));
             InputStream is = new FileInputStream(servletContext.getRealPath(templatePath));
             doc = new XWPFDocument(is);
-            List<DataLayout> childList;
-            for (DataLayout dataLayout : dataLayoutList) {
-                System.out.println(dataLayout.getKey() + "  <><> " + dataLayout.getValue());
-                replaceInPara(doc,dataLayout);
-                childList = dataLayout.getChild();
+            List<DataLayoutDTO> childList;
+            for (DataLayoutDTO dataLayoutDTO : dataLayoutDTOList) {
+                System.out.println(dataLayoutDTO.getKey() + "  <><> " + dataLayoutDTO.getValue());
+                replaceInPara(doc, dataLayoutDTO);
+                childList = dataLayoutDTO.getChild();
                 if (childList.size() > 0) {
-                    for (DataLayout childDy : childList) {
+                    for (DataLayoutDTO childDy : childList) {
                         replaceInPara(doc,childDy);
                     }
                 }
@@ -81,9 +70,9 @@ public class TemplateToDocx {
      *      * @param params 参数
      *     
      */
-    private static void replaceInPara(XWPFDocument doc, DataLayout dataLayout) {
+    private static void replaceInPara(XWPFDocument doc, DataLayoutDTO dataLayoutDTO) {
         List<XWPFParagraph> paragraphList = doc.getParagraphs();
-        System.out.println(dataLayout.getKey() + " 《数据没问题》 " + dataLayout.getValue());
+        System.out.println(dataLayoutDTO.getKey() + " 《数据没问题》 " + dataLayoutDTO.getValue());
         for(XWPFParagraph xwpfParagraph : paragraphList){
            List<XWPFRun> xwpfRunList= xwpfParagraph.getRuns();
            for(XWPFRun xwpfRun : xwpfRunList){
@@ -91,10 +80,10 @@ public class TemplateToDocx {
                if(text!=null){
                    System.out.println("text()======"+xwpfRun.text());
                    boolean isSetText = false;
-                   if(text.indexOf(dataLayout.getKey())!=-1){
+                   if(text.indexOf(dataLayoutDTO.getKey())!=-1){
                        isSetText = true;
-                       if(text.contains(dataLayout.getKey())){
-                           text = text.replace(dataLayout.getKey(),dataLayout.getValue());
+                       if(text.contains(dataLayoutDTO.getKey())){
+                           text = text.replace(dataLayoutDTO.getKey(), dataLayoutDTO.getValue());
                        }
                    }
                    if(isSetText){

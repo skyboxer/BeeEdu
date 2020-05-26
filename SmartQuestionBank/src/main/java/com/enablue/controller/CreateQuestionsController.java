@@ -3,7 +3,7 @@ package com.enablue.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.enablue.common.BaseController;
 import com.enablue.common.CommonReturnValue;
-import com.enablue.dto.DataLayout;
+import com.enablue.dto.DataLayoutDTO;
 import com.enablue.pojo.Model;
 import com.enablue.pojo.TemplatePool;
 import com.enablue.pojo.TypePool;
@@ -62,22 +62,22 @@ public class CreateQuestionsController {
         String modelName = parameterJO.getString("modelFnName").split(",")[1];
         String titleValue = parameterJO.getString("title");
         String modelStr = ReadResourceFiles.ReadResourceFiles("config/models",modelName);
-        List<DataLayout> dataLayoutList = JSONObject.parseArray(modelStr,DataLayout.class);
+        List<DataLayoutDTO> dataLayoutDTOList = JSONObject.parseArray(modelStr, DataLayoutDTO.class);
         String key;
         VerticalCalculation verticalCalculation = new VerticalCalculation();
         RecursionEquation recursionEquation = new RecursionEquation();
-        for(DataLayout dataLayout : dataLayoutList){
-            key = dataLayout.getKey();
+        for(DataLayoutDTO dataLayoutDTO : dataLayoutDTOList){
+            key = dataLayoutDTO.getKey();
             if(key.isEmpty()){
                 continue;
             }
             switch (key){
                 case "${one}":
                     //生成竖式运算
-                    verticalCalculation.generativeExpression(dataLayout.getChild());
+                    verticalCalculation.generativeExpression(dataLayoutDTO.getChild());
                     break;
                 case "${two}":
-                    recursionEquation.recursiveComputation(dataLayout.getChild());
+                    recursionEquation.recursiveComputation(dataLayoutDTO.getChild());
                     break;
                 case "${three}":
                     //填空题
@@ -85,26 +85,26 @@ public class CreateQuestionsController {
                     templatePoolList.add(new TemplatePool(12));
                     templatePoolList.add(new TemplatePool(13));
                     templatePoolList.add(new TemplatePool(14));
-                    createTestQuestionsService.templatePoolFactoryTwo(templatePoolList,dataLayout.getChild());
+                    createTestQuestionsService.templatePoolFactoryTwo(templatePoolList, dataLayoutDTO.getChild());
                     break;
                 case "${four}":
                     //应用题
                     TemplatePool templatePool = new TemplatePool();
                     templatePool.setSubjectId(1);
                     templatePool.setTypeId(5);
-                    createTestQuestionsService.templatePoolFactoryFour(templatePool,dataLayout.getChild());
+                    createTestQuestionsService.templatePoolFactoryFour(templatePool, dataLayoutDTO.getChild());
                     break;
                 default:
                     //试卷标题
-                    dataLayout.setValue(titleValue);
+                    dataLayoutDTO.setValue(titleValue);
             }
 
         }
-        String newTemplatePath = TemplateToDocx.modelToDocx(dataLayoutList,modelName,newFileName,request);
+        String newTemplatePath = TemplateToDocx.modelToDocx(dataLayoutDTOList,modelName,newFileName,request);
         if(newTemplatePath==null || newTemplatePath.isEmpty()){
             return commonReturnValue.CommonReturnValue(-1,"失败");
         }
-        return commonReturnValue.CommonReturnValue(0,"成功",newFileName,dataLayoutList);
+        return commonReturnValue.CommonReturnValue(0,"成功",newFileName, dataLayoutDTOList);
     }
 
     /**

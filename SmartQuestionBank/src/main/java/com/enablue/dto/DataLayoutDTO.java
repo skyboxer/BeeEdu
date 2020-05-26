@@ -7,10 +7,10 @@ import java.util.List;
  * @author cn_xjk
  * 模板参数dataLayout数据格式
  */
-public class DataLayout {
+public class DataLayoutDTO {
     private String key;
     private String value;
-    private List<DataLayout> child;
+    private List<DataLayoutDTO> child;
 
     public String getValue() {
         return value;
@@ -28,28 +28,28 @@ public class DataLayout {
         this.key = key;
     }
 
-    public List<DataLayout> getChild() {
+    public List<DataLayoutDTO> getChild() {
         return child;
     }
 
-    public void setChild(List<DataLayout> child) {
+    public void setChild(List<DataLayoutDTO> child) {
         this.child = child;
     }
 
 
-    public DataLayout(String key, String value, List<DataLayout> child) {
+    public DataLayoutDTO(String key, String value, List<DataLayoutDTO> child) {
         this.key = key;
         this.value = value;
         this.child = child;
     }
 
-    public DataLayout() {
+    public DataLayoutDTO() {
     }
 
-    public List<String> DataLayout(List<DataLayout> child){
+    public List<String> DataLayout(List<DataLayoutDTO> child){
         List<String> dataList = new ArrayList<>();
-        for(DataLayout dataLayout : child){
-            dataList.add(dataLayout.key);
+        for(DataLayoutDTO dataLayoutDTO : child){
+            dataList.add(dataLayoutDTO.key);
         }
         return dataList;
     }
