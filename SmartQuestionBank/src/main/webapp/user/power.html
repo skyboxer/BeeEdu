@@ -47,6 +47,10 @@
                     //Ajax 操作
                     var id = data.id; //得到节点索引
                     if (type === 'add') { //增加节点
+                        if(data.parentId != 0){
+                            layer.alert('此标签不能添加子节点', {icon: 3});
+                            return;
+                        }
                         param = {
                             "title": "功能名称,url",
                             "id": null,
