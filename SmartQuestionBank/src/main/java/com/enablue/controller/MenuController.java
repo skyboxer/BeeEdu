@@ -27,8 +27,8 @@ public class MenuController {
         return commonReturnValue.CommonReturnValue(0, "成功", menuService.getMenuTree());
     }
 
-    @RequestMapping("menuTreeSys")
-    public JSONObject menuTreeSys(@RequestBody MenuTreeSysDTO menuTreeSysDTO) {
+    @RequestMapping(value="menuTreeSys",consumes="application/json")
+    public JSONObject menuTreeSys(@RequestBody(required=false) MenuTreeSysDTO menuTreeSysDTO) {
         MenuTree menuTree = menuTreeSysDTO.getMenuTree();
         String sysType = menuTreeSysDTO.getSysType();
         System.out.println("参数"+menuTree.toString());
