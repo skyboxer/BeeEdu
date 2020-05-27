@@ -1,6 +1,8 @@
 package com.enablue.common;
 
+import com.enablue.pojo.SystemPool;
 import com.enablue.pojo.User;
+import com.enablue.util.ReadResourceFiles;
 import org.apache.http.HttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,7 +41,7 @@ public class RequestFilter implements Filter {
         System.out.println("path"+path+", method"+method);
         if(path.indexOf("login.html")>-1 || path.indexOf(".css")>-1
                 ||path.indexOf(".js")>-1 || path.indexOf("layuiv256")>-1
-                ||path.indexOf(".doc")>-1 ||path.indexOf(".htm")>-1){
+                ||path.indexOf(".doc")>-1 || path.indexOf(".docx")>-1 ||path.indexOf("download")>-1){
             filterChain.doFilter(request, response);
             return;
         }
@@ -52,8 +54,10 @@ public class RequestFilter implements Filter {
         //未登录跳转
         HttpSession session = request.getSession();
         Object object = session.getAttribute("ACCOUNT");
+        System.out.println("用户登录状态"+object);
         if(object == null){
-            request.getRequestDispatcher("/login.html").forward(request,response);
+            String projectName = ReadResourceFiles.ReadResourceFiles("config/global","project.name");
+            response.sendRedirect("/"+projectName+"/login.html");
             return;
         }
         filterChain. doFilter(request, response);

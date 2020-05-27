@@ -7,12 +7,15 @@ import com.enablue.pojo.User;
 import com.enablue.pojo.UserRole;
 import com.enablue.service.UserService;
 
+import com.enablue.util.ReadResourceFiles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
@@ -46,10 +49,10 @@ public class UserController {
      * @return
      */
     @RequestMapping("quitLogin")
-    public JSONObject quitLogin(HttpServletResponse response){
-
+    public JSONObject quitLogin(HttpServletRequest request, HttpServletResponse response){
+        String projectName = ReadResourceFiles.ReadResourceFiles("config/global","project.name");
         try {
-            response.sendRedirect("../login.html");
+            response.sendRedirect("/"+projectName+"/login.html");
         } catch (IOException e) {
             e.printStackTrace();
         }
